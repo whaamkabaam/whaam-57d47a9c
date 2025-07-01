@@ -13,8 +13,8 @@ const Products = () => {
   const handleGetCurve = (planName: string, price: string, planId: string) => {
     setSelectedPlan(planId);
     toast({
-      title: `${planName} Selected! 🎯`,
-      description: `Ready to perfect your aim with ${planName} for ${price}? Let's get started!`,
+      title: `${planName} Ausgewählt! 🎯`,
+      description: `Bereit, dein Aim mit ${planName} für ${price} zu perfektionieren? Lass uns starten!`,
     });
   };
 
@@ -85,56 +85,56 @@ const Products = () => {
   ];
 
   const benefits = [
-    { icon: Shield, title: "100% Satisfaction Guarantee", desc: "Not happy? Full refund, no questions asked" },
-    { icon: Zap, title: "Lightning Fast Delivery", desc: "First curve delivered in minutes, not days" },
-    { icon: Trophy, title: "Proven Results", desc: "Trusted by 500+ gamers worldwide" }
+    { icon: Shield, title: "100% Zufriedenheitsgarantie", desc: "Nicht zufrieden? Vollständige Rückerstattung, keine Fragen gestellt" },
+    { icon: Zap, title: "Blitzschnelle Lieferung", desc: "Erste Curve in Minuten geliefert, nicht in Tagen" },
+    { icon: Trophy, title: "Bewährte Ergebnisse", desc: "Vertraut von 500+ Gamern weltweit" }
   ];
 
   return (
-    <div className="container mx-auto px-6 relative">
+    <div className="container mx-auto px-4 sm:px-6 relative">
       {/* Enhanced Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-red-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-yellow-500/5 rounded-full blur-2xl animate-pulse delay-500"></div>
+        <div className="absolute top-20 left-10 w-64 sm:w-96 h-64 sm:h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-64 sm:w-80 h-64 sm:h-80 bg-red-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 sm:w-64 h-48 sm:h-64 bg-yellow-500/5 rounded-full blur-2xl animate-pulse delay-500"></div>
       </div>
 
       {/* Enhanced Header Section */}
-      <div className="text-center mb-20">
-        <div className="inline-flex items-center bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+      <div className="text-center mb-16 sm:mb-20">
+        <div className="inline-flex items-center bg-blue-50 text-blue-600 px-3 sm:px-4 py-2 rounded-full text-sm font-semibold mb-4 sm:mb-6">
           <Star className="mr-2" size={16} />
-          Custom Curve Settings Tailored to Your Aim
+          Custom Curve Einstellungen für dein Aim
         </div>
         
-        <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-          Choose Your
-          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> Perfect Plan</span>
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
+          Wähle deinen
+          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> perfekten Plan</span>
         </h2>
         
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-          Perfect your aim with expert-crafted mouse acceleration curves. 
-          Every plan includes our ironclad 100% Satisfaction Guarantee and personalized optimization.
+        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8">
+          Perfektioniere dein Aim mit fachmännisch erstellten Mausbeschleunigungskurven. 
+          Jeder Plan beinhaltet unsere eisenharte 100% Zufriedenheitsgarantie und personalisierte Optimierung.
         </p>
 
         {/* Trust Indicators */}
-        <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-500 mb-12">
+        <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-8 text-sm text-gray-500 mb-8 sm:mb-12">
           <div className="flex items-center">
             <Check className="text-green-500 mr-2" size={16} />
-            500+ Satisfied Gamers
+            500+ zufriedene Gamer
           </div>
           <div className="flex items-center">
             <Check className="text-green-500 mr-2" size={16} />
-            First curve delivered in minutes
+            Erste Curve in Minuten
           </div>
           <div className="flex items-center">
             <Check className="text-green-500 mr-2" size={16} />
-            100% Satisfaction Guarantee
+            100% Zufriedenheitsgarantie
           </div>
         </div>
       </div>
 
       {/* Plans Grid */}
-      <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20">
+      <div className="grid md:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto mb-16 sm:mb-20">
         {plans.map((plan, index) => (
           <Card 
             key={plan.id}
@@ -148,7 +148,7 @@ const Products = () => {
           >
             {/* Badge */}
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-              <Badge className={`${plan.badgeColor} text-white px-6 py-2 font-bold shadow-lg border-0`}>
+              <Badge className={`${plan.badgeColor} text-white px-4 sm:px-6 py-2 font-bold shadow-lg border-0 text-xs sm:text-sm`}>
                 {plan.badge}
               </Badge>
             </div>
@@ -158,27 +158,27 @@ const Products = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 pointer-events-none"></div>
             )}
 
-            <CardHeader className="text-center pt-12 pb-6">
-              <div className={`w-20 h-20 mx-auto mb-6 rounded-3xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 ${
+            <CardHeader className="text-center pt-10 sm:pt-12 pb-4 sm:pb-6">
+              <div className={`w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-3xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 ${
                 plan.highlight ? 'bg-gradient-to-br from-blue-500 to-blue-600' : 'bg-gradient-to-br from-gray-700 to-gray-800'
               }`}>
-                <plan.icon className="text-white" size={36} />
+                <plan.icon className="text-white" size={28} />
               </div>
               
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
                 {plan.name}
               </h3>
               
-              <p className="text-gray-600 text-sm mb-4 px-4">
+              <p className="text-gray-600 text-sm mb-4 px-2 sm:px-4">
                 {plan.description}
               </p>
               
-              <div className="flex items-center justify-center gap-3 mb-2">
-                <span className="text-5xl font-black text-gray-900">
+              <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
+                <span className="text-4xl sm:text-5xl font-black text-gray-900">
                   {plan.price}
                 </span>
                 {plan.originalPrice && (
-                  <span className="text-xl text-gray-400 line-through">
+                  <span className="text-lg sm:text-xl text-gray-400 line-through">
                     {plan.originalPrice}
                   </span>
                 )}
@@ -195,11 +195,11 @@ const Products = () => {
               )}
             </CardHeader>
 
-            <CardContent className="px-8 pb-8">
-              <ul className="space-y-4 mb-8">
+            <CardContent className="px-6 sm:px-8 pb-6 sm:pb-8">
+              <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
                 {plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start space-x-3">
-                    <Check className="text-green-500 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" size={18} />
+                    <Check className="text-green-500 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" size={16} />
                     <span className="text-gray-700 leading-relaxed text-sm">{feature}</span>
                   </li>
                 ))}
@@ -208,7 +208,7 @@ const Products = () => {
               <Button 
                 onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
                 size="lg"
-                className={`w-full font-bold text-lg py-4 transition-all duration-300 group-hover:scale-105 ${
+                className={`w-full font-bold text-base sm:text-lg py-3 sm:py-4 transition-all duration-300 group-hover:scale-105 ${
                   plan.highlight 
                     ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg' 
                     : plan.premium
@@ -216,15 +216,15 @@ const Products = () => {
                     : 'bg-gradient-to-r from-gray-800 to-gray-900 hover:from-blue-500 hover:to-blue-600 text-white shadow-lg'
                 }`}
               >
-                Get Started Now
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+                Jetzt starten
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
               </Button>
 
               {/* Savings Badge */}
               {plan.originalPrice && (
                 <div className="text-center mt-3">
                   <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">
-                    Save ${parseInt(plan.originalPrice.substring(1)) - parseInt(plan.price.substring(1))}
+                    Spare ${parseInt(plan.originalPrice.substring(1)) - parseInt(plan.price.substring(1))}
                   </span>
                 </div>
               )}
@@ -234,92 +234,33 @@ const Products = () => {
       </div>
 
       {/* Benefits Section */}
-      <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-3xl p-12 mb-20">
-        <h3 className="text-3xl font-bold text-center text-gray-900 mb-12">
-          Why Choose Lovable.dev?
+      <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl sm:rounded-3xl p-8 sm:p-12 mb-16 sm:mb-20">
+        <h3 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-8 sm:mb-12">
+          Warum Lovable.dev wählen?
         </h3>
         
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-3 gap-6 sm:gap-8">
           {benefits.map((benefit, index) => (
             <div key={index} className="text-center group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
-                <benefit.icon className="text-blue-500 group-hover:scale-110 transition-transform" size={32} />
+              <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 bg-white rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
+                <benefit.icon className="text-blue-500 group-hover:scale-110 transition-transform" size={28} />
               </div>
-              <h4 className="text-xl font-semibold text-gray-900 mb-2">{benefit.title}</h4>
-              <p className="text-gray-600">{benefit.desc}</p>
+              <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">{benefit.title}</h4>
+              <p className="text-sm sm:text-base text-gray-600">{benefit.desc}</p>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Comparison Table */}
-      <div className="bg-white rounded-3xl shadow-2xl p-8 mb-20 max-w-6xl mx-auto">
-        <h3 className="text-3xl font-bold text-center text-gray-900 mb-8">
-          Compare Plans
-        </h3>
-        
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b-2 border-gray-200">
-                <th className="text-left py-6 px-6 font-bold text-gray-800">Plan</th>
-                <th className="text-center py-6 px-6 font-bold text-gray-800">Price</th>
-                <th className="text-center py-6 px-6 font-bold text-gray-800">Revisions</th>
-                <th className="text-center py-6 px-6 font-bold text-gray-800">Live Session</th>
-                <th className="text-center py-6 px-6 font-bold text-gray-800">Delivery</th>
-                <th className="text-center py-6 px-6 font-bold text-gray-800">Guarantee</th>
-              </tr>
-            </thead>
-            <tbody>
-              {plans.map((plan, index) => (
-                <tr key={plan.id} className={`border-b border-gray-100 hover:bg-blue-50 transition-colors ${plan.highlight ? 'bg-blue-50/50' : ''}`}>
-                  <td className="py-6 px-6">
-                    <div className="flex items-center">
-                      <span className="font-semibold text-gray-900">{plan.name}</span>
-                      {plan.popular && (
-                        <Badge className="ml-3 bg-green-500 text-white text-xs border-0">Most Bought</Badge>
-                      )}
-                    </div>
-                  </td>
-                  <td className="text-center py-6 px-6">
-                    <div className="flex flex-col items-center">
-                      <span className="font-bold text-xl text-blue-600">{plan.price}</span>
-                      {plan.originalPrice && (
-                        <span className="text-sm text-gray-400 line-through">{plan.originalPrice}</span>
-                      )}
-                    </div>
-                  </td>
-                  <td className="text-center py-6 px-6 font-medium">
-                    {plan.id === 'live-session' ? 'Unlimited' : plan.id === '3x-revisions' ? '3' : 'Unlimited'}
-                  </td>
-                  <td className="text-center py-6 px-6">
-                    {plan.id === 'live-session' ? (
-                      <div className="flex items-center justify-center">
-                        <Check className="text-green-500 mr-1" size={18} />
-                        <span className="text-sm font-medium">45-min Live</span>
-                      </div>
-                    ) : '–'}
-                  </td>
-                  <td className="text-center py-6 px-6 text-sm font-medium">Minutes</td>
-                  <td className="text-center py-6 px-6">
-                    <Check className="text-green-500 mx-auto" size={20} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
       {/* Sticky CTA */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <div className="bg-white rounded-full shadow-2xl p-4 border border-gray-200">
+      <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50">
+        <div className="bg-white rounded-full shadow-2xl p-3 sm:p-4 border border-gray-200">
           <Button 
             onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full px-8 py-3 font-bold transition-all duration-300 group shadow-lg"
+            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full px-6 sm:px-8 py-2 sm:py-3 font-bold transition-all duration-300 group shadow-lg text-sm sm:text-base"
           >
-            <Star className="mr-2 group-hover:rotate-12 transition-transform" size={18} />
-            Get Started Now
+            <Star className="mr-2 group-hover:rotate-12 transition-transform" size={16} />
+            Jetzt starten
           </Button>
         </div>
       </div>

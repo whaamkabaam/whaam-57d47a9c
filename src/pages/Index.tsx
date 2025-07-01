@@ -68,12 +68,12 @@ const Index = () => {
         <div className="container mx-auto px-6 text-center">
           <div className="mb-8">
             <h3 className="text-2xl font-bold mb-4">
-              <span className="text-blue-500">Whaam</span>
-              <span className="text-red-500">Ka</span>
-              <span className="text-yellow-500">Baam</span>
+              <span className="text-blue-500">Lovable</span>
+              <span className="text-red-500">.</span>
+              <span className="text-yellow-500">dev</span>
             </h3>
             <p className="text-gray-400 max-w-md mx-auto">
-              Digital Creativity That Hits Differently. Creating impactful experiences that drive results.
+              Custom Curve Settings Tailored to Your Aim. Perfect your gaming performance with personalized mouse acceleration curves.
             </p>
           </div>
           
@@ -81,34 +81,34 @@ const Index = () => {
             <div>
               <h4 className="font-semibold mb-3">Services</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>Branding & Identity</li>
-                <li>Web Design & Development</li>
-                <li>Creative Campaigns</li>
-                <li>Strategy & Consulting</li>
+                <li>3× Revisions</li>
+                <li>Unlimited Revisions</li>
+                <li>Live 1-on-1 Sessions</li>
+                <li>Custom Curve Optimization</li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3">Industries</h4>
+              <h4 className="font-semibold mb-3">Games Supported</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>Startups</li>
-                <li>Technology</li>
-                <li>Fashion & Lifestyle</li>
-                <li>E-commerce</li>
+                <li>Valorant</li>
+                <li>CS2</li>
+                <li>Apex Legends</li>
+                <li>All FPS Games</li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-3">Connect</h4>
               <ul className="space-y-2 text-gray-400">
-                <li>hello@whaamkabaam.com</li>
-                <li>+1 (555) 123-4567</li>
-                <li>San Francisco, CA</li>
+                <li>hello@lovable.dev</li>
+                <li>Discord: @lovable_dev</li>
+                <li>Follow us on social media</li>
               </ul>
             </div>
           </div>
           
           <div className="border-t border-gray-800 pt-8">
             <p className="text-gray-400">
-              © 2024 WhaamKaBaam. All rights reserved.
+              © 2024 Lovable.dev. All rights reserved.
             </p>
           </div>
         </div>

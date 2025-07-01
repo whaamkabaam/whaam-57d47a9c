@@ -13,7 +13,7 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    company: "",
+    game: "",
     service: "",
     budget: "",
     message: ""
@@ -30,13 +30,13 @@ const Contact = () => {
     
     toast({
       title: "Message Sent! 🚀",
-      description: "We'll get back to you within 24 hours. Get ready for something amazing!",
+      description: "We'll get back to you within 24 hours. Get ready for perfect aim!",
     });
     
     setFormData({
       name: "",
       email: "",
-      company: "",
+      game: "",
       service: "",
       budget: "",
       message: ""
@@ -52,20 +52,20 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email Us",
-      details: "hello@whaamkabaam.com",
+      details: "hello@lovable.dev",
       description: "Drop us a line anytime"
     },
     {
       icon: Phone,
-      title: "Call Us",
-      details: "+1 (555) 123-4567",
-      description: "Let's talk about your project"
+      title: "Discord",
+      details: "@lovable_dev",
+      description: "Join our community for instant help"
     },
     {
       icon: MapPin,
-      title: "Visit Us",
-      details: "San Francisco, CA",
-      description: "Coffee meetings welcome"
+      title: "Social Media",
+      details: "Follow us online",
+      description: "Stay updated with tips and tricks"
     }
   ];
 
@@ -73,12 +73,12 @@ const Contact = () => {
     <div className="container mx-auto px-6">
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Ready to Make an
-          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> Impact?</span>
+          Ready to Perfect
+          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> Your Aim?</span>
         </h2>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Let's turn your vision into a digital experience that drives real results. 
-          Every great project starts with a conversation.
+          Get your personalized mouse acceleration curve and start dominating your games. 
+          Every great performance starts with the perfect settings.
         </p>
       </div>
 
@@ -86,7 +86,7 @@ const Contact = () => {
         {/* Contact Form */}
         <Card className="border-0 shadow-xl">
           <CardContent className="p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Start Your Project</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">Get Your Custom Curve</h3>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
@@ -97,7 +97,7 @@ const Contact = () => {
                   <Input
                     value={formData.name}
                     onChange={(e) => handleChange("name", e.target.value)}
-                    placeholder="Your full name"
+                    placeholder="Your gamer name"
                     required
                     className="border-gray-300"
                   />
@@ -119,12 +119,12 @@ const Contact = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Company
+                  Primary Game
                 </label>
                 <Input
-                  value={formData.company}
-                  onChange={(e) => handleChange("company", e.target.value)}
-                  placeholder="Your company name"
+                  value={formData.game}
+                  onChange={(e) => handleChange("game", e.target.value)}
+                  placeholder="e.g., Valorant, CS2, Apex Legends"
                   className="border-gray-300"
                 />
               </div>
@@ -139,11 +139,10 @@ const Contact = () => {
                       <SelectValue placeholder="Select a service" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="branding">Branding & Identity</SelectItem>
-                      <SelectItem value="web">Web Design & Development</SelectItem>
-                      <SelectItem value="campaigns">Creative Campaigns</SelectItem>
-                      <SelectItem value="consulting">Consulting & Strategy</SelectItem>
-                      <SelectItem value="multiple">Multiple Services</SelectItem>
+                      <SelectItem value="3x-revisions">3× Revisions ($39)</SelectItem>
+                      <SelectItem value="unlimited">Unlimited Revisions ($47)</SelectItem>
+                      <SelectItem value="live-session">Live 1-on-1 Session ($149)</SelectItem>
+                      <SelectItem value="consultation">Free Consultation</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -156,10 +155,10 @@ const Contact = () => {
                       <SelectValue placeholder="Select budget" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="5k-15k">$5K - $15K</SelectItem>
-                      <SelectItem value="15k-50k">$15K - $50K</SelectItem>
-                      <SelectItem value="50k-100k">$50K - $100K</SelectItem>
-                      <SelectItem value="100k+">$100K+</SelectItem>
+                      <SelectItem value="39">$39 - 3× Revisions</SelectItem>
+                      <SelectItem value="47">$47 - Unlimited Revisions</SelectItem>
+                      <SelectItem value="149">$149 - Live Session</SelectItem>
+                      <SelectItem value="custom">Custom Package</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -167,12 +166,12 @@ const Contact = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Project Details *
+                  Additional Details *
                 </label>
                 <Textarea
                   value={formData.message}
                   onChange={(e) => handleChange("message", e.target.value)}
-                  placeholder="Tell us about your project, goals, and timeline..."
+                  placeholder="Tell us about your current settings, games you play, and what you want to improve..."
                   rows={5}
                   required
                   className="border-gray-300"
@@ -189,7 +188,7 @@ const Contact = () => {
                   "Sending..."
                 ) : (
                   <>
-                    Send Message
+                    Get Started Now
                     <Send className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
                   </>
                 )}
@@ -225,8 +224,8 @@ const Contact = () => {
             <ul className="space-y-2 text-blue-100">
               <li>✓ Response within 24 hours</li>
               <li>✓ Free initial consultation</li>
-              <li>✓ Detailed project proposal</li>
-              <li>✓ Transparent pricing</li>
+              <li>✓ Custom curve proposal</li>
+              <li>✓ 100% satisfaction guarantee</li>
             </ul>
           </div>
 
@@ -238,8 +237,8 @@ const Contact = () => {
               ))}
             </div>
             <blockquote className="text-gray-700 mb-4">
-              "WhaamKaBaam transformed our brand completely. The results exceeded our expectations, 
-              and the team's creativity is unmatched. Highly recommended!"
+              "My aim improved dramatically after getting my custom curve. The difference was 
+              noticeable immediately and I've been climbing ranks ever since!"
             </blockquote>
             <div className="flex items-center">
               <img 
@@ -248,8 +247,8 @@ const Contact = () => {
                 className="w-12 h-12 rounded-full mr-4"
               />
               <div>
-                <div className="font-semibold text-gray-900">Marcus Johnson</div>
-                <div className="text-gray-600 text-sm">CEO, TechFlow</div>
+                <div className="font-semibold text-gray-900">Alex Chen</div>
+                <div className="text-gray-600 text-sm">Valorant Player</div>
               </div>
             </div>
           </div>

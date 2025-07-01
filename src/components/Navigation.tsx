@@ -12,8 +12,8 @@ const Navigation = ({ activeSection }: NavigationProps) => {
 
   const navItems = [
     { id: "home", label: "Home" },
-    { id: "services", label: "Services" },
-    { id: "portfolio", label: "Portfolio" },
+    { id: "services", label: "How It Works" },
+    { id: "portfolio", label: "Testimonials" },
     { id: "about", label: "About" },
     { id: "contact", label: "Contact" },
   ];
@@ -32,9 +32,9 @@ const Navigation = ({ activeSection }: NavigationProps) => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="text-2xl font-bold cursor-pointer" onClick={() => scrollToSection("home")}>
-            <span className="text-blue-500">Whaam</span>
-            <span className="text-red-500">Ka</span>
-            <span className="text-yellow-500">Baam</span>
+            <span className="text-blue-500">Lovable</span>
+            <span className="text-red-500">.</span>
+            <span className="text-yellow-500">dev</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -51,10 +51,10 @@ const Navigation = ({ activeSection }: NavigationProps) => {
               </button>
             ))}
             <Button 
-              onClick={() => scrollToSection("contact")}
+              onClick={() => scrollToSection("products")}
               className="bg-blue-500 hover:bg-blue-600 text-white"
             >
-              Start Project
+              Get Your Curve
             </Button>
           </div>
 
@@ -83,10 +83,10 @@ const Navigation = ({ activeSection }: NavigationProps) => {
                 </button>
               ))}
               <Button 
-                onClick={() => scrollToSection("contact")}
+                onClick={() => scrollToSection("products")}
                 className="bg-blue-500 hover:bg-blue-600 text-white w-full"
               >
-                Start Project
+                Get Your Curve
               </Button>
             </div>
           </div>

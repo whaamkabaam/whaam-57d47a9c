@@ -15,7 +15,7 @@ const Products = () => {
     setSelectedPlan(planId);
     toast({
       title: `${planName} Selected! 🎯`,
-      description: `Ready to transform your aim with ${planName} for ${price}? Let's get started!`,
+      description: `Ready to perfect your aim with ${planName} for ${price}? Let's get started!`,
     });
   };
 
@@ -35,7 +35,7 @@ const Products = () => {
         "Personalized for any game",
         "Data-driven optimization methodology",
         "100% Satisfaction Guarantee",
-        "Personal live 1‑on‑1 consultation with Whaam"
+        "Personal consultation included"
       ],
       icon: Mouse,
       highlight: true,
@@ -55,7 +55,7 @@ const Products = () => {
         "First curve delivered in minutes",
         "Fully personalized & data-driven approach",
         "100% Satisfaction Guarantee", 
-        "Personal live consultation with Whaam",
+        "Personal consultation included",
         "Priority support access"
       ],
       icon: Target,
@@ -66,7 +66,7 @@ const Products = () => {
       name: "Live 1‑on‑1 Session", 
       price: "$149",
       originalPrice: "$199",
-      badge: "Premium",
+      badge: "Live Session",
       badgeColor: "bg-gradient-to-r from-purple-500 to-purple-600",
       description: "Ultimate experience with real-time curve development and instant testing",
       deliveryTime: "45 Minutes Live",
@@ -113,7 +113,7 @@ const Products = () => {
         </h2>
         
         <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-          Transform your gaming performance with expert-crafted curve settings. 
+          Perfect your aim with expert-crafted mouse acceleration curves. 
           Every plan includes our ironclad satisfaction guarantee and personalized optimization.
         </p>
 
@@ -134,7 +134,7 @@ const Products = () => {
         </div>
       </div>
 
-      {/* Enhanced Plans Grid */}
+      {/* Plans Grid */}
       <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20">
         {plans.map((plan, index) => (
           <Card 
@@ -147,7 +147,7 @@ const Products = () => {
             onMouseEnter={() => setHoveredPlan(plan.id)}
             onMouseLeave={() => setHoveredPlan(null)}
           >
-            {/* Enhanced Badge */}
+            {/* Badge */}
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
               <Badge className={`${plan.badgeColor} text-white px-6 py-2 font-bold shadow-lg border-0`}>
                 {plan.badge}
@@ -217,7 +217,7 @@ const Products = () => {
                     : 'bg-gradient-to-r from-gray-800 to-gray-900 hover:from-blue-500 hover:to-blue-600 text-white shadow-lg'
                 }`}
               >
-                Get Your Curve Now
+                Start Now
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Button>
 
@@ -234,10 +234,10 @@ const Products = () => {
         ))}
       </div>
 
-      {/* Enhanced Benefits Section */}
+      {/* Benefits Section */}
       <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-3xl p-12 mb-20">
         <h3 className="text-3xl font-bold text-center text-gray-900 mb-12">
-          Why Choose WhaamKaBaam?
+          Why Choose Lovable.dev?
         </h3>
         
         <div className="grid md:grid-cols-3 gap-8">
@@ -253,7 +253,7 @@ const Products = () => {
         </div>
       </div>
 
-      {/* Enhanced Comparison Table */}
+      {/* Comparison Table */}
       <div className="bg-white rounded-3xl shadow-2xl p-8 mb-20 max-w-6xl mx-auto">
         <h3 className="text-3xl font-bold text-center text-gray-900 mb-8">
           Compare Plans
@@ -312,7 +312,7 @@ const Products = () => {
         </div>
       </div>
 
-      {/* Enhanced Sticky CTA */}
+      {/* Sticky CTA */}
       <div className="fixed bottom-6 right-6 z-50">
         <div className="bg-white rounded-full shadow-2xl p-4 border border-gray-200">
           <Button 

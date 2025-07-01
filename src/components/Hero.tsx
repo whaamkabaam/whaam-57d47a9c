@@ -17,6 +17,13 @@ const Hero = () => {
     }
   };
 
+  const scrollToProducts = () => {
+    const element = document.getElementById("products");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-black text-white relative overflow-hidden pt-20">
       {/* Animated Background Elements */}
@@ -31,10 +38,10 @@ const Hero = () => {
           {/* Main Headline */}
           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              Digital Creativity
+              Custom Curve Settings
               <br />
               <span className="bg-gradient-to-r from-blue-400 via-red-400 to-yellow-400 bg-clip-text text-transparent">
-                That Hits Differently
+                Tailored to Your Aim
               </span>
             </h1>
           </div>
@@ -42,57 +49,57 @@ const Hero = () => {
           {/* Animated Brand Name */}
           <div className={`text-6xl md:text-8xl font-black mb-8 transition-all duration-1500 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
             <span className="inline-block text-blue-500 hover:scale-110 transition-transform duration-300 cursor-default">
-              WHAAM
+              LOVABLE
             </span>
             <span className="inline-block text-red-500 hover:scale-110 transition-transform duration-300 cursor-default mx-2">
-              KA
+              .
             </span>
             <span className="inline-block text-yellow-500 hover:scale-110 transition-transform duration-300 cursor-default">
-              BAAM
+              DEV
             </span>
           </div>
 
           {/* Subtitle */}
           <div className={`transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto">
-              We craft visuals and strategies that leave an impact. 
-              Transforming ambitious brands into unforgettable experiences.
+              Perfect Your Aim with Personalized Mouse Acceleration Curves.
+              Get custom settings designed specifically for your gaming style.
             </p>
           </div>
 
           {/* CTA Buttons */}
           <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <Button 
-              onClick={scrollToContact}
+              onClick={scrollToProducts}
               size="lg" 
               className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 text-lg font-semibold group"
             >
-              Start Your Project
+              Get Your Curve Now
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Button>
             <Button 
               variant="outline" 
               size="lg"
               className="border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 text-lg"
-              onClick={() => document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
             >
-              View Our Work
+              Learn How It Works
             </Button>
           </div>
 
           {/* Key Stats */}
           <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-2">200+</div>
-              <div className="text-gray-400">Projects Delivered</div>
+              <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-2">500+</div>
+              <div className="text-gray-400">Satisfied Gamers</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-red-400 mb-2">50+</div>
-              <div className="text-gray-400">Happy Clients</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">5+</div>
+              <div className="text-3xl md:text-4xl font-bold text-red-400 mb-2">4+</div>
               <div className="text-gray-400">Years Experience</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">Minutes</div>
+              <div className="text-gray-400">Fast Delivery</div>
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import { ArrowRight, Star, Users, Code, Palette, Target, CheckCircle } from "luc
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Portfolio from "@/components/Portfolio";
+import Products from "@/components/Products";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import Navigation from "@/components/Navigation";
@@ -16,7 +17,7 @@ const Index = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "services", "portfolio", "about", "contact"];
+      const sections = ["home", "services", "portfolio", "products", "about", "contact"];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -50,7 +51,11 @@ const Index = () => {
         <Portfolio />
       </section>
 
-      <section id="about" className="py-20">
+      <section id="products" className="py-20">
+        <Products />
+      </section>
+
+      <section id="about" className="py-20 bg-white">
         <About />
       </section>
 

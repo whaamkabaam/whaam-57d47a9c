@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -25,13 +24,13 @@ const Products = () => {
       name: "3× Revisions",
       price: "$39",
       originalPrice: "$59",
-      badge: "Most Popular",
+      badge: "Most Bought",
       badgeColor: "bg-gradient-to-r from-green-500 to-green-600",
       description: "Perfect for most gamers who want personalized curve optimization",
-      deliveryTime: "Minutes",
+      deliveryTime: "First curve delivered in minutes",
       features: [
         "Three precision revision cycles",
-        "Custom curve delivered in minutes",
+        "First curve delivered in minutes",
         "Personalized for any game",
         "Data-driven optimization methodology",
         "100% Satisfaction Guarantee",
@@ -49,7 +48,7 @@ const Products = () => {
       badge: "Best Value",
       badgeColor: "bg-gradient-to-r from-blue-500 to-blue-600",
       description: "For perfectionists who want unlimited fine-tuning until it's perfect",
-      deliveryTime: "Minutes",
+      deliveryTime: "First curve delivered in minutes",
       features: [
         "Unlimited feedback-based revisions",
         "First curve delivered in minutes",
@@ -69,7 +68,7 @@ const Products = () => {
       badge: "Live Session",
       badgeColor: "bg-gradient-to-r from-purple-500 to-purple-600",
       description: "Ultimate experience with real-time curve development and instant testing",
-      deliveryTime: "45 Minutes Live",
+      deliveryTime: "Personal live 1-on-1 session",
       emphasis: "Perfect Curve Guaranteed in 45 Minutes",
       features: [
         "Exclusive 45‑minute live development session",
@@ -87,7 +86,7 @@ const Products = () => {
 
   const benefits = [
     { icon: Shield, title: "100% Satisfaction Guarantee", desc: "Not happy? Full refund, no questions asked" },
-    { icon: Zap, title: "Lightning Fast Delivery", desc: "Get your first curve in minutes, not days" },
+    { icon: Zap, title: "Lightning Fast Delivery", desc: "First curve delivered in minutes, not days" },
     { icon: Trophy, title: "Proven Results", desc: "Trusted by 500+ gamers worldwide" }
   ];
 
@@ -114,7 +113,7 @@ const Products = () => {
         
         <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
           Perfect your aim with expert-crafted mouse acceleration curves. 
-          Every plan includes our ironclad satisfaction guarantee and personalized optimization.
+          Every plan includes our ironclad 100% Satisfaction Guarantee and personalized optimization.
         </p>
 
         {/* Trust Indicators */}
@@ -125,11 +124,11 @@ const Products = () => {
           </div>
           <div className="flex items-center">
             <Check className="text-green-500 mr-2" size={16} />
-            Instant Delivery
+            First curve delivered in minutes
           </div>
           <div className="flex items-center">
             <Check className="text-green-500 mr-2" size={16} />
-            100% Money-Back Guarantee
+            100% Satisfaction Guarantee
           </div>
         </div>
       </div>
@@ -185,8 +184,8 @@ const Products = () => {
                 )}
               </div>
 
-              <div className="text-sm text-gray-500 mb-2">
-                Delivery: {plan.deliveryTime}
+              <div className="text-sm text-blue-600 font-semibold mb-2">
+                {plan.deliveryTime}
               </div>
 
               {plan.emphasis && (
@@ -217,7 +216,7 @@ const Products = () => {
                     : 'bg-gradient-to-r from-gray-800 to-gray-900 hover:from-blue-500 hover:to-blue-600 text-white shadow-lg'
                 }`}
               >
-                Start Now
+                Get Started Now
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Button>
 
@@ -278,7 +277,7 @@ const Products = () => {
                     <div className="flex items-center">
                       <span className="font-semibold text-gray-900">{plan.name}</span>
                       {plan.popular && (
-                        <Badge className="ml-3 bg-green-500 text-white text-xs border-0">Most Popular</Badge>
+                        <Badge className="ml-3 bg-green-500 text-white text-xs border-0">Most Bought</Badge>
                       )}
                     </div>
                   </td>
@@ -301,7 +300,7 @@ const Products = () => {
                       </div>
                     ) : '–'}
                   </td>
-                  <td className="text-center py-6 px-6 text-sm font-medium">{plan.deliveryTime}</td>
+                  <td className="text-center py-6 px-6 text-sm font-medium">Minutes</td>
                   <td className="text-center py-6 px-6">
                     <Check className="text-green-500 mx-auto" size={20} />
                   </td>

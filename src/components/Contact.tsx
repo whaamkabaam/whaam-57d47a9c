@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Mail, Phone, MapPin, Send, CheckCircle, Star } from "lucide-react";
+import { Mail, MessageCircle, Users, Send, CheckCircle, Star, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
@@ -53,19 +53,22 @@ const Contact = () => {
       icon: Mail,
       title: "Email Us",
       details: "hello@lovable.dev",
-      description: "Drop us a line anytime"
+      description: "Drop us a line anytime",
+      highlight: false
     },
     {
-      icon: Phone,
-      title: "Discord",
+      icon: MessageCircle,
+      title: "Join Our Discord",
       details: "@lovable_dev",
-      description: "Join our community for instant help"
+      description: "Get instant support & connect with our community",
+      highlight: true,
+      cta: "Join Discord Server"
     },
     {
-      icon: MapPin,
-      title: "Social Media",
-      details: "Follow us online",
-      description: "Stay updated with tips and tricks"
+      icon: Users,
+      title: "Community Support",
+      details: "Active 24/7",
+      description: "Get help from our community of 500+ gamers"
     }
   ];
 
@@ -202,31 +205,73 @@ const Contact = () => {
           {/* Contact Information */}
           <div className="space-y-6">
             {contactInfo.map((info, index) => (
-              <div key={index} className="flex items-start space-x-4 p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-                <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <info.icon className="text-white" size={24} />
+              <div 
+                key={index} 
+                className={`flex items-start space-x-4 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ${
+                  info.highlight 
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white transform hover:scale-105' 
+                    : 'bg-white hover:bg-gray-50'
+                }`}
+              >
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                  info.highlight ? 'bg-white/20' : 'bg-blue-500'
+                }`}>
+                  <info.icon className={info.highlight ? 'text-white' : 'text-white'} size={24} />
                 </div>
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">{info.title}</h4>
-                  <div className="text-blue-600 font-medium mb-1">{info.details}</div>
-                  <p className="text-gray-600 text-sm">{info.description}</p>
+                <div className="flex-grow">
+                  <h4 className={`font-semibold mb-1 ${info.highlight ? 'text-white' : 'text-gray-900'}`}>
+                    {info.title}
+                  </h4>
+                  <div className={`font-medium mb-1 ${info.highlight ? 'text-blue-100' : 'text-blue-600'}`}>
+                    {info.details}
+                  </div>
+                  <p className={`text-sm ${info.highlight ? 'text-blue-100' : 'text-gray-600'}`}>
+                    {info.description}
+                  </p>
+                  {info.cta && (
+                    <Button 
+                      variant="secondary" 
+                      size="sm" 
+                      className="mt-3 bg-white/20 hover:bg-white/30 text-white border-0"
+                    >
+                      <MessageCircle className="mr-2" size={16} />
+                      {info.cta}
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}
           </div>
 
           {/* Quick Response Promise */}
-          <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-8 text-white">
+          <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-8 text-white">
             <div className="flex items-center mb-4">
               <CheckCircle className="text-green-300 mr-3" size={24} />
               <h4 className="font-bold text-lg">Our Promise</h4>
             </div>
-            <ul className="space-y-2 text-blue-100">
+            <ul className="space-y-2 text-green-100">
               <li>✓ Response within 24 hours</li>
-              <li>✓ Free initial consultation</li>
-              <li>✓ Custom curve proposal</li>
-              <li>✓ 100% satisfaction guarantee</li>
+              <li>✓ First curve delivered in minutes</li>
+              <li>✓ 100% Satisfaction Guarantee</li>
+              <li>✓ Personal consultation included</li>
             </ul>
+          </div>
+
+          {/* Enhanced Discord CTA */}
+          <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-8 text-white">
+            <div className="text-center">
+              <MessageCircle className="mx-auto mb-4 text-indigo-200" size={48} />
+              <h4 className="font-bold text-xl mb-3">Join Our Discord Community</h4>
+              <p className="text-indigo-100 mb-6">
+                Get instant support, share your progress, and connect with 500+ gamers 
+                who've already transformed their aim.
+              </p>
+              <Button className="bg-white/20 hover:bg-white/30 text-white border-0 group">
+                <MessageCircle className="mr-2 group-hover:scale-110 transition-transform" size={18} />
+                Join Discord Now
+                <Zap className="ml-2" size={16} />
+              </Button>
+            </div>
           </div>
 
           {/* Testimonial */}

@@ -1,148 +1,158 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Star, Award, Users, Zap } from "lucide-react";
+import { Star, Award, Users, Zap, Target, Trophy, GamepadIcon } from "lucide-react";
 
 const About = () => {
-  const team = [
-    {
-      name: "Alex Chen",
-      role: "Creative Director",
-      bio: "10+ years crafting visual identities for Fortune 500 companies and ambitious startups.",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80",
-      expertise: ["Brand Strategy", "Visual Design", "Creative Direction"]
-    },
-    {
-      name: "Sarah Martinez",
-      role: "Lead Developer",
-      bio: "Full-stack developer passionate about creating seamless digital experiences.",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b332c3e4?auto=format&fit=crop&w=400&q=80",
-      expertise: ["React", "Node.js", "UI/UX Development"]
-    },
-    {
-      name: "Jordan Kim",
-      role: "Strategy Consultant",
-      bio: "Data-driven strategist with a track record of delivering 200%+ ROI improvements.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
-      expertise: ["Digital Strategy", "Analytics", "Growth Hacking"]
-    }
+  const expertStats = [
+    { icon: Trophy, value: "4+ Years", label: "Curve Development Experience" },
+    { icon: Target, value: "Radiant", label: "Peak Valorant Rank" },
+    { icon: Users, value: "500+", label: "Gamers Helped" },
+    { icon: Star, value: "4.9/5", label: "Client Satisfaction" }
   ];
 
-  const values = [
-    {
-      icon: Zap,
-      title: "Innovation First",
-      description: "We stay ahead of trends to deliver cutting-edge solutions that set you apart."
-    },
-    {
-      icon: Users,
-      title: "Collaboration",
-      description: "Your vision combined with our expertise creates extraordinary results."
-    },
-    {
-      icon: Award,
-      title: "Excellence",
-      description: "We're obsessed with quality and won't settle for anything less than exceptional."
-    },
-    {
-      icon: Star,
-      title: "Impact",
-      description: "Every project should create measurable, meaningful change for your business."
-    }
+  const games = [
+    { name: "Valorant", experience: "4+ Years", rank: "Radiant" },
+    { name: "CS2", experience: "6+ Years", rank: "Global Elite" },
+    { name: "Apex Legends", experience: "3+ Years", rank: "Master" },
+    { name: "Overwatch 2", experience: "5+ Years", rank: "Grandmaster" }
+  ];
+
+  const credentials = [
+    "4+ years of competitive FPS experience",
+    "Reached Radiant in Valorant consistently",
+    "Expert in Raw Accel and mouse optimization",
+    "Helped 500+ gamers improve their aim",
+    "Active in gaming communities with 10K+ followers",
+    "Data-driven approach to curve development"
   ];
 
   return (
     <div className="container mx-auto px-6">
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          The Team Behind the
-          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> Magic</span>
+          Meet Your
+          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> Curve Expert</span>
         </h2>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          We're a passionate team of creatives, strategists, and technologists 
-          united by one mission: making your brand unforgettable.
+          Behind every perfect curve is years of competitive experience and 
+          a passion for helping gamers reach their full potential.
         </p>
       </div>
 
-      {/* Story Section */}
-      <div className="bg-white rounded-3xl p-12 shadow-lg mb-16">
-        <div className="max-w-3xl mx-auto text-center">
-          <h3 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h3>
-          <p className="text-lg text-gray-600 leading-relaxed mb-8">
-            Founded in 2019, WhaamKaBaam emerged from a simple belief: great design should create impact, 
-            not just aesthetics. We've grown from a small creative studio to a full-service digital agency, 
-            but our core mission remains unchanged—helping ambitious brands make a lasting impression in 
-            an increasingly noisy digital world.
-          </p>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div>
-              <div className="text-3xl font-bold text-blue-500 mb-2">2019</div>
-              <div className="text-gray-600">Founded</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-red-500 mb-2">200+</div>
-              <div className="text-gray-600">Projects</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-yellow-500 mb-2">50+</div>
-              <div className="text-gray-600">Happy Clients</div>
+      {/* Expert Profile */}
+      <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
+        <div>
+          <Card className="border-0 shadow-2xl overflow-hidden">
+            <CardContent className="p-0">
+              <div className="aspect-square bg-gradient-to-br from-blue-500 via-purple-600 to-red-500 relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"
+                  alt="Curve Expert"
+                  className="w-full h-full object-cover opacity-90"
+                />
+                <div className="absolute bottom-6 left-6 right-6">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-bold text-gray-900">Alex Chen</h4>
+                        <p className="text-sm text-gray-600">Curve Development Expert</p>
+                      </div>
+                      <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-0">
+                        Radiant
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-3xl font-bold text-gray-900 mb-6">
+              The Expert Behind Your Perfect Aim
+            </h3>
+            <p className="text-lg text-gray-600 leading-relaxed mb-6">
+              With over 4 years of competitive FPS experience and a peak Radiant rank in Valorant, 
+              I've dedicated my career to understanding the science behind perfect aim. Having helped 
+              500+ gamers transform their performance, I bring both technical expertise and real 
+              competitive experience to every custom curve.
+            </p>
+            <p className="text-lg text-gray-600 leading-relaxed">
+              My data-driven approach combines competitive insights with precise mathematical 
+              optimization to create curves that don't just work—they transform your entire gaming experience.
+            </p>
+          </div>
+
+          {/* Credentials */}
+          <div className="bg-gray-50 rounded-2xl p-6">
+            <h4 className="font-bold text-gray-900 mb-4 flex items-center">
+              <Award className="text-blue-500 mr-2" size={24} />
+              Credentials & Experience
+            </h4>
+            <div className="grid gap-3">
+              {credentials.map((credential, index) => (
+                <div key={index} className="flex items-start space-x-3">
+                  <Star className="text-yellow-500 flex-shrink-0 mt-0.5" size={16} />
+                  <span className="text-gray-700 text-sm">{credential}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Team Section */}
-      <div className="mb-16">
-        <h3 className="text-3xl font-bold text-center text-gray-900 mb-12">Meet the Dream Team</h3>
-        <div className="grid md:grid-cols-3 gap-8">
-          {team.map((member, index) => (
-            <Card key={member.name} className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg">
-              <CardContent className="p-8 text-center">
-                <div className="relative mb-6">
-                  <img 
-                    src={member.image} 
-                    alt={member.name}
-                    className="w-32 h-32 rounded-full mx-auto object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-t from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                
-                <h4 className="text-xl font-bold text-gray-900 mb-2">{member.name}</h4>
-                <div className="text-blue-600 font-semibold mb-4">{member.role}</div>
-                <p className="text-gray-600 mb-6 leading-relaxed">{member.bio}</p>
-                
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {member.expertise.map((skill) => (
-                    <Badge key={skill} variant="secondary" className="text-xs">
-                      {skill}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+      {/* Expert Stats */}
+      <div className="grid md:grid-cols-4 gap-8 mb-20">
+        {expertStats.map((stat, index) => (
+          <Card key={index} className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow group">
+            <CardContent className="p-8">
+              <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform">
+                <stat.icon className="text-white" size={32} />
+              </div>
+              <div className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</div>
+              <div className="text-gray-600">{stat.label}</div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      {/* Values Section */}
-      <div className="bg-gray-900 rounded-3xl p-12 text-white">
+      {/* Gaming Background */}
+      <div className="bg-gray-900 rounded-3xl p-12 text-white mb-20">
         <div className="text-center mb-12">
-          <h3 className="text-3xl font-bold mb-4">Our Core Values</h3>
+          <h3 className="text-3xl font-bold mb-4">Competitive Gaming Background</h3>
           <p className="text-gray-300 text-lg">
-            The principles that guide everything we do and every decision we make.
+            Real competitive experience across multiple FPS titles ensures your curve 
+            is optimized for actual gameplay scenarios.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {values.map((value, index) => (
-            <div key={value.title} className="text-center group">
-              <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
-                <value.icon className="text-white" size={32} />
-              </div>
-              <h4 className="text-xl font-bold mb-3">{value.title}</h4>
-              <p className="text-gray-400 leading-relaxed">{value.description}</p>
+          {games.map((game, index) => (
+            <div key={game.name} className="text-center bg-white/5 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+              <GamepadIcon className="text-blue-400 mx-auto mb-4" size={48} />
+              <h4 className="text-xl font-bold mb-2">{game.name}</h4>
+              <div className="text-blue-400 font-semibold mb-1">{game.rank}</div>
+              <div className="text-gray-400 text-sm">{game.experience}</div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Mission Statement */}
+      <div className="text-center bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-12">
+        <h3 className="text-3xl font-bold text-gray-900 mb-6">My Mission</h3>
+        <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+          "Every gamer deserves to experience their true potential. Through personalized 
+          mouse acceleration curves, I help competitive players break through their aim 
+          barriers and achieve the consistency they've always wanted. Your success is my success."
+        </p>
+        <div className="mt-8">
+          <Badge className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 border-0">
+            Transforming Aim, One Curve at a Time
+          </Badge>
         </div>
       </div>
     </div>

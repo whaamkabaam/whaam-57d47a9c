@@ -1,36 +1,36 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Palette, Code, Target, Users } from "lucide-react";
+import { FileText, Settings, Target, CheckCircle } from "lucide-react";
 
 const Services = () => {
-  const services = [
+  const steps = [
     {
-      icon: Palette,
-      title: "Branding & Identity",
-      description: "Complete brand strategy, logo design, and visual identity systems that capture your essence.",
-      features: ["Brand Strategy & Positioning", "Logo & Visual Identity", "Brand Guidelines", "Naming & Storytelling"],
+      icon: FileText,
+      title: "Order & Provide Info",
+      description: "Tell us about your current settings, games you play, and gaming goals. We'll analyze your playstyle.",
+      details: ["Share your current sensitivity", "Tell us your main games", "Describe your aim struggles", "Set your performance goals"],
       color: "bg-blue-500"
     },
     {
-      icon: Code,
-      title: "Web Design & Development",
-      description: "Custom websites that combine stunning design with flawless functionality.",
-      features: ["Custom UI/UX Design", "Responsive Development", "CMS Integration", "E-commerce Solutions"],
+      icon: Settings,
+      title: "Personalized Setup",
+      description: "Our expert creates your custom curve based on your unique gaming profile and preferences.",
+      details: ["Analyze your gaming style", "Calculate optimal acceleration", "Create personalized curve", "Test initial parameters"],
       color: "bg-red-500"
     },
     {
       icon: Target,
-      title: "Creative Campaigns",
-      description: "Strategic digital campaigns that drive engagement and deliver measurable results.",
-      features: ["Digital Campaign Strategy", "Content Creation", "Social Media Marketing", "Digital Advertising"],
+      title: "Fine-Tuning",
+      description: "We refine and perfect your curve through testing and revisions until it's absolutely perfect.",
+      details: ["Test curve performance", "Gather your feedback", "Make precise adjustments", "Optimize for consistency"],
       color: "bg-yellow-500"
     },
     {
-      icon: Users,
-      title: "Consulting & Strategy",
-      description: "Expert guidance to transform your digital presence and accelerate growth.",
-      features: ["Market Analysis", "Digital Transformation", "Brand Audits", "Workshops & Training"],
+      icon: CheckCircle,
+      title: "Perfect Aim Delivered",
+      description: "Receive your final curve settings and start dominating your games with improved accuracy.",
+      details: ["Get final curve file", "Installation instructions", "Performance tips", "Ongoing support access"],
       color: "bg-green-500"
     }
   ];
@@ -39,43 +39,45 @@ const Services = () => {
     <div className="container mx-auto px-6">
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Services That Make an
-          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> Impact</span>
+          How It
+          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> Works</span>
         </h2>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          From brand strategy to digital execution, we deliver comprehensive solutions 
-          that transform your vision into powerful results.
+          Our proven 4-step process delivers personalized mouse acceleration curves 
+          that transform your aim from average to exceptional.
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {services.map((service, index) => (
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        {steps.map((step, index) => (
           <Card 
-            key={service.title} 
-            className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg"
+            key={step.title} 
+            className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg relative"
           >
+            {/* Step Number */}
+            <div className="absolute -top-4 -left-4 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold text-sm z-10">
+              {index + 1}
+            </div>
+            
             <CardContent className="p-8">
-              <div className={`w-16 h-16 ${service.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                <service.icon className="text-white" size={32} />
+              <div className={`w-16 h-16 ${step.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <step.icon className="text-white" size={32} />
               </div>
               
               <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors">
-                {service.title}
+                {step.title}
               </h3>
               
               <p className="text-gray-600 mb-6 leading-relaxed">
-                {service.description}
+                {step.description}
               </p>
               
               <div className="space-y-2">
-                {service.features.map((feature) => (
-                  <Badge 
-                    key={feature} 
-                    variant="secondary" 
-                    className="text-xs bg-gray-100 hover:bg-gray-200 transition-colors"
-                  >
-                    {feature}
-                  </Badge>
+                {step.details.map((detail) => (
+                  <div key={detail} className="flex items-start space-x-2">
+                    <CheckCircle className="text-green-500 flex-shrink-0 mt-0.5" size={14} />
+                    <span className="text-sm text-gray-600">{detail}</span>
+                  </div>
                 ))}
               </div>
             </CardContent>
@@ -83,30 +85,26 @@ const Services = () => {
         ))}
       </div>
 
-      {/* Process Section */}
-      <div className="mt-20 bg-gray-900 rounded-3xl p-12 text-white">
-        <div className="text-center mb-12">
-          <h3 className="text-3xl font-bold mb-4">Our Process</h3>
-          <p className="text-gray-300 text-lg">
-            A proven methodology that delivers exceptional results every time.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-4 gap-8">
-          {[
-            { step: "01", title: "Discovery", desc: "Understanding your vision, goals, and target audience" },
-            { step: "02", title: "Strategy", desc: "Crafting a comprehensive plan tailored to your needs" },
-            { step: "03", title: "Creation", desc: "Bringing ideas to life with stunning design and development" },
-            { step: "04", title: "Launch", desc: "Deploying your project and measuring its impact" }
-          ].map((phase, index) => (
-            <div key={phase.step} className="text-center group">
-              <div className="text-6xl font-black text-blue-500/20 group-hover:text-blue-500/40 transition-colors mb-4">
-                {phase.step}
-              </div>
-              <h4 className="text-xl font-bold mb-3">{phase.title}</h4>
-              <p className="text-gray-400">{phase.desc}</p>
-            </div>
-          ))}
+      {/* Trust Section */}
+      <div className="bg-gray-900 rounded-3xl p-12 text-white text-center">
+        <h3 className="text-3xl font-bold mb-4">Trusted by 500+ Gamers Worldwide</h3>
+        <p className="text-gray-300 text-lg mb-8">
+          Join the community of gamers who've already transformed their aim with our custom curves.
+        </p>
+        
+        <div className="grid md:grid-cols-3 gap-8">
+          <div>
+            <div className="text-4xl font-bold text-blue-400 mb-2">Minutes</div>
+            <div className="text-gray-400">First curve delivered</div>
+          </div>
+          <div>
+            <div className="text-4xl font-bold text-red-400 mb-2">100%</div>
+            <div className="text-gray-400">Satisfaction Guarantee</div>
+          </div>
+          <div>
+            <div className="text-4xl font-bold text-yellow-400 mb-2">4+ Years</div>
+            <div className="text-gray-400">Expert Experience</div>
+          </div>
         </div>
       </div>
     </div>

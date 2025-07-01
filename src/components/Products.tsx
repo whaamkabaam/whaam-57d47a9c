@@ -133,12 +133,12 @@ const Products = () => {
         </div>
       </div>
 
-      {/* Plans Grid */}
-      <div className="grid md:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto mb-16 sm:mb-20">
+      {/* Enhanced Plans Grid with larger boxes and aligned buttons */}
+      <div className="grid md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto mb-16 sm:mb-20">
         {plans.map((plan, index) => (
           <Card 
             key={plan.id}
-            className={`group relative transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl border-0 shadow-lg overflow-hidden ${
+            className={`group relative transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl border-0 shadow-lg overflow-hidden min-h-[600px] flex flex-col ${
               plan.highlight ? 'ring-2 ring-blue-500 ring-opacity-50 scale-105' : ''
             } ${hoveredPlan === plan.id ? 'shadow-2xl' : ''} ${
               selectedPlan === plan.id ? 'ring-2 ring-green-500' : ''
@@ -148,7 +148,7 @@ const Products = () => {
           >
             {/* Badge */}
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-              <Badge className={`${plan.badgeColor} text-white px-4 sm:px-6 py-2 font-bold shadow-lg border-0 text-xs sm:text-sm`}>
+              <Badge className={`${plan.badgeColor} text-white px-6 py-2 font-bold shadow-lg border-0 text-sm`}>
                 {plan.badge}
               </Badge>
             </div>
@@ -158,76 +158,79 @@ const Products = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 pointer-events-none"></div>
             )}
 
-            <CardHeader className="text-center pt-10 sm:pt-12 pb-4 sm:pb-6">
-              <div className={`w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-3xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 ${
+            <CardHeader className="text-center pt-12 pb-6 flex-shrink-0">
+              <div className={`w-20 h-20 mx-auto mb-6 rounded-3xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 ${
                 plan.highlight ? 'bg-gradient-to-br from-blue-500 to-blue-600' : 'bg-gradient-to-br from-gray-700 to-gray-800'
               }`}>
-                <plan.icon className="text-white" size={28} />
+                <plan.icon className="text-white" size={32} />
               </div>
               
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
                 {plan.name}
               </h3>
               
-              <p className="text-gray-600 text-sm mb-4 px-2 sm:px-4">
+              <p className="text-gray-600 mb-6 px-4 leading-relaxed">
                 {plan.description}
               </p>
               
-              <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2">
-                <span className="text-4xl sm:text-5xl font-black text-gray-900">
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <span className="text-5xl font-black text-gray-900">
                   {plan.price}
                 </span>
                 {plan.originalPrice && (
-                  <span className="text-lg sm:text-xl text-gray-400 line-through">
+                  <span className="text-xl text-gray-400 line-through">
                     {plan.originalPrice}
                   </span>
                 )}
               </div>
 
-              <div className="text-sm text-blue-600 font-semibold mb-2">
+              <div className="text-blue-600 font-semibold mb-2">
                 {plan.deliveryTime}
               </div>
 
               {plan.emphasis && (
-                <p className="text-blue-600 font-semibold text-sm bg-blue-50 px-3 py-1 rounded-full">
+                <p className="text-blue-600 font-semibold text-sm bg-blue-50 px-4 py-2 rounded-full">
                   {plan.emphasis}
                 </p>
               )}
             </CardHeader>
 
-            <CardContent className="px-6 sm:px-8 pb-6 sm:pb-8">
-              <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+            <CardContent className="px-8 flex-grow flex flex-col">
+              <ul className="space-y-4 mb-8 flex-grow">
                 {plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start space-x-3">
                     <Check className="text-green-500 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" size={16} />
-                    <span className="text-gray-700 leading-relaxed text-sm">{feature}</span>
+                    <span className="text-gray-700 leading-relaxed">{feature}</span>
                   </li>
                 ))}
               </ul>
 
-              <Button 
-                onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
-                size="lg"
-                className={`w-full font-bold text-base sm:text-lg py-3 sm:py-4 transition-all duration-300 group-hover:scale-105 ${
-                  plan.highlight 
-                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg' 
-                    : plan.premium
-                    ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg'
-                    : 'bg-gradient-to-r from-gray-800 to-gray-900 hover:from-blue-500 hover:to-blue-600 text-white shadow-lg'
-                }`}
-              >
-                Jetzt starten
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
-              </Button>
+              {/* Aligned buttons at bottom */}
+              <div className="mt-auto pb-8">
+                <Button 
+                  onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
+                  size="lg"
+                  className={`w-full font-bold text-lg py-4 transition-all duration-300 group-hover:scale-105 ${
+                    plan.highlight 
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg' 
+                      : plan.premium
+                      ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg'
+                      : 'bg-gradient-to-r from-gray-800 to-gray-900 hover:from-blue-500 hover:to-blue-600 text-white shadow-lg'
+                  }`}
+                >
+                  Jetzt kaufen
+                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
+                </Button>
 
-              {/* Savings Badge */}
-              {plan.originalPrice && (
-                <div className="text-center mt-3">
-                  <span className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full">
-                    Spare ${parseInt(plan.originalPrice.substring(1)) - parseInt(plan.price.substring(1))}
-                  </span>
-                </div>
-              )}
+                {/* Savings Badge */}
+                {plan.originalPrice && (
+                  <div className="text-center mt-4">
+                    <span className="inline-block bg-green-100 text-green-800 text-sm font-semibold px-4 py-2 rounded-full">
+                      Spare ${parseInt(plan.originalPrice.substring(1)) - parseInt(plan.price.substring(1))}
+                    </span>
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
         ))}

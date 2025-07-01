@@ -9,6 +9,7 @@ import Services from "@/components/Services";
 import Portfolio from "@/components/Portfolio";
 import Products from "@/components/Products";
 import About from "@/components/About";
+import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Navigation from "@/components/Navigation";
 
@@ -17,7 +18,7 @@ const Index = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "services", "portfolio", "products", "about", "contact"];
+      const sections = ["home", "services", "portfolio", "products", "about", "faq", "contact"];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -57,6 +58,10 @@ const Index = () => {
 
       <section id="about" className="py-20 bg-white">
         <About />
+      </section>
+
+      <section id="faq" className="py-20 bg-gray-50">
+        <FAQ />
       </section>
 
       <section id="contact" className="py-20 bg-white">

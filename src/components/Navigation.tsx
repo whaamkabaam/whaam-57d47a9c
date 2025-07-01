@@ -15,6 +15,7 @@ const Navigation = ({ activeSection }: NavigationProps) => {
     { id: "services", label: "Wie es funktioniert" },
     { id: "portfolio", label: "Testimonials" },
     { id: "about", label: "Über uns" },
+    { id: "faq", label: "FAQ" },
     { id: "contact", label: "Kontakt" },
   ];
 

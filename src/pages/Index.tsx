@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Star, Users, Code, Palette, Target, CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Portfolio from "@/components/Portfolio";
@@ -12,6 +13,7 @@ import About from "@/components/About";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Navigation from "@/components/Navigation";
+import CookieConsent from "@/components/CookieConsent";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
@@ -111,13 +113,24 @@ const Index = () => {
             </div>
           </div>
           
-          <div className="border-t border-gray-800 pt-8">
+          <div className="border-t border-gray-800 pt-8 space-y-4">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-gray-400">
+              <Link to="/imprint" className="hover:text-white transition-colors">
+                Impressum
+              </Link>
+              <span className="hidden sm:inline">•</span>
+              <Link to="/privacy" className="hover:text-white transition-colors">
+                Datenschutzerklärung
+              </Link>
+            </div>
             <p className="text-gray-400">
               © 2024 Lovable.dev. All rights reserved.
             </p>
           </div>
         </div>
       </footer>
+
+      <CookieConsent />
     </div>
   );
 };

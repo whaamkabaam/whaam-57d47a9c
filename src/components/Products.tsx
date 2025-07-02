@@ -25,17 +25,13 @@ const Products = () => {
       name: "3× Revisions",
       price: "$39",
       originalPrice: "$69",
-      badge: "Best Value",
-      badgeColor: "bg-whaam-yellow text-whaam-black text-lg font-black",
+      badge: "Standard",
+      badgeColor: "bg-whaam-yellow text-whaam-black font-bold",
       description: "Perfect for most gamers who want personalized curve optimization",
       deliveryTime: "First curve delivered in minutes",
       features: [
         "Three precision revision cycles",
-        "First curve delivered in minutes",
-        "Personalized for any game",
-        "Data-driven optimization methodology",
-        "100% Satisfaction Guarantee",
-        "Personal consultation included"
+        "First curve delivered in minutes"
       ],
       icon: Mouse,
       highlight: false
@@ -46,16 +42,12 @@ const Products = () => {
       price: "$47",
       originalPrice: "$79",
       badge: "Most Bought",
-      badgeColor: "bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red text-whaam-white",
+      badgeColor: "bg-gradient-to-r from-whaam-red to-whaam-yellow text-whaam-white font-bold",
       description: "For perfectionists who want unlimited fine-tuning until it's perfect",
       deliveryTime: "First curve delivered in minutes",
       features: [
         "Unlimited feedback-based revisions",
-        "First curve delivered in minutes",
-        "Fully personalized & data-driven approach",
-        "100% Satisfaction Guarantee", 
-        "Personal consultation included",
-        "Priority support access"
+        "First curve delivered in minutes"
       ],
       icon: Target,
       highlight: true,
@@ -67,17 +59,12 @@ const Products = () => {
       price: "$149",
       originalPrice: "$249",
       badge: "Premium",
-      badgeColor: "bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red text-whaam-white text-lg font-black",
+      badgeColor: "bg-whaam-red text-whaam-white font-bold",
       description: "Ultimate experience with real-time curve development and instant testing",
       deliveryTime: "Personal live 1-on-1 session",
-      emphasis: "Perfect Curve Guaranteed in 45 Minutes",
+      emphasis: "Perfect curve guaranteed in 45 minutes",
       features: [
-        "Exclusive 45‑minute live development session",
-        "Real-time adjustments during gameplay",
-        "Instant curve testing and optimization",
-        "Personalized coaching & tips",
-        "100% Satisfaction Guarantee",
-        "Fastest results with expert guidance"
+        "Exclusive 45‑minute live session"
       ],
       icon: Users,
       highlight: false,
@@ -220,10 +207,10 @@ const Products = () => {
                       ? 'bg-whaam-yellow hover:bg-whaam-yellow/80 text-whaam-black shadow-lg'
                       : 'bg-whaam-red hover:bg-whaam-red/80 text-whaam-white shadow-lg'
                   }`}
-                >
-                  Buy Now
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
-                </Button>
+                 >
+                   Start Now
+                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
+                 </Button>
 
                 {/* Savings Badge */}
                 {plan.originalPrice && (

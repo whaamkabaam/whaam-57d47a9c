@@ -84,7 +84,7 @@ const Index = () => {
           
           <div className="grid md:grid-cols-3 gap-12 mb-12">
             <div>
-              <h4 className="font-semibold mb-4 text-whaam-red text-xl">Services</h4>
+              <h4 className="font-semibold mb-4 text-orange-500 text-xl">Services</h4>
               <ul className="space-y-3 text-whaam-white/60">
                 <li><a href="#products" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">3× Revisions</a></li>
                 <li><a href="#products" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">Unlimited Revisions</a></li>

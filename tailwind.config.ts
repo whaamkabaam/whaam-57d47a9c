@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// WhaamKaBaam spezifische Farben
+				whaam: {
+					dark: '#121212',
+					red: '#FF3B3B',
+					yellow: '#FFD700',
+					white: '#FFFFFF',
+					black: '#000000'
 				}
 			},
 			borderRadius: {

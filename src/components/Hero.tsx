@@ -25,12 +25,12 @@ const Hero = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-black text-white relative overflow-hidden pt-20">
-      {/* Animated Background Elements */}
+    <div className="min-h-screen bg-whaam-dark text-white relative overflow-hidden pt-20">
+      {/* Animated Background Elements - WhaamKaBaam Style */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-yellow-500/15 rounded-full blur-2xl animate-pulse delay-500"></div>
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-whaam-red/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-whaam-yellow/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-whaam-red/15 rounded-full blur-2xl animate-pulse delay-500"></div>
       </div>
 
       <div className="container mx-auto px-6 py-20 relative z-10">
@@ -40,28 +40,28 @@ const Hero = () => {
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               Custom Curve Settings
               <br />
-              <span className="bg-gradient-to-r from-blue-400 via-red-400 to-yellow-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">
                 Tailored to Your Aim
               </span>
             </h1>
           </div>
 
-          {/* Animated Brand Name */}
+          {/* Animated Brand Name - WhaamKaBaam Style */}
           <div className={`text-6xl md:text-8xl font-black mb-8 transition-all duration-1500 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-            <span className="inline-block text-blue-500 hover:scale-110 transition-transform duration-300 cursor-default">
-              LOVABLE
+            <span className="inline-block text-whaam-red hover:scale-110 transition-transform duration-300 cursor-default">
+              WHAAM
             </span>
-            <span className="inline-block text-red-500 hover:scale-110 transition-transform duration-300 cursor-default mx-2">
-              .
+            <span className="inline-block text-whaam-yellow hover:scale-110 transition-transform duration-300 cursor-default mx-2">
+              KA
             </span>
-            <span className="inline-block text-yellow-500 hover:scale-110 transition-transform duration-300 cursor-default">
-              DEV
+            <span className="inline-block text-whaam-white hover:scale-110 transition-transform duration-300 cursor-default">
+              BAAM
             </span>
           </div>
 
           {/* Subtitle */}
           <div className={`transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl text-whaam-white/80 mb-12 max-w-2xl mx-auto">
               Perfect Your Aim with Personalized Mouse Acceleration Curves.
               Get custom settings designed specifically for your gaming style.
             </p>
@@ -72,7 +72,7 @@ const Hero = () => {
             <Button 
               onClick={scrollToProducts}
               size="lg" 
-              className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 text-lg font-semibold group"
+              className="bg-whaam-red hover:bg-whaam-red/80 text-white px-8 py-4 text-lg font-semibold group border-0"
             >
               Get Your Curve Now
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
@@ -80,7 +80,7 @@ const Hero = () => {
             <Button 
               variant="outline" 
               size="lg"
-              className="border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 text-lg"
+              className="border-whaam-yellow text-whaam-yellow hover:bg-whaam-yellow hover:text-whaam-black px-8 py-4 text-lg bg-transparent"
               onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
             >
               Learn How It Works
@@ -90,16 +90,16 @@ const Hero = () => {
           {/* Key Stats */}
           <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-2">500+</div>
-              <div className="text-gray-400">Satisfied Gamers</div>
+              <div className="text-3xl md:text-4xl font-bold text-whaam-red mb-2">500+</div>
+              <div className="text-whaam-white/60">Satisfied Gamers</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-red-400 mb-2">4+</div>
-              <div className="text-gray-400">Years Experience</div>
+              <div className="text-3xl md:text-4xl font-bold text-whaam-yellow mb-2">4+</div>
+              <div className="text-whaam-white/60">Years Experience</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">Minutes</div>
-              <div className="text-gray-400">Fast Delivery</div>
+              <div className="text-3xl md:text-4xl font-bold text-whaam-red mb-2">Minutes</div>
+              <div className="text-whaam-white/60">Fast Delivery</div>
             </div>
           </div>
         </div>
@@ -107,8 +107,8 @@ const Hero = () => {
 
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-pulse"></div>
+        <div className="w-6 h-10 border-2 border-whaam-yellow/30 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-whaam-yellow/60 rounded-full mt-2 animate-pulse"></div>
         </div>
       </div>
     </div>

@@ -36,14 +36,14 @@ const Navigation = ({ activeSection }: NavigationProps) => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-sm z-50">
+    <nav className="fixed top-0 left-0 right-0 bg-whaam-dark/95 backdrop-blur-sm shadow-lg z-50 border-b border-whaam-red/20">
       <div className="container mx-auto px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="text-xl sm:text-2xl font-bold cursor-pointer" onClick={() => scrollToSection("home")}>
-            <span className="text-blue-500">Lovable</span>
-            <span className="text-red-500">.</span>
-            <span className="text-yellow-500">dev</span>
+            <span className="text-whaam-red">Whaam</span>
+            <span className="text-whaam-yellow">Ka</span>
+            <span className="text-whaam-white">Baam</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -52,8 +52,8 @@ const Navigation = ({ activeSection }: NavigationProps) => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`text-sm font-medium transition-colors hover:text-blue-500 whitespace-nowrap ${
-                  activeSection === item.id ? "text-blue-500" : "text-gray-700"
+                className={`text-sm font-medium transition-colors hover:text-whaam-red whitespace-nowrap ${
+                  activeSection === item.id ? "text-whaam-red" : "text-whaam-white"
                 }`}
               >
                 {item.label}
@@ -61,7 +61,7 @@ const Navigation = ({ activeSection }: NavigationProps) => {
             ))}
             <Button 
               onClick={scrollToProducts}
-              className="bg-blue-500 hover:bg-blue-600 text-white whitespace-nowrap"
+              className="bg-whaam-red hover:bg-whaam-red/80 text-white whitespace-nowrap border-0"
             >
               Zu den Produkten
             </Button>
@@ -69,7 +69,7 @@ const Navigation = ({ activeSection }: NavigationProps) => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden p-2 text-whaam-white hover:text-whaam-red transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Menu"
           >
@@ -79,14 +79,14 @@ const Navigation = ({ activeSection }: NavigationProps) => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t bg-white/95 backdrop-blur-sm rounded-b-lg shadow-lg">
+          <div className="md:hidden mt-4 pb-4 border-t border-whaam-red/20 bg-whaam-dark/95 backdrop-blur-sm rounded-b-lg shadow-lg">
             <div className="flex flex-col space-y-4 pt-4 px-2">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`text-left font-medium transition-colors hover:text-blue-500 py-2 px-3 rounded ${
-                    activeSection === item.id ? "text-blue-500 bg-blue-50" : "text-gray-700"
+                  className={`text-left font-medium transition-colors hover:text-whaam-red py-2 px-3 rounded ${
+                    activeSection === item.id ? "text-whaam-red bg-whaam-red/10" : "text-whaam-white"
                   }`}
                 >
                   {item.label}
@@ -94,7 +94,7 @@ const Navigation = ({ activeSection }: NavigationProps) => {
               ))}
               <Button 
                 onClick={scrollToProducts}
-                className="bg-blue-500 hover:bg-blue-600 text-white w-full"
+                className="bg-whaam-red hover:bg-whaam-red/80 text-white w-full border-0"
               >
                 Zu den Produkten
               </Button>

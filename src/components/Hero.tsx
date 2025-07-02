@@ -48,10 +48,10 @@ const Hero = () => {
 
           {/* Animated Brand Name */}
           <div className={`text-6xl md:text-8xl font-black mb-12 transition-all duration-1500 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-            <span className="inline-block text-whaam-red hover:scale-110 transition-transform duration-300 cursor-default">
+            <span className="inline-block text-whaam-white hover:scale-110 transition-transform duration-300 cursor-default">
               WHAAM
             </span>
-            <span className="inline-block text-whaam-yellow hover:scale-110 transition-transform duration-300 cursor-default mx-2">
+            <span className="inline-block text-whaam-white hover:scale-110 transition-transform duration-300 cursor-default mx-2">
               KA
             </span>
             <span className="inline-block text-whaam-white hover:scale-110 transition-transform duration-300 cursor-default">

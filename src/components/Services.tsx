@@ -1,109 +1,134 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Settings, Target, CheckCircle } from "lucide-react";
+import { FileText, Settings, Target, CheckCircle, Zap } from "lucide-react";
 
 const Services = () => {
   const steps = [
     {
       icon: FileText,
-      title: "Bestellung & Info bereitstellen",
-      description: "Erzähle uns von deinen aktuellen Einstellungen, Spielen und Gaming-Zielen. Wir analysieren deinen Spielstil.",
-      details: ["Teile deine aktuelle Sensitivität", "Nenne uns deine Hauptspiele", "Beschreibe deine Aim-Probleme", "Setze deine Performance-Ziele"],
-      color: "bg-blue-500"
+      title: "INFOS SAMMELN",
+      description: "Erzähle uns von deinen Gaming-Zielen und aktuellen Einstellungen!",
+      details: ["Aktuelle Sensitivität teilen", "Lieblingsspiele nennen", "Aim-Probleme beschreiben", "Performance-Ziele setzen"],
+      number: "1",
+      bgColor: "bg-fire-red"
     },
     {
       icon: Settings,
-      title: "Personalisierte Einrichtung",
-      description: "Unser Experte erstellt deine Custom Curve basierend auf deinem einzigartigen Gaming-Profil und Präferenzen.",
-      details: ["Analysiere deinen Gaming-Stil", "Berechne optimale Beschleunigung", "Erstelle personalisierte Curve", "Teste Anfangsparameter"],
-      color: "bg-red-500"
+      title: "CURVE ERSTELLEN",
+      description: "Unser Experte zaubert deine perfekte Custom Curve!",
+      details: ["Gaming-Stil analysieren", "Optimale Beschleunigung berechnen", "Personalisierte Curve erstellen", "Anfangsparameter testen"],
+      number: "2",
+      bgColor: "bg-boom-yellow"
     },
     {
       icon: Target,
-      title: "Feinabstimmung",
-      description: "Wir verfeinern und perfektionieren deine Curve durch Tests und Revisionen, bis sie absolut perfekt ist.",
-      details: ["Teste Curve-Performance", "Sammle dein Feedback", "Mache präzise Anpassungen", "Optimiere für Konsistenz"],
-      color: "bg-yellow-500"
+      title: "FEINTUNING",
+      description: "Wir polieren deine Curve bis zur Perfektion!",
+      details: ["Curve-Performance testen", "Dein Feedback sammeln", "Präzise Anpassungen machen", "Für Konsistenz optimieren"],
+      number: "3",
+      bgColor: "bg-fire-red"
     },
     {
       icon: CheckCircle,
-      title: "Perfektes Aim geliefert",
-      description: "Erhalte deine finalen Curve-Einstellungen und starte durch in deinen Games mit verbesserter Genauigkeit.",
-      details: ["Erhalte finale Curve-Datei", "Installationsanleitung", "Performance-Tipps", "Zugang zu fortlaufendem Support"],
-      color: "bg-green-500"
+      title: "BEREIT ZUM DOMINIEREN",
+      description: "Erhalte deine finale Curve und starte durch!",
+      details: ["Finale Curve-Datei erhalten", "Installationsanleitung", "Performance-Tipps", "Fortlaufender Support"],
+      number: "4",
+      bgColor: "bg-boom-yellow"
     }
   ];
 
   return (
-    <div className="container mx-auto px-4 sm:px-6">
+    <div className="container mx-auto px-4 sm:px-6 bg-gray-50">
       <div className="text-center mb-12 sm:mb-16">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Wie es
-          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> funktioniert</span>
-        </h2>
-        <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-          Unser bewährter 4-Schritte-Prozess liefert personalisierte Mausbeschleunigungskurven, 
-          die dein Aim von durchschnittlich zu außergewöhnlich transformieren.
-        </p>
+        <div className="relative inline-block mb-8">
+          <h2 className="font-bangers text-5xl sm:text-6xl md:text-7xl text-comic-black">
+            WIE ES
+            <span className="text-fire-red"> FUNKTIONIERT</span>
+          </h2>
+          <div className="absolute -top-4 -right-8 w-16 h-16 bg-boom-yellow border-4 border-black rounded-full flex items-center justify-center transform rotate-12">
+            <Zap className="text-black" size={24} />
+          </div>
+        </div>
+        
+        <div className="speech-bubble max-w-3xl mx-auto">
+          <p className="font-russo text-lg sm:text-xl text-black leading-relaxed">
+            Unser <span className="text-fire-red font-bold">EXPLOSIVER</span> 4-Schritte-Prozess 
+            verwandelt dein Aim von <span className="text-gray-600">durchschnittlich</span> zu 
+            <span className="text-boom-yellow font-bold"> LEGENDÄR!</span>
+          </p>
+        </div>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12 sm:mb-16">
         {steps.map((step, index) => (
-          <Card 
-            key={step.title} 
-            className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-lg relative"
-          >
-            {/* Step Number */}
-            <div className="absolute -top-4 -left-4 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold text-sm z-10">
-              {index + 1}
+          <div key={step.title} className="relative group">
+            {/* Comic Number Badge */}
+            <div className={`absolute -top-4 -left-4 w-12 h-12 ${step.bgColor} border-4 border-black rounded-full flex items-center justify-center font-bangers text-2xl text-white z-10 shadow-[4px_4px_0px_0px_theme(colors.black)]`}>
+              {step.number}
             </div>
             
-            <CardContent className="p-6 sm:p-8">
-              <div className={`w-12 h-12 sm:w-16 sm:h-16 ${step.color} rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                <step.icon className="text-white" size={24} />
+            <div className="comic-panel h-full hover:shadow-[12px_12px_0px_0px_theme(colors.black)] transition-all duration-300 group-hover:-translate-y-2">
+              <div className={`w-16 h-16 ${step.bgColor} border-4 border-black rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform duration-300`}>
+                <step.icon className="text-white" size={28} />
               </div>
               
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-blue-600 transition-colors">
+              <h3 className="font-bangers text-2xl sm:text-3xl text-comic-black mb-4 group-hover:text-fire-red transition-colors">
                 {step.title}
               </h3>
               
-              <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">
+              <p className="font-russo text-sm sm:text-base text-gray-700 mb-6 leading-relaxed">
                 {step.description}
               </p>
               
-              <div className="space-y-2">
-                {step.details.map((detail) => (
-                  <div key={detail} className="flex items-start space-x-2">
-                    <CheckCircle className="text-green-500 flex-shrink-0 mt-0.5" size={14} />
-                    <span className="text-xs sm:text-sm text-gray-600">{detail}</span>
+              <div className="space-y-3">
+                {step.details.map((detail, detailIndex) => (
+                  <div key={detailIndex} className="flex items-start space-x-3">
+                    <div className="w-2 h-2 bg-fire-red rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-xs sm:text-sm text-gray-600 font-medium">{detail}</span>
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ))}
       </div>
 
-      {/* Trust Section */}
-      <div className="bg-gray-900 rounded-2xl sm:rounded-3xl p-8 sm:p-12 text-white text-center">
-        <h3 className="text-2xl sm:text-3xl font-bold mb-4">Vertraut von 500+ Gamern weltweit</h3>
-        <p className="text-gray-300 text-base sm:text-lg mb-6 sm:mb-8">
-          Tritt der Community von Gamern bei, die bereits ihr Aim mit unseren Custom Curves transformiert haben.
-        </p>
+      {/* Trust Section with Comic Style */}
+      <div className="relative bg-comic-black rounded-3xl p-8 sm:p-12 text-white overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: `radial-gradient(circle, #FFD700 2px, transparent 2px)`,
+          backgroundSize: '30px 30px'
+        }}></div>
         
-        <div className="grid sm:grid-cols-3 gap-6 sm:gap-8">
-          <div>
-            <div className="text-3xl sm:text-4xl font-bold text-blue-400 mb-2">Minuten</div>
-            <div className="text-sm sm:text-base text-gray-400">Erste Curve geliefert</div>
+        <div className="relative z-10 text-center">
+          <div className="relative inline-block mb-6">
+            <h3 className="font-bangers text-4xl sm:text-5xl text-white">
+              VERTRAUT VON <span className="text-fire-red">500+</span> GAMERN!
+            </h3>
+            <div className="absolute -top-2 -right-4 w-8 h-8 bg-boom-yellow border-2 border-white rounded-full animate-bounce"></div>
           </div>
-          <div>
-            <div className="text-3xl sm:text-4xl font-bold text-red-400 mb-2">100%</div>
-            <div className="text-sm sm:text-base text-gray-400">Zufriedenheitsgarantie</div>
-          </div>
-          <div>
-            <div className="text-3xl sm:text-4xl font-bold text-yellow-400 mb-2">4+ Jahre</div>
-            <div className="text-sm sm:text-base text-gray-400">Experten-Erfahrung</div>
+          
+          <p className="font-russo text-base sm:text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+            Tritt der Community von Gamern bei, die bereits ihr Aim mit unseren 
+            <span className="text-boom-yellow font-bold"> CUSTOM CURVES</span> transformiert haben!
+          </p>
+          
+          <div className="grid sm:grid-cols-3 gap-8">
+            <div className="comic-panel bg-white">
+              <div className="font-bangers text-4xl sm:text-5xl text-fire-red mb-2">MINUTEN</div>
+              <div className="font-russo text-sm sm:text-base text-black font-bold">ERSTE CURVE GELIEFERT</div>
+            </div>
+            <div className="comic-panel bg-white">
+              <div className="font-bangers text-4xl sm:text-5xl text-boom-yellow mb-2">100%</div>
+              <div className="font-russo text-sm sm:text-base text-black font-bold">ZUFRIEDENHEITSGARANTIE</div>
+            </div>
+            <div className="comic-panel bg-white">
+              <div className="font-bangers text-4xl sm:text-5xl text-fire-red mb-2">4+ JAHRE</div>
+              <div className="font-russo text-sm sm:text-base text-black font-bold">EXPERTEN-ERFAHRUNG</div>
+            </div>
           </div>
         </div>
       </div>

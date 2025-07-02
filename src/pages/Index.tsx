@@ -70,24 +70,31 @@ const Index = () => {
         <Contact />
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-6 text-center">
+      {/* Comic-Style Footer */}
+      <footer className="bg-comic-black text-white py-12 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5" style={{
+          backgroundImage: `radial-gradient(circle, #FF3B3B 1px, transparent 1px)`,
+          backgroundSize: '25px 25px'
+        }}></div>
+        
+        <div className="container mx-auto px-6 text-center relative z-10">
           <div className="mb-8">
-            <h3 className="text-2xl font-bold mb-4">
-              <span className="text-blue-500">Lovable</span>
-              <span className="text-red-500">.</span>
-              <span className="text-yellow-500">dev</span>
+            <h3 className="font-bangers text-4xl mb-4">
+              <span className="text-fire-red">WHAAAM</span>
+              <span className="text-boom-yellow">KA</span>
+              <span className="text-white">BAAM</span>
             </h3>
-            <p className="text-gray-400 max-w-md mx-auto">
-              Custom Curve Settings Tailored to Your Aim. Perfect your gaming performance with personalized mouse acceleration curves.
+            <p className="font-russo text-gray-300 max-w-md mx-auto">
+              Custom Curve Settings für dein perfektes Aim. 
+              <span className="text-boom-yellow font-bold"> EXPLOSIVE PERFORMANCE</span> garantiert!
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h4 className="font-semibold mb-3">Services</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="font-bangers text-xl mb-3 text-fire-red">SERVICES</h4>
+              <ul className="space-y-2 text-gray-300 font-russo">
                 <li>3× Revisions</li>
                 <li>Unlimited Revisions</li>
                 <li>Live 1-on-1 Sessions</li>
@@ -95,36 +102,36 @@ const Index = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3">Games Supported</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="font-bangers text-xl mb-3 text-boom-yellow">GAMES</h4>
+              <ul className="space-y-2 text-gray-300 font-russo">
                 <li>Valorant</li>
                 <li>CS2</li>
                 <li>Apex Legends</li>
-                <li>All FPS Games</li>
+                <li>Alle FPS Games</li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-3">Connect</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="font-bangers text-xl mb-3 text-fire-red">KONTAKT</h4>
+              <ul className="space-y-2 text-gray-300 font-russo">
                 <li>hello@lovable.dev</li>
                 <li>Discord: @lovable_dev</li>
-                <li>Follow us on social media</li>
+                <li>Community Support 24/7</li>
               </ul>
             </div>
           </div>
           
           <div className="border-t border-gray-800 pt-8 space-y-4">
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-gray-400">
-              <Link to="/imprint" className="hover:text-white transition-colors">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-gray-400 font-russo">
+              <Link to="/imprint" className="hover:text-boom-yellow transition-colors">
                 Impressum
               </Link>
-              <span className="hidden sm:inline">•</span>
-              <Link to="/privacy" className="hover:text-white transition-colors">
+              <span className="hidden sm:inline text-fire-red">•</span>
+              <Link to="/privacy" className="hover:text-boom-yellow transition-colors">
                 Datenschutzerklärung
               </Link>
             </div>
-            <p className="text-gray-400">
-              © 2024 Lovable.dev. All rights reserved.
+            <p className="text-gray-400 font-russo">
+              © 2024 WhaamKaBaam.com - <span className="text-fire-red">BOOM!</span> All rights reserved.
             </p>
           </div>
         </div>

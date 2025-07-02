@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,12 +62,28 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// WhaamKaBaam specific colors
+				'fire-red': '#FF3B3B',
+				'boom-yellow': '#FFD700',
+				'comic-black': '#121212',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			fontFamily: {
+				'bangers': ['Bangers', 'cursive'],
+				'fredoka': ['Fredoka One', 'cursive'],
+				'russo': ['Russo One', 'sans-serif'],
+			},
+			animation: {
+				'accordion-down': 'accordion-down 0.2s ease-out',
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'bounce-in': 'bounceIn 0.6s ease-out',
+				'shake': 'shake 0.5s ease-in-out',
+				'pop': 'pop 0.3s ease-out',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -84,11 +101,47 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'bounceIn': {
+					'0%': {
+						transform: 'scale(0.3)',
+						opacity: '0'
+					},
+					'50%': {
+						transform: 'scale(1.05)',
+						opacity: '0.8'
+					},
+					'70%': {
+						transform: 'scale(0.9)',
+						opacity: '1'
+					},
+					'100%': {
+						transform: 'scale(1)',
+						opacity: '1'
+					}
+				},
+				'shake': {
+					'0%, 100%': {
+						transform: 'translateX(0)'
+					},
+					'10%, 30%, 50%, 70%, 90%': {
+						transform: 'translateX(-2px)'
+					},
+					'20%, 40%, 60%, 80%': {
+						transform: 'translateX(2px)'
+					}
+				},
+				'pop': {
+					'0%': {
+						transform: 'scale(1)'
+					},
+					'50%': {
+						transform: 'scale(1.1)'
+					},
+					'100%': {
+						transform: 'scale(1)'
+					}
 				}
-			},
-			animation: {
-				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
 			}
 		}
 	},

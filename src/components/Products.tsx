@@ -149,9 +149,10 @@ const Products = () => {
             onMouseLeave={() => setHoveredPlan(null)}
           >
             {/* Badge */}
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-            <Badge className={`${plan.badgeColor} px-8 py-3 font-bold shadow-2xl border-0 text-base hover:scale-110 transition-all duration-300`}>
+            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
+            <Badge className={`${plan.badgeColor} px-8 py-3 font-bold shadow-2xl border-0 text-base hover:scale-110 transition-all duration-300 relative`}>
               {plan.badge}
+              <div className="absolute inset-0 bg-black/10 rounded-full"></div>
             </Badge>
             </div>
 
@@ -160,7 +161,7 @@ const Products = () => {
               <div className="absolute inset-0 bg-whaam-red/5 pointer-events-none"></div>
             )}
 
-            <CardHeader className="text-center pt-12 pb-6 flex-shrink-0">
+            <CardHeader className="text-center pt-16 pb-6 flex-shrink-0">
               <div className={`w-20 h-20 mx-auto mb-6 rounded-3xl flex items-center justify-center transition-all duration-500 group-hover:scale-125 group-hover:rotate-6 group-hover:shadow-2xl ${
                 plan.highlight ? 'bg-whaam-red group-hover:bg-whaam-yellow' : plan.premium ? 'bg-gradient-to-br from-whaam-red to-whaam-yellow' : 'bg-whaam-yellow group-hover:bg-whaam-red'
               }`}>

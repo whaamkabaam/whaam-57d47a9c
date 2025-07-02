@@ -24,17 +24,18 @@ const Products = () => {
       id: "3x-revisions",
       name: "3× Revisions",
       price: "$39",
-      originalPrice: null,
+      originalPrice: "$59",
       badge: "Most Bought",
-      badgeColor: "bg-whaam-yellow text-whaam-black",
+      badgeColor: "bg-whaam-red",
       description: "Perfect for most gamers who want personalized curve optimization",
-      deliveryTime: "Delivered in minutes",
+      deliveryTime: "First curve delivered in minutes",
       features: [
-        "Personalized curve for your game",
-        "Delivered in minutes",
-        "100% satisfaction guarantee",
-        "Three precision adjustments",
-        "Works with all FPS games"
+        "Three precision revision cycles",
+        "First curve delivered in minutes",
+        "Personalized for any game",
+        "Data-driven optimization methodology",
+        "100% Satisfaction Guarantee",
+        "Personal consultation included"
       ],
       icon: Mouse,
       highlight: true,
@@ -44,16 +45,17 @@ const Products = () => {
       id: "unlimited-revisions", 
       name: "Unlimited Revisions",
       price: "$47",
-      originalPrice: null,
+      originalPrice: "$67",
       badge: "Best Value",
-      badgeColor: "bg-whaam-yellow text-whaam-black",
+      badgeColor: "bg-whaam-yellow",
       description: "For perfectionists who want unlimited fine-tuning until it's perfect",
-      deliveryTime: "Fast delivery",
+      deliveryTime: "First curve delivered in minutes",
       features: [
-        "Unlimited adjustments",
-        "Fast delivery",
-        "Perfect for ongoing tweaking",
-        "100% satisfaction guarantee",
+        "Unlimited feedback-based revisions",
+        "First curve delivered in minutes",
+        "Fully personalized & data-driven approach",
+        "100% Satisfaction Guarantee", 
+        "Personal consultation included",
         "Priority support access"
       ],
       icon: Target,
@@ -63,19 +65,19 @@ const Products = () => {
       id: "live-session",
       name: "Live 1‑on‑1 Session", 
       price: "$149",
-      originalPrice: null,
+      originalPrice: "$199",
       badge: "Live Session",
-      badgeColor: "bg-whaam-red text-whaam-white",
+      badgeColor: "bg-whaam-red",
       description: "Ultimate experience with real-time curve development and instant testing",
-      deliveryTime: "45-minute personal call",
-      emphasis: "Real-time curve building",
+      deliveryTime: "Personal live 1-on-1 session",
+      emphasis: "Perfect Curve Guaranteed in 45 Minutes",
       features: [
-        "45-minute personal call",
-        "Real-time curve building",
-        "Fastest and most precise option",
-        "Instant testing and optimization",
-        "Personalized coaching included",
-        "100% satisfaction guarantee"
+        "Exclusive 45‑minute live development session",
+        "Real-time adjustments during gameplay",
+        "Instant curve testing and optimization",
+        "Personalized coaching & tips",
+        "100% Satisfaction Guarantee",
+        "Fastest results with expert guidance"
       ],
       icon: Users,
       highlight: false,
@@ -148,7 +150,7 @@ const Products = () => {
           >
             {/* Badge */}
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-              <Badge className={`${plan.badgeColor} px-6 py-2 font-bold shadow-lg border-0 text-sm`}>
+              <Badge className={`${plan.badgeColor} text-whaam-black px-6 py-2 font-bold shadow-lg border-0 text-sm`}>
                 {plan.badge}
               </Badge>
             </div>

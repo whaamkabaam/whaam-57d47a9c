@@ -26,7 +26,7 @@ const Privacy = () => {
           <h2 className="text-whaam-red text-2xl font-bold">1. Verantwortlicher</h2>
           <p className="text-whaam-white/80">
             Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br />
-            <strong className="text-whaam-yellow">WhaamKaBaam</strong><br />
+            <strong className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</strong><br />
             E-Mail: hello@whaamkabaam.com<br />
             Discord: @whaam_kabaam
           </p>

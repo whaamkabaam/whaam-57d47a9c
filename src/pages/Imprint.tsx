@@ -28,7 +28,7 @@ const Imprint = () => {
             <div>
               <h2 className="text-2xl font-bold text-whaam-red mb-4">Verantwortlich für den Inhalt</h2>
               <div className="text-whaam-white space-y-2">
-                <p><strong>WhaamKaBaam</strong></p>
+                <p><strong className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</strong></p>
                 <p>E-Mail: hello@whaamkabaam.com</p>
                 <p>Discord: @whaam_kabaam</p>
               </div>

@@ -122,7 +122,7 @@ const Index = () => {
               </Link>
             </div>
             <p className="text-whaam-white/60">
-              © 2024 WhaamKaBaam. All rights reserved.
+              © 2024 <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span>. All rights reserved.
             </p>
           </div>
         </div>

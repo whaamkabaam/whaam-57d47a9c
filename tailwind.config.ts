@@ -74,9 +74,10 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			fontFamily: {
-				'bangers': ['Bangers', 'cursive'],
-				'fredoka': ['Fredoka One', 'cursive'],
+				'anton': ['Anton', 'sans-serif'],
+				'bebas': ['Bebas Neue', 'cursive'],
 				'russo': ['Russo One', 'sans-serif'],
+				'orbitron': ['Orbitron', 'monospace'],
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',

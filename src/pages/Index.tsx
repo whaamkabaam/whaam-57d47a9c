@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,13 +13,14 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Navigation from "@/components/Navigation";
 import CookieConsent from "@/components/CookieConsent";
+import Testimonials from "@/components/Testimonials";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "services", "portfolio", "products", "about", "faq", "contact"];
+      const sections = ["home", "services", "testimonials", "products", "about", "faq", "contact"];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -39,39 +39,39 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-comic-black">
       <Navigation activeSection={activeSection} />
       
       <section id="home">
         <Hero />
       </section>
 
-      <section id="services" className="py-20">
+      <section id="services">
         <Services />
       </section>
 
-      <section id="portfolio" className="py-20 bg-white">
-        <Portfolio />
+      <section id="testimonials">
+        <Testimonials />
       </section>
 
-      <section id="products" className="py-20">
+      <section id="products">
         <Products />
       </section>
 
-      <section id="about" className="py-20 bg-white">
+      <section id="about">
         <About />
       </section>
 
-      <section id="faq" className="py-20 bg-gray-50">
+      <section id="faq">
         <FAQ />
       </section>
 
-      <section id="contact" className="py-20 bg-white">
+      <section id="contact" className="bg-gray-900">
         <Contact />
       </section>
 
       {/* Comic-Style Footer */}
-      <footer className="bg-comic-black text-white py-12 relative overflow-hidden">
+      <footer className="bg-comic-black text-white py-12 relative overflow-hidden border-t-2 border-fire-red">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5" style={{
           backgroundImage: `radial-gradient(circle, #FF3B3B 1px, transparent 1px)`,
@@ -80,8 +80,8 @@ const Index = () => {
         
         <div className="container mx-auto px-6 text-center relative z-10">
           <div className="mb-8">
-            <h3 className="font-bangers text-4xl mb-4">
-              <span className="text-fire-red">WHAAAM</span>
+            <h3 className="font-anton text-4xl mb-4 tracking-wider">
+              <span className="text-fire-red">WHAAM</span>
               <span className="text-boom-yellow">KA</span>
               <span className="text-white">BAAM</span>
             </h3>
@@ -93,7 +93,7 @@ const Index = () => {
           
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h4 className="font-bangers text-xl mb-3 text-fire-red">SERVICES</h4>
+              <h4 className="font-anton text-xl mb-3 text-fire-red tracking-wide">SERVICES</h4>
               <ul className="space-y-2 text-gray-300 font-russo">
                 <li>3× Revisions</li>
                 <li>Unlimited Revisions</li>
@@ -102,7 +102,7 @@ const Index = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-bangers text-xl mb-3 text-boom-yellow">GAMES</h4>
+              <h4 className="font-anton text-xl mb-3 text-boom-yellow tracking-wide">GAMES</h4>
               <ul className="space-y-2 text-gray-300 font-russo">
                 <li>Valorant</li>
                 <li>CS2</li>
@@ -111,10 +111,10 @@ const Index = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-bangers text-xl mb-3 text-fire-red">KONTAKT</h4>
+              <h4 className="font-anton text-xl mb-3 text-fire-red tracking-wide">KONTAKT</h4>
               <ul className="space-y-2 text-gray-300 font-russo">
-                <li>hello@lovable.dev</li>
-                <li>Discord: @lovable_dev</li>
+                <li>hello@whaamkabaam.com</li>
+                <li>Discord: @whaamkabaam</li>
                 <li>Community Support 24/7</li>
               </ul>
             </div>

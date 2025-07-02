@@ -90,9 +90,9 @@ const Products = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <div className="relative inline-block mb-8">
-            <h2 className="font-bangers text-6xl md:text-7xl text-white mb-4">
-              CHOOSE YOUR
-              <span className="text-fire-red block">PERFECT PLAN</span>
+            <h2 className="font-anton text-6xl md:text-7xl text-white mb-4 tracking-wider">
+              CHOOSE THE PLAN
+              <span className="text-fire-red block">THAT FITS YOU BEST</span>
             </h2>
             <div className="absolute -top-4 -right-8 w-16 h-16 bg-boom-yellow border-4 border-white rounded-full flex items-center justify-center transform rotate-12">
               <Zap className="text-black" size={24} />
@@ -117,12 +117,12 @@ const Products = () => {
             >
               {/* Badge */}
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                <Badge className={`${plan.badgeColor} text-black border-4 border-white px-6 py-2 font-bangers text-lg shadow-[4px_4px_0px_0px_theme(colors.black)]`}>
+                <Badge className={`${plan.badgeColor} text-black border-4 border-white px-6 py-2 font-anton text-lg shadow-[4px_4px_0px_0px_theme(colors.black)]`}>
                   {plan.badge}
                 </Badge>
               </div>
 
-              <div className={`comic-panel bg-white h-full min-h-[600px] flex flex-col hover:shadow-[12px_12px_0px_0px_theme(colors.black)] transition-all duration-300 group-hover:-translate-y-2 ${
+              <div className={`comic-panel bg-gray-900 h-full min-h-[600px] flex flex-col hover:shadow-[12px_12px_0px_0px_theme(colors.black)] transition-all duration-300 group-hover:-translate-y-2 ${
                 plan.highlight ? 'scale-105 ring-4 ring-boom-yellow' : ''
               }`}>
                 {/* Header */}
@@ -133,11 +133,11 @@ const Products = () => {
                     <plan.icon className="text-white" size={32} />
                   </div>
                   
-                  <h3 className="font-bangers text-3xl text-comic-black mb-4">
+                  <h3 className="font-anton text-3xl text-white mb-4 tracking-wider">
                     {plan.name}
                   </h3>
                   
-                  <div className="text-6xl font-bangers text-fire-red mb-4">
+                  <div className="text-6xl font-anton text-fire-red mb-4">
                     {plan.price}
                   </div>
 
@@ -156,7 +156,7 @@ const Products = () => {
                         <div className="w-6 h-6 bg-fire-red border-2 border-black rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                           <Check className="text-white" size={14} />
                         </div>
-                        <span className="text-comic-black font-russo leading-relaxed">{feature}</span>
+                        <span className="text-white font-russo leading-relaxed">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -165,7 +165,7 @@ const Products = () => {
                   <div className="mt-auto pb-8">
                     <button 
                       onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
-                      className={`comic-button w-full font-bangers text-xl py-4 transition-all duration-300 group-hover:scale-105 ${
+                      className={`comic-button w-full font-anton text-xl py-4 transition-all duration-300 group-hover:scale-105 ${
                         plan.premium ? 'bg-fire-red' : 'bg-comic-black'
                       }`}
                     >
@@ -182,17 +182,17 @@ const Products = () => {
         {/* Trust Section */}
         <div className="text-center">
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="comic-panel bg-white text-center">
-              <div className="font-bangers text-4xl text-fire-red mb-2">500+</div>
-              <div className="font-russo text-comic-black font-bold">HAPPY GAMERS</div>
+            <div className="comic-panel bg-gray-900 text-center">
+              <div className="font-anton text-4xl text-fire-red mb-2">500+</div>
+              <div className="font-russo text-white font-bold">HAPPY GAMERS</div>
             </div>
-            <div className="comic-panel bg-white text-center">
-              <div className="font-bangers text-4xl text-boom-yellow mb-2">MINUTES</div>
-              <div className="font-russo text-comic-black font-bold">FIRST CURVE DELIVERED</div>
+            <div className="comic-panel bg-gray-900 text-center">
+              <div className="font-anton text-4xl text-boom-yellow mb-2">MINUTES</div>
+              <div className="font-russo text-white font-bold">FIRST CURVE DELIVERED</div>
             </div>
-            <div className="comic-panel bg-white text-center">
-              <div className="font-bangers text-4xl text-fire-red mb-2">100%</div>
-              <div className="font-russo text-comic-black font-bold">SATISFACTION GUARANTEE</div>
+            <div className="comic-panel bg-gray-900 text-center">
+              <div className="font-anton text-4xl text-fire-red mb-2">100%</div>
+              <div className="font-russo text-white font-bold">SATISFACTION GUARANTEE</div>
             </div>
           </div>
         </div>

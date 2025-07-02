@@ -44,7 +44,7 @@ const Navigation = ({ activeSection }: NavigationProps) => {
             className="text-2xl sm:text-3xl font-bold cursor-pointer hover:scale-105 transition-all duration-300 hover:drop-shadow-lg"
             onClick={() => scrollToSection("home")}
           >
-            <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent animate-pulse">WhaamKaBaam</span>
+            <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span>
           </div>
 
           {/* Desktop Navigation */}

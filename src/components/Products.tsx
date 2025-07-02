@@ -95,8 +95,8 @@ const Products = () => {
     <div className="container mx-auto px-4 sm:px-6 relative py-24">
       {/* Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-        <div className="absolute top-20 left-10 w-64 sm:w-96 h-64 sm:h-96 bg-whaam-red/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-64 sm:w-80 h-64 sm:h-80 bg-whaam-yellow/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-20 left-10 w-64 sm:w-96 h-64 sm:h-96 bg-whaam-red/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-64 sm:w-80 h-64 sm:h-80 bg-whaam-yellow/10 rounded-full blur-3xl"></div>
       </div>
 
       {/* Header Section */}
@@ -141,8 +141,8 @@ const Products = () => {
           <Card 
             key={plan.id}
             className={`group relative transition-all duration-700 hover:-translate-y-6 hover:shadow-2xl hover:shadow-whaam-red/30 border-2 shadow-lg overflow-hidden bg-whaam-black min-h-[700px] flex flex-col animate-fade-in hover:rotate-1 ${
-              plan.highlight ? 'border-whaam-red scale-105 shadow-whaam-red/30 animate-pulse ring-2 ring-whaam-yellow/50' : 'border-whaam-red/20'
-            } ${hoveredPlan === plan.id ? 'shadow-2xl border-whaam-red animate-pulse scale-105' : ''} ${
+              plan.highlight ? 'border-whaam-red scale-105 shadow-whaam-red/30 ring-2 ring-whaam-yellow/50' : 'border-whaam-red/20'
+            } ${hoveredPlan === plan.id ? 'shadow-2xl border-whaam-red scale-105' : ''} ${
               selectedPlan === plan.id ? 'border-whaam-yellow shadow-whaam-yellow/30' : ''
             }`}
             onMouseEnter={() => setHoveredPlan(plan.id)}
@@ -150,7 +150,7 @@ const Products = () => {
           >
             {/* Badge */}
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-            <Badge className={`${plan.badgeColor} px-8 py-3 font-bold shadow-2xl border-0 text-base animate-pulse hover:scale-110 transition-all duration-300`}>
+            <Badge className={`${plan.badgeColor} px-8 py-3 font-bold shadow-2xl border-0 text-base hover:scale-110 transition-all duration-300`}>
               {plan.badge}
             </Badge>
             </div>
@@ -241,7 +241,7 @@ const Products = () => {
       {/* Benefits Section */}
       <div className="bg-whaam-black rounded-3xl p-12 mb-20 border border-whaam-red/20">
         <h3 className="text-3xl font-bold text-center text-whaam-white mb-12">
-          Warum <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent animate-pulse">WhaamKaBaam</span> wählen?
+          Warum <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span> wählen?
         </h3>
         
         <div className="grid sm:grid-cols-3 gap-8">

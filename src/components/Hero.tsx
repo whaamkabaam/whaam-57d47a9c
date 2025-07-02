@@ -28,9 +28,9 @@ const Hero = () => {
     <div className="min-h-screen bg-whaam-dark text-white relative overflow-hidden pt-20 pb-24">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-whaam-red/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-whaam-yellow/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-whaam-red/15 rounded-full blur-2xl animate-pulse delay-500"></div>
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-whaam-red/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-whaam-yellow/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-whaam-red/15 rounded-full blur-2xl"></div>
       </div>
 
       <div className="container mx-auto px-6 py-32 relative z-10">
@@ -109,7 +109,7 @@ const Hero = () => {
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 border-2 border-whaam-yellow/30 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-whaam-yellow/60 rounded-full mt-2 animate-pulse"></div>
+          <div className="w-1 h-3 bg-whaam-yellow/60 rounded-full mt-2"></div>
         </div>
       </div>
     </div>

@@ -75,7 +75,7 @@ const Index = () => {
         <div className="container mx-auto px-6 text-center">
           <div className="mb-12">
             <h3 className="text-3xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent animate-pulse">WhaamKaBaam</span>
+              <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span>
             </h3>
             <p className="text-whaam-white/60 max-w-md mx-auto text-lg">
               Custom Curve Settings Tailored to Your Aim. Perfect your gaming performance with personalized mouse acceleration curves.

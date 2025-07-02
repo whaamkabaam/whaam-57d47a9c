@@ -113,8 +113,8 @@ const Index = () => {
           
           <div className="border-t-2 border-whaam-red/20 pt-8 space-y-6">
             <div className="flex flex-col sm:flex-row justify-center items-center gap-6 text-sm text-whaam-white/60">
-              <Link to="/imprint" className="hover:text-whaam-red transition-colors font-medium">
-                Imprint
+              <Link to="/terms" className="hover:text-whaam-red transition-colors font-medium">
+                Terms of Service
               </Link>
               <span className="hidden sm:inline text-whaam-yellow text-xl">•</span>
               <Link to="/privacy" className="hover:text-whaam-red transition-colors font-medium">

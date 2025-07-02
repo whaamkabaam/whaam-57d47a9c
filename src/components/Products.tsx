@@ -25,8 +25,8 @@ const Products = () => {
       name: "3× Revisions",
       price: "$39",
       originalPrice: "$69",
-      badge: "Most Bought",
-      badgeColor: "bg-whaam-red text-whaam-white",
+      badge: "Best Value",
+      badgeColor: "bg-whaam-yellow text-whaam-black",
       description: "Perfect for most gamers who want personalized curve optimization",
       deliveryTime: "First curve delivered in minutes",
       features: [
@@ -38,16 +38,15 @@ const Products = () => {
         "Personal consultation included"
       ],
       icon: Mouse,
-      highlight: true,
-      popular: true
+      highlight: false
     },
     {
       id: "unlimited-revisions", 
       name: "Unlimited Revisions",
       price: "$47",
       originalPrice: "$79",
-      badge: "Best Value",
-      badgeColor: "bg-whaam-yellow text-whaam-black",
+      badge: "Most Bought",
+      badgeColor: "bg-whaam-red text-whaam-white",
       description: "For perfectionists who want unlimited fine-tuning until it's perfect",
       deliveryTime: "First curve delivered in minutes",
       features: [
@@ -59,7 +58,8 @@ const Products = () => {
         "Priority support access"
       ],
       icon: Target,
-      highlight: false
+      highlight: true,
+      popular: true
     },
     {
       id: "live-session",
@@ -140,8 +140,8 @@ const Products = () => {
         {plans.map((plan, index) => (
           <Card 
             key={plan.id}
-            className={`group relative transition-all duration-700 hover:-translate-y-4 hover:shadow-2xl hover:shadow-whaam-red/20 border-2 shadow-lg overflow-hidden bg-whaam-black min-h-[700px] flex flex-col ${
-              plan.highlight ? 'border-whaam-red scale-105 shadow-whaam-red/30' : 'border-whaam-red/20'
+            className={`group relative transition-all duration-700 hover:-translate-y-4 hover:shadow-2xl hover:shadow-whaam-red/20 border-2 shadow-lg overflow-hidden bg-whaam-black min-h-[700px] flex flex-col animate-fade-in ${
+              plan.highlight ? 'border-whaam-red scale-105 shadow-whaam-red/30 animate-pulse' : 'border-whaam-red/20'
             } ${hoveredPlan === plan.id ? 'shadow-2xl border-whaam-red animate-pulse' : ''} ${
               selectedPlan === plan.id ? 'border-whaam-yellow shadow-whaam-yellow/30' : ''
             }`}
@@ -150,7 +150,7 @@ const Products = () => {
           >
             {/* Badge */}
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-              <Badge className={`${plan.badgeColor} px-6 py-2 font-bold shadow-2xl border-0 text-sm animate-pulse`}>
+              <Badge className={`${plan.badgeColor} px-8 py-3 font-bold shadow-2xl border-0 text-base animate-pulse`}>
                 {plan.badge}
               </Badge>
             </div>
@@ -241,7 +241,7 @@ const Products = () => {
       {/* Benefits Section */}
       <div className="bg-whaam-black rounded-3xl p-12 mb-20 border border-whaam-red/20">
         <h3 className="text-3xl font-bold text-center text-whaam-white mb-12">
-          Warum <span className="text-whaam-red">Whaam</span><span className="text-whaam-yellow">Ka</span><span className="text-whaam-white">Baam</span> wählen?
+          Warum <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span> wählen?
         </h3>
         
         <div className="grid sm:grid-cols-3 gap-8">

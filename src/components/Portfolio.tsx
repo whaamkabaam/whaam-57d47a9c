@@ -77,6 +77,42 @@ const Portfolio = () => {
       beforeAfter: "Von Master zu Grandmaster",
       accuracyBoost: "+38% Tracking Accuracy",
       color: "from-pink-500 to-red-600"
+    },
+    {
+      name: "David Kim",
+      game: "Valorant",
+      rank: "Ascendant 3",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
+      rating: 5,
+      review: "The unlimited revisions package was perfect for me. We fine-tuned the curve until it felt absolutely perfect. My clutch rounds have improved significantly!",
+      improvement: "+2 Rank Tiers",
+      beforeAfter: "Von Platin 3 zu Ascendant 3",
+      accuracyBoost: "+29% Clutch Success",
+      color: "from-indigo-500 to-purple-600"
+    },
+    {
+      name: "Lisa Martinez",
+      game: "CS2",
+      rank: "Supreme Master",
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b332c3e4?auto=format&fit=crop&w=150&q=80",
+      rating: 5,
+      review: "I was skeptical at first, but the results speak for themselves. My spray control improved dramatically and I'm hitting shots I never thought possible.",
+      improvement: "+3 Faceit Levels",
+      beforeAfter: "Von DMG zu Supreme",
+      accuracyBoost: "+33% Spray Control",
+      color: "from-teal-500 to-cyan-600"
+    },
+    {
+      name: "Tom Anderson",
+      game: "Apex Legends",
+      rank: "Diamond 2",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80",
+      rating: 5,
+      review: "Fast delivery and amazing results! The curve was delivered in minutes and I immediately felt the difference in my tracking and flick shots.",
+      improvement: "Diamond Reached",
+      beforeAfter: "Von Platin 1 zu Diamond 2",
+      accuracyBoost: "+26% Overall Accuracy",
+      color: "from-orange-500 to-red-600"
     }
   ];
 
@@ -160,11 +196,11 @@ const Portfolio = () => {
       </div>
 
       {/* Enhanced Testimonials Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 animate-fade-in">
         {testimonials.map((testimonial, index) => (
             <Card 
             key={testimonial.name} 
-            className="group overflow-hidden border-2 border-whaam-red/20 shadow-lg hover:shadow-2xl hover:shadow-whaam-red/20 transition-all duration-700 hover:-translate-y-3 hover:scale-105 bg-whaam-black hover:border-whaam-yellow"
+            className="group overflow-hidden border-2 border-whaam-red/20 shadow-lg hover:shadow-2xl hover:shadow-whaam-red/20 transition-all duration-700 hover:-translate-y-3 hover:scale-105 bg-whaam-black hover:border-whaam-yellow animate-scale-in"
           >
             <CardContent className="p-8">
               {/* Quote Icon */}

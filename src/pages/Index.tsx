@@ -95,18 +95,18 @@ const Index = () => {
             <div>
               <h4 className="font-semibold mb-4 text-whaam-yellow text-xl">Games Supported</h4>
               <ul className="space-y-3 text-whaam-white/60">
-                <li>Valorant</li>
-                <li>CS2</li>
-                <li>Apex Legends</li>
-                <li>All FPS Games</li>
+                <li><a href="#" className="hover:text-whaam-red transition-colors">Valorant</a></li>
+                <li><a href="#" className="hover:text-whaam-red transition-colors">CS2</a></li>
+                <li><a href="#" className="hover:text-whaam-red transition-colors">Apex Legends</a></li>
+                <li><a href="#" className="hover:text-whaam-red transition-colors">All FPS Games</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4 text-whaam-red text-xl">Connect</h4>
               <ul className="space-y-3 text-whaam-white/60">
-                <li>hello@whaamkabaam.com</li>
-                <li>Discord: @whaam_kabaam</li>
-                <li>Follow us on social media</li>
+                <li><a href="mailto:hello@whaamkabaam.com" className="hover:text-whaam-red transition-colors">hello@whaamkabaam.com</a></li>
+                <li><a href="#" className="hover:text-whaam-red transition-colors">Discord: @whaam_kabaam</a></li>
+                <li><a href="#" className="hover:text-whaam-red transition-colors">Follow us on social media</a></li>
               </ul>
             </div>
           </div>

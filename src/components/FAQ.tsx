@@ -5,77 +5,121 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { HelpCircle } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { HelpCircle, Target, Zap, Shield } from "lucide-react";
 
 const FAQ = () => {
   const faqs = [
     {
       id: "what-is-curve",
-      question: "What exactly is a Custom Mouse Curve?",
-      answer: "A Custom Mouse Curve is a personalized mouse acceleration setting that's specifically tailored to your playstyle, hardware, and favorite games. It optimizes the relationship between your physical mouse movement and cursor movement in-game for maximum precision and consistency."
+      question: "Was genau ist eine Custom Mouse Curve?",
+      answer: "Eine Custom Mouse Curve ist eine personalisierte Mausbeschleunigungseinstellung, die speziell auf deinen Spielstil, deine Hardware und deine bevorzugten Spiele angepasst wird. Sie optimiert die Beziehung zwischen deiner physischen Mausbewegung und der Cursor-Bewegung im Spiel für maximale Präzision und Konsistenz."
     },
     {
       id: "how-fast",
-      question: "How fast will I receive my curve?",
-      answer: "The first version of your Custom Curve is delivered within minutes after ordering! After a quick analysis of your information, we create your initial curve immediately. Revisions and fine-tuning then happen based on your feedback, usually within hours."
+      question: "Wie schnell erhalte ich meine Curve?",
+      answer: "Die erste Version deiner Custom Curve wird innerhalb von Minuten nach der Bestellung geliefert! Nach einer kurzen Analyse deiner Angaben erstellen wir deine initiale Curve sofort. Revisionen und Feinabstimmungen erfolgen dann basierend auf deinem Feedback meist innerhalb weniger Stunden."
     },
     {
       id: "which-games",
-      question: "Which games does the curve work for?",
-      answer: "Our Custom Curves work for all FPS games! They're especially optimized for Valorant, CS2, Apex Legends, and Overwatch 2. The curve is specifically adapted for your main games but also works excellently in other shooters."
+      question: "Für welche Spiele funktioniert die Curve?",
+      answer: "Unsere Custom Curves funktionieren für alle FPS-Spiele! Besonders optimiert sind sie für Valorant, CS2, Apex Legends und Overwatch 2. Die Curve wird speziell für deine Hauptspiele angepasst, funktioniert aber auch hervorragend in anderen Shootern."
     },
     {
       id: "guarantee",
-      question: "What if I'm not satisfied?",
-      answer: "We offer a 100% satisfaction guarantee! If you're not completely satisfied with your Custom Curve, you get a full refund - no questions asked. Your satisfaction is our top priority."
+      question: "Was passiert, wenn ich nicht zufrieden bin?",
+      answer: "Wir bieten eine 100% Zufriedenheitsgarantie! Wenn du mit deiner Custom Curve nicht vollständig zufrieden bist, erhältst du eine vollständige Rückerstattung - keine Fragen gestellt. Deine Zufriedenheit ist unser oberstes Ziel."
+    },
+    {
+      id: "installation",
+      question: "Ist die Installation schwierig?",
+      answer: "Absolut nicht! Du erhältst eine detaillierte Schritt-für-Schritt-Anleitung plus die fertige Konfigurationsdatei. Die Installation dauert nur wenige Minuten und erfordert keine technischen Vorkenntnisse. Bei Fragen steht unser Support jederzeit zur Verfügung."
+    },
+    {
+      id: "difference",
+      question: "Was ist der Unterschied zwischen den Plänen?",
+      answer: "Der Hauptunterschied liegt in der Anzahl der Revisionen: 3× Revisions bietet drei Anpassungsrunden, Unlimited Revisions so viele wie nötig, und die Live Session beinhaltet eine persönliche 45-minütige Beratung mit Echzeit-Anpassungen während du spielst."
+    },
+    {
+      id: "hardware",
+      question: "Funktioniert es mit meiner Maus?",
+      answer: "Ja! Unsere Custom Curves funktionieren mit praktisch jeder Gaming-Maus. Egal ob Logitech, Razer, SteelSeries, Finalmouse oder eine andere Marke - wir passen die Curve an deine spezifische Hardware an für optimale Ergebnisse."
+    },
+    {
+      id: "results",
+      question: "Welche Verbesserungen kann ich erwarten?",
+      answer: "Die meisten unserer Kunden berichten von 20-40% verbesserter Treffergenauigkeit, konsistenterem Aim und weniger Überzielen. Viele erreichen höhere Ränge in ihren Lieblingsspielen innerhalb von 1-2 Wochen nach der Implementierung."
     }
   ];
 
   return (
-    <div className="bg-comic-black py-20">
-      <div className="container mx-auto px-6">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <div className="relative inline-block mb-8">
-            <h2 className="font-anton text-6xl md:text-7xl text-white tracking-wider">
-              FREQUENTLY
-              <span className="text-fire-red block">ASKED QUESTIONS</span>
-            </h2>
-            <div className="absolute -top-4 -right-8 w-16 h-16 bg-boom-yellow border-4 border-white rounded-full flex items-center justify-center transform rotate-12">
-              <HelpCircle className="text-black" size={24} />
+    <div className="container mx-auto px-6">
+      <div className="text-center mb-16">
+        <div className="inline-flex items-center bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+          <HelpCircle className="mr-2" size={16} />
+          Häufig gestellte Fragen
+        </div>
+        
+        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          Alles was du
+          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> wissen musst</span>
+        </h2>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          Hier findest du Antworten auf die wichtigsten Fragen zu unseren Custom Curves 
+          und unserem Service.
+        </p>
+      </div>
+
+      <div className="max-w-4xl mx-auto">
+        <Card className="border-0 shadow-lg">
+          <CardContent className="p-8">
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((faq, index) => (
+                <AccordionItem key={faq.id} value={faq.id} className="border-gray-200">
+                  <AccordionTrigger className="text-left hover:text-blue-600 transition-colors text-lg font-semibold py-6">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-600 leading-relaxed pb-6 text-base">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Quick Help Cards */}
+      <div className="grid md:grid-cols-3 gap-8 mt-16 max-w-6xl mx-auto">
+        <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow group">
+          <CardContent className="p-8">
+            <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+              <Target className="text-white" size={32} />
             </div>
-          </div>
-        </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3">Sofortige Lieferung</h3>
+            <p className="text-gray-600">Erste Curve in Minuten, nicht in Tagen. Starte sofort durch!</p>
+          </CardContent>
+        </Card>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="space-y-6">
-            {faqs.map((faq) => (
-              <div key={faq.id} className="comic-panel bg-gray-900">
-                <Accordion type="single" collapsible>
-                  <AccordionItem value={faq.id} className="border-none">
-                    <AccordionTrigger className="font-russo text-left font-bold text-lg text-white hover:text-fire-red transition-colors py-6">
-                      {faq.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="font-russo text-gray-300 leading-relaxed pb-6 text-base">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            ))}
-          </div>
+        <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow group">
+          <CardContent className="p-8">
+            <div className="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+              <Zap className="text-white" size={32} />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3">Einfache Installation</h3>
+            <p className="text-gray-600">Schritt-für-Schritt Anleitung für mühelose Einrichtung.</p>
+          </CardContent>
+        </Card>
 
-          {/* Discord CTA */}
-          <div className="comic-panel bg-fire-red text-center mt-12">
-            <h4 className="font-anton text-3xl mb-4 text-white tracking-wide">JOIN OUR DISCORD</h4>
-            <p className="font-russo text-white mb-6 text-lg">
-              Get instant support and connect with 1500+ gamers who transformed their aim!
-            </p>
-            <button className="comic-button-yellow font-anton text-black text-xl tracking-wide">
-              JOIN DISCORD NOW
-            </button>
-          </div>
-        </div>
+        <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow group">
+          <CardContent className="p-8">
+            <div className="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+              <Shield className="text-white" size={32} />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-3">100% Garantie</h3>
+            <p className="text-gray-600">Nicht zufrieden? Vollständige Rückerstattung ohne Wenn und Aber.</p>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

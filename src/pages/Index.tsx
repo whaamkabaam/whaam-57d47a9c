@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,14 +14,13 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Navigation from "@/components/Navigation";
 import CookieConsent from "@/components/CookieConsent";
-import Testimonials from "@/components/Testimonials";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "services", "testimonials", "products", "about", "faq", "contact"];
+      const sections = ["home", "services", "portfolio", "products", "about", "faq", "contact"];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -39,62 +39,55 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-comic-black">
+    <div className="min-h-screen bg-gray-50">
       <Navigation activeSection={activeSection} />
       
       <section id="home">
         <Hero />
       </section>
 
-      <section id="services">
+      <section id="services" className="py-20">
         <Services />
       </section>
 
-      <section id="testimonials">
-        <Testimonials />
+      <section id="portfolio" className="py-20 bg-white">
+        <Portfolio />
       </section>
 
-      <section id="products">
+      <section id="products" className="py-20">
         <Products />
       </section>
 
-      <section id="about">
+      <section id="about" className="py-20 bg-white">
         <About />
       </section>
 
-      <section id="faq">
+      <section id="faq" className="py-20 bg-gray-50">
         <FAQ />
       </section>
 
-      <section id="contact" className="bg-gray-900">
+      <section id="contact" className="py-20 bg-white">
         <Contact />
       </section>
 
-      {/* Comic-Style Footer */}
-      <footer className="bg-comic-black text-white py-12 relative overflow-hidden border-t-2 border-fire-red">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5" style={{
-          backgroundImage: `radial-gradient(circle, #FF3B3B 1px, transparent 1px)`,
-          backgroundSize: '25px 25px'
-        }}></div>
-        
-        <div className="container mx-auto px-6 text-center relative z-10">
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="container mx-auto px-6 text-center">
           <div className="mb-8">
-            <h3 className="font-anton text-4xl mb-4 tracking-wider">
-              <span className="text-fire-red">WHAAM</span>
-              <span className="text-boom-yellow">KA</span>
-              <span className="text-white">BAAM</span>
+            <h3 className="text-2xl font-bold mb-4">
+              <span className="text-blue-500">Lovable</span>
+              <span className="text-red-500">.</span>
+              <span className="text-yellow-500">dev</span>
             </h3>
-            <p className="font-russo text-gray-300 max-w-md mx-auto">
-              Custom Curve Settings für dein perfektes Aim. 
-              <span className="text-boom-yellow font-bold"> EXPLOSIVE PERFORMANCE</span> garantiert!
+            <p className="text-gray-400 max-w-md mx-auto">
+              Custom Curve Settings Tailored to Your Aim. Perfect your gaming performance with personalized mouse acceleration curves.
             </p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h4 className="font-anton text-xl mb-3 text-fire-red tracking-wide">SERVICES</h4>
-              <ul className="space-y-2 text-gray-300 font-russo">
+              <h4 className="font-semibold mb-3">Services</h4>
+              <ul className="space-y-2 text-gray-400">
                 <li>3× Revisions</li>
                 <li>Unlimited Revisions</li>
                 <li>Live 1-on-1 Sessions</li>
@@ -102,36 +95,36 @@ const Index = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-anton text-xl mb-3 text-boom-yellow tracking-wide">GAMES</h4>
-              <ul className="space-y-2 text-gray-300 font-russo">
+              <h4 className="font-semibold mb-3">Games Supported</h4>
+              <ul className="space-y-2 text-gray-400">
                 <li>Valorant</li>
                 <li>CS2</li>
                 <li>Apex Legends</li>
-                <li>Alle FPS Games</li>
+                <li>All FPS Games</li>
               </ul>
             </div>
             <div>
-              <h4 className="font-anton text-xl mb-3 text-fire-red tracking-wide">KONTAKT</h4>
-              <ul className="space-y-2 text-gray-300 font-russo">
-                <li>hello@whaamkabaam.com</li>
-                <li>Discord: @whaamkabaam</li>
-                <li>Community Support 24/7</li>
+              <h4 className="font-semibold mb-3">Connect</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li>hello@lovable.dev</li>
+                <li>Discord: @lovable_dev</li>
+                <li>Follow us on social media</li>
               </ul>
             </div>
           </div>
           
           <div className="border-t border-gray-800 pt-8 space-y-4">
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-gray-400 font-russo">
-              <Link to="/imprint" className="hover:text-boom-yellow transition-colors">
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-gray-400">
+              <Link to="/imprint" className="hover:text-white transition-colors">
                 Impressum
               </Link>
-              <span className="hidden sm:inline text-fire-red">•</span>
-              <Link to="/privacy" className="hover:text-boom-yellow transition-colors">
+              <span className="hidden sm:inline">•</span>
+              <Link to="/privacy" className="hover:text-white transition-colors">
                 Datenschutzerklärung
               </Link>
             </div>
-            <p className="text-gray-400 font-russo">
-              © 2024 WhaamKaBaam.com - <span className="text-fire-red">BOOM!</span> All rights reserved.
+            <p className="text-gray-400">
+              © 2024 Lovable.dev. All rights reserved.
             </p>
           </div>
         </div>

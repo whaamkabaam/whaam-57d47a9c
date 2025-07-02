@@ -36,14 +36,14 @@ const Navigation = ({ activeSection }: NavigationProps) => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-comic-black/95 backdrop-blur-sm shadow-lg border-b-2 border-fire-red z-50">
+    <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-sm z-50">
       <div className="container mx-auto px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between">
-          {/* WhaamKaBaam Logo */}
-          <div className="text-xl sm:text-2xl font-anton font-bold cursor-pointer" onClick={() => scrollToSection("home")}>
-            <span className="text-fire-red">WHAAM</span>
-            <span className="text-boom-yellow">KA</span>
-            <span className="text-white">BAAM</span>
+          {/* Logo */}
+          <div className="text-xl sm:text-2xl font-bold cursor-pointer" onClick={() => scrollToSection("home")}>
+            <span className="text-blue-500">Lovable</span>
+            <span className="text-red-500">.</span>
+            <span className="text-yellow-500">dev</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -52,8 +52,8 @@ const Navigation = ({ activeSection }: NavigationProps) => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`text-sm font-russo font-medium transition-colors hover:text-boom-yellow whitespace-nowrap ${
-                  activeSection === item.id ? "text-boom-yellow" : "text-white"
+                className={`text-sm font-medium transition-colors hover:text-blue-500 whitespace-nowrap ${
+                  activeSection === item.id ? "text-blue-500" : "text-gray-700"
                 }`}
               >
                 {item.label}
@@ -61,15 +61,15 @@ const Navigation = ({ activeSection }: NavigationProps) => {
             ))}
             <Button 
               onClick={scrollToProducts}
-              className="comic-button-yellow text-black font-russo whitespace-nowrap"
+              className="bg-blue-500 hover:bg-blue-600 text-white whitespace-nowrap"
             >
-              ZU DEN PRODUKTEN
+              Zu den Produkten
             </Button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-white hover:text-boom-yellow"
+            className="md:hidden p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Menu"
           >
@@ -79,14 +79,14 @@ const Navigation = ({ activeSection }: NavigationProps) => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-gray-700 bg-comic-black/95 backdrop-blur-sm rounded-b-lg shadow-lg">
+          <div className="md:hidden mt-4 pb-4 border-t bg-white/95 backdrop-blur-sm rounded-b-lg shadow-lg">
             <div className="flex flex-col space-y-4 pt-4 px-2">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`text-left font-russo font-medium transition-colors hover:text-boom-yellow py-2 px-3 rounded ${
-                    activeSection === item.id ? "text-boom-yellow bg-gray-800" : "text-white"
+                  className={`text-left font-medium transition-colors hover:text-blue-500 py-2 px-3 rounded ${
+                    activeSection === item.id ? "text-blue-500 bg-blue-50" : "text-gray-700"
                   }`}
                 >
                   {item.label}
@@ -94,9 +94,9 @@ const Navigation = ({ activeSection }: NavigationProps) => {
               ))}
               <Button 
                 onClick={scrollToProducts}
-                className="comic-button-yellow text-black font-russo w-full"
+                className="bg-blue-500 hover:bg-blue-600 text-white w-full"
               >
-                ZU DEN PRODUKTEN
+                Zu den Produkten
               </Button>
             </div>
           </div>

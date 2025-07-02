@@ -75,7 +75,7 @@ const Index = () => {
         <div className="container mx-auto px-6 text-center">
           <div className="mb-12">
             <h3 className="text-3xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span>
+              <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent animate-pulse">WhaamKaBaam</span>
             </h3>
             <p className="text-whaam-white/60 max-w-md mx-auto text-lg">
               Custom Curve Settings Tailored to Your Aim. Perfect your gaming performance with personalized mouse acceleration curves.
@@ -95,18 +95,18 @@ const Index = () => {
             <div>
               <h4 className="font-semibold mb-4 text-whaam-yellow text-xl">Games Supported</h4>
               <ul className="space-y-3 text-whaam-white/60">
-                <li><a href="#" className="hover:text-whaam-red transition-colors">Valorant</a></li>
-                <li><a href="#" className="hover:text-whaam-red transition-colors">CS2</a></li>
-                <li><a href="#" className="hover:text-whaam-red transition-colors">Apex Legends</a></li>
-                <li><a href="#" className="hover:text-whaam-red transition-colors">All FPS Games</a></li>
+                <li><a href="https://playvalorant.com" target="_blank" rel="noopener noreferrer" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">Valorant</a></li>
+                <li><a href="https://counter-strike.net" target="_blank" rel="noopener noreferrer" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">CS2</a></li>
+                <li><a href="https://apexlegends.com" target="_blank" rel="noopener noreferrer" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">Apex Legends</a></li>
+                <li><a href="#" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">All FPS Games</a></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4 text-whaam-red text-xl">Connect</h4>
               <ul className="space-y-3 text-whaam-white/60">
-                <li><a href="mailto:hello@whaamkabaam.com" className="hover:text-whaam-red transition-colors">hello@whaamkabaam.com</a></li>
-                <li><a href="#" className="hover:text-whaam-red transition-colors">Discord: @whaam_kabaam</a></li>
-                <li><a href="#" className="hover:text-whaam-red transition-colors">Follow us on social media</a></li>
+                <li><a href="mailto:hello@whaamkabaam.com" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">hello@whaamkabaam.com</a></li>
+                <li><a href="https://discord.gg/whaamkabaam" target="_blank" rel="noopener noreferrer" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">Discord: @whaam_kabaam</a></li>
+                <li><a href="https://twitter.com/whaamkabaam" target="_blank" rel="noopener noreferrer" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">Follow us on social media</a></li>
               </ul>
             </div>
           </div>

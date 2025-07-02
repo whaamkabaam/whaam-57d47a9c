@@ -113,6 +113,54 @@ const Portfolio = () => {
       beforeAfter: "Von Platin 1 zu Diamond 2",
       accuracyBoost: "+26% Overall Accuracy",
       color: "from-orange-500 to-red-600"
+    },
+    {
+      name: "Sophie Mueller",
+      game: "Valorant",
+      rank: "Ascendant 1",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80",
+      rating: 5,
+      review: "Incredible transformation! My crosshair placement became so much more precise after the custom curve. I'm hitting headshots I never thought possible.",
+      improvement: "+3 Rank Tiers",
+      beforeAfter: "Von Gold 3 zu Ascendant 1",
+      accuracyBoost: "+41% Headshot Rate",
+      color: "from-blue-500 to-indigo-600"
+    },
+    {
+      name: "Chris Taylor",
+      game: "CS2",
+      rank: "LEM",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
+      rating: 5,
+      review: "The live session was game-changing! Having real-time feedback while testing the curve made all the difference. My spray patterns are now perfect.",
+      improvement: "LEM Achieved",
+      beforeAfter: "Von DMG zu LEM",
+      accuracyBoost: "+37% Spray Control",
+      color: "from-green-500 to-emerald-600"
+    },
+    {
+      name: "Nina Hoffmann",
+      game: "Overwatch 2",
+      rank: "Master",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80",
+      rating: 5,
+      review: "As a Widow main, precision is everything. The curve optimization helped me hit those crucial picks consistently. My team performance improved dramatically.",
+      improvement: "Master Tier",
+      beforeAfter: "Von Diamond zu Master",
+      accuracyBoost: "+44% Scoped Accuracy",
+      color: "from-purple-500 to-violet-600"
+    },
+    {
+      name: "Kevin Zhang",
+      game: "Valorant",
+      rank: "Immortal 1",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80",
+      rating: 5,
+      review: "Best investment for my gaming setup! The curve feels so natural now. My reaction time improved and I'm clutching rounds I used to lose.",
+      improvement: "Immortal Reached",
+      beforeAfter: "Von Ascendant 2 zu Immortal 1",
+      accuracyBoost: "+32% Clutch Success",
+      color: "from-red-500 to-orange-600"
     }
   ];
 
@@ -200,7 +248,7 @@ const Portfolio = () => {
         {testimonials.map((testimonial, index) => (
             <Card 
             key={testimonial.name} 
-            className="group overflow-hidden border-2 border-whaam-red/20 shadow-lg hover:shadow-2xl hover:shadow-whaam-red/20 transition-all duration-700 hover:-translate-y-3 hover:scale-105 bg-whaam-black hover:border-whaam-yellow animate-scale-in"
+            className="group overflow-hidden border-2 border-whaam-red/20 shadow-lg hover:shadow-2xl hover:shadow-whaam-red/30 transition-all duration-700 hover:-translate-y-4 hover:scale-105 hover:rotate-1 bg-whaam-black hover:border-whaam-yellow animate-scale-in"
           >
             <CardContent className="p-8">
               {/* Quote Icon */}

@@ -26,7 +26,7 @@ const Products = () => {
       price: "$39",
       originalPrice: "$69",
       badge: "Best Value",
-      badgeColor: "bg-whaam-yellow text-whaam-black",
+      badgeColor: "bg-whaam-yellow text-whaam-black text-lg font-black",
       description: "Perfect for most gamers who want personalized curve optimization",
       deliveryTime: "First curve delivered in minutes",
       features: [
@@ -46,7 +46,7 @@ const Products = () => {
       price: "$47",
       originalPrice: "$79",
       badge: "Most Bought",
-      badgeColor: "bg-whaam-red text-whaam-white",
+      badgeColor: "bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red text-whaam-white",
       description: "For perfectionists who want unlimited fine-tuning until it's perfect",
       deliveryTime: "First curve delivered in minutes",
       features: [
@@ -67,7 +67,7 @@ const Products = () => {
       price: "$149",
       originalPrice: "$249",
       badge: "Premium",
-      badgeColor: "bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red text-whaam-white",
+      badgeColor: "bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red text-whaam-white text-lg font-black",
       description: "Ultimate experience with real-time curve development and instant testing",
       deliveryTime: "Personal live 1-on-1 session",
       emphasis: "Perfect Curve Guaranteed in 45 Minutes",
@@ -136,13 +136,13 @@ const Products = () => {
       </div>
 
       {/* Plans Grid - Fixed heights and button alignment */}
-      <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20">
+        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20">
         {plans.map((plan, index) => (
           <Card 
             key={plan.id}
-            className={`group relative transition-all duration-700 hover:-translate-y-4 hover:shadow-2xl hover:shadow-whaam-red/20 border-2 shadow-lg overflow-hidden bg-whaam-black min-h-[700px] flex flex-col animate-fade-in ${
-              plan.highlight ? 'border-whaam-red scale-105 shadow-whaam-red/30 animate-pulse' : 'border-whaam-red/20'
-            } ${hoveredPlan === plan.id ? 'shadow-2xl border-whaam-red animate-pulse' : ''} ${
+            className={`group relative transition-all duration-700 hover:-translate-y-6 hover:shadow-2xl hover:shadow-whaam-red/30 border-2 shadow-lg overflow-hidden bg-whaam-black min-h-[700px] flex flex-col animate-fade-in hover:rotate-1 ${
+              plan.highlight ? 'border-whaam-red scale-105 shadow-whaam-red/30 animate-pulse ring-2 ring-whaam-yellow/50' : 'border-whaam-red/20'
+            } ${hoveredPlan === plan.id ? 'shadow-2xl border-whaam-red animate-pulse scale-105' : ''} ${
               selectedPlan === plan.id ? 'border-whaam-yellow shadow-whaam-yellow/30' : ''
             }`}
             onMouseEnter={() => setHoveredPlan(plan.id)}
@@ -150,9 +150,9 @@ const Products = () => {
           >
             {/* Badge */}
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-              <Badge className={`${plan.badgeColor} px-8 py-3 font-bold shadow-2xl border-0 text-base animate-pulse`}>
-                {plan.badge}
-              </Badge>
+            <Badge className={`${plan.badgeColor} px-8 py-3 font-bold shadow-2xl border-0 text-base animate-pulse hover:scale-110 transition-all duration-300`}>
+              {plan.badge}
+            </Badge>
             </div>
 
             {/* Popular Plan Glow Effect */}
@@ -241,7 +241,7 @@ const Products = () => {
       {/* Benefits Section */}
       <div className="bg-whaam-black rounded-3xl p-12 mb-20 border border-whaam-red/20">
         <h3 className="text-3xl font-bold text-center text-whaam-white mb-12">
-          Warum <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span> wählen?
+          Warum <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent animate-pulse">WhaamKaBaam</span> wählen?
         </h3>
         
         <div className="grid sm:grid-cols-3 gap-8">

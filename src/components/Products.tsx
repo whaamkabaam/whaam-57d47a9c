@@ -122,12 +122,12 @@ const Products = () => {
         </div>
       </div>
 
-      {/* Plans Grid - Fixed heights and button alignment */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20">
+      {/* Plans Grid - Fixed heights and proper badge spacing */}
+        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20 pt-12">
         {plans.map((plan, index) => (
           <Card 
             key={plan.id}
-            className={`group relative transition-all duration-700 hover:-translate-y-6 hover:shadow-2xl hover:shadow-whaam-red/30 border-2 shadow-lg overflow-hidden bg-whaam-black min-h-[700px] flex flex-col animate-fade-in hover:rotate-1 ${
+            className={`group relative transition-all duration-700 hover:-translate-y-6 hover:shadow-2xl hover:shadow-whaam-red/40 hover:shadow-[0_0_20px_theme(colors.whaam-red)] border-2 shadow-lg overflow-visible bg-whaam-black min-h-[580px] flex flex-col animate-fade-in hover:scale-[1.02] ${
               plan.highlight ? 'border-whaam-red scale-105 shadow-whaam-red/30 ring-2 ring-whaam-yellow/50' : 'border-whaam-red/20'
             } ${hoveredPlan === plan.id ? 'shadow-2xl border-whaam-red scale-105' : ''} ${
               selectedPlan === plan.id ? 'border-whaam-yellow shadow-whaam-yellow/30' : ''
@@ -135,11 +135,10 @@ const Products = () => {
             onMouseEnter={() => setHoveredPlan(plan.id)}
             onMouseLeave={() => setHoveredPlan(null)}
           >
-            {/* Badge */}
-            <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
-            <Badge className={`${plan.badgeColor} px-8 py-3 font-bold shadow-2xl border-0 text-base hover:scale-110 transition-all duration-300 relative`}>
+            {/* Badge - Properly positioned above card */}
+            <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
+            <Badge className={`${plan.badgeColor} px-6 py-2 text-sm font-bold shadow-xl border-0 hover:scale-110 transition-all duration-300 whitespace-nowrap`}>
               {plan.badge}
-              <div className="absolute inset-0 bg-black/10 rounded-full"></div>
             </Badge>
             </div>
 

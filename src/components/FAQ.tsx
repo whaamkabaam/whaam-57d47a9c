@@ -12,43 +12,43 @@ const FAQ = () => {
   const faqs = [
     {
       id: "what-is-curve",
-      question: "Was genau ist eine Custom Mouse Curve?",
-      answer: "Eine Custom Mouse Curve ist eine personalisierte Mausbeschleunigungseinstellung, die speziell auf deinen Spielstil, deine Hardware und deine bevorzugten Spiele angepasst wird. Sie optimiert die Beziehung zwischen deiner physischen Mausbewegung und der Cursor-Bewegung im Spiel für maximale Präzision und Konsistenz."
+      question: "What exactly is a Custom Mouse Curve?",
+      answer: "A Custom Mouse Curve is a personalized mouse acceleration setting that's specifically tailored to your playstyle, hardware, and preferred games. It optimizes the relationship between your physical mouse movement and cursor movement in-game for maximum precision and consistency."
     },
     {
       id: "how-fast",
-      question: "Wie schnell erhalte ich meine Curve?",
-      answer: "Die erste Version deiner Custom Curve wird innerhalb von Minuten nach der Bestellung geliefert! Nach einer kurzen Analyse deiner Angaben erstellen wir deine initiale Curve sofort. Revisionen und Feinabstimmungen erfolgen dann basierend auf deinem Feedback meist innerhalb weniger Stunden."
+      question: "How fast will I receive my curve?",
+      answer: "The first version of your Custom Curve is delivered within minutes of ordering! After a brief analysis of your information, we create your initial curve immediately. Revisions and fine-tuning based on your feedback usually happen within a few hours."
     },
     {
       id: "which-games",
-      question: "Für welche Spiele funktioniert die Curve?",
-      answer: "Unsere Custom Curves funktionieren für alle FPS-Spiele! Besonders optimiert sind sie für Valorant, CS2, Apex Legends und Overwatch 2. Die Curve wird speziell für deine Hauptspiele angepasst, funktioniert aber auch hervorragend in anderen Shootern."
+      question: "Which games does the curve work for?",
+      answer: "Our Custom Curves work for all FPS games! They're especially optimized for Valorant, CS2, Apex Legends, and Overwatch 2. The curve is specifically adapted for your main games but also works excellently in other shooters."
     },
     {
       id: "guarantee",
-      question: "Was passiert, wenn ich nicht zufrieden bin?",
-      answer: "Wir bieten eine 100% Zufriedenheitsgarantie! Wenn du mit deiner Custom Curve nicht vollständig zufrieden bist, erhältst du eine vollständige Rückerstattung - keine Fragen gestellt. Deine Zufriedenheit ist unser oberstes Ziel."
+      question: "What happens if I'm not satisfied?",
+      answer: "We offer a 100% satisfaction guarantee! If you're not completely satisfied with your Custom Curve, you'll receive a full refund - no questions asked. Your satisfaction is our top priority."
     },
     {
       id: "installation",
-      question: "Ist die Installation schwierig?",
-      answer: "Absolut nicht! Du erhältst eine detaillierte Schritt-für-Schritt-Anleitung plus die fertige Konfigurationsdatei. Die Installation dauert nur wenige Minuten und erfordert keine technischen Vorkenntnisse. Bei Fragen steht unser Support jederzeit zur Verfügung."
+      question: "Is installation difficult?",
+      answer: "Absolutely not! You'll receive detailed step-by-step instructions plus the ready configuration file. Installation takes just a few minutes and requires no technical knowledge. If you have questions, our support is always available."
     },
     {
       id: "difference",
-      question: "Was ist der Unterschied zwischen den Plänen?",
-      answer: "Der Hauptunterschied liegt in der Anzahl der Revisionen: 3× Revisions bietet drei Anpassungsrunden, Unlimited Revisions so viele wie nötig, und die Live Session beinhaltet eine persönliche 45-minütige Beratung mit Echzeit-Anpassungen während du spielst."
+      question: "What's the difference between the plans?",
+      answer: "The main difference is in the number of revisions: 3× Revisions offers three adjustment rounds, Unlimited Revisions as many as needed, and the Live Session includes a personal 45-minute consultation with real-time adjustments while you play."
     },
     {
       id: "hardware",
-      question: "Funktioniert es mit meiner Maus?",
-      answer: "Ja! Unsere Custom Curves funktionieren mit praktisch jeder Gaming-Maus. Egal ob Logitech, Razer, SteelSeries, Finalmouse oder eine andere Marke - wir passen die Curve an deine spezifische Hardware an für optimale Ergebnisse."
+      question: "Does it work with my mouse?",
+      answer: "Yes! Our Custom Curves work with virtually any gaming mouse. Whether Logitech, Razer, SteelSeries, Finalmouse, or another brand - we adapt the curve to your specific hardware for optimal results."
     },
     {
       id: "results",
-      question: "Welche Verbesserungen kann ich erwarten?",
-      answer: "Die meisten unserer Kunden berichten von 20-40% verbesserter Treffergenauigkeit, konsistenterem Aim und weniger Überzielen. Viele erreichen höhere Ränge in ihren Lieblingsspielen innerhalb von 1-2 Wochen nach der Implementierung."
+      question: "What improvements can I expect?",
+      answer: "Most of our customers report 20-40% improved accuracy, more consistent aim, and less overshooting. Many achieve higher ranks in their favorite games within 1-2 weeks of implementation."
     }
   ];
 
@@ -57,16 +57,16 @@ const FAQ = () => {
       <div className="text-center mb-16">
         <div className="inline-flex items-center bg-whaam-red/10 text-whaam-red px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-whaam-red/20">
           <HelpCircle className="mr-2" size={16} />
-          Häufig gestellte Fragen
+          Frequently Asked Questions
         </div>
         
         <h2 className="text-4xl md:text-5xl font-bold text-whaam-white mb-4">
-          Alles was du
-          <span className="block bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent mt-4"> wissen musst</span>
+          Everything you
+          <span className="block bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent mt-4"> need to know</span>
         </h2>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Hier findest du Antworten auf die wichtigsten Fragen zu unseren Custom Curves 
-          und unserem Service.
+          Here you'll find answers to the most important questions about our Custom Curves 
+          and our service.
         </p>
       </div>
 
@@ -96,8 +96,8 @@ const FAQ = () => {
             <div className="w-16 h-16 bg-whaam-red rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
               <Target className="text-whaam-white" size={32} />
             </div>
-            <h3 className="text-xl font-bold text-whaam-white mb-3">Sofortige Lieferung</h3>
-            <p className="text-muted-foreground">Erste Curve in Minuten, nicht in Tagen. Starte sofort durch!</p>
+            <h3 className="text-xl font-bold text-whaam-white mb-3">Instant Delivery</h3>
+            <p className="text-muted-foreground">First curve in minutes, not days. Start right away!</p>
           </CardContent>
         </Card>
 
@@ -106,8 +106,8 @@ const FAQ = () => {
             <div className="w-16 h-16 bg-whaam-yellow rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
               <Zap className="text-whaam-black" size={32} />
             </div>
-            <h3 className="text-xl font-bold text-whaam-white mb-3">Einfache Installation</h3>
-            <p className="text-muted-foreground">Schritt-für-Schritt Anleitung für mühelose Einrichtung.</p>
+            <h3 className="text-xl font-bold text-whaam-white mb-3">Easy Installation</h3>
+            <p className="text-muted-foreground">Step-by-step guide for effortless setup.</p>
           </CardContent>
         </Card>
 
@@ -116,8 +116,8 @@ const FAQ = () => {
             <div className="w-16 h-16 bg-whaam-red rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
               <Shield className="text-whaam-white" size={32} />
             </div>
-            <h3 className="text-xl font-bold text-whaam-white mb-3">100% Garantie</h3>
-            <p className="text-muted-foreground">Nicht zufrieden? Vollständige Rückerstattung ohne Wenn und Aber.</p>
+            <h3 className="text-xl font-bold text-whaam-white mb-3">100% Guarantee</h3>
+            <p className="text-muted-foreground">Not satisfied? Full refund with no questions asked.</p>
           </CardContent>
         </Card>
       </div>

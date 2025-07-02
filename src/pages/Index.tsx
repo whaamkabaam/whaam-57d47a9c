@@ -86,10 +86,10 @@ const Index = () => {
             <div>
               <h4 className="font-semibold mb-4 text-whaam-red text-xl">Services</h4>
               <ul className="space-y-3 text-whaam-white/60">
-                <li>3× Revisions</li>
-                <li>Unlimited Revisions</li>
-                <li>Live 1-on-1 Sessions</li>
-                <li>Custom Curve Optimization</li>
+                <li><a href="#products" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">3× Revisions</a></li>
+                <li><a href="#products" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">Unlimited Revisions</a></li>
+                <li><a href="#products" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">Live 1-on-1 Sessions</a></li>
+                <li><a href="#products" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">Custom Curve Optimization</a></li>
               </ul>
             </div>
             <div>
@@ -102,7 +102,7 @@ const Index = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4 text-whaam-red text-xl">Connect</h4>
+              <h4 className="font-semibold mb-4 text-orange-500 text-xl">Connect</h4>
               <ul className="space-y-3 text-whaam-white/60">
                 <li><a href="mailto:hello@whaamkabaam.com" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">hello@whaamkabaam.com</a></li>
                 <li><a href="https://discord.gg/whaamkabaam" target="_blank" rel="noopener noreferrer" className="hover:text-whaam-yellow transition-all duration-300 hover:scale-105">Discord: @whaam_kabaam</a></li>

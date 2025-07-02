@@ -41,12 +41,10 @@ const Navigation = ({ activeSection }: NavigationProps) => {
         <div className="flex items-center justify-between">
           {/* Logo - nur WhaamKaBaam */}
           <div 
-            className="text-2xl sm:text-3xl font-bold cursor-pointer hover:scale-105 transition-transform"
+            className="text-2xl sm:text-3xl font-bold cursor-pointer hover:scale-105 transition-all duration-300 hover:drop-shadow-lg"
             onClick={() => scrollToSection("home")}
           >
-            <span className="bg-gradient-to-r from-whaam-red to-whaam-red bg-clip-text text-transparent">Whaam</span>
-            <span className="bg-gradient-to-r from-whaam-yellow to-whaam-yellow bg-clip-text text-transparent">Ka</span>
-            <span className="bg-gradient-to-r from-whaam-white to-whaam-white bg-clip-text text-transparent">Baam</span>
+            <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span>
           </div>
 
           {/* Desktop Navigation */}

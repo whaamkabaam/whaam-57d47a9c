@@ -24,9 +24,9 @@ const Products = () => {
       id: "3x-revisions",
       name: "3× Revisions",
       price: "$39",
-      originalPrice: "$59",
+      originalPrice: "$69",
       badge: "Most Bought",
-      badgeColor: "bg-whaam-red",
+      badgeColor: "bg-whaam-red text-whaam-white",
       description: "Perfect for most gamers who want personalized curve optimization",
       deliveryTime: "First curve delivered in minutes",
       features: [
@@ -45,9 +45,9 @@ const Products = () => {
       id: "unlimited-revisions", 
       name: "Unlimited Revisions",
       price: "$47",
-      originalPrice: "$67",
+      originalPrice: "$79",
       badge: "Best Value",
-      badgeColor: "bg-whaam-yellow",
+      badgeColor: "bg-whaam-yellow text-whaam-black",
       description: "For perfectionists who want unlimited fine-tuning until it's perfect",
       deliveryTime: "First curve delivered in minutes",
       features: [
@@ -65,9 +65,9 @@ const Products = () => {
       id: "live-session",
       name: "Live 1‑on‑1 Session", 
       price: "$149",
-      originalPrice: "$199",
-      badge: "Live Session",
-      badgeColor: "bg-whaam-red",
+      originalPrice: "$249",
+      badge: "Premium",
+      badgeColor: "bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red text-whaam-white",
       description: "Ultimate experience with real-time curve development and instant testing",
       deliveryTime: "Personal live 1-on-1 session",
       emphasis: "Perfect Curve Guaranteed in 45 Minutes",
@@ -140,17 +140,17 @@ const Products = () => {
         {plans.map((plan, index) => (
           <Card 
             key={plan.id}
-            className={`group relative transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl border-2 shadow-lg overflow-hidden bg-whaam-black min-h-[650px] flex flex-col ${
-              plan.highlight ? 'border-whaam-red scale-105' : 'border-whaam-red/20'
-            } ${hoveredPlan === plan.id ? 'shadow-2xl border-whaam-red' : ''} ${
-              selectedPlan === plan.id ? 'border-whaam-yellow' : ''
+            className={`group relative transition-all duration-700 hover:-translate-y-4 hover:shadow-2xl hover:shadow-whaam-red/20 border-2 shadow-lg overflow-hidden bg-whaam-black min-h-[700px] flex flex-col ${
+              plan.highlight ? 'border-whaam-red scale-105 shadow-whaam-red/30' : 'border-whaam-red/20'
+            } ${hoveredPlan === plan.id ? 'shadow-2xl border-whaam-red animate-pulse' : ''} ${
+              selectedPlan === plan.id ? 'border-whaam-yellow shadow-whaam-yellow/30' : ''
             }`}
             onMouseEnter={() => setHoveredPlan(plan.id)}
             onMouseLeave={() => setHoveredPlan(null)}
           >
             {/* Badge */}
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-              <Badge className={`${plan.badgeColor} text-whaam-black px-6 py-2 font-bold shadow-lg border-0 text-sm`}>
+              <Badge className={`${plan.badgeColor} px-6 py-2 font-bold shadow-2xl border-0 text-sm animate-pulse`}>
                 {plan.badge}
               </Badge>
             </div>
@@ -161,8 +161,8 @@ const Products = () => {
             )}
 
             <CardHeader className="text-center pt-12 pb-6 flex-shrink-0">
-              <div className={`w-20 h-20 mx-auto mb-6 rounded-3xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 ${
-                plan.highlight ? 'bg-whaam-red' : 'bg-whaam-yellow'
+              <div className={`w-20 h-20 mx-auto mb-6 rounded-3xl flex items-center justify-center transition-all duration-500 group-hover:scale-125 group-hover:rotate-6 group-hover:shadow-2xl ${
+                plan.highlight ? 'bg-whaam-red group-hover:bg-whaam-yellow' : plan.premium ? 'bg-gradient-to-br from-whaam-red to-whaam-yellow' : 'bg-whaam-yellow group-hover:bg-whaam-red'
               }`}>
                 <plan.icon className="text-whaam-black" size={32} />
               </div>

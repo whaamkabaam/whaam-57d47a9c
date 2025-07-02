@@ -53,6 +53,30 @@ const Portfolio = () => {
       beforeAfter: "Von Immortal 3 zu Radiant",
       accuracyBoost: "+31% Konsistenz",
       color: "from-yellow-500 to-orange-600"
+    },
+    {
+      name: "Marcus Weber",
+      game: "CS2",
+      rank: "Faceit Level 10",
+      avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=150&q=80",
+      rating: 5,
+      review: "Incredible service! The curve was perfectly calibrated for my playstyle. My headshot percentage went through the roof and I'm hitting shots I never thought possible.",
+      improvement: "+4 Faceit Levels",
+      beforeAfter: "Von Level 6 zu Level 10",
+      accuracyBoost: "+45% Headshot Rate",
+      color: "from-purple-500 to-blue-600"
+    },
+    {
+      name: "Emma Thompson",
+      game: "Overwatch 2",
+      rank: "Grandmaster",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80",
+      rating: 5,
+      review: "As a Tracer main, precision is everything. The custom curve made my tracking so much smoother. I finally broke into Grandmaster after months of being stuck in Masters.",
+      improvement: "Grandmaster Reached",
+      beforeAfter: "Von Master zu Grandmaster",
+      accuracyBoost: "+38% Tracking Accuracy",
+      color: "from-pink-500 to-red-600"
     }
   ];
 
@@ -136,11 +160,11 @@ const Portfolio = () => {
       </div>
 
       {/* Enhanced Testimonials Grid */}
-      <div className="grid md:grid-cols-2 gap-8 mb-20">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
         {testimonials.map((testimonial, index) => (
             <Card 
             key={testimonial.name} 
-            className="group overflow-hidden border-2 border-whaam-red/20 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-whaam-black hover:border-whaam-red"
+            className="group overflow-hidden border-2 border-whaam-red/20 shadow-lg hover:shadow-2xl hover:shadow-whaam-red/20 transition-all duration-700 hover:-translate-y-3 hover:scale-105 bg-whaam-black hover:border-whaam-yellow"
           >
             <CardContent className="p-8">
               {/* Quote Icon */}

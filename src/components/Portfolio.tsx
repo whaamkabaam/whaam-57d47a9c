@@ -14,8 +14,8 @@ const Portfolio = () => {
       rating: 5,
       review: "My aim improved dramatically after getting my custom curve. The difference was noticeable immediately and I've been climbing ranks ever since!",
       improvement: "+3 Rank Tiers",
-      beforeAfter: "Von Diamond 2 zu Immortal 2 in 2 Wochen",
-      accuracyBoost: "+35% Treffergenauigkeit",
+      beforeAfter: "From Diamond 2 to Immortal 2 in 2 weeks",
+      accuracyBoost: "+35% Accuracy",
       color: "from-blue-500 to-purple-600"
     },
     {
@@ -26,8 +26,8 @@ const Portfolio = () => {
       rating: 5,
       review: "The personalized curve completely transformed my flick shots. I can't believe how much more consistent my aim became. Best investment I've made for my gaming setup.",
       improvement: "40% Better Accuracy",
-      beforeAfter: "Von Supreme zu Global Elite",
-      accuracyBoost: "+42% Flick-Präzision",
+      beforeAfter: "From Supreme to Global Elite",
+      accuracyBoost: "+42% Flick Precision",
       color: "from-red-500 to-pink-600"
     },
     {
@@ -38,8 +38,8 @@ const Portfolio = () => {
       rating: 5,
       review: "The live 1-on-1 session was incredible. Having real-time adjustments while I played made all the difference. My tracking improved instantly.",
       improvement: "Master Tier Reached",
-      beforeAfter: "Von Diamond 4 zu Master",
-      accuracyBoost: "+28% Tracking-Genauigkeit",
+      beforeAfter: "From Diamond 4 to Master",
+      accuracyBoost: "+28% Tracking Accuracy",
       color: "from-green-500 to-teal-600"
     },
     {
@@ -50,8 +50,8 @@ const Portfolio = () => {
       rating: 5,
       review: "Finally hit Radiant after using my custom curve! The precision and consistency I gained is unreal. Every shot feels more controlled now.",
       improvement: "Hit Radiant",
-      beforeAfter: "Von Immortal 3 zu Radiant",
-      accuracyBoost: "+31% Konsistenz",
+      beforeAfter: "From Immortal 3 to Radiant",
+      accuracyBoost: "+31% Consistency",
       color: "from-yellow-500 to-orange-600"
     },
     {
@@ -62,7 +62,7 @@ const Portfolio = () => {
       rating: 5,
       review: "Incredible service! The curve was perfectly calibrated for my playstyle. My headshot percentage went through the roof and I'm hitting shots I never thought possible.",
       improvement: "+4 Faceit Levels",
-      beforeAfter: "Von Level 6 zu Level 10",
+      beforeAfter: "From Level 6 to Level 10",
       accuracyBoost: "+45% Headshot Rate",
       color: "from-purple-500 to-blue-600"
     },
@@ -74,7 +74,7 @@ const Portfolio = () => {
       rating: 5,
       review: "As a Tracer main, precision is everything. The custom curve made my tracking so much smoother. I finally broke into Grandmaster after months of being stuck in Masters.",
       improvement: "Grandmaster Reached",
-      beforeAfter: "Von Master zu Grandmaster",
+      beforeAfter: "From Master to Grandmaster",
       accuracyBoost: "+38% Tracking Accuracy",
       color: "from-pink-500 to-red-600"
     }
@@ -100,8 +100,8 @@ const Portfolio = () => {
           <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent"> Real Results</span>
         </h2>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Schau dir an, wie unsere Custom Curves das Aim und die Performance von 
-          Gamern wie dir transformiert haben - mit messbaren Ergebnissen.
+          See how our custom curves have transformed the aim and performance of 
+          gamers like you - with measurable results.
         </p>
       </div>
 
@@ -110,7 +110,7 @@ const Portfolio = () => {
         <div className="text-center mb-12">
           <h3 className="text-3xl font-bold mb-4">Before & After Demonstration</h3>
           <p className="text-muted-foreground text-lg">
-            Sieh dir an, wie dramatisch sich das Aim mit einer Custom Curve verbessert.
+            See how dramatically aim improves with a custom curve.
           </p>
         </div>
         
@@ -194,7 +194,7 @@ const Portfolio = () => {
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <Star key={i} className="text-whaam-yellow fill-current" size={20} />
                 ))}
-                <span className="ml-2 text-muted-foreground text-sm">(Verifizierter Kunde)</span>
+                <span className="ml-2 text-muted-foreground text-sm">(Verified Customer)</span>
               </div>
               
               <div className="flex items-center justify-between">
@@ -226,7 +226,7 @@ const Portfolio = () => {
         <div className="text-center mb-12">
           <h3 className="text-3xl font-bold mb-4">Proven Track Record</h3>
           <p className="text-muted-foreground text-lg">
-            Unsere Ergebnisse sprechen für sich. Hier ist der Impact, den wir erzielt haben.
+            Our results speak for themselves. Here's the impact we've achieved.
           </p>
         </div>
         
@@ -250,16 +250,16 @@ const Portfolio = () => {
         <div className="mt-12 pt-8 border-t border-whaam-red/20">
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-2xl font-bold mb-1 text-whaam-yellow">2.3 Ränge</div>
-              <div className="text-muted-foreground text-sm">Durchschnittlicher Rank-Anstieg</div>
+              <div className="text-2xl font-bold mb-1 text-whaam-yellow">2.3 Ranks</div>
+              <div className="text-muted-foreground text-sm">Average rank increase</div>
             </div>
             <div>
-              <div className="text-2xl font-bold mb-1 text-whaam-yellow">14 Tage</div>
-              <div className="text-muted-foreground text-sm">Durchschnitt bis zu Verbesserungen</div>
+              <div className="text-2xl font-bold mb-1 text-whaam-yellow">14 Days</div>
+              <div className="text-muted-foreground text-sm">Average time to improvements</div>
             </div>
             <div>
               <div className="text-2xl font-bold mb-1 text-whaam-yellow">98%</div>
-              <div className="text-muted-foreground text-sm">Würden uns weiterempfehlen</div>
+              <div className="text-muted-foreground text-sm">Would recommend us</div>
             </div>
           </div>
         </div>
@@ -276,7 +276,7 @@ const Portfolio = () => {
           Get Your Custom Curve Now
           <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
         </Button>
-        <p className="text-muted-foreground mt-4">Schließe dich über 500 zufriedenen Gamern an</p>
+        <p className="text-muted-foreground mt-4">Join over 500 satisfied gamers</p>
       </div>
     </div>
   );

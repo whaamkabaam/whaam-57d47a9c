@@ -12,11 +12,11 @@ const Navigation = ({ activeSection }: NavigationProps) => {
 
   const navItems = [
     { id: "home", label: "Home" },
-    { id: "services", label: "Wie es funktioniert" },
+    { id: "services", label: "How it Works" },
     { id: "portfolio", label: "Testimonials" },
-    { id: "about", label: "Über uns" },
+    { id: "about", label: "About Us" },
     { id: "faq", label: "FAQ" },
-    { id: "contact", label: "Kontakt" },
+    { id: "contact", label: "Contact" },
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -65,7 +65,7 @@ const Navigation = ({ activeSection }: NavigationProps) => {
               variant="whaam"
               className="whitespace-nowrap px-6 py-2 h-10 font-bold transition-all duration-300 hover:scale-105"
             >
-              Zu den Produkten
+              To the Products
             </Button>
           </div>
 
@@ -99,7 +99,7 @@ const Navigation = ({ activeSection }: NavigationProps) => {
                 variant="whaam"
                 className="w-full h-12 font-bold"
               >
-                Zu den Produkten
+                To the Products
               </Button>
             </div>
           </div>

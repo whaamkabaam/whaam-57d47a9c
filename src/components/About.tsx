@@ -42,8 +42,8 @@ const About = () => {
           <span className="block bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent mt-4"> Curve Expert</span>
         </h2>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Mit über 4 Jahren Erfahrung und 1900 RR in Valorant bringe ich sowohl 
-          technische Expertise als auch echte Wettkampferfahrung zu jeder Custom Curve.
+          With over 4 years of experience and 1900 RR in Valorant, I bring both 
+          technical expertise and real competitive experience to every custom curve.
         </p>
       </div>
 
@@ -62,7 +62,7 @@ const About = () => {
                       <Play className="text-whaam-white ml-1" size={32} />
                     </div>
                     <h4 className="text-xl font-bold mb-2">Curve Expert Introduction</h4>
-                    <p className="text-whaam-white/80">Lerne deinen Aim-Experten kennen</p>
+                    <p className="text-whaam-white/80">Meet your aim expert</p>
                   </div>
                 </div>
                 
@@ -95,18 +95,18 @@ const About = () => {
             <div className="p-8 lg:p-12 text-whaam-white">
               <div className="max-w-lg">
                 <h3 className="text-3xl font-bold mb-6">
-                  Der Experte hinter deinem perfekten Aim
+                  The expert behind your perfect aim
                 </h3>
                 
                 <div className="bg-whaam-white/10 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-whaam-red/20">
                   <p className="text-lg leading-relaxed mb-4">
-                    "Ich helfe dir dabei, dein Aim auf ein völlig neues Level zu bringen. 
-                    Mit über 4 Jahren Erfahrung in der Curve-Entwicklung und als Radiant-Spieler 
-                    weiß ich genau, was funktioniert."
+                    "I help you take your aim to a completely new level. 
+                    With over 4 years of experience in curve development and as a Radiant player, 
+                    I know exactly what works."
                   </p>
                   <p className="text-muted-foreground">
-                    Meine datengetriebene Herangehensweise kombiniert Wettkampf-Insights 
-                    mit präziser mathematischer Optimierung für Curves, die wirklich transformieren.
+                    My data-driven approach combines competitive insights 
+                    with precise mathematical optimization for curves that truly transform.
                   </p>
                 </div>
 
@@ -131,7 +131,7 @@ const About = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <h3 className="text-3xl font-bold text-whaam-white mb-8">
-              Credentials & Erfolge
+              Credentials & Achievements
             </h3>
             <div className="space-y-4">
               {achievements.map((achievement, index) => (
@@ -166,8 +166,8 @@ const About = () => {
         <div className="text-center mb-12">
           <h3 className="text-3xl font-bold mb-4">Competitive Gaming Background</h3>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Echte Wettkampferfahrung in mehreren FPS-Titeln sorgt dafür, dass deine Curve 
-            für tatsächliche Gameplay-Szenarien optimiert ist.
+            Real competitive experience across multiple FPS titles ensures your curve 
+            is optimized for actual gameplay scenarios.
           </p>
         </div>
 
@@ -188,17 +188,17 @@ const About = () => {
       {/* Personal Mission */}
       <div className="text-center bg-whaam-black rounded-3xl p-12 border-2 border-whaam-red/20">
         <div className="max-w-4xl mx-auto">
-          <h3 className="text-3xl font-bold text-whaam-white mb-6">Meine Mission</h3>
+          <h3 className="text-3xl font-bold text-whaam-white mb-6">My Mission</h3>
           <blockquote className="text-2xl text-whaam-white leading-relaxed mb-8 italic">
-            "Jeder Gamer verdient es, sein wahres Potenzial zu erleben. Durch personalisierte 
-            Mausbeschleunigungskurven helfe ich Wettkampfspielern dabei, ihre Aim-Barrieren 
-            zu durchbrechen und die Konsistenz zu erreichen, die sie sich schon immer gewünscht haben."
+            "Every gamer deserves to experience their true potential. Through personalized 
+            mouse acceleration curves, I help competitive players break through their aim barriers 
+            and achieve the consistency they've always dreamed of."
           </blockquote>
           
           <div className="flex items-center justify-center gap-8 text-sm text-muted-foreground mb-8">
             <div className="flex items-center">
               <TrendingUp className="text-whaam-yellow mr-2" size={16} />
-              500+ transformierte Gamer
+              500+ transformed gamers
             </div>
             <div className="flex items-center">
               <Trophy className="text-whaam-yellow mr-2" size={16} />

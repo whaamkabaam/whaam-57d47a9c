@@ -7,30 +7,30 @@ const Services = () => {
   const steps = [
     {
       icon: FileText,
-      title: "Bestellung & Info bereitstellen",
-      description: "Erzähle uns von deinen aktuellen Einstellungen, Spielen und Gaming-Zielen. Wir analysieren deinen Spielstil.",
-      details: ["Teile deine aktuelle Sensitivität", "Nenne uns deine Hauptspiele", "Beschreibe deine Aim-Probleme", "Setze deine Performance-Ziele"],
+      title: "Order & Provide Info",
+      description: "Tell us about your current settings, games, and gaming goals. We analyze your playstyle.",
+      details: ["Share your current sensitivity", "Tell us your main games", "Describe your aim problems", "Set your performance goals"],
       color: "bg-whaam-red"
     },
     {
       icon: Settings,
-      title: "Personalisierte Einrichtung",
-      description: "Unser Experte erstellt deine Custom Curve basierend auf deinem einzigartigen Gaming-Profil und Präferenzen.",
-      details: ["Analysiere deinen Gaming-Stil", "Berechne optimale Beschleunigung", "Erstelle personalisierte Curve", "Teste Anfangsparameter"],
+      title: "Personalized Setup",
+      description: "Our expert creates your custom curve based on your unique gaming profile and preferences.",
+      details: ["Analyze your gaming style", "Calculate optimal acceleration", "Create personalized curve", "Test initial parameters"],
       color: "bg-whaam-yellow"
     },
     {
       icon: Target,
-      title: "Feinabstimmung",
-      description: "Wir verfeinern und perfektionieren deine Curve durch Tests und Revisionen, bis sie absolut perfekt ist.",
-      details: ["Teste Curve-Performance", "Sammle dein Feedback", "Mache präzise Anpassungen", "Optimiere für Konsistenz"],
+      title: "Fine-tuning",
+      description: "We refine and perfect your curve through testing and revisions until it's absolutely perfect.",
+      details: ["Test curve performance", "Gather your feedback", "Make precise adjustments", "Optimize for consistency"],
       color: "bg-whaam-red"
     },
     {
       icon: CheckCircle,
-      title: "Perfektes Aim geliefert",
-      description: "Erhalte deine finalen Curve-Einstellungen und starte durch in deinen Games mit verbesserter Genauigkeit.",
-      details: ["Erhalte finale Curve-Datei", "Installationsanleitung", "Performance-Tipps", "Zugang zu fortlaufendem Support"],
+      title: "Perfect Aim Delivered",
+      description: "Receive your final curve settings and dominate your games with improved accuracy.",
+      details: ["Receive final curve file", "Installation instructions", "Performance tips", "Access to ongoing support"],
       color: "bg-whaam-yellow"
     }
   ];
@@ -39,14 +39,14 @@ const Services = () => {
     <div className="container mx-auto px-4 sm:px-6 py-24 bg-whaam-dark">
       <div className="text-center mb-20">
         <h2 className="text-4xl md:text-6xl font-bold text-whaam-white mb-8">
-          Wie es
+          How it
           <span className="block bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent mt-4">
-            funktioniert
+            works
           </span>
         </h2>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Unser bewährter 4-Schritte-Prozess liefert personalisierte Mausbeschleunigungskurven, 
-          die dein Aim von durchschnittlich zu außergewöhnlich transformieren.
+          Our proven 4-step process delivers personalized mouse acceleration curves 
+          that transform your aim from average to extraordinary.
         </p>
       </div>
 
@@ -90,24 +90,24 @@ const Services = () => {
       {/* Trust Section */}
       <div className="bg-whaam-black rounded-3xl p-12 text-white text-center border-2 border-whaam-red/20">
         <h3 className="text-3xl font-bold mb-8 text-whaam-white">
-          Vertraut von <span className="text-whaam-red">500+</span> Gamern <span className="text-whaam-yellow">weltweit</span>
+          Trusted by <span className="text-whaam-red">500+</span> gamers <span className="text-whaam-yellow">worldwide</span>
         </h3>
         <p className="text-muted-foreground text-lg mb-12">
-          Tritt der Community von Gamern bei, die bereits ihr Aim mit unseren Custom Curves transformiert haben.
+          Join the community of gamers who have already transformed their aim with our custom curves.
         </p>
         
         <div className="grid sm:grid-cols-3 gap-8">
           <div>
-            <div className="text-4xl font-bold text-primary mb-2">Minuten</div>
-            <div className="text-muted-foreground">Erste Curve geliefert</div>
+            <div className="text-4xl font-bold text-primary mb-2">Minutes</div>
+            <div className="text-muted-foreground">First curve delivered</div>
           </div>
           <div>
             <div className="text-4xl font-bold text-accent mb-2">100%</div>
-            <div className="text-muted-foreground">Zufriedenheitsgarantie</div>
+            <div className="text-muted-foreground">Satisfaction guarantee</div>
           </div>
           <div>
-            <div className="text-4xl font-bold text-primary mb-2">4+ Jahre</div>
-            <div className="text-muted-foreground">Experten-Erfahrung</div>
+            <div className="text-4xl font-bold text-primary mb-2">4+ Years</div>
+            <div className="text-muted-foreground">Expert experience</div>
           </div>
         </div>
       </div>

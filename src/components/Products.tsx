@@ -14,8 +14,8 @@ const Products = () => {
   const handleGetCurve = (planName: string, price: string, planId: string) => {
     setSelectedPlan(planId);
     toast({
-      title: `${planName} Ausgewählt! 🎯`,
-      description: `Bereit, dein Aim mit ${planName} für ${price} zu perfektionieren? Lass uns starten!`,
+      title: `${planName} Selected! 🎯`,
+      description: `Ready to perfect your aim with ${planName} for ${price}? Let's get started!`,
     });
   };
 
@@ -86,9 +86,9 @@ const Products = () => {
   ];
 
   const benefits = [
-    { icon: Shield, title: "100% Zufriedenheitsgarantie", desc: "Nicht zufrieden? Vollständige Rückerstattung, keine Fragen gestellt" },
-    { icon: Zap, title: "Blitzschnelle Lieferung", desc: "Erste Curve in Minuten geliefert, nicht in Tagen" },
-    { icon: Trophy, title: "Bewährte Ergebnisse", desc: "Vertraut von 500+ Gamern weltweit" }
+    { icon: Shield, title: "100% Satisfaction Guarantee", desc: "Not satisfied? Full refund, no questions asked" },
+    { icon: Zap, title: "Lightning Fast Delivery", desc: "First curve delivered in minutes, not days" },
+    { icon: Trophy, title: "Proven Results", desc: "Trusted by 500+ gamers worldwide" }
   ];
 
   return (
@@ -103,34 +103,34 @@ const Products = () => {
       <div className="text-center mb-20">
         <div className="inline-flex items-center bg-whaam-red/10 text-whaam-red px-4 py-2 rounded-full text-sm font-semibold mb-8 border border-whaam-red/20">
           <Star className="mr-2" size={16} />
-          Custom Curve Einstellungen für dein Aim
+          Custom Curve Settings for Your Aim
         </div>
         
         <h2 className="text-5xl md:text-6xl font-bold text-whaam-white mb-8 leading-tight">
-          Wähle deinen
+          Choose your
           <span className="block bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent mt-4">
-            perfekten Plan
+            perfect plan
           </span>
         </h2>
         
         <p className="text-xl text-whaam-white/80 max-w-3xl mx-auto mb-12">
-          Perfektioniere dein Aim mit fachmännisch erstellten Mausbeschleunigungskurven. 
-          Jeder Plan beinhaltet unsere eisenharte 100% Zufriedenheitsgarantie und personalisierte Optimierung.
+          Perfect your aim with professionally crafted mouse acceleration curves. 
+          Every plan includes our iron-clad 100% satisfaction guarantee and personalized optimization.
         </p>
 
         {/* Trust Indicators */}
         <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-whaam-white/60 mb-16">
           <div className="flex items-center">
             <Check className="text-whaam-yellow mr-2" size={16} />
-            500+ zufriedene Gamer
+            500+ satisfied gamers
           </div>
           <div className="flex items-center">
             <Check className="text-whaam-yellow mr-2" size={16} />
-            Erste Curve in Minuten
+            First curve in minutes
           </div>
           <div className="flex items-center">
             <Check className="text-whaam-yellow mr-2" size={16} />
-            100% Zufriedenheitsgarantie
+            100% satisfaction guarantee
           </div>
         </div>
       </div>
@@ -221,7 +221,7 @@ const Products = () => {
                       : 'bg-whaam-red hover:bg-whaam-red/80 text-whaam-white shadow-lg'
                   }`}
                 >
-                  Jetzt kaufen
+                  Buy Now
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
                 </Button>
 
@@ -229,7 +229,7 @@ const Products = () => {
                 {plan.originalPrice && (
                   <div className="text-center mt-4">
                     <span className="inline-block bg-whaam-yellow/20 text-whaam-yellow text-sm font-semibold px-4 py-2 rounded-full border border-whaam-yellow/30">
-                      Spare ${parseInt(plan.originalPrice.substring(1)) - parseInt(plan.price.substring(1))}
+                      Save ${parseInt(plan.originalPrice.substring(1)) - parseInt(plan.price.substring(1))}
                     </span>
                   </div>
                 )}
@@ -242,7 +242,7 @@ const Products = () => {
       {/* Benefits Section */}
       <div className="bg-whaam-black rounded-3xl p-12 mb-20 border border-whaam-red/20">
         <h3 className="text-3xl font-bold text-center text-whaam-white mb-12">
-          Warum <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span> wählen?
+          Why choose <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span>?
         </h3>
         
         <div className="grid sm:grid-cols-3 gap-8">
@@ -266,7 +266,7 @@ const Products = () => {
             className="bg-whaam-red hover:bg-whaam-red/80 text-whaam-white rounded-full px-8 py-3 font-bold transition-all duration-300 group shadow-lg border-0"
           >
             <Star className="mr-2 group-hover:rotate-12 transition-transform" size={16} />
-            Jetzt starten
+            Start Now
           </Button>
         </div>
       </div>

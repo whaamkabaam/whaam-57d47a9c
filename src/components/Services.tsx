@@ -39,10 +39,7 @@ const Services = () => {
     <div className="container mx-auto px-4 sm:px-6 py-24 bg-whaam-dark">
       <div className="text-center mb-20">
         <h2 className="text-4xl md:text-6xl font-bold text-whaam-white mb-8">
-          How it
-          <span className="block bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent mt-4">
-            works
-          </span>
+          How it <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">works</span>
         </h2>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
           Our proven 4-step process delivers personalized mouse acceleration curves 

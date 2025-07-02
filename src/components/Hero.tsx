@@ -53,8 +53,8 @@ const Hero = () => {
           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="relative">
               <h1 className="font-bangers text-7xl md:text-9xl leading-none mb-6 text-white">
-                <span className="boom-text block">WHAAAM!</span>
-                <span className="pow-text block -mt-4">Custom Curves</span>
+                <span className="boom-text block">CUSTOM CURVE</span>
+                <span className="pow-text block -mt-4">SETTINGS</span>
               </h1>
               
               {/* Burst Effect */}
@@ -67,10 +67,10 @@ const Hero = () => {
           {/* Comic Speech Bubble */}
           <div className={`speech-bubble mx-auto max-w-3xl mb-12 transition-all duration-1500 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
             <p className="font-russo text-xl md:text-2xl text-black leading-relaxed">
-              <span className="text-fire-red font-bold">BOOM!</span> Perfektioniere dein Aim mit 
-              <span className="text-boom-yellow font-bold"> personalisierten Mausbeschleunigungskurven!</span> 
+              <span className="text-fire-red font-bold">TAILORED TO YOUR AIM!</span>
               <br />
-              <span className="text-fire-red">⚡ Erste Curve in Minuten geliefert! ⚡</span>
+              Perfect your aim with <span className="text-boom-yellow font-bold">personalized mouse acceleration curves</span> 
+              that transform your gameplay from average to legendary!
             </p>
           </div>
 
@@ -80,7 +80,7 @@ const Hero = () => {
               onClick={scrollToProducts}
               className="comic-button group text-white font-bangers text-2xl transform hover:scale-105"
             >
-              JETZT LOSKNALLEN!
+              GET YOUR CURVE NOW
               <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform inline-block" size={24} />
             </button>
             
@@ -88,25 +88,9 @@ const Hero = () => {
               onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
               className="comic-button-yellow group text-black font-bangers text-2xl transform hover:scale-105"
             >
-              WIE ES FUNKTIONIERT
+              LEARN HOW IT WORKS
               <Target className="ml-3 group-hover:rotate-12 transition-transform inline-block" size={24} />
             </button>
-          </div>
-
-          {/* Comic-Style Stats */}
-          <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <div className="comic-panel">
-              <div className="text-4xl md:text-5xl font-bangers text-fire-red mb-2">500+</div>
-              <div className="font-russo text-black font-bold">ZUFRIEDENE GAMER</div>
-            </div>
-            <div className="comic-panel">
-              <div className="text-4xl md:text-5xl font-bangers text-boom-yellow mb-2">4+</div>
-              <div className="font-russo text-black font-bold">JAHRE ERFAHRUNG</div>
-            </div>
-            <div className="comic-panel">
-              <div className="text-4xl md:text-5xl font-bangers text-fire-red mb-2">MINUTEN</div>
-              <div className="font-russo text-black font-bold">BLITZSCHNELL</div>
-            </div>
           </div>
         </div>
       </div>

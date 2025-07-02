@@ -1,8 +1,9 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Mouse, Clock, Star, Check, Zap, Users, Target, ArrowRight, Shield, Trophy } from "lucide-react";
+import { Mouse, Users, Target, ArrowRight, Check, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Products = () => {
@@ -13,21 +14,19 @@ const Products = () => {
   const handleGetCurve = (planName: string, price: string, planId: string) => {
     setSelectedPlan(planId);
     toast({
-      title: `${planName} Ausgewählt! 🎯`,
-      description: `Bereit, dein Aim mit ${planName} für ${price} zu perfektionieren? Lass uns starten!`,
+      title: `${planName} Selected! 🎯`,
+      description: `Ready to perfect your aim with ${planName} for ${price}? Let's get started!`,
     });
   };
 
   const plans = [
     {
       id: "3x-revisions",
-      name: "3× Revisions",
+      name: "3× REVISIONS",
       price: "$39",
-      originalPrice: "$59",
-      badge: "Most Bought",
-      badgeColor: "bg-gradient-to-r from-green-500 to-green-600",
+      badge: "MOST BOUGHT",
+      badgeColor: "bg-boom-yellow",
       description: "Perfect for most gamers who want personalized curve optimization",
-      deliveryTime: "First curve delivered in minutes",
       features: [
         "Three precision revision cycles",
         "First curve delivered in minutes",
@@ -37,18 +36,15 @@ const Products = () => {
         "Personal consultation included"
       ],
       icon: Mouse,
-      highlight: true,
-      popular: true
+      highlight: true
     },
     {
       id: "unlimited-revisions", 
-      name: "Unlimited Revisions",
+      name: "UNLIMITED REVISIONS",
       price: "$47",
-      originalPrice: "$67",
-      badge: "Best Value",
-      badgeColor: "bg-gradient-to-r from-blue-500 to-blue-600",
+      badge: "BEST VALUE",
+      badgeColor: "bg-fire-red",
       description: "For perfectionists who want unlimited fine-tuning until it's perfect",
-      deliveryTime: "First curve delivered in minutes",
       features: [
         "Unlimited feedback-based revisions",
         "First curve delivered in minutes",
@@ -62,13 +58,11 @@ const Products = () => {
     },
     {
       id: "live-session",
-      name: "Live 1‑on‑1 Session", 
+      name: "LIVE 1‑ON‑1 SESSION", 
       price: "$149",
-      originalPrice: "$199",
-      badge: "Live Session",
-      badgeColor: "bg-gradient-to-r from-purple-500 to-purple-600",
+      badge: "LIVE SESSION",
+      badgeColor: "bg-fire-red",
       description: "Ultimate experience with real-time curve development and instant testing",
-      deliveryTime: "Personal live 1-on-1 session",
       emphasis: "Perfect Curve Guaranteed in 45 Minutes",
       features: [
         "Exclusive 45‑minute live development session",
@@ -84,187 +78,123 @@ const Products = () => {
     }
   ];
 
-  const benefits = [
-    { icon: Shield, title: "100% Zufriedenheitsgarantie", desc: "Nicht zufrieden? Vollständige Rückerstattung, keine Fragen gestellt" },
-    { icon: Zap, title: "Blitzschnelle Lieferung", desc: "Erste Curve in Minuten geliefert, nicht in Tagen" },
-    { icon: Trophy, title: "Bewährte Ergebnisse", desc: "Vertraut von 500+ Gamern weltweit" }
-  ];
-
   return (
-    <div className="container mx-auto px-4 sm:px-6 relative">
-      {/* Enhanced Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-        <div className="absolute top-20 left-10 w-64 sm:w-96 h-64 sm:h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-64 sm:w-80 h-64 sm:h-80 bg-red-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 sm:w-64 h-48 sm:h-64 bg-yellow-500/5 rounded-full blur-2xl animate-pulse delay-500"></div>
-      </div>
+    <div className="bg-comic-black py-20 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5" style={{
+        backgroundImage: `radial-gradient(circle, #FFD700 2px, transparent 2px)`,
+        backgroundSize: '30px 30px'
+      }}></div>
 
-      {/* Enhanced Header Section */}
-      <div className="text-center mb-16 sm:mb-20">
-        <div className="inline-flex items-center bg-blue-50 text-blue-600 px-3 sm:px-4 py-2 rounded-full text-sm font-semibold mb-4 sm:mb-6">
-          <Star className="mr-2" size={16} />
-          Custom Curve Einstellungen für dein Aim
-        </div>
-        
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-          Wähle deinen
-          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> perfekten Plan</span>
-        </h2>
-        
-        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8">
-          Perfektioniere dein Aim mit fachmännisch erstellten Mausbeschleunigungskurven. 
-          Jeder Plan beinhaltet unsere eisenharte 100% Zufriedenheitsgarantie und personalisierte Optimierung.
-        </p>
-
-        {/* Trust Indicators */}
-        <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-8 text-sm text-gray-500 mb-8 sm:mb-12">
-          <div className="flex items-center">
-            <Check className="text-green-500 mr-2" size={16} />
-            500+ zufriedene Gamer
-          </div>
-          <div className="flex items-center">
-            <Check className="text-green-500 mr-2" size={16} />
-            Erste Curve in Minuten
-          </div>
-          <div className="flex items-center">
-            <Check className="text-green-500 mr-2" size={16} />
-            100% Zufriedenheitsgarantie
-          </div>
-        </div>
-      </div>
-
-      {/* Enhanced Plans Grid with larger boxes and aligned buttons */}
-      <div className="grid md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto mb-16 sm:mb-20">
-        {plans.map((plan, index) => (
-          <Card 
-            key={plan.id}
-            className={`group relative transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl border-0 shadow-lg overflow-hidden min-h-[600px] flex flex-col ${
-              plan.highlight ? 'ring-2 ring-blue-500 ring-opacity-50 scale-105' : ''
-            } ${hoveredPlan === plan.id ? 'shadow-2xl' : ''} ${
-              selectedPlan === plan.id ? 'ring-2 ring-green-500' : ''
-            }`}
-            onMouseEnter={() => setHoveredPlan(plan.id)}
-            onMouseLeave={() => setHoveredPlan(null)}
-          >
-            {/* Badge */}
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-              <Badge className={`${plan.badgeColor} text-white px-6 py-2 font-bold shadow-lg border-0 text-sm`}>
-                {plan.badge}
-              </Badge>
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="relative inline-block mb-8">
+            <h2 className="font-bangers text-6xl md:text-7xl text-white mb-4">
+              CHOOSE YOUR
+              <span className="text-fire-red block">PERFECT PLAN</span>
+            </h2>
+            <div className="absolute -top-4 -right-8 w-16 h-16 bg-boom-yellow border-4 border-white rounded-full flex items-center justify-center transform rotate-12">
+              <Zap className="text-black" size={24} />
             </div>
+          </div>
+          
+          <p className="font-russo text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+            Perfect your aim with expertly crafted mouse acceleration curves. 
+            Every plan includes our ironclad <span className="text-boom-yellow font-bold">100% satisfaction guarantee</span> 
+            and personalized optimization.
+          </p>
+        </div>
 
-            {/* Popular Plan Glow Effect */}
-            {plan.popular && (
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 pointer-events-none"></div>
-            )}
+        {/* Plans Grid - Made wider and aligned */}
+        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
+          {plans.map((plan, index) => (
+            <div 
+              key={plan.id}
+              className="relative group"
+              onMouseEnter={() => setHoveredPlan(plan.id)}
+              onMouseLeave={() => setHoveredPlan(null)}
+            >
+              {/* Badge */}
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                <Badge className={`${plan.badgeColor} text-black border-4 border-white px-6 py-2 font-bangers text-lg shadow-[4px_4px_0px_0px_theme(colors.black)]`}>
+                  {plan.badge}
+                </Badge>
+              </div>
 
-            <CardHeader className="text-center pt-12 pb-6 flex-shrink-0">
-              <div className={`w-20 h-20 mx-auto mb-6 rounded-3xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 ${
-                plan.highlight ? 'bg-gradient-to-br from-blue-500 to-blue-600' : 'bg-gradient-to-br from-gray-700 to-gray-800'
+              <div className={`comic-panel bg-white h-full min-h-[600px] flex flex-col hover:shadow-[12px_12px_0px_0px_theme(colors.black)] transition-all duration-300 group-hover:-translate-y-2 ${
+                plan.highlight ? 'scale-105 ring-4 ring-boom-yellow' : ''
               }`}>
-                <plan.icon className="text-white" size={32} />
-              </div>
-              
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                {plan.name}
-              </h3>
-              
-              <p className="text-gray-600 mb-6 px-4 leading-relaxed">
-                {plan.description}
-              </p>
-              
-              <div className="flex items-center justify-center gap-3 mb-3">
-                <span className="text-5xl font-black text-gray-900">
-                  {plan.price}
-                </span>
-                {plan.originalPrice && (
-                  <span className="text-xl text-gray-400 line-through">
-                    {plan.originalPrice}
-                  </span>
-                )}
-              </div>
-
-              <div className="text-blue-600 font-semibold mb-2">
-                {plan.deliveryTime}
-              </div>
-
-              {plan.emphasis && (
-                <p className="text-blue-600 font-semibold text-sm bg-blue-50 px-4 py-2 rounded-full">
-                  {plan.emphasis}
-                </p>
-              )}
-            </CardHeader>
-
-            <CardContent className="px-8 flex-grow flex flex-col">
-              <ul className="space-y-4 mb-8 flex-grow">
-                {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start space-x-3">
-                    <Check className="text-green-500 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" size={16} />
-                    <span className="text-gray-700 leading-relaxed">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Aligned buttons at bottom */}
-              <div className="mt-auto pb-8">
-                <Button 
-                  onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
-                  size="lg"
-                  className={`w-full font-bold text-lg py-4 transition-all duration-300 group-hover:scale-105 ${
-                    plan.highlight 
-                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg' 
-                      : plan.premium
-                      ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg'
-                      : 'bg-gradient-to-r from-gray-800 to-gray-900 hover:from-blue-500 hover:to-blue-600 text-white shadow-lg'
-                  }`}
-                >
-                  Jetzt kaufen
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
-                </Button>
-
-                {/* Savings Badge */}
-                {plan.originalPrice && (
-                  <div className="text-center mt-4">
-                    <span className="inline-block bg-green-100 text-green-800 text-sm font-semibold px-4 py-2 rounded-full">
-                      Spare ${parseInt(plan.originalPrice.substring(1)) - parseInt(plan.price.substring(1))}
-                    </span>
+                {/* Header */}
+                <div className="text-center pt-12 pb-6 flex-shrink-0">
+                  <div className={`w-20 h-20 mx-auto mb-6 rounded-3xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 ${
+                    plan.highlight ? 'bg-fire-red' : 'bg-comic-black'
+                  }`}>
+                    <plan.icon className="text-white" size={32} />
                   </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                  
+                  <h3 className="font-bangers text-3xl text-comic-black mb-4">
+                    {plan.name}
+                  </h3>
+                  
+                  <div className="text-6xl font-bangers text-fire-red mb-4">
+                    {plan.price}
+                  </div>
 
-      {/* Benefits Section */}
-      <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl sm:rounded-3xl p-8 sm:p-12 mb-16 sm:mb-20">
-        <h3 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-8 sm:mb-12">
-          Warum Lovable.dev wählen?
-        </h3>
-        
-        <div className="grid sm:grid-cols-3 gap-6 sm:gap-8">
-          {benefits.map((benefit, index) => (
-            <div key={index} className="text-center group">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 bg-white rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
-                <benefit.icon className="text-blue-500 group-hover:scale-110 transition-transform" size={28} />
+                  {plan.emphasis && (
+                    <p className="text-boom-yellow font-russo font-bold text-sm bg-comic-black px-4 py-2 rounded-full mx-4">
+                      {plan.emphasis}
+                    </p>
+                  )}
+                </div>
+
+                {/* Features */}
+                <div className="px-8 flex-grow flex flex-col">
+                  <ul className="space-y-4 mb-8 flex-grow">
+                    {plan.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-start space-x-3">
+                        <div className="w-6 h-6 bg-fire-red border-2 border-black rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Check className="text-white" size={14} />
+                        </div>
+                        <span className="text-comic-black font-russo leading-relaxed">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Button aligned at bottom */}
+                  <div className="mt-auto pb-8">
+                    <button 
+                      onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
+                      className={`comic-button w-full font-bangers text-xl py-4 transition-all duration-300 group-hover:scale-105 ${
+                        plan.premium ? 'bg-fire-red' : 'bg-comic-black'
+                      }`}
+                    >
+                      START NOW
+                      <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
+                    </button>
+                  </div>
+                </div>
               </div>
-              <h4 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">{benefit.title}</h4>
-              <p className="text-sm sm:text-base text-gray-600">{benefit.desc}</p>
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Sticky CTA */}
-      <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50">
-        <div className="bg-white rounded-full shadow-2xl p-3 sm:p-4 border border-gray-200">
-          <Button 
-            onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full px-6 sm:px-8 py-2 sm:py-3 font-bold transition-all duration-300 group shadow-lg text-sm sm:text-base"
-          >
-            <Star className="mr-2 group-hover:rotate-12 transition-transform" size={16} />
-            Jetzt starten
-          </Button>
+        {/* Trust Section */}
+        <div className="text-center">
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="comic-panel bg-white text-center">
+              <div className="font-bangers text-4xl text-fire-red mb-2">500+</div>
+              <div className="font-russo text-comic-black font-bold">HAPPY GAMERS</div>
+            </div>
+            <div className="comic-panel bg-white text-center">
+              <div className="font-bangers text-4xl text-boom-yellow mb-2">MINUTES</div>
+              <div className="font-russo text-comic-black font-bold">FIRST CURVE DELIVERED</div>
+            </div>
+            <div className="comic-panel bg-white text-center">
+              <div className="font-bangers text-4xl text-fire-red mb-2">100%</div>
+              <div className="font-russo text-comic-black font-bold">SATISFACTION GUARANTEE</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

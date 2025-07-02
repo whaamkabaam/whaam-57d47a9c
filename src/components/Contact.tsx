@@ -33,10 +33,10 @@ const Contact = () => {
         {/* Main CTA Section */}
         <div className="grid lg:grid-cols-2 gap-8 mb-16">
           {/* Products CTA */}
-          <Card className="border-2 border-whaam-red/20 shadow-xl hover:shadow-2xl transition-all duration-300 group bg-whaam-black hover:border-whaam-red">
+          <Card className="border-2 border-whaam-red/20 shadow-xl hover:shadow-2xl transition-all duration-500 group bg-whaam-black hover:border-whaam-red animate-fade-in hover:scale-105 hover:-translate-y-3 hover:rotate-1">
             <CardContent className="p-8 text-center">
-              <div className="w-20 h-20 bg-whaam-red rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
-                <Target className="text-whaam-white" size={40} />
+              <div className="w-20 h-20 bg-whaam-red rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 group-hover:shadow-2xl">
+                <Target className="text-whaam-white group-hover:scale-110 transition-transform duration-300" size={40} />
               </div>
               <h3 className="text-2xl font-bold text-whaam-white mb-4">View Products</h3>
               <p className="text-muted-foreground mb-6 leading-relaxed">
@@ -55,10 +55,10 @@ const Contact = () => {
           </Card>
 
           {/* Discord CTA */}
-          <Card className="border-2 border-whaam-red/20 shadow-xl hover:shadow-2xl transition-all duration-300 group bg-whaam-red text-whaam-white hover:border-whaam-yellow">
+          <Card className="border-2 border-whaam-red/20 shadow-xl hover:shadow-2xl transition-all duration-500 group bg-whaam-red text-whaam-white hover:border-whaam-yellow animate-fade-in hover:scale-105 hover:-translate-y-3 hover:rotate-1" style={{ animationDelay: '100ms' }}>
             <CardContent className="p-8 text-center">
-              <div className="w-20 h-20 bg-whaam-white/20 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
-                <MessageCircle className="text-whaam-white" size={40} />
+              <div className="w-20 h-20 bg-whaam-white/20 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 group-hover:shadow-2xl">
+                <MessageCircle className="text-whaam-white group-hover:scale-110 transition-transform duration-300" size={40} />
               </div>
               <h3 className="text-2xl font-bold mb-4">Questions? Ask directly on Discord</h3>
               <p className="text-whaam-white/80 mb-6 leading-relaxed">
@@ -78,38 +78,38 @@ const Contact = () => {
         </div>
 
         {/* Benefits Section */}
-        <div className="bg-whaam-black rounded-3xl p-8 mb-16 border-2 border-whaam-red/20">
+        <div className="bg-whaam-black rounded-3xl p-8 mb-16 border-2 border-whaam-red/20 animate-fade-in hover:shadow-2xl hover:shadow-whaam-red/20 transition-all duration-500" style={{ animationDelay: '200ms' }}>
           <h3 className="text-3xl font-bold text-center text-whaam-white mb-8">
             Why <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span>?
           </h3>
           
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-whaam-yellow rounded-2xl flex items-center justify-center">
-                <CheckCircle className="text-whaam-black" size={32} />
+            <div className="text-center group hover:scale-105 transition-all duration-300 hover:-translate-y-2">
+              <div className="w-16 h-16 mx-auto mb-4 bg-whaam-yellow rounded-2xl flex items-center justify-center group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 group-hover:shadow-xl">
+                <CheckCircle className="text-whaam-black group-hover:scale-110 transition-transform duration-300" size={32} />
               </div>
-              <h4 className="text-xl font-semibold text-whaam-white mb-2">100% Satisfaction Guarantee</h4>
-              <p className="text-muted-foreground">Not satisfied? Full refund, no questions asked.</p>
+              <h4 className="text-xl font-semibold text-whaam-white mb-2 group-hover:text-whaam-yellow transition-colors duration-300">100% Satisfaction Guarantee</h4>
+              <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">Not satisfied? Full refund, no questions asked.</p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-whaam-red rounded-2xl flex items-center justify-center">
-                <Zap className="text-whaam-white" size={32} />
+            <div className="text-center group hover:scale-105 transition-all duration-300 hover:-translate-y-2" style={{ animationDelay: '50ms' }}>
+              <div className="w-16 h-16 mx-auto mb-4 bg-whaam-red rounded-2xl flex items-center justify-center group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 group-hover:shadow-xl">
+                <Zap className="text-whaam-white group-hover:scale-110 transition-transform duration-300" size={32} />
               </div>
-              <h4 className="text-xl font-semibold text-whaam-white mb-2">Lightning Fast Delivery</h4>
-              <p className="text-muted-foreground">First curve delivered in minutes, not days.</p>
+              <h4 className="text-xl font-semibold text-whaam-white mb-2 group-hover:text-whaam-yellow transition-colors duration-300">Lightning Fast Delivery</h4>
+              <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">First curve delivered in minutes, not days.</p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-whaam-yellow rounded-2xl flex items-center justify-center">
-                <Users className="text-whaam-black" size={32} />
+            <div className="text-center group hover:scale-105 transition-all duration-300 hover:-translate-y-2" style={{ animationDelay: '100ms' }}>
+              <div className="w-16 h-16 mx-auto mb-4 bg-whaam-yellow rounded-2xl flex items-center justify-center group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 group-hover:shadow-xl">
+                <Users className="text-whaam-black group-hover:scale-110 transition-transform duration-300" size={32} />
               </div>
-              <h4 className="text-xl font-semibold text-whaam-white mb-2">Proven Results</h4>
-              <p className="text-muted-foreground">Trusted by 500+ gamers worldwide.</p>
+              <h4 className="text-xl font-semibold text-whaam-white mb-2 group-hover:text-whaam-yellow transition-colors duration-300">Proven Results</h4>
+              <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">Trusted by 500+ gamers worldwide.</p>
             </div>
           </div>
         </div>
 
         {/* Discord Community Highlight */}
-        <div className="bg-whaam-red rounded-3xl p-8 text-whaam-white text-center border-2 border-whaam-red/20">
+        <div className="bg-whaam-red rounded-3xl p-8 text-whaam-white text-center border-2 border-whaam-red/20 animate-fade-in hover:shadow-2xl hover:shadow-whaam-red/30 transition-all duration-500 hover:scale-[1.02]" style={{ animationDelay: '300ms' }}>
           <MessageCircle className="mx-auto mb-4 text-whaam-white/80" size={48} />
           <h4 className="font-bold text-2xl mb-3">Join our Discord Community</h4>
           <p className="text-whaam-white/80 mb-6 text-lg">

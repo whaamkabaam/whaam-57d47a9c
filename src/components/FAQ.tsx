@@ -71,15 +71,15 @@ const FAQ = () => {
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <Card className="border-2 border-whaam-red/20 shadow-lg bg-whaam-black/80 backdrop-blur-sm">
+        <Card className="border-2 border-whaam-red/20 shadow-lg bg-whaam-black/80 backdrop-blur-sm animate-fade-in hover:shadow-2xl hover:shadow-whaam-red/20 transition-all duration-500 hover:scale-[1.02]">
           <CardContent className="p-8">
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, index) => (
-                <AccordionItem key={faq.id} value={faq.id} className="border-whaam-red/20">
-                  <AccordionTrigger className="text-left hover:text-whaam-red transition-colors text-lg font-semibold py-6 text-whaam-white">
+                <AccordionItem key={faq.id} value={faq.id} className="border-whaam-red/20 group">
+                  <AccordionTrigger className="text-left hover:text-whaam-red transition-all duration-300 text-lg font-semibold py-6 text-whaam-white group-hover:translate-x-2 group-hover:scale-105">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed pb-6 text-base">
+                  <AccordionContent className="text-muted-foreground leading-relaxed pb-6 text-base group-hover:text-whaam-white/90 transition-colors duration-300">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -91,9 +91,9 @@ const FAQ = () => {
 
       {/* Quick Help Cards */}
       <div className="grid md:grid-cols-3 gap-8 mt-16 max-w-6xl mx-auto">
-        <Card className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-shadow group bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red">
+        <Card className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-all duration-500 group bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red hover:scale-105 hover:-translate-y-2 animate-fade-in">
           <CardContent className="p-8">
-            <div className="w-16 h-16 bg-whaam-red rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+            <div className="w-16 h-16 bg-whaam-red rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 group-hover:shadow-xl">
               <Target className="text-whaam-white" size={32} />
             </div>
             <h3 className="text-xl font-bold text-whaam-white mb-3">Instant Delivery</h3>
@@ -101,23 +101,23 @@ const FAQ = () => {
           </CardContent>
         </Card>
 
-        <Card className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-shadow group bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red">
+        <Card className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-all duration-500 group bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red hover:scale-105 hover:-translate-y-2 animate-fade-in" style={{ animationDelay: '100ms' }}>
           <CardContent className="p-8">
-            <div className="w-16 h-16 bg-whaam-yellow rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
-              <Zap className="text-whaam-black" size={32} />
+            <div className="w-16 h-16 bg-whaam-yellow rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 group-hover:shadow-xl">
+              <Zap className="text-whaam-black group-hover:scale-110 transition-transform duration-300" size={32} />
             </div>
-            <h3 className="text-xl font-bold text-whaam-white mb-3">Easy Installation</h3>
-            <p className="text-muted-foreground">Step-by-step guide for effortless setup.</p>
+            <h3 className="text-xl font-bold text-whaam-white mb-3 group-hover:text-whaam-yellow transition-colors duration-300">Easy Installation</h3>
+            <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">Step-by-step guide for effortless setup.</p>
           </CardContent>
         </Card>
 
-        <Card className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-shadow group bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red">
+        <Card className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-all duration-500 group bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red hover:scale-105 hover:-translate-y-2 animate-fade-in" style={{ animationDelay: '200ms' }}>
           <CardContent className="p-8">
-            <div className="w-16 h-16 bg-whaam-red rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
-              <Shield className="text-whaam-white" size={32} />
+            <div className="w-16 h-16 bg-whaam-red rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 group-hover:shadow-xl">
+              <Shield className="text-whaam-white group-hover:scale-110 transition-transform duration-300" size={32} />
             </div>
-            <h3 className="text-xl font-bold text-whaam-white mb-3">100% Guarantee</h3>
-            <p className="text-muted-foreground">Not satisfied? Full refund with no questions asked.</p>
+            <h3 className="text-xl font-bold text-whaam-white mb-3 group-hover:text-whaam-yellow transition-colors duration-300">100% Guarantee</h3>
+            <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">Not satisfied? Full refund with no questions asked.</p>
           </CardContent>
         </Card>
       </div>

@@ -51,19 +51,20 @@ const Services = () => {
         {steps.map((step, index) => (
           <Card 
             key={step.title} 
-            className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-whaam-red/20 shadow-lg relative bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red"
+            className={`group hover:shadow-2xl transition-all duration-500 hover:-translate-y-4 border-2 border-whaam-red/20 shadow-lg relative bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red animate-fade-in hover:scale-105 hover:rotate-1`}
+            style={{ animationDelay: `${index * 200}ms` }}
           >
             {/* Step Number */}
-            <div className="absolute -top-4 -left-4 w-8 h-8 bg-whaam-red text-whaam-white rounded-full flex items-center justify-center font-bold text-sm z-10">
+            <div className="absolute -top-4 -left-4 w-8 h-8 bg-whaam-red text-whaam-white rounded-full flex items-center justify-center font-bold text-sm z-10 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300">
               {index + 1}
             </div>
             
             <CardContent className="p-8">
-              <div className={`w-16 h-16 ${step.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                <step.icon className="text-whaam-black" size={24} />
+              <div className={`w-16 h-16 ${step.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 group-hover:shadow-lg`}>
+                <step.icon className="text-whaam-black group-hover:scale-110 transition-transform duration-300" size={24} />
               </div>
               
-              <h3 className="text-xl font-bold text-whaam-white mb-4 group-hover:text-whaam-yellow transition-colors">
+              <h3 className="text-xl font-bold text-whaam-white mb-4 group-hover:text-whaam-yellow transition-all duration-300 group-hover:scale-105">
                 {step.title}
               </h3>
               
@@ -72,12 +73,16 @@ const Services = () => {
                </p>
                
                <div className="space-y-2">
-                 {step.details.map((detail) => (
-                   <div key={detail} className="flex items-start space-x-2">
-                     <CheckCircle className="text-accent flex-shrink-0 mt-0.5" size={14} />
-                     <span className="text-sm text-muted-foreground">{detail}</span>
-                   </div>
-                 ))}
+                  {step.details.map((detail, detailIndex) => (
+                    <div 
+                      key={detail} 
+                      className="flex items-start space-x-2 group-hover:translate-x-1 transition-transform duration-300"
+                      style={{ transitionDelay: `${detailIndex * 50}ms` }}
+                    >
+                      <CheckCircle className="text-accent flex-shrink-0 mt-0.5 group-hover:scale-110 group-hover:text-whaam-yellow transition-all duration-300" size={14} />
+                      <span className="text-sm text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">{detail}</span>
+                    </div>
+                  ))}
               </div>
             </CardContent>
           </Card>
@@ -94,17 +99,17 @@ const Services = () => {
         </p>
         
         <div className="grid sm:grid-cols-3 gap-8">
-          <div>
-            <div className="text-4xl font-bold text-primary mb-2">Minutes</div>
-            <div className="text-muted-foreground">First curve delivered</div>
+          <div className="group hover:scale-105 transition-all duration-300 hover:-translate-y-1">
+            <div className="text-4xl font-bold text-primary mb-2 group-hover:scale-110 transition-transform duration-300">Minutes</div>
+            <div className="text-muted-foreground group-hover:text-whaam-white/80 transition-colors duration-300">First curve delivered</div>
           </div>
-          <div>
-            <div className="text-4xl font-bold text-accent mb-2">100%</div>
-            <div className="text-muted-foreground">Satisfaction guarantee</div>
+          <div className="group hover:scale-105 transition-all duration-300 hover:-translate-y-1" style={{ animationDelay: '100ms' }}>
+            <div className="text-4xl font-bold text-accent mb-2 group-hover:scale-110 transition-transform duration-300">100%</div>
+            <div className="text-muted-foreground group-hover:text-whaam-white/80 transition-colors duration-300">Satisfaction guarantee</div>
           </div>
-          <div>
-            <div className="text-4xl font-bold text-primary mb-2">4+ Years</div>
-            <div className="text-muted-foreground">Expert experience</div>
+          <div className="group hover:scale-105 transition-all duration-300 hover:-translate-y-1" style={{ animationDelay: '200ms' }}>
+            <div className="text-4xl font-bold text-primary mb-2 group-hover:scale-110 transition-transform duration-300">4+ Years</div>
+            <div className="text-muted-foreground group-hover:text-whaam-white/80 transition-colors duration-300">Expert experience</div>
           </div>
         </div>
       </div>

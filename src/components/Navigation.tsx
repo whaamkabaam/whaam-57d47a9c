@@ -65,7 +65,7 @@ const Navigation = ({ activeSection }: NavigationProps) => {
               variant="whaam"
               className="whitespace-nowrap px-6 py-2 h-10 font-bold transition-all duration-300 hover:scale-105"
             >
-              To the Products
+              Products
             </Button>
           </div>
 
@@ -99,7 +99,7 @@ const Navigation = ({ activeSection }: NavigationProps) => {
                 variant="whaam"
                 className="w-full h-12 font-bold"
               >
-                To the Products
+                Products
               </Button>
             </div>
           </div>

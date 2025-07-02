@@ -48,16 +48,16 @@ const CookieConsent = () => {
             <div className="flex-1 space-y-4">
               <div>
                 <h3 className="font-semibold text-whaam-white mb-2">
-                  Wir verwenden Cookies
+                  We use Cookies
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Diese Website verwendet nur technisch notwendige Cookies für die grundlegende Funktionalität. 
-                  Wir verwenden keine Tracking- oder Analyse-Cookies. Weitere Informationen finden Sie in unserer{" "}
+                  This website only uses technically necessary cookies for basic functionality. 
+                  We do not use tracking or analytics cookies. More information can be found in our{" "}
                   <button 
                     onClick={handlePrivacyClick}
                     className="text-whaam-red hover:text-whaam-yellow underline font-medium"
                   >
-                    Datenschutzerklärung
+                    Privacy Policy
                   </button>.
                 </p>
               </div>
@@ -68,14 +68,14 @@ const CookieConsent = () => {
                   variant="whaam"
                   className="flex-1 sm:flex-none"
                 >
-                  Akzeptieren
+                  Accept
                 </Button>
                 <Button 
                   onClick={handleDecline}
                   variant="whaam-outline"
                   className="flex-1 sm:flex-none"
                 >
-                  Ablehnen
+                  Decline
                 </Button>
               </div>
             </div>
@@ -83,7 +83,7 @@ const CookieConsent = () => {
             <button
               onClick={handleDecline}
               className="flex-shrink-0 p-1 text-muted-foreground hover:text-whaam-red transition-colors"
-              aria-label="Banner schließen"
+              aria-label="Close banner"
             >
               <X size={20} />
             </button>

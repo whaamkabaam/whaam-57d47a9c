@@ -7,7 +7,8 @@ import { ArrowRight, Star, Users, Code, Palette, Target, CheckCircle } from "luc
 import { Link } from "react-router-dom";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
-import Portfolio from "@/components/Portfolio";
+import Expert from "@/components/Expert";
+import Testimonials from "@/components/Testimonials";
 import Products from "@/components/Products";
 import About from "@/components/About";
 import FAQ from "@/components/FAQ";
@@ -20,7 +21,7 @@ const Index = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "services", "portfolio", "products", "about", "faq", "contact"];
+      const sections = ["home", "services", "expert", "testimonials", "products", "about", "faq", "contact"];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -50,19 +51,23 @@ const Index = () => {
         <Services />
       </section>
 
-      <section id="portfolio" className="py-24 bg-whaam-black">
-        <Portfolio />
+      <section id="expert" className="py-24 bg-whaam-black">
+        <Expert />
       </section>
 
-      <section id="products" className="py-24 bg-whaam-dark">
+      <section id="testimonials" className="py-24 bg-whaam-dark">
+        <Testimonials />
+      </section>
+
+      <section id="products" className="py-24 bg-whaam-black">
         <Products />
       </section>
 
-      <section id="about" className="py-24 bg-whaam-black">
+      <section id="about" className="py-24 bg-whaam-dark">
         <About />
       </section>
 
-      <section id="faq" className="py-24 bg-whaam-dark">
+      <section id="faq" className="py-24 bg-whaam-black">
         <FAQ />
       </section>
 

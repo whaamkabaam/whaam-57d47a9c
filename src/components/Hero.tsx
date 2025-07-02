@@ -37,7 +37,7 @@ const Hero = () => {
         <div className="text-center max-w-4xl mx-auto">
           {/* Main Headline */}
           <div className={`transition-all duration-1000 mb-8 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+            <h1 className="text-6xl md:text-8xl font-bold mb-8 leading-tight">
               Custom Curve Settings
               <br />
               <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">

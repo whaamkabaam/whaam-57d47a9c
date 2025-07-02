@@ -13,7 +13,8 @@ const Navigation = ({ activeSection }: NavigationProps) => {
   const navItems = [
     { id: "home", label: "Home" },
     { id: "services", label: "Wie es funktioniert" },
-    { id: "portfolio", label: "Testimonials" },
+    { id: "expert", label: "Expert" },
+    { id: "testimonials", label: "Testimonials" },
     { id: "about", label: "Über uns" },
     { id: "faq", label: "FAQ" },
     { id: "contact", label: "Kontakt" },

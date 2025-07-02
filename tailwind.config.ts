@@ -69,8 +69,10 @@ export default {
 					red: '#FF3B3B',
 					yellow: '#FFD700',
 					white: '#FFFFFF',
-					black: '#000000'
-				}
+					black: '#000000',
+					'secondary-text': '#B0B0B0'
+				},
+				'whaam-secondary-text': 'hsl(var(--whaam-secondary-text))'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

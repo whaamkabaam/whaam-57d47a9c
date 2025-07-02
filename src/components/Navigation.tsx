@@ -64,7 +64,8 @@ const Navigation = ({ activeSection }: NavigationProps) => {
             ))}
             <Button 
               onClick={scrollToProducts}
-              className="bg-whaam-red hover:bg-whaam-red/80 text-whaam-white whitespace-nowrap border-0 px-6 py-2 h-10 font-bold transition-all duration-300 hover:scale-105"
+              variant="whaam"
+              className="whitespace-nowrap px-6 py-2 h-10 font-bold transition-all duration-300 hover:scale-105"
             >
               Zu den Produkten
             </Button>
@@ -97,7 +98,8 @@ const Navigation = ({ activeSection }: NavigationProps) => {
               ))}
               <Button 
                 onClick={scrollToProducts}
-                className="bg-whaam-red hover:bg-whaam-red/80 text-whaam-white w-full border-0 h-12 font-bold"
+                variant="whaam"
+                className="w-full h-12 font-bold"
               >
                 Zu den Produkten
               </Button>

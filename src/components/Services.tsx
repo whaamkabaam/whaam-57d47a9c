@@ -44,7 +44,7 @@ const Services = () => {
             funktioniert
           </span>
         </h2>
-        <p className="text-xl text-whaam-white/80 max-w-2xl mx-auto">
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
           Unser bewährter 4-Schritte-Prozess liefert personalisierte Mausbeschleunigungskurven, 
           die dein Aim von durchschnittlich zu außergewöhnlich transformieren.
         </p>
@@ -70,17 +70,17 @@ const Services = () => {
                 {step.title}
               </h3>
               
-              <p className="text-whaam-white/70 mb-6 leading-relaxed">
-                {step.description}
-              </p>
-              
-              <div className="space-y-2">
-                {step.details.map((detail) => (
-                  <div key={detail} className="flex items-start space-x-2">
-                    <CheckCircle className="text-whaam-yellow flex-shrink-0 mt-0.5" size={14} />
-                    <span className="text-sm text-whaam-white/60">{detail}</span>
-                  </div>
-                ))}
+               <p className="text-muted-foreground mb-6 leading-relaxed">
+                 {step.description}
+               </p>
+               
+               <div className="space-y-2">
+                 {step.details.map((detail) => (
+                   <div key={detail} className="flex items-start space-x-2">
+                     <CheckCircle className="text-accent flex-shrink-0 mt-0.5" size={14} />
+                     <span className="text-sm text-muted-foreground">{detail}</span>
+                   </div>
+                 ))}
               </div>
             </CardContent>
           </Card>
@@ -92,22 +92,22 @@ const Services = () => {
         <h3 className="text-3xl font-bold mb-8 text-whaam-white">
           Vertraut von <span className="text-whaam-red">500+</span> Gamern <span className="text-whaam-yellow">weltweit</span>
         </h3>
-        <p className="text-whaam-white/70 text-lg mb-12">
+        <p className="text-muted-foreground text-lg mb-12">
           Tritt der Community von Gamern bei, die bereits ihr Aim mit unseren Custom Curves transformiert haben.
         </p>
         
         <div className="grid sm:grid-cols-3 gap-8">
           <div>
-            <div className="text-4xl font-bold text-whaam-red mb-2">Minuten</div>
-            <div className="text-whaam-white/60">Erste Curve geliefert</div>
+            <div className="text-4xl font-bold text-primary mb-2">Minuten</div>
+            <div className="text-muted-foreground">Erste Curve geliefert</div>
           </div>
           <div>
-            <div className="text-4xl font-bold text-whaam-yellow mb-2">100%</div>
-            <div className="text-whaam-white/60">Zufriedenheitsgarantie</div>
+            <div className="text-4xl font-bold text-accent mb-2">100%</div>
+            <div className="text-muted-foreground">Zufriedenheitsgarantie</div>
           </div>
           <div>
-            <div className="text-4xl font-bold text-whaam-red mb-2">4+ Jahre</div>
-            <div className="text-whaam-white/60">Experten-Erfahrung</div>
+            <div className="text-4xl font-bold text-primary mb-2">4+ Jahre</div>
+            <div className="text-muted-foreground">Experten-Erfahrung</div>
           </div>
         </div>
       </div>

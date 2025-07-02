@@ -61,7 +61,7 @@ const Hero = () => {
 
           {/* Subtitle */}
           <div className={`transition-all duration-1000 delay-500 mb-16 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <p className="text-xl md:text-2xl text-whaam-white/80 max-w-2xl mx-auto">
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
               Perfect Your Aim with Personalized Mouse Acceleration Curves.
               Get custom settings designed specifically for your gaming style.
             </p>
@@ -71,16 +71,17 @@ const Hero = () => {
           <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center transition-all duration-1000 delay-700 mb-24 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <Button 
               onClick={scrollToProducts}
+              variant="whaam"
               size="lg" 
-              className="bg-whaam-red hover:bg-whaam-red/80 text-whaam-white px-8 py-4 text-lg font-semibold group border-0 h-14 min-w-[200px]"
+              className="px-8 py-4 text-lg font-semibold group h-14 min-w-[200px]"
             >
               Get Your Curve Now
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Button>
             <Button 
-              variant="outline" 
+              variant="whaam-outline"
               size="lg"
-              className="border-2 border-whaam-yellow text-whaam-yellow hover:bg-whaam-yellow hover:text-whaam-black px-8 py-4 text-lg bg-transparent h-14 min-w-[200px] font-semibold"
+              className="px-8 py-4 text-lg h-14 min-w-[200px] font-semibold"
               onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
             >
               Learn How It Works
@@ -90,16 +91,16 @@ const Hero = () => {
           {/* Key Stats */}
           <div className={`grid grid-cols-1 md:grid-cols-3 gap-12 transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-whaam-red mb-4">500+</div>
-              <div className="text-whaam-white/60 text-lg">Satisfied Gamers</div>
+              <div className="text-4xl md:text-5xl font-bold text-primary mb-4">500+</div>
+              <div className="text-muted-foreground text-lg">Satisfied Gamers</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-whaam-yellow mb-4">4+</div>
-              <div className="text-whaam-white/60 text-lg">Years Experience</div>
+              <div className="text-4xl md:text-5xl font-bold text-accent mb-4">4+</div>
+              <div className="text-muted-foreground text-lg">Years Experience</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-whaam-red mb-4">Minutes</div>
-              <div className="text-whaam-white/60 text-lg">Fast Delivery</div>
+              <div className="text-4xl md:text-5xl font-bold text-primary mb-4">Minutes</div>
+              <div className="text-muted-foreground text-lg">Fast Delivery</div>
             </div>
           </div>
         </div>

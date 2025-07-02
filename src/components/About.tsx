@@ -1,8 +1,7 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, Award, Users, Zap, Target, Trophy, GamepadIcon, Play, TrendingUp } from "lucide-react";
+import { Star, Award, Users, Zap, Target, Trophy, GamepadIcon, Play, TrendingUp, ArrowRight } from "lucide-react";
 
 const About = () => {
   const expertStats = [

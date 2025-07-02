@@ -55,31 +55,31 @@ const FAQ = () => {
   return (
     <div className="container mx-auto px-6">
       <div className="text-center mb-16">
-        <div className="inline-flex items-center bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+        <div className="inline-flex items-center bg-whaam-red/10 text-whaam-red px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-whaam-red/20">
           <HelpCircle className="mr-2" size={16} />
           Häufig gestellte Fragen
         </div>
         
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <h2 className="text-4xl md:text-5xl font-bold text-whaam-white mb-4">
           Alles was du
-          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> wissen musst</span>
+          <span className="block bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent mt-4"> wissen musst</span>
         </h2>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
           Hier findest du Antworten auf die wichtigsten Fragen zu unseren Custom Curves 
           und unserem Service.
         </p>
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <Card className="border-0 shadow-lg">
+        <Card className="border-2 border-whaam-red/20 shadow-lg bg-whaam-black/80 backdrop-blur-sm">
           <CardContent className="p-8">
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, index) => (
-                <AccordionItem key={faq.id} value={faq.id} className="border-gray-200">
-                  <AccordionTrigger className="text-left hover:text-blue-600 transition-colors text-lg font-semibold py-6">
+                <AccordionItem key={faq.id} value={faq.id} className="border-whaam-red/20">
+                  <AccordionTrigger className="text-left hover:text-whaam-red transition-colors text-lg font-semibold py-6 text-whaam-white">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-gray-600 leading-relaxed pb-6 text-base">
+                  <AccordionContent className="text-muted-foreground leading-relaxed pb-6 text-base">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -91,33 +91,33 @@ const FAQ = () => {
 
       {/* Quick Help Cards */}
       <div className="grid md:grid-cols-3 gap-8 mt-16 max-w-6xl mx-auto">
-        <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow group">
+        <Card className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-shadow group bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red">
           <CardContent className="p-8">
-            <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
-              <Target className="text-white" size={32} />
+            <div className="w-16 h-16 bg-whaam-red rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+              <Target className="text-whaam-white" size={32} />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Sofortige Lieferung</h3>
-            <p className="text-gray-600">Erste Curve in Minuten, nicht in Tagen. Starte sofort durch!</p>
+            <h3 className="text-xl font-bold text-whaam-white mb-3">Sofortige Lieferung</h3>
+            <p className="text-muted-foreground">Erste Curve in Minuten, nicht in Tagen. Starte sofort durch!</p>
           </CardContent>
         </Card>
 
-        <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow group">
+        <Card className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-shadow group bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red">
           <CardContent className="p-8">
-            <div className="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
-              <Zap className="text-white" size={32} />
+            <div className="w-16 h-16 bg-whaam-yellow rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+              <Zap className="text-whaam-black" size={32} />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Einfache Installation</h3>
-            <p className="text-gray-600">Schritt-für-Schritt Anleitung für mühelose Einrichtung.</p>
+            <h3 className="text-xl font-bold text-whaam-white mb-3">Einfache Installation</h3>
+            <p className="text-muted-foreground">Schritt-für-Schritt Anleitung für mühelose Einrichtung.</p>
           </CardContent>
         </Card>
 
-        <Card className="text-center border-0 shadow-lg hover:shadow-xl transition-shadow group">
+        <Card className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-shadow group bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red">
           <CardContent className="p-8">
-            <div className="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
-              <Shield className="text-white" size={32} />
+            <div className="w-16 h-16 bg-whaam-red rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+              <Shield className="text-whaam-white" size={32} />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">100% Garantie</h3>
-            <p className="text-gray-600">Nicht zufrieden? Vollständige Rückerstattung ohne Wenn und Aber.</p>
+            <h3 className="text-xl font-bold text-whaam-white mb-3">100% Garantie</h3>
+            <p className="text-muted-foreground">Nicht zufrieden? Vollständige Rückerstattung ohne Wenn und Aber.</p>
           </CardContent>
         </Card>
       </div>

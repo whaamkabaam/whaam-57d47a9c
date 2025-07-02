@@ -38,24 +38,24 @@ const CookieConsent = () => {
 
   return (
     <div className="fixed bottom-4 left-4 right-4 md:left-6 md:right-6 z-50 animate-in slide-in-from-bottom-4">
-      <Card className="shadow-xl border-2 bg-white/95 backdrop-blur-sm">
+      <Card className="shadow-xl border-2 border-whaam-red/20 bg-whaam-black/95 backdrop-blur-sm">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
-              <Cookie className="text-blue-500 mt-1" size={24} />
+              <Cookie className="text-whaam-yellow mt-1" size={24} />
             </div>
             
             <div className="flex-1 space-y-4">
               <div>
-                <h3 className="font-semibold text-gray-900 mb-2">
+                <h3 className="font-semibold text-whaam-white mb-2">
                   Wir verwenden Cookies
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   Diese Website verwendet nur technisch notwendige Cookies für die grundlegende Funktionalität. 
                   Wir verwenden keine Tracking- oder Analyse-Cookies. Weitere Informationen finden Sie in unserer{" "}
                   <button 
                     onClick={handlePrivacyClick}
-                    className="text-blue-500 hover:text-blue-600 underline font-medium"
+                    className="text-whaam-red hover:text-whaam-yellow underline font-medium"
                   >
                     Datenschutzerklärung
                   </button>.
@@ -65,13 +65,14 @@ const CookieConsent = () => {
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button 
                   onClick={handleAccept}
-                  className="bg-blue-500 hover:bg-blue-600 text-white flex-1 sm:flex-none"
+                  variant="whaam"
+                  className="flex-1 sm:flex-none"
                 >
                   Akzeptieren
                 </Button>
                 <Button 
                   onClick={handleDecline}
-                  variant="outline"
+                  variant="whaam-outline"
                   className="flex-1 sm:flex-none"
                 >
                   Ablehnen
@@ -81,7 +82,7 @@ const CookieConsent = () => {
             
             <button
               onClick={handleDecline}
-              className="flex-shrink-0 p-1 text-gray-400 hover:text-gray-600 transition-colors"
+              className="flex-shrink-0 p-1 text-muted-foreground hover:text-whaam-red transition-colors"
               aria-label="Banner schließen"
             >
               <X size={20} />

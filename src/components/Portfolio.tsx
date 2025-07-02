@@ -66,26 +66,26 @@ const Portfolio = () => {
   return (
     <div className="container mx-auto px-6">
       <div className="text-center mb-16">
-        <div className="inline-flex items-center bg-green-50 text-green-600 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+        <div className="inline-flex items-center bg-whaam-red/10 text-whaam-red px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-whaam-red/20">
           <Trophy className="mr-2" size={16} />
           Real Results
         </div>
         
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <h2 className="text-4xl md:text-5xl font-bold text-whaam-white mb-4">
           Real Gamers,
-          <span className="bg-gradient-to-r from-blue-500 via-red-500 to-yellow-500 bg-clip-text text-transparent"> Real Results</span>
+          <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent"> Real Results</span>
         </h2>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
           Schau dir an, wie unsere Custom Curves das Aim und die Performance von 
           Gamern wie dir transformiert haben - mit messbaren Ergebnissen.
         </p>
       </div>
 
       {/* Before & After Demo Section */}
-      <div className="bg-gradient-to-r from-gray-900 to-blue-900 rounded-3xl p-12 mb-20 text-white">
+      <div className="bg-whaam-black rounded-3xl p-12 mb-20 text-whaam-white border-2 border-whaam-red/20">
         <div className="text-center mb-12">
           <h3 className="text-3xl font-bold mb-4">Before & After Demonstration</h3>
-          <p className="text-blue-200 text-lg">
+          <p className="text-muted-foreground text-lg">
             Sieh dir an, wie dramatisch sich das Aim mit einer Custom Curve verbessert.
           </p>
         </div>
@@ -128,8 +128,8 @@ const Portfolio = () => {
           </div>
         </div>
 
-        <div className="text-center mt-8">
-          <Badge className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 border-0 text-lg">
+          <div className="text-center mt-8">
+          <Badge className="bg-whaam-yellow text-whaam-black px-6 py-2 border-0 text-lg">
             +25% Average Accuracy Improvement
           </Badge>
         </div>
@@ -138,29 +138,29 @@ const Portfolio = () => {
       {/* Enhanced Testimonials Grid */}
       <div className="grid md:grid-cols-2 gap-8 mb-20">
         {testimonials.map((testimonial, index) => (
-          <Card 
+            <Card 
             key={testimonial.name} 
-            className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+            className="group overflow-hidden border-2 border-whaam-red/20 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-whaam-black hover:border-whaam-red"
           >
             <CardContent className="p-8">
               {/* Quote Icon */}
-              <Quote className="text-blue-500 mb-4" size={32} />
+              <Quote className="text-whaam-red mb-4" size={32} />
               
               {/* Review Text */}
-              <p className="text-gray-700 mb-6 leading-relaxed text-lg italic">
+              <p className="text-whaam-white mb-6 leading-relaxed text-lg italic">
                 "{testimonial.review}"
               </p>
               
               {/* Results Section */}
-              <div className="bg-gray-50 rounded-xl p-4 mb-6">
+              <div className="bg-whaam-white/10 rounded-xl p-4 mb-6 border border-whaam-red/20">
                 <div className="grid grid-cols-2 gap-4 text-center">
                   <div>
-                    <TrendingUp className="text-green-500 mx-auto mb-1" size={20} />
-                    <div className="text-sm font-semibold text-gray-900">{testimonial.beforeAfter}</div>
+                    <TrendingUp className="text-whaam-yellow mx-auto mb-1" size={20} />
+                    <div className="text-sm font-semibold text-whaam-white">{testimonial.beforeAfter}</div>
                   </div>
                   <div>
-                    <Target className="text-blue-500 mx-auto mb-1" size={20} />
-                    <div className="text-sm font-semibold text-gray-900">{testimonial.accuracyBoost}</div>
+                    <Target className="text-whaam-red mx-auto mb-1" size={20} />
+                    <div className="text-sm font-semibold text-whaam-white">{testimonial.accuracyBoost}</div>
                   </div>
                 </div>
               </div>
@@ -168,9 +168,9 @@ const Portfolio = () => {
               {/* Rating */}
               <div className="flex items-center mb-6">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="text-yellow-500 fill-current" size={20} />
+                  <Star key={i} className="text-whaam-yellow fill-current" size={20} />
                 ))}
-                <span className="ml-2 text-gray-600 text-sm">(Verifizierter Kunde)</span>
+                <span className="ml-2 text-muted-foreground text-sm">(Verifizierter Kunde)</span>
               </div>
               
               <div className="flex items-center justify-between">
@@ -182,13 +182,13 @@ const Portfolio = () => {
                     className="w-12 h-12 rounded-full object-cover"
                   />
                   <div>
-                    <div className="font-bold text-gray-900">{testimonial.name}</div>
-                    <div className="text-sm text-gray-600">{testimonial.game} • {testimonial.rank}</div>
+                    <div className="font-bold text-whaam-white">{testimonial.name}</div>
+                    <div className="text-sm text-muted-foreground">{testimonial.game} • {testimonial.rank}</div>
                   </div>
                 </div>
                 
                 {/* Improvement Badge */}
-                <Badge className={`bg-gradient-to-r ${testimonial.color} text-white border-0 px-3 py-1`}>
+                <Badge className="bg-whaam-red text-whaam-white border-0 px-3 py-1">
                   {testimonial.improvement}
                 </Badge>
               </div>
@@ -198,10 +198,10 @@ const Portfolio = () => {
       </div>
 
       {/* Enhanced Stats Section */}
-      <div className="bg-gradient-to-r from-blue-600 via-red-600 to-yellow-600 rounded-3xl p-12 text-white mb-16">
+      <div className="bg-whaam-black rounded-3xl p-12 text-whaam-white mb-16 border-2 border-whaam-red/20">
         <div className="text-center mb-12">
           <h3 className="text-3xl font-bold mb-4">Proven Track Record</h3>
-          <p className="text-blue-100 text-lg">
+          <p className="text-muted-foreground text-lg">
             Unsere Ergebnisse sprechen für sich. Hier ist der Impact, den wir erzielt haben.
           </p>
         </div>
@@ -210,12 +210,12 @@ const Portfolio = () => {
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
               <div className="flex justify-center mb-4">
-                <stat.icon size={48} className="text-white" />
+                <stat.icon size={48} className="text-whaam-red" />
               </div>
-              <div className="text-4xl md:text-5xl font-bold mb-2">
+              <div className="text-4xl md:text-5xl font-bold mb-2 text-whaam-white">
                 {stat.value}
               </div>
-              <div className="text-blue-100">
+              <div className="text-muted-foreground">
                 {stat.label}
               </div>
             </div>
@@ -223,19 +223,19 @@ const Portfolio = () => {
         </div>
 
         {/* Additional Success Metrics */}
-        <div className="mt-12 pt-8 border-t border-white border-opacity-20">
+        <div className="mt-12 pt-8 border-t border-whaam-red/20">
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-2xl font-bold mb-1">2.3 Ränge</div>
-              <div className="text-blue-200 text-sm">Durchschnittlicher Rank-Anstieg</div>
+              <div className="text-2xl font-bold mb-1 text-whaam-yellow">2.3 Ränge</div>
+              <div className="text-muted-foreground text-sm">Durchschnittlicher Rank-Anstieg</div>
             </div>
             <div>
-              <div className="text-2xl font-bold mb-1">14 Tage</div>
-              <div className="text-blue-200 text-sm">Durchschnitt bis zu Verbesserungen</div>
+              <div className="text-2xl font-bold mb-1 text-whaam-yellow">14 Tage</div>
+              <div className="text-muted-foreground text-sm">Durchschnitt bis zu Verbesserungen</div>
             </div>
             <div>
-              <div className="text-2xl font-bold mb-1">98%</div>
-              <div className="text-blue-200 text-sm">Würden uns weiterempfehlen</div>
+              <div className="text-2xl font-bold mb-1 text-whaam-yellow">98%</div>
+              <div className="text-muted-foreground text-sm">Würden uns weiterempfehlen</div>
             </div>
           </div>
         </div>
@@ -245,13 +245,14 @@ const Portfolio = () => {
       <div className="text-center">
         <Button 
           size="lg" 
-          className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 text-lg font-semibold group"
+          variant="whaam"
+          className="px-8 py-4 text-lg font-semibold group"
           onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
         >
           Get Your Custom Curve Now
           <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
         </Button>
-        <p className="text-gray-600 mt-4">Schließe dich über 500 zufriedenen Gamern an</p>
+        <p className="text-muted-foreground mt-4">Schließe dich über 500 zufriedenen Gamern an</p>
       </div>
     </div>
   );

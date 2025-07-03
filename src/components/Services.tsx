@@ -19,7 +19,7 @@ const TrustStatItem = ({
   color: string;
   delay: string;
 }) => {
-  const counter = end ? useAnimatedCounter({ end, suffix }) : null;
+  const counter = end ? useAnimatedCounter({ end, suffix, duration: 1200 }) : null;
   
   return (
     <div className="group hover:scale-105 transition-all duration-300 hover:-translate-y-1" style={{ animationDelay: delay }}>

@@ -5,7 +5,7 @@ import { ArrowRight, Zap, Target } from "lucide-react";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
 
 const StatItem = ({ end, suffix = "", label }: { end: number; suffix?: string; label: string }) => {
-  const counter = useAnimatedCounter({ end, suffix });
+  const counter = useAnimatedCounter({ end, suffix, duration: 1200 });
   
   return (
     <div className="text-center">

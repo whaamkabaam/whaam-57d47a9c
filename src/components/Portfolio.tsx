@@ -3,6 +3,41 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, Quote, ArrowRight, Trophy, Target, Zap, TrendingUp, Play } from "lucide-react";
+import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
+
+const StatItem = ({ stat }: { stat: any }) => {
+  const counter = stat.end ? useAnimatedCounter({ 
+    end: stat.end, 
+    suffix: stat.suffix || "",
+    decimals: stat.decimals || 0,
+    duration: 1200 
+  }) : null;
+  
+  return (
+    <div className="text-center">
+      <div className="flex justify-center mb-4">
+        <stat.icon size={48} className="text-whaam-red" />
+      </div>
+      <div className="text-4xl md:text-5xl font-bold mb-2 text-whaam-white">
+        {counter ? <span ref={counter.ref}>{counter.value}</span> : stat.value}
+      </div>
+      <div className="text-muted-foreground">
+        {stat.label}
+      </div>
+    </div>
+  );
+};
+
+const MetricItem = ({ end, decimals = 0, label, suffix }: { end: number; decimals?: number; label: string; suffix: string }) => {
+  const counter = useAnimatedCounter({ end, suffix, decimals, duration: 1200 });
+  
+  return (
+    <div>
+      <div ref={counter.ref} className="text-2xl font-bold mb-1 text-whaam-yellow">{counter.value}</div>
+      <div className="text-muted-foreground text-sm">{label}</div>
+    </div>
+  );
+};
 
 const Portfolio = () => {
   const testimonials = [
@@ -81,10 +116,10 @@ const Portfolio = () => {
   ];
 
   const stats = [
-    { icon: Trophy, value: "500+", label: "Satisfied Gamers", color: "text-yellow-500" },
-    { icon: Target, value: "35%", label: "Avg. Accuracy Boost", color: "text-green-500" },
+    { icon: Trophy, end: 500, suffix: "+", label: "Satisfied Gamers", color: "text-yellow-500" },
+    { icon: Target, end: 35, suffix: "%", label: "Avg. Accuracy Boost", color: "text-green-500" },
     { icon: Zap, value: "Minutes", label: "Fast Delivery", color: "text-blue-500" },
-    { icon: Star, value: "4.9/5", label: "Average Rating", color: "text-purple-500" }
+    { icon: Star, end: 4.9, decimals: 1, suffix: "/5", label: "Average Rating", color: "text-purple-500" }
   ];
 
   return (
@@ -232,35 +267,16 @@ const Portfolio = () => {
         
         <div className="grid md:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="flex justify-center mb-4">
-                <stat.icon size={48} className="text-whaam-red" />
-              </div>
-              <div className="text-4xl md:text-5xl font-bold mb-2 text-whaam-white">
-                {stat.value}
-              </div>
-              <div className="text-muted-foreground">
-                {stat.label}
-              </div>
-            </div>
+            <StatItem key={index} stat={stat} />
           ))}
         </div>
 
         {/* Additional Success Metrics */}
         <div className="mt-12 pt-8 border-t border-whaam-red/20">
           <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-2xl font-bold mb-1 text-whaam-yellow">2.3 Ranks</div>
-              <div className="text-muted-foreground text-sm">Average rank increase</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold mb-1 text-whaam-yellow">14 Days</div>
-              <div className="text-muted-foreground text-sm">Average time to improvements</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold mb-1 text-whaam-yellow">98%</div>
-              <div className="text-muted-foreground text-sm">Would recommend us</div>
-            </div>
+            <MetricItem end={2.3} decimals={1} label="Average rank increase" suffix=" Ranks" />
+            <MetricItem end={14} label="Average time to improvements" suffix=" Days" />
+            <MetricItem end={98} label="Would recommend us" suffix="%" />
           </div>
         </div>
       </div>

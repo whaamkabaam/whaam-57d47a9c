@@ -20,7 +20,7 @@ const TermsOfService = () => {
           </Button>
           
           <h1 className="text-4xl font-bold text-whaam-white mb-4">Terms of Service</h1>
-          <p className="text-whaam-white/70">Effective Date: December 2024</p>
+          <p className="text-whaam-white/70">Effective Date: December {new Date().getFullYear()}</p>
         </div>
 
         <div className="bg-whaam-black/50 rounded-lg shadow-lg p-8 border border-whaam-red/20">

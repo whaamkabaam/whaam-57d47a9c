@@ -2,6 +2,20 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Target } from "lucide-react";
+import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
+
+const StatItem = ({ end, suffix = "", label }: { end: number; suffix?: string; label: string }) => {
+  const counter = useAnimatedCounter({ end, suffix });
+  
+  return (
+    <div className="text-center">
+      <div ref={counter.ref} className="text-4xl md:text-5xl font-bold text-primary mb-4">
+        {counter.value}
+      </div>
+      <div className="text-muted-foreground text-lg">{label}</div>
+    </div>
+  );
+};
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -90,14 +104,8 @@ const Hero = () => {
 
           {/* Key Stats */}
           <div className={`grid grid-cols-1 md:grid-cols-3 gap-12 transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary mb-4">500+</div>
-              <div className="text-muted-foreground text-lg">Satisfied Gamers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-accent mb-4">4+</div>
-              <div className="text-muted-foreground text-lg">Years Experience</div>
-            </div>
+            <StatItem end={500} suffix="+" label="Satisfied Gamers" />
+            <StatItem end={4} suffix="+" label="Years Experience" />
             <div className="text-center">
               <div className="text-4xl md:text-5xl font-bold text-primary mb-4">Minutes</div>
               <div className="text-muted-foreground text-lg">Fast Delivery</div>

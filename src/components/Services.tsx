@@ -2,6 +2,34 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FileText, Settings, Target, CheckCircle } from "lucide-react";
+import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
+
+const TrustStatItem = ({ 
+  end, 
+  suffix = "", 
+  value, 
+  label, 
+  color,
+  delay 
+}: { 
+  end?: number; 
+  suffix?: string; 
+  value?: string;
+  label: string; 
+  color: string;
+  delay: string;
+}) => {
+  const counter = end ? useAnimatedCounter({ end, suffix }) : null;
+  
+  return (
+    <div className="group hover:scale-105 transition-all duration-300 hover:-translate-y-1" style={{ animationDelay: delay }}>
+      <div className={`text-4xl font-bold ${color} mb-2 group-hover:scale-110 transition-transform duration-300`}>
+        {counter ? <span ref={counter.ref}>{counter.value}</span> : value}
+      </div>
+      <div className="text-muted-foreground group-hover:text-whaam-white/80 transition-colors duration-300">{label}</div>
+    </div>
+  );
+};
 
 const Services = () => {
   const steps = [
@@ -99,18 +127,26 @@ const Services = () => {
         </p>
         
         <div className="grid sm:grid-cols-3 gap-8">
-          <div className="group hover:scale-105 transition-all duration-300 hover:-translate-y-1">
-            <div className="text-4xl font-bold text-primary mb-2 group-hover:scale-110 transition-transform duration-300">Minutes</div>
-            <div className="text-muted-foreground group-hover:text-whaam-white/80 transition-colors duration-300">First curve delivered</div>
-          </div>
-          <div className="group hover:scale-105 transition-all duration-300 hover:-translate-y-1" style={{ animationDelay: '100ms' }}>
-            <div className="text-4xl font-bold text-accent mb-2 group-hover:scale-110 transition-transform duration-300">100%</div>
-            <div className="text-muted-foreground group-hover:text-whaam-white/80 transition-colors duration-300">Satisfaction guarantee</div>
-          </div>
-          <div className="group hover:scale-105 transition-all duration-300 hover:-translate-y-1" style={{ animationDelay: '200ms' }}>
-            <div className="text-4xl font-bold text-primary mb-2 group-hover:scale-110 transition-transform duration-300">4+ Years</div>
-            <div className="text-muted-foreground group-hover:text-whaam-white/80 transition-colors duration-300">Expert experience</div>
-          </div>
+          <TrustStatItem 
+            value="Minutes" 
+            label="First curve delivered" 
+            color="text-primary"
+            delay="0ms"
+          />
+          <TrustStatItem 
+            end={100} 
+            suffix="%" 
+            label="Satisfaction guarantee" 
+            color="text-accent"
+            delay="100ms"
+          />
+          <TrustStatItem 
+            end={4} 
+            suffix="+ Years" 
+            label="Expert experience" 
+            color="text-primary"
+            delay="200ms"
+          />
         </div>
       </div>
     </div>

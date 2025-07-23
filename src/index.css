@@ -123,19 +123,15 @@
     @apply border-border;
   }
 
+  /* Remove body background - WebGL canvas handles this now */
   body {
-    @apply bg-background text-foreground;
+    @apply bg-transparent text-foreground;
     font-family: 'Inter', sans-serif;
-    /* Liquid Glass Background */
-    background: linear-gradient(135deg, 
-      hsl(220, 100%, 3%) 0%,
-      hsl(240, 80%, 4%) 25%,
-      hsl(260, 60%, 5%) 50%,
-      hsl(220, 80%, 4%) 75%,
-      hsl(220, 100%, 3%) 100%
-    );
-    background-attachment: fixed;
     min-height: 100vh;
+  }
+
+  #root {
+    background-color: transparent;
   }
 
   /* Liquid Glass Typography */
@@ -229,7 +225,7 @@
 /* Enhanced Glass Variants */
 .glass-card {
   position: relative;
-  background: hsla(var(--glass-secondary));
+  background: hsla(var(--glass-secondary) / 0.5); /* Semi-transparent for backdrop-filter */
   border: 1px solid hsl(var(--card-border));
   border-radius: var(--radius);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);

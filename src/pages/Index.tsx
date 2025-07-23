@@ -41,8 +41,8 @@ const Index = () => {
 
   return (
     <>
-      <InteractiveBackground />
-      <div className="min-h-screen bg-whaam-dark relative">
+      <div className="min-h-screen bg-background relative">
+        <InteractiveBackground />
       <Navigation activeSection={activeSection} />
       
       <section id="home">

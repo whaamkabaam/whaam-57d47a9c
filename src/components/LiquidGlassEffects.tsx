@@ -76,10 +76,8 @@ declare global {
 
 // The main WebGL scene component
 function LiquidScene({ distortion }: { distortion: 'subtle' | 'medium' }) {
-  const materialRef = useRef<any>();
   const [{ intensity }, api] = useSpring(() => ({ intensity: 0 }));
   const mousePos = useRef({ x: 0.5, y: 0.5 });
-  const vec = new THREE.Vector2();
 
   // Create a simple texture instead of loading from file
   const backgroundTexture = useMemo(() => {
@@ -99,32 +97,44 @@ function LiquidScene({ distortion }: { distortion: 'subtle' | 'medium' }) {
     return texture;
   }, []);
 
+  // Create material instance manually
+  const material = useMemo(() => {
+    const mat = new LiquidMaterial();
+    mat.transparent = false;
+    
+    // Initialize uniforms
+    if (mat.uniforms) {
+      mat.uniforms.uTime.value = 0;
+      mat.uniforms.uMouse.value = new THREE.Vector2(0.5, 0.5);
+      mat.uniforms.uIntensity.value = 0;
+      mat.uniforms.uBackground.value = backgroundTexture;
+    }
+    
+    return mat;
+  }, [backgroundTexture]);
+
   const distortionIntensity = distortion === 'subtle' ? 0.3 : 0.6;
 
   useFrame((state) => {
     // Smoothly interpolate mouse position for fluid movement
     mousePos.current.x = THREE.MathUtils.lerp(mousePos.current.x, state.pointer.x / 2 + 0.5, 0.05);
     mousePos.current.y = THREE.MathUtils.lerp(mousePos.current.y, 1.0 - (state.pointer.y / 2 + 0.5), 0.05);
-    if (materialRef.current) {
-        materialRef.current.uMouse = vec.set(mousePos.current.x, mousePos.current.y);
-        materialRef.current.uTime = state.clock.getElapsedTime();
+    
+    // Update material uniforms
+    if (material?.uniforms) {
+      material.uniforms.uMouse.value.set(mousePos.current.x, mousePos.current.y);
+      material.uniforms.uTime.value = state.clock.getElapsedTime();
+      material.uniforms.uIntensity.value = intensity.get();
     }
   });
 
   return (
     <mesh 
+      material={material}
       onPointerOver={() => api.start({ intensity: distortionIntensity })}
       onPointerOut={() => api.start({ intensity: 0 })}
     >
       <planeGeometry args={[1, 1]} />
-      <liquidMaterial 
-        ref={materialRef} 
-        uBackground={backgroundTexture} 
-        uIntensity={intensity.to(v => v)}
-        uTime={0}
-        uMouse={[0.5, 0.5]}
-        transparent={false}
-      />
     </mesh>
   );
 }

@@ -215,43 +215,66 @@
   transition: all 0.3s var(--ease-bounce);
 }
 
-/* Floating Animation */
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  25% { transform: translateY(-10px) rotate(1deg); }
-  50% { transform: translateY(-5px) rotate(-1deg); }
-  75% { transform: translateY(-15px) rotate(1deg); }
+/* Calm Glass Effects */
+.glass-btn {
+  @apply relative overflow-hidden;
 }
 
-.float-animation {
-  animation: float 6s ease-in-out infinite;
+.glass-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255,255,255,0.3) 50%,
+      transparent 100%
+  );
+  background-size: 250% 250%;
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
 }
 
-/* Liquid Flow Animation */
-@keyframes liquid-flow {
-  0% { 
-    transform: translateX(-100%) scale(0.8);
+.glass-btn:hover::before,
+.glass-btn:focus-visible::before {
+  animation: shimmer 0.8s ease-out forwards;
+  opacity: 1;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Gentle float for hero elements only */
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.gentle-float {
+  animation: gentle-float 4s ease-in-out infinite;
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .glass-btn:hover::before,
+  .glass-btn:focus-visible::before {
+    animation: none;
     opacity: 0;
   }
-  50% {
-    opacity: 1;
-    transform: translateX(0%) scale(1);
+  
+  .gentle-float {
+    animation: none;
   }
-  100% { 
-    transform: translateX(100%) scale(0.8);
-    opacity: 0;
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-}
-
-.liquid-flow {
-  animation: liquid-flow 8s ease-in-out infinite;
-}
-
-/* Glass morphing hover effects */
-.glass-morph:hover {
-  background: hsla(var(--glass-accent));
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 
-    var(--shadow-glass),
-    0 0 30px hsla(var(--primary), 0.4);
 }

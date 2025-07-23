@@ -3,7 +3,11 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiquidDistortionFilters, LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
 
-export default function Navigation() {
+interface NavigationProps {
+  activeSection?: string;
+}
+
+export default function Navigation({ activeSection }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
@@ -45,7 +49,9 @@ export default function Navigation() {
               {navItems.map((item) => (
                 <button
                   key={item.href}
-                  className="glass-text-contrast hover:text-primary transition-colors duration-300 font-medium"
+                  className={`glass-text-contrast hover:text-primary transition-colors duration-300 font-medium ${
+                    activeSection === item.href ? 'text-primary' : ''
+                  }`}
                   onClick={() => scrollToSection(item.href)}
                 >
                   {item.label}
@@ -81,7 +87,9 @@ export default function Navigation() {
               {navItems.map((item) => (
                 <button
                   key={item.href}
-                  className="glass-text-contrast hover:text-primary transition-colors duration-300 text-lg font-medium text-left"
+                  className={`glass-text-contrast hover:text-primary transition-colors duration-300 text-lg font-medium text-left ${
+                    activeSection === item.href ? 'text-primary' : ''
+                  }`}
                   onClick={() => {
                     scrollToSection(item.href);
                     setIsMenuOpen(false);

@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useCallback } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useThree, extend } from '@react-three/fiber';
 import { shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 import { useSpringCursor } from '@/hooks/useSpringCursor';
@@ -126,6 +126,9 @@ const LiquidGlassMaterial = shaderMaterial(
   fragmentShader
 );
 
+// Extend react-three-fiber with our custom material
+extend({ LiquidGlassMaterial });
+
 interface LiquidGlassMeshProps {
   mousePosition: { x: number; y: number };
   backgroundTexture?: THREE.Texture;
@@ -163,7 +166,17 @@ function LiquidGlassMesh({
   return (
     <mesh ref={meshRef}>
       <planeGeometry args={[2, 2]} />
-      <liquidGlassMaterial ref={materialRef} transparent />
+      <liquidGlassMaterial
+        ref={materialRef}
+        transparent
+        uTime={0}
+        uMouse={[0, 0]}
+        uResolution={[1, 1]}
+        uBackground={null}
+        uDistortionStrength={distortionStrength}
+        uChromaticAberration={chromaticAberration}
+        uSpecularIntensity={specularIntensity}
+      />
     </mesh>
   );
 }
@@ -262,5 +275,12 @@ declare global {
     interface IntrinsicElements {
       liquidGlassMaterial: any;
     }
+  }
+}
+
+// TypeScript declaration for the extended material
+declare module '@react-three/fiber' {
+  interface ThreeElements {
+    liquidGlassMaterial: any;
   }
 }

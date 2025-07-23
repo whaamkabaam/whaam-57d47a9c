@@ -80,7 +80,7 @@ const Navigation = ({ activeSection }: NavigationProps) => {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Menu"
           >
-            {isMenuOpen ? <X size={24} className="animate-pulse-glow" /> : <Menu size={24} className="animate-float" />}
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 

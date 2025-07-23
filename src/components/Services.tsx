@@ -24,7 +24,7 @@ const TrustStatItem = ({
   return (
     <div className="group hover:scale-110 transition-all duration-500 hover:-translate-y-2 animate-float" style={{ animationDelay: delay }}>
       <div className="glass-accent rounded-2xl p-6 border border-white/10 backdrop-blur-glass hover:border-white/20 hover:liquid-glow">
-        <div className={`text-5xl font-bold ${color} mb-3 group-hover:scale-125 transition-transform duration-500 animate-pulse-glow`}>
+        <div className={`text-5xl font-bold ${color} mb-3 group-hover:scale-110 transition-transform duration-300`}>
           {counter ? <span ref={counter.ref}>{counter.value}</span> : value}
         </div>
         <div className="text-muted-foreground group-hover:text-foreground/90 transition-colors duration-500 font-medium">{label}</div>
@@ -77,7 +77,7 @@ const Services = () => {
       <div className="text-center mb-20 relative z-10">
         <div className="glass-primary rounded-3xl p-12 border border-white/10 backdrop-blur-glass mx-auto max-w-4xl">
           <h2 className="text-5xl md:text-7xl font-bold mb-8">
-            How it <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-pulse-glow">works</span>
+            How it <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">works</span>
           </h2>
           <div className="glass-secondary rounded-2xl p-6 border border-white/5">
             <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
@@ -115,7 +115,7 @@ const Services = () => {
                   </div>
                 </div>
                 
-                <h3 className="text-2xl font-bold mb-6 group-hover:text-primary transition-all duration-500 group-hover:scale-105 animate-pulse-glow">
+                <h3 className="text-2xl font-bold mb-6 group-hover:text-primary transition-all duration-300 group-hover:scale-105">
                   {step.title}
                 </h3>
                 
@@ -132,7 +132,7 @@ const Services = () => {
                        className="flex items-start space-x-3 group-hover:translate-x-2 transition-transform duration-500 glass-accent rounded-xl p-3 border border-white/5 backdrop-blur-glass hover:border-white/10"
                        style={{ transitionDelay: `${detailIndex * 100}ms` }}
                      >
-                       <CheckCircle className="text-secondary flex-shrink-0 mt-0.5 group-hover:scale-125 group-hover:text-primary transition-all duration-500 animate-pulse-glow" size={16} />
+                       <CheckCircle className="text-secondary flex-shrink-0 mt-0.5 group-hover:scale-110 group-hover:text-primary transition-all duration-300" size={16} />
                        <span className="text-sm text-muted-foreground group-hover:text-foreground/90 transition-colors duration-500 font-medium">{detail}</span>
                      </div>
                    ))}
@@ -151,7 +151,7 @@ const Services = () => {
         <div className="relative glass-primary rounded-3xl p-16 text-center border border-white/10 backdrop-blur-glass liquid-glow">
           <div className="glass-secondary rounded-2xl p-8 mb-12 border border-white/5 backdrop-blur-glass">
             <h3 className="text-4xl md:text-5xl font-bold mb-6">
-              Trusted by <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-pulse-glow">500+</span> gamers <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent animate-pulse-glow">worldwide</span>
+              Trusted by <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">500+</span> gamers <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">worldwide</span>
             </h3>
             <p className="text-muted-foreground text-xl leading-relaxed max-w-3xl mx-auto">
               Join the community of gamers who have already transformed their aim with our custom curves.

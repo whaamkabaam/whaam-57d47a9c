@@ -92,48 +92,15 @@ export default {
 					to: { height: '0' }
 				},
 				
-				// Liquid Glass Animations
-				'float': {
-					'0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
-					'25%': { transform: 'translateY(-10px) rotate(1deg)' },
-					'50%': { transform: 'translateY(-5px) rotate(-1deg)' },
-					'75%': { transform: 'translateY(-15px) rotate(1deg)' }
-				},
-				'liquid-flow': {
-					'0%': { 
-						transform: 'translateX(-100%) scale(0.8)',
-						opacity: '0'
-					},
-					'50%': {
-						opacity: '1',
-						transform: 'translateX(0%) scale(1)'
-					},
-					'100%': { 
-						transform: 'translateX(100%) scale(0.8)',
-						opacity: '0'
-					}
-				},
-				'glass-morph': {
-					'0%': { transform: 'scale(1) rotate(0deg)', filter: 'blur(0px)' },
-					'50%': { transform: 'scale(1.05) rotate(2deg)', filter: 'blur(1px)' },
-					'100%': { transform: 'scale(1) rotate(0deg)', filter: 'blur(0px)' }
-				},
-				'pulse-glow': {
-					'0%, 100%': { 
-						boxShadow: '0 0 20px hsla(var(--primary), 0.3)' 
-					},
-					'50%': { 
-						boxShadow: '0 0 40px hsla(var(--primary), 0.6), 0 0 60px hsla(var(--primary), 0.4)' 
-					}
+				// Calm animations only
+				'shimmer': {
+					'to': { transform: 'translateX(100%)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'float': 'float 6s ease-in-out infinite',
-				'liquid-flow': 'liquid-flow 8s ease-in-out infinite',
-				'glass-morph': 'glass-morph 4s ease-in-out infinite',
-				'pulse-glow': 'pulse-glow 3s ease-in-out infinite'
+				'shimmer': 'shimmer 0.8s ease-out forwards'
 			},
 			backdropBlur: {
 				'glass': '20px',

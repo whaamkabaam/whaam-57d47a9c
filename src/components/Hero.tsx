@@ -39,96 +39,118 @@ const Hero = () => {
   };
 
   return (
-    <div className="min-h-screen bg-whaam-dark text-white relative overflow-hidden pt-20 pb-24">
-      {/* Animated Background Elements */}
+    <div className="min-h-screen relative overflow-hidden pt-20 pb-24">
+      {/* Liquid Glass Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-whaam-red/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-whaam-yellow/10 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-whaam-red/15 rounded-full blur-2xl"></div>
+        {/* Primary Liquid Orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-primary/30 to-accent/20 rounded-full blur-3xl animate-float liquid-glow"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-tr from-secondary/25 to-primary/15 rounded-full blur-2xl animate-float liquid-glow-secondary" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-bl from-accent/30 to-secondary/20 rounded-full blur-xl animate-float liquid-glow-accent" style={{ animationDelay: '4s' }}></div>
+        
+        {/* Flowing Liquid Elements */}
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-primary/40 to-transparent animate-liquid-flow"></div>
+        <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-accent/30 to-transparent animate-liquid-flow" style={{ animationDelay: '3s' }}></div>
       </div>
 
       <div className="container mx-auto px-6 py-32 relative z-10">
-        <div className="text-center max-w-4xl mx-auto">
+        {/* Glass Hero Container */}
+        <div className="glass-primary rounded-3xl p-12 md:p-16 text-center max-w-6xl mx-auto border border-white/10 shadow-2xl backdrop-blur-glass">
           {/* Main Headline */}
           <div className={`transition-all duration-1000 mb-8 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight">
-              <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-8xl font-bold mb-8 leading-tight">
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-pulse-glow">
                 Custom Mouse Acceleration Curves
               </span>
               <br />
-              for Pin-Point FPS Aim
+              <span className="text-3xl md:text-5xl text-foreground/90">
+                for Pin-Point FPS Aim
+              </span>
             </h1>
           </div>
 
-          {/* Simplified Brand Name */}
-          <div className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1500 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-            <span className="text-whaam-white">WhaamKaBaam</span>
+          {/* Floating Brand Name */}
+          <div className={`text-2xl md:text-3xl font-bold mb-8 transition-all duration-1500 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+            <span className="text-foreground/80 hover:text-primary transition-colors duration-500 animate-float">WhaamKaBaam</span>
           </div>
 
-          {/* Subtitle */}
+          {/* Glass Subtitle */}
           <div className={`transition-all duration-1000 delay-500 mb-12 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-              Personalized for your DPI, games & arm-speed. Set up in 3 min – join <span className="text-whaam-yellow font-semibold">750+</span> aimers winning more duels.
-            </p>
-          </div>
-
-          {/* Enhanced Trust Bar */}
-          <div className={`flex flex-wrap justify-center items-center gap-4 md:gap-6 mb-16 transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <div className="flex items-center text-whaam-yellow">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="fill-current" size={16} />
-              ))}
-              <span className="ml-2 text-sm text-muted-foreground">4.9/5 Rating</span>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Discord: <span className="text-whaam-white font-semibold">51k</span> members
-            </div>
-            <div className="text-sm text-muted-foreground">
-              TikTok: <span className="text-whaam-white font-semibold">75k</span> followers
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Trusted by <span className="text-whaam-white font-semibold">Valorant, Apex & CS2</span> players
+            <div className="glass-secondary rounded-2xl p-6 mx-auto max-w-4xl border border-white/5">
+              <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
+                Personalized for your DPI, games & arm-speed. Set up in 3 min – join <span className="text-secondary font-bold animate-pulse-glow">750+</span> aimers winning more duels.
+              </p>
             </div>
           </div>
 
-          {/* CTA Buttons */}
+          {/* Liquid Glass Trust Bar */}
+          <div className={`flex flex-wrap justify-center items-center gap-6 md:gap-8 mb-16 transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="glass-accent rounded-full px-6 py-3 flex items-center space-x-2 border border-white/10 hover:scale-105 transition-transform duration-300">
+              <div className="flex items-center text-secondary">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="fill-current animate-pulse-glow" size={18} style={{ animationDelay: `${i * 0.1}s` }} />
+                ))}
+              </div>
+              <span className="text-sm text-muted-foreground font-medium">4.9/5 Rating</span>
+            </div>
+            <div className="glass-accent rounded-full px-6 py-3 text-sm text-muted-foreground border border-white/10 hover:scale-105 transition-transform duration-300">
+              Discord: <span className="text-foreground font-bold">51k</span> members
+            </div>
+            <div className="glass-accent rounded-full px-6 py-3 text-sm text-muted-foreground border border-white/10 hover:scale-105 transition-transform duration-300">
+              TikTok: <span className="text-foreground font-bold">75k</span> followers
+            </div>
+            <div className="glass-accent rounded-full px-6 py-3 text-sm text-muted-foreground border border-white/10 hover:scale-105 transition-transform duration-300">
+              Trusted by <span className="text-foreground font-bold">Valorant, Apex & CS2</span> players
+            </div>
+          </div>
+
+          {/* Liquid Glass CTA Buttons */}
           <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center transition-all duration-1000 delay-700 mb-24 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <Button 
-              onClick={scrollToProducts}
-              variant="whaam"
-              size="lg" 
-              className="px-8 py-4 text-lg font-semibold group h-14 min-w-[200px]"
-              aria-label="Download mouse acceleration curve settings"
-            >
-              Get My Curve
-              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
-            </Button>
-            <Button 
-              variant="whaam-outline"
-              size="lg"
-              className="px-8 py-4 text-lg h-14 min-w-[200px] font-semibold"
-              onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              Watch 2-min Demo
-            </Button>
+            <div className="relative group">
+              <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent rounded-3xl blur-lg opacity-60 group-hover:opacity-100 animate-pulse-glow transition-opacity duration-300"></div>
+              <Button 
+                onClick={scrollToProducts}
+                size="lg" 
+                className="relative glass-primary border border-white/20 px-10 py-6 text-xl font-bold group h-16 min-w-[240px] bg-gradient-to-r from-primary/80 to-accent/60 hover:from-primary hover:to-accent transition-all duration-500 hover:scale-105 rounded-3xl backdrop-blur-glass"
+                aria-label="Download mouse acceleration curve settings"
+              >
+                Get My Curve
+                <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform duration-300" size={24} />
+              </Button>
+            </div>
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-secondary to-primary rounded-3xl blur opacity-30 group-hover:opacity-60 transition-opacity duration-300"></div>
+              <Button 
+                size="lg"
+                className="relative glass-secondary border border-white/10 px-10 py-6 text-xl h-16 min-w-[240px] font-bold hover:scale-105 transition-all duration-500 rounded-3xl backdrop-blur-glass hover:bg-glass-accent"
+                onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                Watch 2-min Demo
+              </Button>
+            </div>
           </div>
 
-          {/* Key Stats */}
-          <div className={`grid grid-cols-1 md:grid-cols-3 gap-12 transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <StatItem end={500} suffix="+" label="Satisfied Gamers" />
-            <StatItem end={4} suffix="+" label="Years Experience" />
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-primary mb-4">Minutes</div>
-              <div className="text-muted-foreground text-lg">Fast Delivery</div>
+          {/* Liquid Glass Stats */}
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="glass-secondary rounded-2xl p-8 border border-white/10 hover:scale-105 transition-all duration-500 hover:glass-accent">
+              <StatItem end={500} suffix="+" label="Satisfied Gamers" />
+            </div>
+            <div className="glass-secondary rounded-2xl p-8 border border-white/10 hover:scale-105 transition-all duration-500 hover:glass-accent" style={{ animationDelay: '0.2s' }}>
+              <StatItem end={4} suffix="+" label="Years Experience" />
+            </div>
+            <div className="glass-secondary rounded-2xl p-8 border border-white/10 hover:scale-105 transition-all duration-500 hover:glass-accent" style={{ animationDelay: '0.4s' }}>
+              <div className="text-center">
+                <div className="text-4xl md:text-5xl font-bold text-primary mb-4 animate-pulse-glow">Minutes</div>
+                <div className="text-muted-foreground text-lg">Fast Delivery</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-whaam-yellow/30 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-whaam-yellow/60 rounded-full mt-2"></div>
+      {/* Liquid Glass Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-float">
+        <div className="glass-accent w-8 h-12 border border-white/20 rounded-full flex justify-center backdrop-blur-glass hover:scale-110 transition-transform duration-300 cursor-pointer" onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}>
+          <div className="w-2 h-4 bg-gradient-to-b from-primary to-secondary rounded-full mt-3 animate-pulse-glow"></div>
         </div>
       </div>
     </div>

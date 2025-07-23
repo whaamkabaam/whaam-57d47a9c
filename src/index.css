@@ -3,93 +3,118 @@
 @tailwind components;
 @tailwind utilities;
 
-/* WhaamKaBaam Color System - Schwarz, Rot, Gelb, Weiß */
+/* Liquid Glass Design System */
 
 @layer base {
   :root {
-    --background: 16 14% 7%;   /* #121212 - Haupthintergrund */
-    --foreground: 0 0% 100%;   /* #FFFFFF - Weißer Text */
+    /* Glass Background System */
+    --background: 220 100% 3%;     /* Deep space blue #050A1A */
+    --foreground: 0 0% 98%;        /* Near white #FAFAFA */
 
-    --card: 16 14% 6%;         /* Noch dunkler für Karten */
-    --card-foreground: 0 0% 100%;
+    /* Glass Elements */
+    --glass-primary: 220 70% 8% / 0.3;    /* Primary glass surface */
+    --glass-secondary: 220 50% 15% / 0.2; /* Secondary glass surface */
+    --glass-accent: 220 30% 25% / 0.15;   /* Accent glass surface */
+    
+    /* Glass Cards */
+    --card: 220 60% 10% / 0.25;    /* Glass card background */
+    --card-foreground: 0 0% 98%;
+    --card-border: 220 100% 80% / 0.1; /* Subtle glass border */
 
-    --popover: 16 14% 7%;
-    --popover-foreground: 0 0% 100%;
+    /* Glass Popovers */
+    --popover: 220 70% 8% / 0.4;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 0 76% 60%;      /* #FF3B3B - Rot */
+    /* Liquid Colors */
+    --primary: 0 100% 65%;         /* Vivid coral #FF5252 */
     --primary-foreground: 0 0% 100%;
+    --primary-glow: 0 100% 80%;    /* Lighter coral for glows */
 
-    --secondary: 51 100% 50%;  /* #FFD700 - Gelb */
-    --secondary-foreground: 16 14% 7%;  /* Schwarzer Text auf Gelb */
+    --secondary: 45 100% 65%;      /* Liquid gold #FFD740 */
+    --secondary-foreground: 220 100% 3%;
+    --secondary-glow: 45 100% 80%; /* Lighter gold for glows */
 
-    --muted: 16 14% 15%;       /* Dunkelgrau für gedämpfte Bereiche */
-    --muted-foreground: 0 0% 69%;  /* #B0B0B0 - Hellgrau für Sekundärtexte */
+    /* Glass UI Elements */
+    --muted: 220 40% 20% / 0.2;
+    --muted-foreground: 0 0% 75%;
 
-    --accent: 51 100% 50%;     /* #FFD700 - Gelb für Akzente */
-    --accent-foreground: 16 14% 7%;  /* Schwarzer Text auf Gelb */
+    --accent: 280 100% 70%;        /* Electric purple #C462FF */
+    --accent-foreground: 0 0% 100%;
+    --accent-glow: 280 100% 85%;   /* Lighter purple for glows */
 
-    --destructive: 0 76% 60%;  /* #FF3B3B - Rot für Warnungen */
+    /* Glass Feedback */
+    --destructive: 0 100% 65%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 76% 60%;       /* Rot für Rahmen */
-    --input: 16 14% 10%;       /* Eingabefelder */
-    --ring: 0 76% 60%;         /* Rot für Focus-Ring */
+    /* Glass Borders & Inputs */
+    --border: 220 100% 80% / 0.15;
+    --input: 220 60% 10% / 0.3;
+    --ring: 280 100% 70% / 0.4;
 
-    --radius: 0.5rem;
+    /* Fluid Border Radius */
+    --radius: 1.5rem;
 
-    /* WhaamKaBaam spezifische Tokens */
-    --whaam-secondary-text: 0 0% 69%;  /* #B0B0B0 für Sekundärtexte */
+    /* Liquid Glass Effects */
+    --blur-glass: blur(20px);
+    --blur-strong: blur(40px);
+    --shadow-glass: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-glow: 0 0 40px hsla(var(--primary), 0.4);
+    
+    /* Animation Curves */
+    --ease-fluid: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    --sidebar-background: 16 14% 7%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 0 76% 60%;
+    /* WhaamKaBaam Liquid Glass Tokens */
+    --whaam-secondary-text: 0 0% 75%;
+
+    /* Sidebar Glass */
+    --sidebar-background: 220 70% 8% / 0.3;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 0 100% 65%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 51 100% 50%;
-    --sidebar-accent-foreground: 16 14% 7%;
-    --sidebar-border: 0 76% 60%;
-    --sidebar-ring: 0 76% 60%;
+    --sidebar-accent: 280 100% 70%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 220 100% 80% / 0.1;
+    --sidebar-ring: 280 100% 70% / 0.4;
   }
 
   .dark {
-    --background: 16 14% 7%;   /* #121212 */
-    --foreground: 0 0% 100%;   /* #FFFFFF */
-
-    --card: 16 14% 6%;         /* Noch dunkler für Karten */
-    --card-foreground: 0 0% 100%;
-
-    --popover: 16 14% 7%;
-    --popover-foreground: 0 0% 100%;
-
-    --primary: 0 76% 60%;      /* #FF3B3B */
+    /* Same as root for consistent glass theming */
+    --background: 220 100% 3%;
+    --foreground: 0 0% 98%;
+    --glass-primary: 220 70% 8% / 0.3;
+    --glass-secondary: 220 50% 15% / 0.2;
+    --glass-accent: 220 30% 25% / 0.15;
+    --card: 220 60% 10% / 0.25;
+    --card-foreground: 0 0% 98%;
+    --card-border: 220 100% 80% / 0.1;
+    --popover: 220 70% 8% / 0.4;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 100% 65%;
     --primary-foreground: 0 0% 100%;
-
-    --secondary: 51 100% 50%;  /* #FFD700 */
-    --secondary-foreground: 16 14% 7%;  /* Schwarzer Text auf Gelb */
-
-    --muted: 16 14% 15%;
-    --muted-foreground: 0 0% 69%;  /* #B0B0B0 - Hellgrau für Sekundärtexte */
-
-    --accent: 51 100% 50%;     /* #FFD700 */
-    --accent-foreground: 16 14% 7%;  /* Schwarzer Text auf Gelb */
-
-    --destructive: 0 76% 60%;  /* #FF3B3B */
+    --primary-glow: 0 100% 80%;
+    --secondary: 45 100% 65%;
+    --secondary-foreground: 220 100% 3%;
+    --secondary-glow: 45 100% 80%;
+    --muted: 220 40% 20% / 0.2;
+    --muted-foreground: 0 0% 75%;
+    --accent: 280 100% 70%;
+    --accent-foreground: 0 0% 100%;
+    --accent-glow: 280 100% 85%;
+    --destructive: 0 100% 65%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 0 76% 60%;       /* Rot für Rahmen */
-    --input: 16 14% 10%;
-    --ring: 0 76% 60%;
-    
-    /* WhaamKaBaam spezifische Tokens */
-    --whaam-secondary-text: 0 0% 69%;  /* #B0B0B0 für Sekundärtexte */
-    
-    --sidebar-background: 16 14% 7%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 0 76% 60%;
+    --border: 220 100% 80% / 0.15;
+    --input: 220 60% 10% / 0.3;
+    --ring: 280 100% 70% / 0.4;
+    --whaam-secondary-text: 0 0% 75%;
+    --sidebar-background: 220 70% 8% / 0.3;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 0 100% 65%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 51 100% 50%;
-    --sidebar-accent-foreground: 16 14% 7%;
-    --sidebar-border: 0 76% 60%;
-    --sidebar-ring: 0 76% 60%;
+    --sidebar-accent: 280 100% 70%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 220 100% 80% / 0.1;
+    --sidebar-ring: 280 100% 70% / 0.4;
   }
 }
 
@@ -101,39 +126,132 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
+    /* Liquid Glass Background */
+    background: linear-gradient(135deg, 
+      hsl(220, 100%, 3%) 0%,
+      hsl(240, 80%, 4%) 25%,
+      hsl(260, 60%, 5%) 50%,
+      hsl(220, 80%, 4%) 75%,
+      hsl(220, 100%, 3%) 100%
+    );
+    background-attachment: fixed;
+    min-height: 100vh;
   }
 
-  /* WhaamKaBaam Typography */
+  /* Liquid Glass Typography */
   h1, h2, h3, h4, h5, h6 {
     @apply text-foreground;
     font-weight: 700;
+    text-shadow: 0 0 20px hsla(var(--primary), 0.3);
   }
 
   p, span, li, label, div {
     @apply text-foreground;
   }
 
-  /* Sekundärtexte */
+  /* Glass Text Effects */
   .text-secondary {
     color: hsl(var(--whaam-secondary-text));
+    text-shadow: 0 0 10px hsla(var(--primary), 0.2);
   }
 
-  /* Links */
+  /* Liquid Links */
   a {
-    @apply text-primary hover:text-accent transition-colors;
+    @apply text-primary hover:text-accent transition-all duration-300;
+    text-shadow: 0 0 15px hsla(var(--primary), 0.4);
   }
 
-  /* Button Focus States */
+  /* Glass Focus States */
   button:focus-visible {
     @apply ring-2 ring-ring ring-offset-2 ring-offset-background;
+    box-shadow: 0 0 30px hsla(var(--ring), 0.5);
   }
 }
 
-/* WhaamKaBaam Custom Classes */
-.whaam-bg-dark { background-color: #121212; }
-.whaam-bg-red { background-color: #FF3B3B; }
-.whaam-bg-yellow { background-color: #FFD700; }
-.whaam-text-red { color: #FF3B3B; }
-.whaam-text-yellow { color: #FFD700; }
-.whaam-border-red { border-color: #FF3B3B; }
-.whaam-border-yellow { border-color: #FFD700; }
+/* Liquid Glass Custom Classes */
+.glass-primary {
+  background: hsla(var(--glass-primary));
+  backdrop-filter: var(--blur-glass);
+  border: 1px solid hsl(var(--card-border));
+  box-shadow: var(--shadow-glass);
+}
+
+.glass-secondary {
+  background: hsla(var(--glass-secondary));
+  backdrop-filter: var(--blur-glass);
+  border: 1px solid hsl(var(--card-border));
+}
+
+.glass-accent {
+  background: hsla(var(--glass-accent));
+  backdrop-filter: var(--blur-strong);
+  border: 1px solid hsl(var(--border));
+}
+
+.liquid-glow {
+  box-shadow: 
+    0 0 20px hsla(var(--primary), 0.3),
+    0 0 40px hsla(var(--primary), 0.2),
+    0 0 60px hsla(var(--primary), 0.1);
+}
+
+.liquid-glow-secondary {
+  box-shadow: 
+    0 0 20px hsla(var(--secondary), 0.3),
+    0 0 40px hsla(var(--secondary), 0.2);
+}
+
+.liquid-glow-accent {
+  box-shadow: 
+    0 0 20px hsla(var(--accent), 0.3),
+    0 0 40px hsla(var(--accent), 0.2);
+}
+
+.fluid-animation {
+  transition: all 0.4s var(--ease-fluid);
+}
+
+.bounce-animation {
+  transition: all 0.3s var(--ease-bounce);
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-10px) rotate(1deg); }
+  50% { transform: translateY(-5px) rotate(-1deg); }
+  75% { transform: translateY(-15px) rotate(1deg); }
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Liquid Flow Animation */
+@keyframes liquid-flow {
+  0% { 
+    transform: translateX(-100%) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0%) scale(1);
+  }
+  100% { 
+    transform: translateX(100%) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.liquid-flow {
+  animation: liquid-flow 8s ease-in-out infinite;
+}
+
+/* Glass morphing hover effects */
+.glass-morph:hover {
+  background: hsla(var(--glass-accent));
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 
+    var(--shadow-glass),
+    0 0 30px hsla(var(--primary), 0.4);
+}

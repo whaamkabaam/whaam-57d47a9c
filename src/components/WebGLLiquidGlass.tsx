@@ -145,38 +145,45 @@ function LiquidGlassMesh({
   specularIntensity = 0.5,
 }: LiquidGlassMeshProps) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<any>(null);
   const { size } = useThree();
 
+  // Create material instance with proper typing
+  const material = useMemo(() => {
+    const mat = new LiquidGlassMaterial();
+    mat.transparent = true;
+    
+    // Initialize uniforms
+    if (mat.uniforms) {
+      mat.uniforms.uTime.value = 0;
+      mat.uniforms.uMouse.value = new THREE.Vector2(0, 0);
+      mat.uniforms.uResolution.value = new THREE.Vector2(size.width, size.height);
+      mat.uniforms.uBackground.value = backgroundTexture || null;
+      mat.uniforms.uDistortionStrength.value = distortionStrength;
+      mat.uniforms.uChromaticAberration.value = chromaticAberration;
+      mat.uniforms.uSpecularIntensity.value = specularIntensity;
+    }
+    
+    return mat;
+  }, [size.width, size.height, backgroundTexture, distortionStrength, chromaticAberration, specularIntensity]);
+
   useFrame((state) => {
-    if (materialRef.current) {
-      materialRef.current.uTime = state.clock.elapsedTime;
-      materialRef.current.uMouse.set(mousePosition.x, mousePosition.y);
-      materialRef.current.uResolution.set(size.width, size.height);
-      materialRef.current.uDistortionStrength = distortionStrength;
-      materialRef.current.uChromaticAberration = chromaticAberration;
-      materialRef.current.uSpecularIntensity = specularIntensity;
+    if (material?.uniforms) {
+      material.uniforms.uTime.value = state.clock.elapsedTime;
+      material.uniforms.uMouse.value.set(mousePosition.x, mousePosition.y);
+      material.uniforms.uResolution.value.set(size.width, size.height);
+      material.uniforms.uDistortionStrength.value = distortionStrength;
+      material.uniforms.uChromaticAberration.value = chromaticAberration;
+      material.uniforms.uSpecularIntensity.value = specularIntensity;
       
       if (backgroundTexture) {
-        materialRef.current.uBackground = backgroundTexture;
+        material.uniforms.uBackground.value = backgroundTexture;
       }
     }
   });
 
   return (
-    <mesh ref={meshRef}>
+    <mesh ref={meshRef} material={material}>
       <planeGeometry args={[2, 2]} />
-      <liquidGlassMaterial
-        ref={materialRef}
-        transparent
-        uTime={0}
-        uMouse={[0, 0]}
-        uResolution={[1, 1]}
-        uBackground={null}
-        uDistortionStrength={distortionStrength}
-        uChromaticAberration={chromaticAberration}
-        uSpecularIntensity={specularIntensity}
-      />
     </mesh>
   );
 }

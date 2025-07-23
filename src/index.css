@@ -378,3 +378,12 @@
     transform: none !important;
   }
 }
+
+@layer utilities {
+  .filter-liquid-subtle {
+    filter: url(#liquid-distortion-subtle);
+  }
+  .filter-liquid-medium {
+    filter: url(#liquid-distortion-medium);
+  }
+}

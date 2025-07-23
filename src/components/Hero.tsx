@@ -60,17 +60,9 @@ const Hero = () => {
             </h1>
           </div>
 
-          {/* Animated Brand Name */}
-          <div className={`text-5xl md:text-7xl font-black mb-8 transition-all duration-1500 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-            <span className="inline-block text-whaam-white hover:scale-110 transition-transform duration-300 cursor-default">
-              WHAAM
-            </span>
-            <span className="inline-block text-whaam-white hover:scale-110 transition-transform duration-300 cursor-default mx-2">
-              KA
-            </span>
-            <span className="inline-block text-whaam-white hover:scale-110 transition-transform duration-300 cursor-default">
-              BAAM
-            </span>
+          {/* Simplified Brand Name */}
+          <div className={`text-3xl md:text-4xl font-bold mb-6 transition-all duration-1500 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+            <span className="text-whaam-white">WhaamKaBaam</span>
           </div>
 
           {/* Subtitle */}
@@ -80,13 +72,19 @@ const Hero = () => {
             </p>
           </div>
 
-          {/* Trust Bar */}
-          <div className={`flex flex-wrap justify-center items-center gap-6 mb-16 transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          {/* Enhanced Trust Bar */}
+          <div className={`flex flex-wrap justify-center items-center gap-4 md:gap-6 mb-16 transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="flex items-center text-whaam-yellow">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="fill-current" size={16} />
               ))}
               <span className="ml-2 text-sm text-muted-foreground">4.9/5 Rating</span>
+            </div>
+            <div className="text-sm text-muted-foreground">
+              Discord: <span className="text-whaam-white font-semibold">51k</span> members
+            </div>
+            <div className="text-sm text-muted-foreground">
+              TikTok: <span className="text-whaam-white font-semibold">75k</span> followers
             </div>
             <div className="text-sm text-muted-foreground">
               Trusted by <span className="text-whaam-white font-semibold">Valorant, Apex & CS2</span> players

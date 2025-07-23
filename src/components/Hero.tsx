@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Zap, Target } from "lucide-react";
+import { ArrowRight, Zap, Target, Star } from "lucide-react";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
 
 const StatItem = ({ end, suffix = "", label }: { end: number; suffix?: string; label: string }) => {
@@ -51,17 +51,17 @@ const Hero = () => {
         <div className="text-center max-w-4xl mx-auto">
           {/* Main Headline */}
           <div className={`transition-all duration-1000 mb-8 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
-              Custom Curve Settings
-              <br />
+            <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight">
               <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">
-                Tailored to Your Aim
+                Custom Mouse Acceleration Curves
               </span>
+              <br />
+              for Pin-Point FPS Aim
             </h1>
           </div>
 
           {/* Animated Brand Name */}
-          <div className={`text-6xl md:text-8xl font-black mb-12 transition-all duration-1500 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          <div className={`text-5xl md:text-7xl font-black mb-8 transition-all duration-1500 delay-300 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
             <span className="inline-block text-whaam-white hover:scale-110 transition-transform duration-300 cursor-default">
               WHAAM
             </span>
@@ -74,11 +74,23 @@ const Hero = () => {
           </div>
 
           {/* Subtitle */}
-          <div className={`transition-all duration-1000 delay-500 mb-16 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              Perfect Your Aim with Personalized Mouse Acceleration Curves.
-              Get custom settings designed specifically for your gaming style.
+          <div className={`transition-all duration-1000 delay-500 mb-12 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+              Personalized for your DPI, games & arm-speed. Set up in 3 min – join <span className="text-whaam-yellow font-semibold">750+</span> aimers winning more duels.
             </p>
+          </div>
+
+          {/* Trust Bar */}
+          <div className={`flex flex-wrap justify-center items-center gap-6 mb-16 transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div className="flex items-center text-whaam-yellow">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="fill-current" size={16} />
+              ))}
+              <span className="ml-2 text-sm text-muted-foreground">4.9/5 Rating</span>
+            </div>
+            <div className="text-sm text-muted-foreground">
+              Trusted by <span className="text-whaam-white font-semibold">Valorant, Apex & CS2</span> players
+            </div>
           </div>
 
           {/* CTA Buttons */}
@@ -88,8 +100,9 @@ const Hero = () => {
               variant="whaam"
               size="lg" 
               className="px-8 py-4 text-lg font-semibold group h-14 min-w-[200px]"
+              aria-label="Download mouse acceleration curve settings"
             >
-              Get Your Curve Now
+              Get My Curve
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
             </Button>
             <Button 
@@ -98,7 +111,7 @@ const Hero = () => {
               className="px-8 py-4 text-lg h-14 min-w-[200px] font-semibold"
               onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
             >
-              Learn How It Works
+              Watch 2-min Demo
             </Button>
           </div>
 

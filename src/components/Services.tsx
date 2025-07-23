@@ -1,189 +1,179 @@
-
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { FileText, Settings, Target, CheckCircle } from "lucide-react";
+import { FileText, Settings, Target, CheckCircle, Clock, Shield, Users, Star } from "lucide-react";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
+import { LiquidDistortionFilters, LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
 
-const TrustStatItem = ({ 
-  end, 
-  suffix = "", 
-  value, 
-  label, 
-  color,
-  delay 
-}: { 
-  end?: number; 
-  suffix?: string; 
+interface TrustStatItemProps {
+  end: number;
+  suffix?: string;
   value?: string;
-  label: string; 
+  label: string;
   color: string;
-  delay: string;
-}) => {
-  const counter = end ? useAnimatedCounter({ end, suffix, duration: 1200 }) : null;
-  
+  delay?: number;
+}
+
+const TrustStatItem = ({ end, suffix = "", value, label, color, delay = 0 }: TrustStatItemProps) => {
+  const counter = end > 0 ? useAnimatedCounter({ 
+    end, 
+    suffix, 
+    duration: 2000,
+    start: 0 
+  }) : null;
+
   return (
-    <div className="group hover:scale-110 transition-all duration-500 hover:-translate-y-2 animate-float" style={{ animationDelay: delay }}>
-      <div className="glass-accent rounded-2xl p-6 border border-white/10 backdrop-blur-glass hover:border-white/20 hover:liquid-glow">
-        <div className={`text-5xl font-bold ${color} mb-3 group-hover:scale-110 transition-transform duration-300`}>
-          {counter ? <span ref={counter.ref}>{counter.value}</span> : value}
-        </div>
-        <div className="text-muted-foreground group-hover:text-foreground/90 transition-colors duration-500 font-medium">{label}</div>
+    <LiquidGlassCard 
+      variant="accent" 
+      interactive={true} 
+      distortion="medium"
+      className="group p-6 hover:border-white/20 transition-all duration-300"
+    >
+      <div className={`text-5xl font-bold ${color} mb-3 group-hover:scale-110 transition-transform duration-300`}>
+        {counter ? <span ref={counter.ref}>{counter.value}</span> : value}
       </div>
-    </div>
+      <div className="glass-text-contrast text-lg font-medium">{label}</div>
+    </LiquidGlassCard>
   );
 };
 
-const Services = () => {
-  const steps = [
-    {
-      icon: FileText,
-      title: "Order & Provide Info",
-      description: "Tell us about your current settings, games, and gaming goals. We analyze your playstyle.",
-      details: ["Share your current sensitivity", "Tell us your main games", "Describe your aim problems", "Set your performance goals"],
-      color: "bg-whaam-red"
-    },
-    {
-      icon: Settings,
-      title: "Personalized Setup",
-      description: "Our expert creates your custom curve based on your unique gaming profile and preferences.",
-      details: ["Analyze your gaming style", "Calculate optimal acceleration", "Create personalized curve", "Test initial parameters"],
-      color: "bg-whaam-yellow"
-    },
-    {
-      icon: Target,
-      title: "Fine-tuning",
-      description: "We refine and perfect your curve through testing and revisions until it's absolutely perfect.",
-      details: ["Test curve performance", "Gather your feedback", "Make precise adjustments", "Optimize for consistency"],
-      color: "bg-whaam-red"
-    },
-    {
-      icon: CheckCircle,
-      title: "Perfect Aim Delivered",
-      description: "Receive your final curve settings and dominate your games with improved accuracy.",
-      details: ["Receive final curve file", "Installation instructions", "Performance tips", "Access to ongoing support"],
-      color: "bg-whaam-yellow"
-    }
-  ];
-
+export default function Services() {
   return (
-    <div className="container mx-auto px-4 sm:px-6 py-24 relative">
-      {/* Floating Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-primary/20 to-accent/10 rounded-full blur-2xl animate-float"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-tr from-secondary/15 to-primary/10 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }}></div>
-      </div>
+    <section id="services" className="py-24 relative overflow-hidden">
+      {/* Add Liquid Glass SVG Filters */}
+      <LiquidDistortionFilters />
       
-      {/* Glass Header Section */}
-      <div className="text-center mb-20 relative z-10">
-        <div className="glass-primary rounded-3xl p-12 border border-white/10 backdrop-blur-glass mx-auto max-w-4xl">
-          <h2 className="text-5xl md:text-7xl font-bold mb-8">
+      {/* Background Glass Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-32 right-20 w-40 h-40 glass-primary rounded-full liquid-glow" style={{ filter: 'url(#liquid-distortion-subtle)' }}></div>
+        <div className="absolute bottom-20 left-32 w-28 h-28 glass-secondary rounded-full liquid-glow-secondary" style={{ filter: 'url(#liquid-distortion-subtle)' }}></div>
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl md:text-7xl font-bold mb-8 glass-text-contrast">
             How it <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">works</span>
           </h2>
-          <div className="glass-secondary rounded-2xl p-6 border border-white/5">
-            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
-              Our proven 4-step process delivers personalized mouse acceleration curves 
-              that transform your aim from average to extraordinary.
-            </p>
-          </div>
+          <p className="text-xl glass-text max-w-3xl mx-auto">
+            Get your personalized mouse acceleration curve in 4 simple steps. Our expert-crafted system delivers professional-grade precision in minutes.
+          </p>
         </div>
-      </div>
 
-      {/* Liquid Glass Process Cards */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20 relative z-10">
-        {steps.map((step, index) => (
-          <div
-            key={step.title} 
-            className="group relative"
-            style={{ animationDelay: `${index * 200}ms` }}
-          >
-            {/* Glow Background */}
-            <div className="absolute -inset-2 bg-gradient-to-br from-primary/20 to-accent/10 rounded-3xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
-            <Card className="relative glass-primary border border-white/10 backdrop-blur-glass hover:border-white/20 transition-all duration-500 hover:-translate-y-6 hover:scale-105 hover:rotate-2 rounded-3xl overflow-hidden">
-              {/* Floating Step Number */}
-              <div className="absolute -top-6 -left-6 w-12 h-12 glass-accent border border-white/20 rounded-2xl flex items-center justify-center font-bold text-lg z-10 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 animate-float backdrop-blur-glass">
-                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{index + 1}</span>
-              </div>
-              
-              <CardContent className="p-8 relative">
-                {/* Liquid Glass Icon Container */}
-                <div className="relative mb-8">
-                  <div className={`w-20 h-20 glass-secondary rounded-3xl flex items-center justify-center group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 border border-white/10 backdrop-blur-glass animate-float`} style={{ animationDelay: `${index * 0.5}s` }}>
-                    <div className="w-16 h-16 bg-gradient-to-br from-primary/80 to-accent/60 rounded-2xl flex items-center justify-center group-hover:liquid-glow">
-                      <step.icon className="text-white group-hover:scale-110 transition-transform duration-500" size={28} />
-                    </div>
-                  </div>
+        {/* Process Steps */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+          {[
+            {
+              icon: FileText,
+              title: "Order & Provide Info",
+              description: "Tell us your DPI, games, and preferences",
+              details: [
+                "Your current DPI settings",
+                "Primary games you play", 
+                "Arm vs wrist aiming style",
+                "Current sensitivity preferences"
+              ]
+            },
+            {
+              icon: Settings,
+              title: "Personalized Setup", 
+              description: "We craft your custom acceleration curve",
+              details: [
+                "Mathematical curve optimization",
+                "Game-specific adjustments",
+                "Hardware compatibility check",
+                "Performance fine-tuning"
+              ]
+            },
+            {
+              icon: Target,
+              title: "Fine-tuning",
+              description: "Test and perfect your new setup",
+              details: [
+                "Initial testing period",
+                "Feedback incorporation",
+                "Minor adjustments",
+                "Validation & approval"
+              ]
+            },
+            {
+              icon: CheckCircle,
+              title: "Perfect Aim Delivered",
+              description: "Enjoy your enhanced gaming performance",
+              details: [
+                "Installation guide included",
+                "24/7 support access",
+                "Future update eligibility", 
+                "Community access"
+              ]
+            }
+          ].map((step, index) => (
+            <LiquidGlassCard 
+              key={index}
+              variant={index % 3 === 0 ? "primary" : index % 3 === 1 ? "secondary" : "accent"}
+              interactive={true}
+              distortion="medium"
+              className="group p-8 text-center hover:scale-105 transition-all duration-500"
+            >
+              <div className="mb-6">
+                <div className="glass-primary w-20 h-20 rounded-2xl mx-auto flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500 liquid-glow">
+                  <step.icon className="text-primary group-hover:text-accent transition-colors duration-500" size={32} />
                 </div>
                 
                 <h3 className="text-2xl font-bold mb-6 group-hover:text-primary transition-all duration-300 group-hover:scale-105">
                   {step.title}
                 </h3>
                 
-                <div className="glass-secondary rounded-2xl p-4 mb-6 border border-white/5 backdrop-blur-glass">
-                  <p className="text-muted-foreground leading-relaxed group-hover:text-foreground/90 transition-colors duration-500">
-                    {step.description}
-                  </p>
-                </div>
-                
-                <div className="space-y-3">
-                   {step.details.map((detail, detailIndex) => (
-                     <div 
-                       key={detail} 
-                       className="flex items-start space-x-3 group-hover:translate-x-2 transition-transform duration-500 glass-accent rounded-xl p-3 border border-white/5 backdrop-blur-glass hover:border-white/10"
-                       style={{ transitionDelay: `${detailIndex * 100}ms` }}
+                <p className="glass-text text-lg mb-6 leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+              
+              <div className="space-y-3">
+                {step.details.map((detail, detailIndex) => (
+                  <div 
+                    key={detailIndex}
+                    className="flex items-start space-x-3 text-left group-hover:translate-x-1 transition-transform duration-300"
+                    style={{ transitionDelay: `${detailIndex * 50}ms` }}
                      >
-                       <CheckCircle className="text-secondary flex-shrink-0 mt-0.5 group-hover:scale-110 group-hover:text-primary transition-all duration-300" size={16} />
-                       <span className="text-sm text-muted-foreground group-hover:text-foreground/90 transition-colors duration-500 font-medium">{detail}</span>
-                     </div>
-                   ))}
-               </div>
-              </CardContent>
-            </Card>
-          </div>
-        ))}
-      </div>
+                        <CheckCircle className="text-secondary flex-shrink-0 mt-0.5 group-hover:scale-110 group-hover:text-primary transition-all duration-300" size={16} />
+                        <span className="text-sm text-muted-foreground group-hover:text-foreground/90 transition-colors duration-500 font-medium">{detail}</span>
+                      </div>
+                ))}
+              </div>
+            </LiquidGlassCard>
+          ))}
+        </div>
 
-      {/* Liquid Glass Trust Section */}
-      <div className="relative">
-        {/* Background Glow */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 rounded-3xl blur-2xl"></div>
-        
-        <div className="relative glass-primary rounded-3xl p-16 text-center border border-white/10 backdrop-blur-glass liquid-glow">
-          <div className="glass-secondary rounded-2xl p-8 mb-12 border border-white/5 backdrop-blur-glass">
-            <h3 className="text-4xl md:text-5xl font-bold mb-6">
-              Trusted by <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">500+</span> gamers <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">worldwide</span>
-            </h3>
-            <p className="text-muted-foreground text-xl leading-relaxed max-w-3xl mx-auto">
-              Join the community of gamers who have already transformed their aim with our custom curves.
-            </p>
-          </div>
+        {/* Trust Statistics */}
+        <LiquidGlassCard 
+          variant="primary"
+          interactive={true}
+          distortion="subtle"
+          className="text-center p-12"
+        >
+          <h3 className="text-4xl md:text-5xl font-bold mb-6 glass-text-contrast">
+            Trusted by <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">500+</span> gamers <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">worldwide</span>
+          </h3>
           
-          <div className="grid sm:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
             <TrustStatItem 
-              value="Minutes" 
-              label="First curve delivered" 
+              end={15} 
+              suffix="min" 
+              label="Average Delivery" 
               color="text-primary"
-              delay="0ms"
             />
             <TrustStatItem 
               end={100} 
               suffix="%" 
-              label="Satisfaction guarantee" 
+              label="Satisfaction Rate" 
               color="text-secondary"
-              delay="200ms"
             />
             <TrustStatItem 
-              end={4} 
-              suffix="+ Years" 
-              label="Expert experience" 
+              end={750} 
+              suffix="+" 
+              label="Happy Customers" 
               color="text-accent"
-              delay="400ms"
             />
           </div>
-        </div>
+        </LiquidGlassCard>
       </div>
-    </div>
+    </section>
   );
-};
-
-export default Services;
+}

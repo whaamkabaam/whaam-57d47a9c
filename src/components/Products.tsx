@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Mouse, Clock, Star, Check, Zap, Users, Target, ArrowRight, Shield, Trophy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { LiquidDistortionFilters, LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
 
 const Products = () => {
   const [hoveredPlan, setHoveredPlan] = useState<string | null>(null);
@@ -26,7 +26,7 @@ const Products = () => {
       price: "$39",
       originalPrice: "$69",
       badge: "Standard",
-      badgeColor: "bg-whaam-yellow text-whaam-black font-bold",
+      badgeColor: "bg-secondary text-primary font-bold",
       description: "Perfect for most gamers who want personalized curve optimization",
       deliveryTime: "First curve delivered in minutes",
       features: [
@@ -42,7 +42,7 @@ const Products = () => {
       price: "$47",
       originalPrice: "$79",
       badge: "Most Bought",
-      badgeColor: "bg-gradient-to-r from-whaam-red to-whaam-yellow text-whaam-white font-bold",
+      badgeColor: "bg-gradient-to-r from-primary to-secondary text-white font-bold",
       description: "For perfectionists who want unlimited fine-tuning until it's perfect",
       deliveryTime: "First curve delivered in minutes",
       features: [
@@ -59,7 +59,7 @@ const Products = () => {
       price: "$149",
       originalPrice: "$249",
       badge: "Premium",
-      badgeColor: "bg-whaam-red text-whaam-white font-bold",
+      badgeColor: "bg-accent text-white font-bold",
       description: "Ultimate experience with real-time curve development and instant testing",
       deliveryTime: "Personal live 1-on-1 session",
       emphasis: "Perfect curve guaranteed in 45 minutes",
@@ -79,184 +79,188 @@ const Products = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 relative py-24">
-      {/* Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-        <div className="absolute top-20 left-10 w-64 sm:w-96 h-64 sm:h-96 bg-whaam-red/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-64 sm:w-80 h-64 sm:h-80 bg-whaam-yellow/10 rounded-full blur-3xl"></div>
+    <section id="products" className="py-24 relative overflow-hidden">
+      <LiquidDistortionFilters />
+      
+      {/* Background Glass Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 w-64 h-64 glass-primary rounded-full liquid-glow" style={{ filter: 'url(#liquid-distortion-subtle)' }}></div>
+        <div className="absolute bottom-20 right-10 w-48 h-48 glass-secondary rounded-full liquid-glow-secondary" style={{ filter: 'url(#liquid-distortion-subtle)' }}></div>
       </div>
 
-      {/* Header Section */}
-      <div className="text-center mb-20">
-        <div className="inline-flex items-center bg-whaam-red/10 text-whaam-red px-4 py-2 rounded-full text-sm font-semibold mb-8 border border-whaam-red/20">
-          <Star className="mr-2" size={16} />
-          Custom Curve Settings for Your Aim
-        </div>
-        
-        <h2 className="text-5xl md:text-6xl font-bold text-whaam-white mb-8 leading-tight">
-          Choose your
-          <span className="block bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent mt-4">
-            perfect plan
-          </span>
-        </h2>
-        
-        <p className="text-xl text-whaam-white/80 max-w-3xl mx-auto mb-12">
-          Perfect your aim with professionally crafted mouse acceleration curves. 
-          Every plan includes our iron-clad 100% satisfaction guarantee and personalized optimization.
-        </p>
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        {/* Header Section */}
+        <div className="text-center mb-20">
+          <LiquidGlassCard variant="secondary" className="inline-flex items-center px-6 py-3 mb-8">
+            <Star className="mr-2 text-primary" size={16} />
+            <span className="glass-text-contrast font-semibold">Custom Curve Settings for Your Aim</span>
+          </LiquidGlassCard>
+          
+          <h2 className="text-5xl md:text-6xl font-bold glass-text-contrast mb-8 leading-tight">
+            Choose your
+            <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mt-4">
+              perfect plan
+            </span>
+          </h2>
+          
+          <p className="text-xl glass-text max-w-3xl mx-auto mb-12">
+            Perfect your aim with professionally crafted mouse acceleration curves. 
+            Every plan includes our iron-clad 100% satisfaction guarantee and personalized optimization.
+          </p>
 
-        {/* Trust Indicators */}
-        <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-whaam-white/60 mb-16">
-          <div className="flex items-center">
-            <Check className="text-whaam-yellow mr-2" size={16} />
-            500+ satisfied gamers
-          </div>
-          <div className="flex items-center">
-            <Check className="text-whaam-yellow mr-2" size={16} />
-            First curve in minutes
-          </div>
-          <div className="flex items-center">
-            <Check className="text-whaam-yellow mr-2" size={16} />
-            100% satisfaction guarantee
+          {/* Trust Indicators */}
+          <div className="flex flex-wrap justify-center items-center gap-6 text-sm glass-text mb-16">
+            <div className="flex items-center">
+              <Check className="text-secondary mr-2" size={16} />
+              500+ satisfied gamers
+            </div>
+            <div className="flex items-center">
+              <Check className="text-secondary mr-2" size={16} />
+              First curve in minutes
+            </div>
+            <div className="flex items-center">
+              <Check className="text-secondary mr-2" size={16} />
+              100% satisfaction guarantee
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Plans Grid - Fixed heights and proper badge spacing */}
+        {/* Plans Grid */}
         <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20 pt-12">
-        {plans.map((plan, index) => (
-          <Card 
-            key={plan.id}
-            className={`group relative transition-all duration-700 hover:-translate-y-6 hover:shadow-2xl hover:shadow-whaam-red/40 hover:shadow-[0_0_20px_theme(colors.whaam-red)] border-2 shadow-lg overflow-visible bg-whaam-black min-h-[580px] flex flex-col animate-fade-in hover:scale-[1.02] ${
-              plan.highlight ? 'border-whaam-red scale-105 shadow-whaam-red/30 ring-2 ring-whaam-yellow/50' : 'border-whaam-red/20'
-            } ${hoveredPlan === plan.id ? 'shadow-2xl border-whaam-red scale-105' : ''} ${
-              selectedPlan === plan.id ? 'border-whaam-yellow shadow-whaam-yellow/30' : ''
-            }`}
-            onMouseEnter={() => setHoveredPlan(plan.id)}
-            onMouseLeave={() => setHoveredPlan(null)}
-          >
-            {/* Badge - Properly positioned above card */}
-            <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
-            <Badge className={`${plan.badgeColor} px-6 py-2 text-sm font-bold shadow-xl border-0 hover:scale-110 transition-all duration-300 whitespace-nowrap`}>
-              {plan.badge}
-            </Badge>
-            </div>
-
-            {/* Popular Plan Glow Effect */}
-            {plan.popular && (
-              <div className="absolute inset-0 bg-whaam-red/5 pointer-events-none"></div>
-            )}
-
-            <CardHeader className="text-center pt-16 pb-6 flex-shrink-0">
-              <div className={`w-20 h-20 mx-auto mb-6 rounded-3xl flex items-center justify-center transition-all duration-500 group-hover:scale-125 group-hover:rotate-6 group-hover:shadow-2xl ${
-                plan.highlight ? 'bg-whaam-red group-hover:bg-whaam-yellow' : plan.premium ? 'bg-gradient-to-br from-whaam-red to-whaam-yellow' : 'bg-whaam-yellow group-hover:bg-whaam-red'
-              }`}>
-                <plan.icon className="text-whaam-black" size={32} />
-              </div>
-              
-              <h3 className="text-2xl font-bold text-whaam-white mb-4">
-                {plan.name}
-              </h3>
-              
-              <p className="text-whaam-white/70 mb-6 px-4 leading-relaxed">
-                {plan.description}
-              </p>
-              
-              <div className="flex items-center justify-center gap-3 mb-3">
-                <span className="text-5xl font-black text-whaam-white">
-                  {plan.price}
-                </span>
-                {plan.originalPrice && (
-                  <span className="text-xl text-whaam-white/40 line-through">
-                    {plan.originalPrice}
-                  </span>
-                )}
+          {plans.map((plan, index) => (
+            <LiquidGlassCard
+              key={plan.id}
+              variant={plan.highlight ? "primary" : plan.premium ? "accent" : "secondary"}
+              interactive={true}
+              distortion="medium"
+              className={`group text-center min-h-[580px] flex flex-col transition-all duration-700 hover:-translate-y-6 hover:scale-105 ${
+                plan.highlight ? 'ring-2 ring-secondary/50 scale-105' : ''
+              } ${hoveredPlan === plan.id ? 'scale-105' : ''} ${
+                selectedPlan === plan.id ? 'ring-2 ring-primary/50' : ''
+              }`}
+              onMouseEnter={() => setHoveredPlan(plan.id)}
+              onMouseLeave={() => setHoveredPlan(null)}
+            >
+              {/* Badge */}
+              <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
+                <Badge className={`${plan.badgeColor} px-6 py-2 text-sm shadow-xl border-0 hover:scale-110 transition-all duration-300 whitespace-nowrap`}>
+                  {plan.badge}
+                </Badge>
               </div>
 
-              <div className="text-whaam-yellow font-semibold mb-2">
-                {plan.deliveryTime}
-              </div>
-
-              {plan.emphasis && (
-                <p className="text-whaam-yellow font-semibold text-sm bg-whaam-yellow/10 px-4 py-2 rounded-full border border-whaam-yellow/20">
-                  {plan.emphasis}
-                </p>
+              {/* Popular Plan Glow Effect */}
+              {plan.popular && (
+                <div className="absolute inset-0 bg-primary/5 pointer-events-none rounded-[inherit]"></div>
               )}
-            </CardHeader>
 
-            <CardContent className="px-8 flex-grow flex flex-col">
-              <ul className="space-y-4 mb-8 flex-grow">
-                {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start space-x-3">
-                    <Check className="text-whaam-yellow flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" size={16} />
-                    <span className="text-whaam-white/80 leading-relaxed">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Fixed button positioning */}
-              <div className="mt-auto pb-8">
-                <Button 
-                  onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
-                  size="lg"
-                  className={`w-full font-bold text-lg py-4 h-12 transition-all duration-300 group-hover:scale-105 border-0 ${
-                    plan.highlight 
-                      ? 'bg-whaam-red hover:bg-whaam-red/80 text-whaam-white shadow-lg' 
-                      : plan.premium
-                      ? 'bg-whaam-yellow hover:bg-whaam-yellow/80 text-whaam-black shadow-lg'
-                      : 'bg-whaam-red hover:bg-whaam-red/80 text-whaam-white shadow-lg'
-                  }`}
-                 >
-                   Start Now
-                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
-                 </Button>
-
-                {/* Savings Badge */}
-                {plan.originalPrice && (
-                  <div className="text-center mt-4">
-                    <span className="inline-block bg-whaam-yellow/20 text-whaam-yellow text-sm font-semibold px-4 py-2 rounded-full border border-whaam-yellow/30">
-                      Save ${parseInt(plan.originalPrice.substring(1)) - parseInt(plan.price.substring(1))}
+              <div className="text-center pt-16 pb-6 flex-shrink-0 px-8">
+                <div className={`w-20 h-20 mx-auto mb-6 rounded-3xl flex items-center justify-center transition-all duration-500 group-hover:scale-125 group-hover:rotate-6 group-hover:shadow-2xl ${
+                  plan.highlight ? 'glass-primary liquid-glow' : plan.premium ? 'glass-accent liquid-glow-accent' : 'glass-secondary liquid-glow-secondary'
+                }`}>
+                  <plan.icon className="text-primary" size={32} />
+                </div>
+                
+                <h3 className="text-2xl font-bold glass-text-contrast mb-4">
+                  {plan.name}
+                </h3>
+                
+                <p className="glass-text mb-6 px-4 leading-relaxed">
+                  {plan.description}
+                </p>
+                
+                <div className="flex items-center justify-center gap-3 mb-3">
+                  <span className="text-5xl font-black glass-text-contrast">
+                    {plan.price}
+                  </span>
+                  {plan.originalPrice && (
+                    <span className="text-xl glass-text line-through">
+                      {plan.originalPrice}
                     </span>
-                  </div>
+                  )}
+                </div>
+
+                <div className="text-secondary font-semibold mb-2">
+                  {plan.deliveryTime}
+                </div>
+
+                {plan.emphasis && (
+                  <LiquidGlassCard variant="secondary" className="text-secondary font-semibold text-sm px-4 py-2 mx-auto">
+                    {plan.emphasis}
+                  </LiquidGlassCard>
                 )}
               </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
 
-      {/* Benefits Section */}
-      <div className="bg-whaam-black rounded-3xl p-12 mb-20 border border-whaam-red/20">
-        <h3 className="text-3xl font-bold text-center text-whaam-white mb-12">
-          Why choose <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span>?
-        </h3>
-        
-        <div className="grid sm:grid-cols-3 gap-8">
-          {benefits.map((benefit, index) => (
-            <div key={index} className="text-center group">
-              <div className="w-16 h-16 mx-auto mb-4 bg-whaam-red rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all group-hover:scale-110">
-                <benefit.icon className="text-whaam-white" size={28} />
+              <div className="px-8 flex-grow flex flex-col">
+                <ul className="space-y-4 mb-8 flex-grow">
+                  {plan.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="flex items-start space-x-3">
+                      <Check className="text-secondary flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" size={16} />
+                      <span className="glass-text leading-relaxed">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Button */}
+                <div className="mt-auto pb-8">
+                  <LiquidGlassButton 
+                    variant={plan.highlight ? "primary" : plan.premium ? "accent" : "primary"}
+                    interactive={true}
+                    className="w-full font-bold text-lg py-4"
+                    onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
+                  >
+                    Start Now
+                    <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
+                  </LiquidGlassButton>
+
+                  {/* Savings Badge */}
+                  {plan.originalPrice && (
+                    <div className="text-center mt-4">
+                      <LiquidGlassCard variant="secondary" className="inline-block text-secondary text-sm font-semibold px-4 py-2">
+                        Save ${parseInt(plan.originalPrice.substring(1)) - parseInt(plan.price.substring(1))}
+                      </LiquidGlassCard>
+                    </div>
+                  )}
+                </div>
               </div>
-              <h4 className="text-xl font-semibold text-whaam-white mb-2">{benefit.title}</h4>
-              <p className="text-whaam-white/70">{benefit.desc}</p>
-            </div>
+            </LiquidGlassCard>
           ))}
         </div>
-      </div>
 
-      {/* Sticky CTA */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <div className="bg-whaam-black rounded-full shadow-2xl p-4 border border-whaam-red/20">
-          <Button 
-            onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-            className="bg-whaam-red hover:bg-whaam-red/80 text-whaam-white rounded-full px-8 py-3 font-bold transition-all duration-300 group shadow-lg border-0"
-          >
-            <Star className="mr-2 group-hover:rotate-12 transition-transform" size={16} />
-            Start Now
-          </Button>
+        {/* Benefits Section */}
+        <LiquidGlassCard variant="primary" interactive={true} distortion="subtle" className="p-12 mb-20">
+          <h3 className="text-3xl font-bold text-center glass-text-contrast mb-12">
+            Why choose <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">WhaamKaBaam</span>?
+          </h3>
+          
+          <div className="grid sm:grid-cols-3 gap-8">
+            {benefits.map((benefit, index) => (
+              <div key={index} className="text-center group">
+                <div className="w-16 h-16 mx-auto mb-4 glass-accent rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all group-hover:scale-110 liquid-glow-accent">
+                  <benefit.icon className="text-primary" size={28} />
+                </div>
+                <h4 className="text-xl font-semibold glass-text-contrast mb-2">{benefit.title}</h4>
+                <p className="glass-text">{benefit.desc}</p>
+              </div>
+            ))}
+          </div>
+        </LiquidGlassCard>
+
+        {/* Sticky CTA */}
+        <div className="fixed bottom-6 right-6 z-50">
+          <LiquidGlassCard variant="primary" className="p-4 rounded-full shadow-2xl">
+            <LiquidGlassButton 
+              variant="primary"
+              interactive={true}
+              className="rounded-full px-8 py-3 font-bold"
+              onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              <Star className="mr-2 group-hover:rotate-12 transition-transform" size={16} />
+              Start Now
+            </LiquidGlassButton>
+          </LiquidGlassCard>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

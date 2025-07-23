@@ -80,22 +80,34 @@ declare global {
 }
 
 const ShaderPlane = () => {
-  const materialRef = useRef<any>();
   const springyCursor = useSpringCursor();
 
+  // Create material manually to avoid prop application issues
+  const material = React.useMemo(() => {
+    const mat = new LiquidGlassMaterial();
+    
+    // Initialize uniforms manually
+    if (mat.uniforms) {
+      mat.uniforms.u_time.value = 0;
+      mat.uniforms.u_mouse.value = new THREE.Vector2(0, 0);
+      mat.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
+    }
+    
+    return mat;
+  }, []);
+
   useFrame((state) => {
-    if (materialRef.current) {
-      materialRef.current.u_time = state.clock.getElapsedTime();
+    if (material?.uniforms) {
+      material.uniforms.u_time.value = state.clock.getElapsedTime();
       const mouseCoords = springyCursor.get();
-      materialRef.current.u_mouse.x = mouseCoords[0];
-      materialRef.current.u_mouse.y = window.innerHeight - mouseCoords[1];
+      material.uniforms.u_mouse.value.set(mouseCoords[0], window.innerHeight - mouseCoords[1]);
+      material.uniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
     }
   });
 
   return (
-    <mesh>
+    <mesh material={material}>
       <planeGeometry args={[2, 2]} />
-      <liquidGlassMaterial ref={materialRef} />
     </mesh>
   );
 };

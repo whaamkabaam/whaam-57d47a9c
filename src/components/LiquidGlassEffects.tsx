@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import { WebGLLiquidGlass } from './WebGLLiquidGlass';
 
 // SVG Liquid Distortion Filters with built-in animation
 export const LiquidDistortionFilters = () => {
@@ -32,6 +33,29 @@ export const LiquidDistortionFilters = () => {
   );
 };
 
+// CSS-based glass card fallback component
+const CSSGlassCard = React.forwardRef<HTMLDivElement, any>(
+  ({ children, variant = 'primary', interactive = false, distortion = 'none', className = '', ...props }, ref) => {
+    const baseClasses = `glass-card glass-text ${interactive ? 'glass-liquid-interactive' : ''} fluid-animation`;
+    const variantClasses = {
+      primary: 'glass-primary',
+      secondary: 'glass-secondary',
+      accent: 'glass-accent'
+    };
+    const distortionClass = {
+        subtle: 'filter-liquid-subtle',
+        medium: 'group-hover:filter-liquid-medium',
+        none: ''
+    }[distortion]
+
+    return (
+      <div ref={ref} className={`${baseClasses} ${variantClasses[variant]} ${distortionClass} ${className}`} {...props}>
+        {children}
+      </div>
+    );
+  }
+);
+
 // Simplified Glass Button Component
 interface LiquidGlassButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -57,7 +81,7 @@ export const LiquidGlassButton = React.forwardRef<HTMLButtonElement, LiquidGlass
 );
 LiquidGlassButton.displayName = 'LiquidGlassButton';
 
-// Simplified Glass Card Component
+// Simplified Glass Card Component with WebGL integration
 interface LiquidGlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'accent';
@@ -67,23 +91,28 @@ interface LiquidGlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardProps>(
   ({ children, variant = 'primary', interactive = false, distortion = 'none', className = '', ...props }, ref) => {
-    const baseClasses = `glass-card glass-text ${interactive ? 'glass-liquid-interactive' : ''} fluid-animation`;
-    const variantClasses = {
-      primary: 'glass-primary',
-      secondary: 'glass-secondary',
-      accent: 'glass-accent'
-    };
-    const distortionClass = {
-        subtle: 'filter-liquid-subtle',
-        medium: 'group-hover:filter-liquid-medium',
-        none: ''
-    }[distortion]
-
-    return (
-      <div ref={ref} className={`${baseClasses} ${variantClasses[variant]} ${distortionClass} ${className}`} {...props}>
-        {children}
-      </div>
-    );
+    
+    // Use WebGL implementation for interactive cards
+    if (interactive) {
+      return (
+        <Suspense fallback={<CSSGlassCard ref={ref} variant={variant} interactive={false} distortion={distortion} className={className} {...props}>{children}</CSSGlassCard>}>
+          <WebGLLiquidGlass 
+            className={`glass-card glass-text glass-${variant} fluid-animation ${className}`}
+            distortionStrength={0.015}
+            chromaticAberration={0.003}
+            specularIntensity={0.6}
+            fallback={<CSSGlassCard ref={ref} variant={variant} interactive={false} distortion={distortion} className={className} {...props}>{children}</CSSGlassCard>}
+          >
+            <div ref={ref} {...props}>
+              {children}
+            </div>
+          </WebGLLiquidGlass>
+        </Suspense>
+      );
+    }
+    
+    // Use CSS implementation for non-interactive cards
+    return <CSSGlassCard ref={ref} variant={variant} interactive={interactive} distortion={distortion} className={className} {...props}>{children}</CSSGlassCard>;
   }
 );
 LiquidGlassCard.displayName = 'LiquidGlassCard';

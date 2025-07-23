@@ -1,118 +1,187 @@
-import React, { Suspense } from 'react';
-import { WebGLLiquidGlass } from './WebGLLiquidGlass';
+// src/components/LiquidGlassEffects.tsx
 
-// SVG Liquid Distortion Filters with built-in animation
-export const LiquidDistortionFilters = () => {
-  return (
-    <svg style={{ display: 'none', position: 'absolute' }} xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="liquid-distortion-subtle">
-          <feTurbulence 
-            type="fractalNoise" 
-            baseFrequency="0.005 0.01" 
-            numOctaves="1" 
-            result="noise"
-          >
-            <animate attributeName="baseFrequency" dur="15s" values="0.005 0.01;0.006 0.015;0.005 0.01" repeatCount="indefinite" />
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" />
-        </filter>
-        <filter id="liquid-distortion-medium">
-          <feTurbulence 
-            type="fractalNoise" 
-            baseFrequency="0.01 0.02" 
-            numOctaves="2" 
-            result="noise"
-          >
-             <animate attributeName="baseFrequency" dur="20s" values="0.01 0.02;0.02 0.03;0.01 0.02" repeatCount="indefinite" />
-          </feTurbulence>
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" />
-        </filter>
-      </defs>
-    </svg>
-  );
-};
+import React, { useRef, Suspense, useMemo } from 'react';
+import { Canvas, useFrame, extend } from '@react-three/fiber';
+import { shaderMaterial, useTexture } from '@react-three/drei';
+import * as THREE from 'three';
+import { useSpring, animated } from '@react-spring/three';
+import { cn } from '@/lib/utils';
 
-// CSS-based glass card fallback component
-const CSSGlassCard = React.forwardRef<HTMLDivElement, any>(
-  ({ children, variant = 'primary', interactive = false, distortion = 'none', className = '', ...props }, ref) => {
-    const baseClasses = `glass-card glass-text ${interactive ? 'glass-liquid-interactive' : ''} fluid-animation`;
-    const variantClasses = {
-      primary: 'glass-primary',
-      secondary: 'glass-secondary',
-      accent: 'glass-accent'
-    };
-    const distortionClass = {
-        subtle: 'filter-liquid-subtle',
-        medium: 'group-hover:filter-liquid-medium',
-        none: ''
-    }[distortion]
-
-    return (
-      <div ref={ref} className={`${baseClasses} ${variantClasses[variant]} ${distortionClass} ${className}`} {...props}>
-        {children}
-      </div>
-    );
+// Vertex Shader: Positions the plane
+const vertexShader = `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
+`;
+
+// Fragment Shader: Creates the liquid glass effect
+const fragmentShader = `
+  uniform sampler2D uBackground;
+  uniform vec2 uMouse;
+  uniform float uIntensity;
+  uniform float uTime;
+  varying vec2 vUv;
+
+  void main() {
+    // Create a circular mask
+    float dist = distance(vUv, vec2(0.5));
+    if (dist > 0.5) {
+      discard;
+    }
+
+    // Wobble effect using time
+    vec2 wobble = vec2(
+      sin(vUv.y * 10.0 + uTime * 0.5) * 0.01,
+      cos(vUv.x * 10.0 + uTime * 0.5) * 0.01
+    );
+
+    // Refraction based on mouse distance from center
+    vec2 center = vec2(0.5);
+    vec2 toMouse = uMouse - center;
+    float mouseDist = length(toMouse);
+    vec2 fromCenter = vUv - center;
+    float angle = atan(fromCenter.y, fromCenter.x);
+    
+    float refraction = (1.0 - distance(vUv, uMouse)) * uIntensity * 0.1;
+    vec2 refractedUv = vUv + normalize(fromCenter) * refraction * smoothstep(0.0, 0.5, mouseDist);
+
+    // Chromatic Aberration
+    vec4 bgR = texture2D(uBackground, refractedUv + vec2(0.005, 0.0) + wobble);
+    vec4 bgG = texture2D(uBackground, refractedUv + wobble);
+    vec4 bgB = texture2D(uBackground, refractedUv - vec2(0.005, 0.0) + wobble);
+
+    gl_FragColor = vec4(bgR.r, bgG.g, bgB.b, 1.0);
+  }
+`;
+
+// Create a reusable shader material
+const LiquidMaterial = shaderMaterial(
+  { uIntensity: 0, uTime: 0, uMouse: new THREE.Vector2(0.5, 0.5), uBackground: null },
+  vertexShader,
+  fragmentShader
 );
 
-// Simplified Glass Button Component
-interface LiquidGlassButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'accent';
-  interactive?: boolean;
+extend({ LiquidMaterial });
+
+// TypeScript declarations
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      liquidMaterial: any;
+    }
+  }
 }
 
-export const LiquidGlassButton = React.forwardRef<HTMLButtonElement, LiquidGlassButtonProps>(
-  ({ children, variant = 'primary', interactive = false, className = '', ...props }, ref) => {
-    const baseClasses = `glass-btn glass-button glass-text-contrast fluid-animation ${interactive ? 'glass-liquid-interactive' : ''}`;
-    const variantClasses = {
-      primary: 'liquid-glow',
-      secondary: 'liquid-glow-secondary', 
-      accent: 'liquid-glow-accent'
-    };
+// The main WebGL scene component
+function LiquidScene({ distortion }: { distortion: 'subtle' | 'medium' }) {
+  const materialRef = useRef<any>();
+  const [{ intensity }, api] = useSpring(() => ({ intensity: 0 }));
+  const mousePos = useRef({ x: 0.5, y: 0.5 });
+  const vec = new THREE.Vector2();
 
-    return (
-      <button ref={ref} className={`${baseClasses} ${variantClasses[variant]} ${className}`} {...props}>
-        {children}
-      </button>
-    );
-  }
-);
-LiquidGlassButton.displayName = 'LiquidGlassButton';
+  // Create a simple texture instead of loading from file
+  const backgroundTexture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      const gradient = ctx.createLinearGradient(0, 0, 512, 512);
+      gradient.addColorStop(0, '#1e293b');
+      gradient.addColorStop(1, '#334155');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 512, 512);
+    }
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
+  }, []);
 
-// Simplified Glass Card Component with WebGL integration
+  const distortionIntensity = distortion === 'subtle' ? 0.3 : 0.6;
+
+  useFrame((state) => {
+    // Smoothly interpolate mouse position for fluid movement
+    mousePos.current.x = THREE.MathUtils.lerp(mousePos.current.x, state.pointer.x / 2 + 0.5, 0.05);
+    mousePos.current.y = THREE.MathUtils.lerp(mousePos.current.y, 1.0 - (state.pointer.y / 2 + 0.5), 0.05);
+    if (materialRef.current) {
+        materialRef.current.uMouse = vec.set(mousePos.current.x, mousePos.current.y);
+        materialRef.current.uTime = state.clock.getElapsedTime();
+    }
+  });
+
+  return (
+    <mesh 
+      onPointerOver={() => api.start({ intensity: distortionIntensity })}
+      onPointerOut={() => api.start({ intensity: 0 })}
+    >
+      <planeGeometry args={[1, 1]} />
+      <liquidMaterial 
+        ref={materialRef} 
+        uBackground={backgroundTexture} 
+        uIntensity={intensity.to(v => v)}
+        uTime={0}
+        uMouse={[0.5, 0.5]}
+        transparent={false}
+      />
+    </mesh>
+  );
+}
+
+// Simplified Card Component
 interface LiquidGlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'accent';
   interactive?: boolean;
   distortion?: 'none' | 'subtle' | 'medium';
+  className?: string;
 }
 
 export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardProps>(
   ({ children, variant = 'primary', interactive = false, distortion = 'none', className = '', ...props }, ref) => {
+    // Use WebGL for interactive cards, otherwise use simpler distortion
+    const effectDistortion = interactive ? (distortion === 'none' ? 'subtle' : distortion) : 'none';
     
-    // Use WebGL implementation for interactive cards
-    if (interactive) {
-      return (
-        <Suspense fallback={<CSSGlassCard ref={ref} variant={variant} interactive={false} distortion={distortion} className={className} {...props}>{children}</CSSGlassCard>}>
-          <WebGLLiquidGlass 
-            className={`glass-card glass-text glass-${variant} fluid-animation ${className}`}
-            distortionStrength={0.015}
-            chromaticAberration={0.003}
-            specularIntensity={0.6}
-            fallback={<CSSGlassCard ref={ref} variant={variant} interactive={false} distortion={distortion} className={className} {...props}>{children}</CSSGlassCard>}
-          >
-            <div ref={ref} {...props}>
-              {children}
-            </div>
-          </WebGLLiquidGlass>
-        </Suspense>
-      );
-    }
-    
-    // Use CSS implementation for non-interactive cards
-    return <CSSGlassCard ref={ref} variant={variant} interactive={interactive} distortion={distortion} className={className} {...props}>{children}</CSSGlassCard>;
+    return (
+      <div ref={ref} className={cn("glass-card relative overflow-hidden", `glass-${variant}`, className)} {...props}>
+        {effectDistortion !== 'none' && (
+          <div className="webgl-canvas-container">
+            <Suspense fallback={null}>
+              <Canvas orthographic camera={{ zoom: 100, position: [0, 0, 100] }}>
+                <LiquidScene distortion={effectDistortion} />
+              </Canvas>
+            </Suspense>
+          </div>
+        )}
+        <div className="relative z-10 glass-text">{children}</div>
+      </div>
+    );
   }
 );
 LiquidGlassCard.displayName = 'LiquidGlassCard';
+
+// Add back the button and filters for compatibility, though they don't use the WebGL effect.
+export const LiquidDistortionFilters = () => <></>; // No longer needed
+
+export const LiquidGlassButton = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: 'primary' | 'secondary' | 'accent';
+  interactive?: boolean;
+}>(
+  ({ className, variant = 'primary', interactive = false, ...props }, ref) => {
+    const variantClasses = {
+      primary: 'liquid-glow',
+      secondary: 'liquid-glow-secondary', 
+      accent: 'liquid-glow-accent'
+    };
+    
+    return (
+      <button 
+        ref={ref} 
+        className={cn("glass-btn glass-button glass-text-contrast fluid-animation", variantClasses[variant], className)} 
+        {...props}
+      />
+    );
+  }
+);
+LiquidGlassButton.displayName = 'LiquidGlassButton';

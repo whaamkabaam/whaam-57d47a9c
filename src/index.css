@@ -228,23 +228,30 @@
 
 /* Enhanced Glass Variants */
 .glass-card {
-  /* Fallback */
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 1.5rem;
-  padding: 1.5rem;
+  position: relative;
+  background: hsla(var(--glass-secondary));
+  border: 1px solid hsl(var(--card-border));
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   .glass-card {
-    background: rgba(255, 255, 255, 0.1);
-    -webkit-backdrop-filter: blur(12px) saturate(150%);
-    backdrop-filter: blur(12px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.1),
-      inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    backdrop-filter: blur(16px) saturate(120%);
   }
+}
+
+/* WebGL Canvas Container */
+.webgl-canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  border-radius: inherit;
+  opacity: 0.7;
 }
 
 .glass-button {

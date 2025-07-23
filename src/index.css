@@ -123,10 +123,12 @@
     @apply border-border;
   }
 
-  /* Remove body background - WebGL canvas handles this now */
+  /* The background is now handled by the WebGL canvas, so this should be transparent */
   body {
-    @apply bg-transparent text-foreground;
+    @apply text-foreground;
     font-family: 'Inter', sans-serif;
+    /* The background is now handled by the WebGL canvas, so this should be transparent */
+    background-color: hsl(var(--background));
     min-height: 100vh;
   }
 

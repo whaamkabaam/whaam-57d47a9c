@@ -1,9 +1,12 @@
 // src/components/LiquidGlassEffects.tsx
 
 import React from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
-// Simplified Glass Card Component (CSS-only)
+// This component is no longer needed but kept for compatibility.
+export const LiquidDistortionFilters = () => null;
+
+// The card is now a pure CSS component.
 interface LiquidGlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'accent';
@@ -23,7 +26,7 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
 );
 LiquidGlassCard.displayName = 'LiquidGlassCard';
 
-// Simplified Glass Button Component (CSS-only)
+// The button is also a pure CSS component.
 export const LiquidGlassButton = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'secondary' | 'accent';
   interactive?: boolean;
@@ -45,6 +48,3 @@ export const LiquidGlassButton = React.forwardRef<HTMLButtonElement, React.Butto
   }
 );
 LiquidGlassButton.displayName = 'LiquidGlassButton';
-
-// No longer needed - kept for compatibility
-export const LiquidDistortionFilters = () => <></>;

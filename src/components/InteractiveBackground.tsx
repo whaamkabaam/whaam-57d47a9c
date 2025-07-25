@@ -31,32 +31,35 @@ declare global {
 }
 
 const ShaderPlane = () => {
-  const materialRef = React.useRef<any>();
   const springyCursor = useSpringCursor();
-  const { size } = useThree(); // Get viewport size
+  const { size } = useThree();
 
-  // Update resolution uniform on resize
-  React.useEffect(() => {
-    if (materialRef.current) {
-      materialRef.current.u_resolution.x = size.width;
-      materialRef.current.u_resolution.y = size.height;
+  // Create material manually to avoid prop application issues
+  const material = React.useMemo(() => {
+    const mat = new LiquidGlassMaterial();
+    
+    // Initialize uniforms manually
+    if (mat.uniforms) {
+      mat.uniforms.u_time.value = 0;
+      mat.uniforms.u_mouse.value = new THREE.Vector2(0, 0);
+      mat.uniforms.u_resolution.value = new THREE.Vector2(size.width, size.height);
     }
-  }, [size]);
+    
+    return mat;
+  }, [size.width, size.height]);
 
   useFrame((state) => {
-    if (materialRef.current) {
-      materialRef.current.u_time = state.clock.getElapsedTime();
+    if (material?.uniforms) {
+      material.uniforms.u_time.value = state.clock.getElapsedTime();
       const mouseCoords = springyCursor.get();
-      materialRef.current.u_mouse.x = mouseCoords[0];
-      // Correct Y-coordinate for GLSL
-      materialRef.current.u_mouse.y = window.innerHeight - mouseCoords[1];
+      material.uniforms.u_mouse.value.set(mouseCoords[0], window.innerHeight - mouseCoords[1]);
+      material.uniforms.u_resolution.value.set(size.width, size.height);
     }
   });
 
   return (
-    <mesh>
+    <mesh material={material}>
       <planeGeometry args={[2, 2]} />
-      <liquidGlassMaterial ref={materialRef} />
     </mesh>
   );
 };

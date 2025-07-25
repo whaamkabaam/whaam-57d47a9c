@@ -60,7 +60,6 @@ export default function Navigation({ activeSection }: NavigationProps) {
             
             <LiquidGlassButton 
               variant="primary"
-              interactive={true}
               className="px-6 py-2 font-bold"
               onClick={() => scrollToSection("products")}
             >
@@ -101,7 +100,6 @@ export default function Navigation({ activeSection }: NavigationProps) {
               
               <LiquidGlassButton 
                 variant="primary"
-                interactive={true}
                 className="w-full mt-4 py-3 font-bold"
                 onClick={() => {
                   scrollToSection("products");

@@ -14,7 +14,6 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Navigation from "@/components/Navigation";
 import CookieConsent from "@/components/CookieConsent";
-import InteractiveBackground from "@/components/InteractiveBackground";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
@@ -42,7 +41,6 @@ const Index = () => {
   return (
     <>
       <div className="min-h-screen">
-        <InteractiveBackground />
       <Navigation activeSection={activeSection} />
       
       <section id="home">

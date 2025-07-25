@@ -22,8 +22,6 @@ const TrustStatItem = ({ end, suffix = "", value, label, color, delay = 0 }: Tru
   return (
     <LiquidGlassCard 
       variant="accent" 
-      interactive={true} 
-      distortion="medium"
       className="group p-6 hover:border-white/20 transition-all duration-300"
     >
       <div className={`text-5xl font-bold ${color} mb-3 group-hover:scale-110 transition-transform duration-300`}>
@@ -107,8 +105,6 @@ export default function Services() {
             <LiquidGlassCard 
               key={index}
               variant={index % 3 === 0 ? "primary" : index % 3 === 1 ? "secondary" : "accent"}
-              interactive={true}
-              distortion="medium"
               className="group p-8 text-center hover:scale-105 transition-all duration-500"
             >
               <div className="mb-6">
@@ -144,8 +140,6 @@ export default function Services() {
         {/* Trust Statistics */}
         <LiquidGlassCard 
           variant="primary"
-          interactive={true}
-          distortion="subtle"
           className="text-center p-12"
         >
           <h3 className="text-4xl md:text-5xl font-bold mb-6 glass-text-contrast">

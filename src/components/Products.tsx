@@ -131,8 +131,6 @@ const Products = () => {
             <LiquidGlassCard
               key={plan.id}
               variant={plan.highlight ? "primary" : plan.premium ? "accent" : "secondary"}
-              interactive={true}
-              distortion="medium"
               className={`group text-center min-h-[580px] flex flex-col transition-all duration-700 hover:-translate-y-6 hover:scale-105 ${
                 plan.highlight ? 'ring-2 ring-secondary/50 scale-105' : ''
               } ${hoveredPlan === plan.id ? 'scale-105' : ''} ${
@@ -204,7 +202,6 @@ const Products = () => {
                 <div className="mt-auto pb-8">
                   <LiquidGlassButton 
                     variant={plan.highlight ? "primary" : plan.premium ? "accent" : "primary"}
-                    interactive={true}
                     className="w-full font-bold text-lg py-4"
                     onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
                   >
@@ -227,7 +224,7 @@ const Products = () => {
         </div>
 
         {/* Benefits Section */}
-        <LiquidGlassCard variant="primary" interactive={true} distortion="subtle" className="p-12 mb-20">
+        <LiquidGlassCard variant="primary" className="p-12 mb-20">
           <h3 className="text-3xl font-bold text-center glass-text-contrast mb-12">
             Why choose <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">WhaamKaBaam</span>?
           </h3>
@@ -250,7 +247,6 @@ const Products = () => {
           <LiquidGlassCard variant="primary" className="p-4 rounded-full shadow-2xl">
             <LiquidGlassButton 
               variant="primary"
-              interactive={true}
               className="rounded-full px-8 py-3 font-bold"
               onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
             >

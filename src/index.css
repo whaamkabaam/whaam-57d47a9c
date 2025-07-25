@@ -126,7 +126,7 @@
   body {
     @apply text-foreground;
     font-family: 'Inter', sans-serif;
-    background-color: transparent;
+    background: linear-gradient(180deg, #050A1A 0%, #04031A 50%, #08051A 100%);
     min-height: 100vh;
   }
 
@@ -382,11 +382,33 @@
   }
 }
 
-@layer utilities {
-  .filter-liquid-subtle {
-    filter: url(#liquid-distortion-subtle);
-  }
-  .filter-liquid-medium {
-    filter: url(#liquid-distortion-medium);
-  }
+/* Floating animations for orbs */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(120deg); }
+  66% { transform: translateY(5px) rotate(240deg); }
+}
+
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+  25% { transform: translateY(-8px) rotate(90deg) scale(1.05); }
+  50% { transform: translateY(3px) rotate(180deg) scale(0.95); }
+  75% { transform: translateY(-5px) rotate(270deg) scale(1.02); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(180deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 7.2s ease-in-out infinite 2s;
+}
+
+.animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite 4s;
 }

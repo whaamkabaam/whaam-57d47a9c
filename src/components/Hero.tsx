@@ -45,9 +45,9 @@ export default function Hero() {
         <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-accent/30 to-transparent"></div>
         
         {/* Floating Glass Orbs */}
-        <div className="absolute top-20 left-20 w-32 h-32 glass-primary rounded-full liquid-glow" style={{ filter: 'url(#liquid-distortion-subtle)' }}></div>
-        <div className="absolute bottom-32 right-32 w-24 h-24 glass-secondary rounded-full liquid-glow-secondary" style={{ filter: 'url(#liquid-distortion-subtle)' }}></div>
-        <div className="absolute top-1/2 left-10 w-16 h-16 glass-accent rounded-full liquid-glow-accent" style={{ filter: 'url(#liquid-distortion-subtle)' }}></div>
+        <div className="absolute top-20 left-20 w-32 h-32 glass-primary rounded-full liquid-glow animate-float"></div>
+        <div className="absolute bottom-32 right-32 w-24 h-24 glass-secondary rounded-full liquid-glow-secondary animate-float-delayed"></div>
+        <div className="absolute top-1/2 left-10 w-16 h-16 glass-accent rounded-full liquid-glow-accent animate-float-slow"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
@@ -73,7 +73,7 @@ export default function Hero() {
             </div>
 
             {/* Trust Bar */}
-            <LiquidGlassCard variant="secondary" interactive={true} distortion="subtle" className="p-6">
+            <LiquidGlassCard variant="secondary" className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="flex">
@@ -100,7 +100,6 @@ export default function Hero() {
                 <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <LiquidGlassButton 
                   variant="primary"
-                  interactive={true}
                   className="relative text-lg px-8 py-4 font-bold text-white shadow-xl"
                   onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
                 >
@@ -110,7 +109,6 @@ export default function Hero() {
               
               <LiquidGlassButton 
                 variant="secondary"
-                interactive={true}
                 className="text-lg px-8 py-4 font-bold"
                 onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
               >
@@ -123,20 +121,20 @@ export default function Hero() {
           {/* Right Column - Stats */}
           <div className="space-y-8">
             <div className="grid grid-cols-2 gap-6">
-              <LiquidGlassCard variant="accent" interactive={true} distortion="medium" className="text-center p-6">
+              <LiquidGlassCard variant="accent" className="text-center p-6 animate-float">
                 <div className="text-4xl md:text-5xl font-bold text-primary mb-4">Minutes</div>
                 <div className="text-muted-foreground text-lg">Fast Delivery</div>
               </LiquidGlassCard>
               
-              <LiquidGlassCard variant="primary" interactive={true} distortion="medium" className="text-center p-6">
+              <LiquidGlassCard variant="primary" className="text-center p-6 animate-float-delayed">
                 <StatItem end={100} suffix="%" label="Satisfaction" />
               </LiquidGlassCard>
               
-              <LiquidGlassCard variant="secondary" interactive={true} distortion="medium" className="text-center p-6">
+              <LiquidGlassCard variant="secondary" className="text-center p-6 animate-float-slow">
                 <StatItem end={4} suffix="+" label="Years Expert" />
               </LiquidGlassCard>
               
-              <LiquidGlassCard variant="accent" interactive={true} distortion="medium" className="text-center p-6">
+              <LiquidGlassCard variant="accent" className="text-center p-6 animate-float">
                 <StatItem end={750} suffix="+" label="Happy Aimers" />
               </LiquidGlassCard>
             </div>
@@ -147,7 +145,6 @@ export default function Hero() {
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center space-y-3">
           <LiquidGlassCard 
             variant="accent" 
-            interactive={true}
             className="w-8 h-12 border border-white/20 rounded-full flex justify-center cursor-pointer"
             onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
           >

@@ -10,13 +10,11 @@ export const LiquidDistortionFilters = () => null;
 interface LiquidGlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'accent';
-  interactive?: boolean;
-  distortion?: 'none' | 'subtle' | 'medium';
   className?: string;
 }
 
 export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardProps>(
-  ({ children, variant = 'primary', interactive = false, distortion = 'none', className = '', ...props }, ref) => {
+  ({ children, variant = 'primary', className = '', ...props }, ref) => {
     return (
       <div ref={ref} className={cn("glass-card", `glass-${variant}`, className)} {...props}>
         <div className="glass-text relative z-10">{children}</div>
@@ -29,9 +27,8 @@ LiquidGlassCard.displayName = 'LiquidGlassCard';
 // The button is also a pure CSS component.
 export const LiquidGlassButton = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'secondary' | 'accent';
-  interactive?: boolean;
 }>(
-  ({ className, variant = 'primary', interactive = false, ...props }, ref) => {
+  ({ className, variant = 'primary', ...props }, ref) => {
     const variantClasses = {
       primary: 'liquid-glow',
       secondary: 'liquid-glow-secondary', 

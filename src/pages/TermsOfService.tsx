@@ -28,8 +28,8 @@ const TermsOfService = () => {
             <div>
               <h2 className="text-2xl font-bold text-whaam-red mb-4">Agreement to Terms</h2>
               <div className="text-whaam-white space-y-4">
-                <p>By accessing and using WhaamKaBaam services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
-                <p><strong className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</strong> provides custom mouse acceleration curve optimization services for gaming.</p>
+                <p>By accessing and using WHAAMKABAAM services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+                <p><strong className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WHAAMKABAAM</strong> provides custom mouse acceleration curve optimization services for gaming.</p>
               </div>
             </div>
 
@@ -64,7 +64,7 @@ const TermsOfService = () => {
             <div>
               <h2 className="text-2xl font-bold text-whaam-yellow mb-4">Limitation of Liability</h2>
               <div className="text-whaam-white space-y-4">
-                <p>WhaamKaBaam services are provided "as is" without warranty. We are not responsible for any game-related consequences of using our curves, including but not limited to account restrictions or performance variations.</p>
+                <p>WHAAMKABAAM services are provided "as is" without warranty. We are not responsible for any game-related consequences of using our curves, including but not limited to account restrictions or performance variations.</p>
                 <p>Our total liability is limited to the amount paid for our services.</p>
               </div>
             </div>

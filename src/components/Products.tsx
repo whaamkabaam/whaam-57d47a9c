@@ -226,7 +226,7 @@ const Products = () => {
         {/* Benefits Section */}
         <LiquidGlassCard variant="primary" className="p-12 mb-20">
           <h3 className="text-3xl font-bold text-center glass-text-contrast mb-12">
-            Why choose <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">WhaamKaBaam</span>?
+            Why choose <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">WHAAMKABAAM</span>?
           </h3>
           
           <div className="grid sm:grid-cols-3 gap-8">

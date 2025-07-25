@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiquidDistortionFilters, LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
+import whaamLogo from "@/assets/whaam-kabaam-logo.png";
 
 interface NavigationProps {
   activeSection?: string;
@@ -38,10 +39,12 @@ export default function Navigation({ activeSection }: NavigationProps) {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 glass-accent rounded-xl flex items-center justify-center liquid-glow">
-                <span className="text-primary font-bold text-xl">W</span>
-              </div>
-              <span className="text-2xl font-bold glass-text-contrast">WhaamKaBaam</span>
+              <img 
+                src={whaamLogo} 
+                alt="WHAAM KABAAM Logo" 
+                className="w-10 h-10 object-contain"
+              />
+              <span className="text-2xl font-bold glass-text-contrast">whaamkabaam</span>
             </div>
 
             {/* Desktop Navigation */}

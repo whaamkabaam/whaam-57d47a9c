@@ -46,25 +46,17 @@ export default function Hero() {
         <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-accent/30 to-transparent"></div>
         
         {/* Floating Glass Orbs */}
-        <div className="absolute top-20 left-20 w-32 h-32 glass-primary rounded-full liquid-glow animate-float"></div>
-        <div className="absolute bottom-32 right-32 w-24 h-24 glass-secondary rounded-full liquid-glow-secondary animate-float-delayed"></div>
-        <div className="absolute top-1/2 left-10 w-16 h-16 glass-accent rounded-full liquid-glow-accent animate-float-slow"></div>
+        <div className="absolute top-20 left-20 w-32 h-32 glass-primary rounded-full liquid-glow"></div>
+        <div className="absolute bottom-32 right-32 w-24 h-24 glass-secondary rounded-full liquid-glow-secondary"></div>
+        <div className="absolute top-1/2 left-10 w-16 h-16 glass-accent rounded-full liquid-glow-accent"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Column - Content */}
           <div className="space-y-12">
-            {/* Logo and Headline */}
+            {/* Headline */}
             <div className="space-y-8 text-center lg:text-left">
-              <div className="flex justify-center lg:justify-start">
-                <img 
-                  src={whaamLogo} 
-                  alt="WHAAM KABAAM Logo" 
-                  className="w-48 h-48 md:w-56 md:h-56 object-contain animate-float"
-                />
-              </div>
-              
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight glass-text-contrast">
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Custom Mouse Acceleration Curves
@@ -130,20 +122,20 @@ export default function Hero() {
           {/* Right Column - Stats */}
           <div className="space-y-8">
             <div className="grid grid-cols-2 gap-6">
-              <LiquidGlassCard variant="accent" className="text-center p-6 animate-float">
+              <LiquidGlassCard variant="accent" className="text-center p-6">
                 <div className="text-4xl md:text-5xl font-bold text-primary mb-4">Minutes</div>
                 <div className="text-muted-foreground text-lg">Fast Delivery</div>
               </LiquidGlassCard>
               
-              <LiquidGlassCard variant="primary" className="text-center p-6 animate-float-delayed">
+              <LiquidGlassCard variant="primary" className="text-center p-6">
                 <StatItem end={100} suffix="%" label="Satisfaction" />
               </LiquidGlassCard>
               
-              <LiquidGlassCard variant="secondary" className="text-center p-6 animate-float-slow">
+              <LiquidGlassCard variant="secondary" className="text-center p-6">
                 <StatItem end={4} suffix="+" label="Years Expert" />
               </LiquidGlassCard>
               
-              <LiquidGlassCard variant="accent" className="text-center p-6 animate-float">
+              <LiquidGlassCard variant="accent" className="text-center p-6">
                 <StatItem end={750} suffix="+" label="Happy Aimers" />
               </LiquidGlassCard>
             </div>

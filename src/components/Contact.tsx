@@ -80,7 +80,7 @@ const Contact = () => {
         {/* Benefits Section */}
         <div className="bg-whaam-black rounded-3xl p-8 mb-16 border-2 border-whaam-red/20 animate-fade-in hover:shadow-2xl hover:shadow-whaam-red/20 transition-all duration-500" style={{ animationDelay: '200ms' }}>
           <h3 className="text-3xl font-bold text-center text-whaam-white mb-8">
-            Why <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WhaamKaBaam</span>?
+            Why <span className="bg-gradient-to-r from-whaam-red via-whaam-yellow to-whaam-red bg-clip-text text-transparent">WHAAMKABAAM</span>?
           </h3>
           
           <div className="grid md:grid-cols-3 gap-6">

@@ -25,22 +25,22 @@
     --popover: 220 70% 8% / 0.4;
     --popover-foreground: 0 0% 98%;
 
-    /* Liquid Colors */
-    --primary: 0 100% 65%;         /* Vivid coral #FF5252 */
+    /* Liquid Colors - Based on WHAAM KABAAM logo */
+    --primary: 0 100% 65%;         /* Flame red #FF5252 */
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 0 100% 80%;    /* Lighter coral for glows */
+    --primary-glow: 0 100% 75%;    /* Lighter flame red */
 
-    --secondary: 45 100% 65%;      /* Liquid gold #FFD740 */
+    --secondary: 45 100% 60%;      /* WHAAM gold #FFD740 */
     --secondary-foreground: 220 100% 3%;
-    --secondary-glow: 45 100% 80%; /* Lighter gold for glows */
+    --secondary-glow: 45 100% 75%; /* Lighter gold */
 
     /* Glass UI Elements */
     --muted: 220 40% 20% / 0.2;
     --muted-foreground: 0 0% 75%;
 
-    --accent: 280 100% 70%;        /* Electric purple #C462FF */
+    --accent: 320 100% 70%;        /* Pink flame accent */
     --accent-foreground: 0 0% 100%;
-    --accent-glow: 280 100% 85%;   /* Lighter purple for glows */
+    --accent-glow: 320 100% 80%;   /* Lighter pink */
 
     /* Glass Feedback */
     --destructive: 0 100% 65%;
@@ -92,15 +92,15 @@
     --popover-foreground: 0 0% 98%;
     --primary: 0 100% 65%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 0 100% 80%;
-    --secondary: 45 100% 65%;
+    --primary-glow: 0 100% 75%;
+    --secondary: 45 100% 60%;
     --secondary-foreground: 220 100% 3%;
-    --secondary-glow: 45 100% 80%;
+    --secondary-glow: 45 100% 75%;
     --muted: 220 40% 20% / 0.2;
     --muted-foreground: 0 0% 75%;
-    --accent: 280 100% 70%;
+    --accent: 320 100% 70%;
     --accent-foreground: 0 0% 100%;
-    --accent-glow: 280 100% 85%;
+    --accent-glow: 320 100% 80%;
     --destructive: 0 100% 65%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 100% 80% / 0.15;
@@ -111,10 +111,10 @@
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 0 100% 65%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 280 100% 70%;
+    --sidebar-accent: 320 100% 70%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 220 100% 80% / 0.1;
-    --sidebar-ring: 280 100% 70% / 0.4;
+    --sidebar-ring: 320 100% 70% / 0.4;
   }
 }
 
@@ -126,7 +126,11 @@
   body {
     @apply text-foreground;
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(180deg, #050A1A 0%, #04031A 50%, #08051A 100%);
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(255, 82, 82, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 215, 64, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(196, 98, 255, 0.1) 0%, transparent 50%),
+      linear-gradient(135deg, #050A1A 0%, #0A0618 25%, #08051A 50%, #12061B 75%, #0F0920 100%);
     min-height: 100vh;
   }
 

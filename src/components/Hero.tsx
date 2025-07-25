@@ -3,6 +3,7 @@ import { Star, Play, Users, Clock, TrendingUp } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
 import { LiquidDistortionFilters, LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
+import whaamLogo from "@/assets/whaam-kabaam-logo.png";
 
 // StatItem component for animated statistics
 const StatItem = ({ end, suffix, label }: { end: number; suffix?: string; label: string }) => {
@@ -54,20 +55,28 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Column - Content */}
           <div className="space-y-12">
-            {/* Headline */}
-            <div className="space-y-6">
-              <h1 className="text-5xl md:text-8xl font-bold mb-8 leading-tight glass-text-contrast">
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Custom Mouse Acceleration Curves
-              </span>
+            {/* Logo and Headline */}
+            <div className="space-y-8 text-center lg:text-left">
+              <div className="flex justify-center lg:justify-start">
+                <img 
+                  src={whaamLogo} 
+                  alt="WHAAM KABAAM Logo" 
+                  className="w-48 h-48 md:w-56 md:h-56 object-contain animate-float"
+                />
+              </div>
+              
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight glass-text-contrast">
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  Custom Mouse Acceleration Curves
+                </span>
               </h1>
               
               <div className="space-y-4">
                 <p className="text-xl md:text-2xl glass-text leading-relaxed">
                   For <span className="text-primary font-bold">Pin-Point FPS Aim</span>
                 </p>
-                <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
-                Personalized for your DPI, games & arm-speed. Set up in 3 min – join <span className="text-secondary font-bold">750+</span> aimers winning more duels.
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+                  Personalized for your DPI, games & arm-speed. Set up in 3 min – join <span className="text-secondary font-bold">750+</span> aimers winning more duels.
                 </p>
               </div>
             </div>

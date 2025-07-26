@@ -13,6 +13,7 @@ import About from "@/components/About";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Navigation from "@/components/Navigation";
+import InteractiveBackground from "@/components/InteractiveBackground";
 import CookieConsent from "@/components/CookieConsent";
 
 const Index = () => {
@@ -41,6 +42,7 @@ const Index = () => {
   return (
     <>
       <div className="min-h-screen">
+      <InteractiveBackground />
       <div className="fixed inset-0 bg-black/10 -z-[5]" />
       <Navigation activeSection={activeSection} />
       

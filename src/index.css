@@ -7,7 +7,7 @@
 
 @layer base {
   html, body {
-    background-color: #121212;
+    background-color: #121212; /* Fallback for overscroll */
   }
 
   body {
@@ -428,4 +428,8 @@
 
 .animate-float-slow {
   animation: float-slow 9s ease-in-out infinite 4s;
+}
+
+.site-overlay {
+  background-color: rgba(0, 0, 0, 0.1);
 }

@@ -47,32 +47,32 @@ const Index = () => {
         <Hero />
       </section>
 
-      <section id="services" className="py-24 bg-background">
+      <section id="services" className="py-24">
         <Services />
       </section>
 
-      <section id="portfolio" className="py-24 bg-background">
+      <section id="portfolio" className="py-24">
         <Portfolio />
       </section>
 
-      <section id="products" className="py-24 bg-background">
+      <section id="products" className="py-24">
         <Products />
       </section>
 
-      <section id="about" className="py-24 bg-background">
+      <section id="about" className="py-24">
         <About />
       </section>
 
-      <section id="faq" className="py-24 bg-background">
+      <section id="faq" className="py-24">
         <FAQ />
       </section>
 
-      <section id="contact" className="py-24 bg-background">
+      <section id="contact" className="py-24">
         <Contact />
       </section>
 
       {/* Footer */}
-      <footer className="bg-background text-white py-16 border-t border-border">
+      <footer className="text-white py-16 border-t border-border/20">
         <div className="container mx-auto px-6 text-center">
           <div className="mb-12">
             <h3 className="text-3xl font-bold mb-6">

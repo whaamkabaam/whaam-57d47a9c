@@ -1,5 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
+import { LiquidGlassCard } from "@/components/LiquidGlassEffects";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, Quote, ArrowRight, Trophy, Target, Zap, TrendingUp, Play } from "lucide-react";
@@ -197,9 +198,10 @@ const Portfolio = () => {
       {/* Enhanced Testimonials Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 animate-fade-in">
         {testimonials.map((testimonial, index) => (
-            <Card 
+            <LiquidGlassCard 
             key={testimonial.name} 
-            className="group overflow-hidden border-2 border-whaam-red/20 shadow-lg hover:shadow-2xl hover:shadow-whaam-red/30 transition-all duration-700 hover:-translate-y-4 hover:scale-105 hover:rotate-1 bg-whaam-black hover:border-whaam-yellow animate-scale-in"
+            variant="secondary"
+            className="group overflow-hidden border-2 border-whaam-red/20 shadow-lg hover:shadow-2xl hover:shadow-whaam-red/30 transition-all duration-700 hover:-translate-y-4 hover:scale-105 hover:rotate-1 hover:border-whaam-yellow animate-scale-in"
           >
             <CardContent className="p-8">
               {/* Quote Icon */}
@@ -252,7 +254,7 @@ const Portfolio = () => {
                 </Badge>
               </div>
             </CardContent>
-          </Card>
+          </LiquidGlassCard>
         ))}
       </div>
 

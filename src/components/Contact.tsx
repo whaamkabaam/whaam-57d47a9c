@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { LiquidGlassCard } from "@/components/LiquidGlassEffects";
 import { Badge } from "@/components/ui/badge";
 import { MessageCircle, Star, Zap, ArrowRight, Users, Target, CheckCircle } from "lucide-react";
 
@@ -33,7 +34,9 @@ const Contact = () => {
         {/* Main CTA Section */}
         <div className="grid lg:grid-cols-2 gap-8 mb-16">
           {/* Products CTA */}
-          <Card className="border-2 border-whaam-red/20 shadow-xl hover:shadow-2xl transition-all duration-500 group bg-whaam-black hover:border-whaam-red animate-fade-in hover:scale-105 hover:-translate-y-3 hover:rotate-1">
+          <LiquidGlassCard 
+            variant="primary"
+            className="border-2 border-whaam-red/20 shadow-xl hover:shadow-2xl transition-all duration-500 group hover:border-whaam-red animate-fade-in hover:scale-105 hover:-translate-y-3 hover:rotate-1">
             <CardContent className="p-8 text-center">
               <div className="w-20 h-20 bg-whaam-red rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 group-hover:shadow-2xl">
                 <Target className="text-whaam-white group-hover:scale-110 transition-transform duration-300" size={40} />
@@ -52,10 +55,12 @@ const Contact = () => {
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
               </Button>
             </CardContent>
-          </Card>
+          </LiquidGlassCard>
 
           {/* Discord CTA */}
-          <Card className="border-2 border-whaam-red/20 shadow-xl hover:shadow-2xl transition-all duration-500 group bg-whaam-red text-whaam-white hover:border-whaam-yellow animate-fade-in hover:scale-105 hover:-translate-y-3 hover:rotate-1" style={{ animationDelay: '100ms' }}>
+          <LiquidGlassCard 
+            variant="secondary"
+            className="border-2 border-whaam-red/20 shadow-xl hover:shadow-2xl transition-all duration-500 group bg-whaam-red text-whaam-white hover:border-whaam-yellow animate-fade-in hover:scale-105 hover:-translate-y-3 hover:rotate-1" style={{ animationDelay: '100ms' }}>
             <CardContent className="p-8 text-center">
               <div className="w-20 h-20 bg-whaam-white/20 rounded-3xl flex items-center justify-center mb-6 mx-auto group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 group-hover:shadow-2xl">
                 <MessageCircle className="text-whaam-white group-hover:scale-110 transition-transform duration-300" size={40} />
@@ -74,7 +79,7 @@ const Contact = () => {
                 <Zap className="ml-2" size={16} />
               </Button>
             </CardContent>
-          </Card>
+          </LiquidGlassCard>
         </div>
 
         {/* Benefits Section */}

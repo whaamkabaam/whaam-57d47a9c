@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
+import { LiquidGlassCard } from "@/components/LiquidGlassEffects";
 import { HelpCircle, Target, Zap, Shield } from "lucide-react";
 
 const FAQ = () => {
@@ -71,7 +72,7 @@ const FAQ = () => {
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <Card className="border-2 border-whaam-red/20 shadow-lg bg-whaam-black/80 backdrop-blur-sm animate-fade-in hover:shadow-2xl hover:shadow-whaam-red/20 transition-all duration-500 hover:scale-[1.02]">
+        <LiquidGlassCard variant="primary" className="border-2 border-whaam-red/20 shadow-lg animate-fade-in hover:shadow-2xl hover:shadow-whaam-red/20 transition-all duration-500 hover:scale-[1.02]">
           <CardContent className="p-8">
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, index) => (
@@ -86,12 +87,14 @@ const FAQ = () => {
               ))}
             </Accordion>
           </CardContent>
-        </Card>
+        </LiquidGlassCard>
       </div>
 
       {/* Quick Help Cards */}
       <div className="grid md:grid-cols-3 gap-8 mt-16 max-w-6xl mx-auto">
-        <Card className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-all duration-500 group bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red hover:scale-105 hover:-translate-y-2 animate-fade-in">
+        <LiquidGlassCard 
+          variant="secondary"
+          className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-all duration-500 group hover:border-whaam-red hover:scale-105 hover:-translate-y-2 animate-fade-in">
           <CardContent className="p-8">
             <div className="w-16 h-16 bg-whaam-red rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 group-hover:shadow-xl">
               <Target className="text-whaam-white" size={32} />
@@ -99,9 +102,11 @@ const FAQ = () => {
             <h3 className="text-xl font-bold text-whaam-white mb-3">Instant Delivery</h3>
             <p className="text-muted-foreground">First curve in minutes, not days. Start right away!</p>
           </CardContent>
-        </Card>
+        </LiquidGlassCard>
 
-        <Card className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-all duration-500 group bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red hover:scale-105 hover:-translate-y-2 animate-fade-in" style={{ animationDelay: '100ms' }}>
+        <LiquidGlassCard 
+          variant="secondary"
+          className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-all duration-500 group hover:border-whaam-red hover:scale-105 hover:-translate-y-2 animate-fade-in" style={{ animationDelay: '100ms' }}>
           <CardContent className="p-8">
             <div className="w-16 h-16 bg-whaam-yellow rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 group-hover:shadow-xl">
               <Zap className="text-whaam-black group-hover:scale-110 transition-transform duration-300" size={32} />
@@ -109,9 +114,11 @@ const FAQ = () => {
             <h3 className="text-xl font-bold text-whaam-white mb-3 group-hover:text-whaam-yellow transition-colors duration-300">Easy Installation</h3>
             <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">Step-by-step guide for effortless setup.</p>
           </CardContent>
-        </Card>
+        </LiquidGlassCard>
 
-        <Card className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-all duration-500 group bg-whaam-black/80 backdrop-blur-sm hover:border-whaam-red hover:scale-105 hover:-translate-y-2 animate-fade-in" style={{ animationDelay: '200ms' }}>
+        <LiquidGlassCard 
+          variant="secondary"
+          className="text-center border-2 border-whaam-red/20 shadow-lg hover:shadow-xl transition-all duration-500 group hover:border-whaam-red hover:scale-105 hover:-translate-y-2 animate-fade-in" style={{ animationDelay: '200ms' }}>
           <CardContent className="p-8">
             <div className="w-16 h-16 bg-whaam-red rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 group-hover:shadow-xl">
               <Shield className="text-whaam-white group-hover:scale-110 transition-transform duration-300" size={32} />
@@ -119,7 +126,7 @@ const FAQ = () => {
             <h3 className="text-xl font-bold text-whaam-white mb-3 group-hover:text-whaam-yellow transition-colors duration-300">100% Guarantee</h3>
             <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">Not satisfied? Full refund with no questions asked.</p>
           </CardContent>
-        </Card>
+        </LiquidGlassCard>
       </div>
     </div>
   );

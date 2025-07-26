@@ -229,7 +229,7 @@
 /* Enhanced Glass Variants */
 .glass-card {
   position: relative;
-  background: hsla(var(--glass-secondary) / 0.5); /* Semi-transparent for backdrop-filter */
+  background: hsla(var(--glass-secondary) / 0.35); /* Semi-transparent for backdrop-filter */
   border: 1px solid hsl(var(--card-border));
   border-radius: var(--radius);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -237,8 +237,8 @@
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   .glass-card {
-    -webkit-backdrop-filter: blur(16px) saturate(120%);
-    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(100%);
+    backdrop-filter: blur(12px) saturate(100%);
   }
 }
 

@@ -40,7 +40,7 @@ const Index = () => {
 
   return (
     <>
-      <div className="min-h-screen">
+      <div className="min-h-screen site-overlay">
       <Navigation activeSection={activeSection} />
       
       <section id="home">

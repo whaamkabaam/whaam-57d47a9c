@@ -74,7 +74,11 @@ export default {
 					secondary: 'hsl(var(--secondary-glow))',
 					accent: 'hsl(var(--accent-glow))',
 				},
-				'whaam-secondary-text': 'hsl(var(--whaam-secondary-text))'
+				// Add these whaam colors
+				'whaam-red': '#FF5252',
+				'whaam-yellow': '#FFD740',
+				'whaam-black': '#1A1A1A',
+				'whaam-dark': '#121212',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

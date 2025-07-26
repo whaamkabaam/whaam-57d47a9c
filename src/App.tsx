@@ -8,12 +8,14 @@ import Index from "./pages/Index";
 import Privacy from "./pages/Privacy";
 import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/NotFound";
+import InteractiveBackground from "./components/InteractiveBackground";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <InteractiveBackground />
       <Toaster />
       <Sonner />
       <BrowserRouter>

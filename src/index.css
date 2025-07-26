@@ -181,17 +181,17 @@
 /* Foundation Layer: Robust CSS Glassmorphism */
 .glass-primary {
   /* Fallback for browsers without backdrop-filter support */
-  background: hsla(var(--glass-primary));
-  border: 1px solid hsl(var(--card-border));
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: var(--shadow-glass);
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   .glass-primary {
-    background: hsla(var(--glass-primary));
+    background: rgba(0, 0, 0, 0.1);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
     backdrop-filter: blur(20px) saturate(150%);
-    border: 1px solid hsl(var(--card-border));
+    border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 
       0 25px 50px -12px rgba(0, 0, 0, 0.25),
       inset 0 1px 1px rgba(255, 255, 255, 0.3);
@@ -200,16 +200,16 @@
 
 .glass-secondary {
   /* Fallback */
-  background: hsla(var(--glass-secondary));
-  border: 1px solid hsl(var(--card-border));
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   .glass-secondary {
-    background: hsla(var(--glass-secondary));
+    background: rgba(0, 0, 0, 0.1);
     -webkit-backdrop-filter: blur(16px) saturate(120%);
     backdrop-filter: blur(16px) saturate(120%);
-    border: 1px solid hsl(var(--card-border));
+    border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 
       0 15px 35px -8px rgba(0, 0, 0, 0.2),
       inset 0 1px 1px rgba(255, 255, 255, 0.25);
@@ -218,16 +218,16 @@
 
 .glass-accent {
   /* Fallback */
-  background: hsla(var(--glass-accent));
-  border: 1px solid hsl(var(--border));
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   .glass-accent {
-    background: hsla(var(--glass-accent));
+    background: rgba(0, 0, 0, 0.1);
     -webkit-backdrop-filter: blur(40px) saturate(180%);
     backdrop-filter: blur(40px) saturate(180%);
-    border: 1px solid hsl(var(--border));
+    border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 
       0 35px 60px -15px rgba(0, 0, 0, 0.3),
       inset 0 2px 2px rgba(255, 255, 255, 0.4);

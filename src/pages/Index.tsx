@@ -40,7 +40,8 @@ const Index = () => {
 
   return (
     <>
-      <div className="min-h-screen site-overlay">
+      <div className="min-h-screen">
+      <div className="fixed inset-0 bg-black/10 -z-[5]" />
       <Navigation activeSection={activeSection} />
       
       <section id="home">

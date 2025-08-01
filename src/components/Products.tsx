@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Mouse, Clock, Star, Check, Zap, Users, Target, ArrowRight, Shield, Trophy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { LiquidDistortionFilters, LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
+import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
 
 const Products = () => {
   const [hoveredPlan, setHoveredPlan] = useState<string | null>(null);
@@ -80,8 +80,6 @@ const Products = () => {
 
   return (
     <section id="products" className="py-24 relative overflow-hidden">
-      <LiquidDistortionFilters />
-      
       {/* Background Glass Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-64 h-64 glass-primary rounded-full liquid-glow" style={{ filter: 'url(#liquid-distortion-subtle)' }}></div>

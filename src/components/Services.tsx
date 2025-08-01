@@ -1,6 +1,6 @@
 import { FileText, Settings, Target, CheckCircle, Clock, Shield, Users, Star } from "lucide-react";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
-import { LiquidDistortionFilters, LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
+import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
 
 interface TrustStatItemProps {
   end: number;
@@ -35,9 +35,6 @@ const TrustStatItem = ({ end, suffix = "", value, label, color, delay = 0 }: Tru
 export default function Services() {
   return (
     <section id="services" className="py-24 relative overflow-hidden">
-      {/* Add Liquid Glass SVG Filters */}
-      <LiquidDistortionFilters />
-      
       {/* Background Glass Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-32 right-20 w-40 h-40 glass-primary rounded-full liquid-glow" style={{ filter: 'url(#liquid-distortion-subtle)' }}></div>

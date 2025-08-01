@@ -3,8 +3,24 @@
 import React from 'react';
 import { cn } from "@/lib/utils";
 
-// This component is no longer needed but kept for compatibility.
-export const LiquidDistortionFilters = () => null;
+// SVG filter for liquid distortion effect
+export const LiquidDistortionFilters = () => (
+  <svg style={{ display: 'none' }}>
+    <filter id="liquid-distortion-filter">
+      <feTurbulence 
+        type="fractalNoise" 
+        baseFrequency="0.01 0.03" 
+        numOctaves="1" 
+        result="turbulence" />
+      <feDisplacementMap 
+        in="SourceGraphic" 
+        in2="turbulence" 
+        scale="15" 
+        xChannelSelector="R" 
+        yChannelSelector="G" />
+    </filter>
+  </svg>
+);
 
 // The card is now a pure CSS component.
 interface LiquidGlassCardProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { LiquidDistortionFilters, LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
+import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
 // Using direct URL for the logo
 const whaamLogo = "/lovable-uploads/25252925-5ec6-4d83-aa0a-70a6e27f7b9e.png";
 
@@ -31,7 +31,6 @@ export default function Navigation({ activeSection }: NavigationProps) {
 
   return (
     <>
-      <LiquidDistortionFilters />
       <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
         <LiquidGlassCard 
           variant="primary"

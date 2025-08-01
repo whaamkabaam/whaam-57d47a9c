@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Star, Play, Users, Clock, TrendingUp } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
-import { LiquidDistortionFilters, LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
+import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
 import whaamLogo from "@/assets/whaam-kabaam-logo.png";
 
 // StatItem component for animated statistics
@@ -36,9 +36,6 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Add Liquid Glass SVG Filters */}
-      <LiquidDistortionFilters />
-      
       {/* Liquid Glass Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Static Liquid Elements */}

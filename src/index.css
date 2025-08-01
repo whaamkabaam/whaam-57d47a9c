@@ -242,6 +242,8 @@
   border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border */
   border-radius: var(--radius);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  filter: url(#liquid-distortion-filter);
+  will-change: filter;
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {

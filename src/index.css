@@ -439,3 +439,9 @@
 .site-overlay {
   background-color: rgba(0, 0, 0, 0.15); /* 15% black overlay */
 }
+
+/* OVERLAY KILLER: Force all sections to be transparent */
+section {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

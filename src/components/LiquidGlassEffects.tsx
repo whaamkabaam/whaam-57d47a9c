@@ -9,13 +9,13 @@ export const LiquidDistortionFilters = () => (
     <filter id="liquid-distortion-filter">
       <feTurbulence 
         type="fractalNoise" 
-        baseFrequency="0.01 0.03" 
+        baseFrequency="0.015 0.035" 
         numOctaves="1" 
         result="turbulence" />
       <feDisplacementMap 
         in="SourceGraphic" 
         in2="turbulence" 
-        scale="15" 
+        scale="25" 
         xChannelSelector="R" 
         yChannelSelector="G" />
     </filter>

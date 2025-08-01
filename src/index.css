@@ -251,15 +251,15 @@
   inset: 0;
   z-index: 0;
   border-radius: inherit;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.02);
   filter: url(#liquid-distortion-filter);
   will-change: filter;
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   .glass-card::before {
-    -webkit-backdrop-filter: blur(10px) saturate(120%);
-    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(4px) saturate(120%);
+    backdrop-filter: blur(4px) saturate(120%);
   }
 }
 

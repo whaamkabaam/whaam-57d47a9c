@@ -117,7 +117,7 @@ export default function InteractiveBackground() {
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
                 size: Math.random() * 2 + 1,
-                color: "rgba(255, 215, 0, 0.8)",
+                color: "rgba(255, 215, 0, 0.4)",
                 scrollFactor: Math.random() * 0.3 + 0.85,
             })
         }
@@ -280,7 +280,7 @@ export default function InteractiveBackground() {
                     const cp2x = p2.x - p2.vx * 10
                     const cp2y = p2.y - p2.vy * 10
 
-                    const lineAlpha = (1 - dist / 150) * 0.8 * alpha
+                    const lineAlpha = (1 - dist / 150) * 0.3 * alpha
                     ctx.strokeStyle = `rgba(255, 215, 0, ${lineAlpha})`
                     ctx.lineWidth = 1
                     ctx.beginPath()
@@ -331,7 +331,7 @@ export default function InteractiveBackground() {
                 const alpha = Math.max(0, 1 - elapsed / fadeOutDuration)
                 if (alpha > 0 && lineState.geometry) {
                     const g = lineState.geometry
-                    const lineAlpha = 0.8 * alpha
+                    const lineAlpha = 0.3 * alpha
                     ctx.strokeStyle = `rgba(255, 215, 0, ${lineAlpha})`
                     ctx.lineWidth = 1
                     ctx.beginPath()

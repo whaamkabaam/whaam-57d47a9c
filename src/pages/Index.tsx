@@ -136,6 +136,22 @@ const Index = () => {
         <CookieConsent />
       </div>
 
+      {/* A refined filter for a sharp, beveled edge refraction */}
+      <svg className="absolute w-0 h-0">
+        <defs>
+          <filter id="liquid-distortion-filter">
+            {/* Create a sharper blurred version of the shape's alpha */}
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
+            {/* Create a tighter, more focused highlight */}
+            <feSpecularLighting in="blur" surfaceScale="5" specularConstant="1" specularExponent="30" lightingColor="#white" result="specular">
+              <fePointLight x="-50" y="-100" z="200" />
+            </feSpecularLighting>
+            <feComposite in="specular" in2="SourceAlpha" operator="in" result="specularOut" />
+            {/* Use the highlight as a displacement map with a more subtle scale */}
+            <feDisplacementMap in="SourceGraphic" in2="specularOut" scale="6" xChannelSelector="R" yChannelSelector="A" />
+          </filter>
+        </defs>
+      </svg>
     </>
   );
 };

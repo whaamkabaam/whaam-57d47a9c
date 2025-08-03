@@ -243,18 +243,14 @@
   overflow: hidden; /* Clips the effect layer */
 }
 
-/* The visual effect layer (subtle edge lighting only) */
+/* The visual effect layer (distortion and blur) */
 .glass-effect-layer {
   position: absolute;
   inset: 0;
   border-radius: inherit;
   
-  /* Remove the distortion filter - use pure CSS instead */
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.1) 0%, 
-    rgba(255, 255, 255, 0.05) 50%, 
-    rgba(255, 255, 255, 0.1) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Apply the distortion to this layer */
+  filter: url(#liquid-distortion-filter);
 }
 
 /* The content layer (text, buttons, etc.) */

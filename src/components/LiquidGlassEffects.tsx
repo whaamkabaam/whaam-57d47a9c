@@ -29,28 +29,27 @@ interface LiquidGlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 
-export function LiquidGlassCard({
-  className,
-  children,
-  variant = 'primary',
-  ...props
-}: LiquidGlassCardProps) {
-  return (
-    <div
-      className={cn(
-        'glass-card',
-        `glass-${variant}`,
-        className
-      )}
-      {...props}
-    >
-      {/* Content wrapper that sits above the distortion effect */}
-      <div className="relative z-10">
-        {children}
+export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardProps>(
+  ({ children, variant = 'primary', className = '', ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'glass-card',
+          `glass-${variant}`,
+          className
+        )}
+        {...props}
+      >
+        {/* Content wrapper that sits above the distortion effect */}
+        <div className="relative z-10">
+          {children}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);
+LiquidGlassCard.displayName = 'LiquidGlassCard';
 
 // The button is also a pure CSS component.
 export const LiquidGlassButton = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement> & {

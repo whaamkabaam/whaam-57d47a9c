@@ -238,20 +238,32 @@
 /* Enhanced Glass Variants */
 .glass-card {
   position: relative;
-  /* Use an almost completely transparent background for maximum clarity */
-  background-color: rgba(255, 255, 255, 0.02);
-  /* A sharper inner highlight and softer outer shadow for a more defined edge */
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 8px 32px rgba(0, 0, 0, 0.15);
-  /* A slightly brighter border to make the edge pop */
+  /* The container itself has no background, just provides the border and clipping */
   border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   border-radius: var(--radius);
+  overflow: hidden; /* This is critical */
+}
+
+/* This pseudo-element creates the entire visual effect */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0; /* Sits below the content */
+  border-radius: inherit;
+  
+  /* Apply the distortion to this layer */
+  filter: url(#liquid-distortion-filter);
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-  .glass-card {
-    /* Reduce blur to make the background more visible and increase saturation */
-    -webkit-backdrop-filter: blur(2px) saturate(1.2); 
-    backdrop-filter: blur(2px) saturate(1.2);
+  .glass-card::before {
+    /* Apply the blur to this layer */
+    -webkit-backdrop-filter: blur(4px) saturate(1.2); 
+    backdrop-filter: blur(4px) saturate(1.2);
+    /* Add a very subtle tint */
+    background: rgba(255, 255, 255, 0.05); 
   }
 }
 

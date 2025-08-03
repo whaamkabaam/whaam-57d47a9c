@@ -139,20 +139,18 @@ const Index = () => {
       {/* SVG Distortion Filter */}
       <svg className="absolute w-0 h-0">
         <defs>
+          {/* A more sophisticated filter for a beveled, refractive edge */}
           <filter id="liquid-distortion-filter">
-            <feTurbulence
-              baseFrequency="0.01 0.03"
-              numOctaves="2"
-              result="turbulence"
-              type="fractalNoise"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="turbulence"
-              scale="15"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
+            {/* Create a blurred version of the shape's alpha channel */}
+            <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur" />
+            {/* Create a height map from the blurred alpha */}
+            <feSpecularLighting in="blur" surfaceScale="5" specularConstant=".75" specularExponent="20" lightingColor="#white" result="specular">
+              <fePointLight x="-50" y="-50" z="200" />
+            </feSpecularLighting>
+            {/* Combine the highlight with the original alpha */}
+            <feComposite in="specular" in2="SourceAlpha" operator="in" result="specularOut" />
+            {/* Use the highlight as a displacement map for the background */}
+            <feDisplacementMap in="SourceGraphic" in2="specularOut" scale="8" xChannelSelector="R" yChannelSelector="G" />
           </filter>
         </defs>
       </svg>

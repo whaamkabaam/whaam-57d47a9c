@@ -124,7 +124,8 @@ const Portfolio = () => {
   ];
 
   return (
-    <div className="container mx-auto px-6">
+    <section id="portfolio" className="py-24 relative overflow-hidden">
+      <div className="container mx-auto px-6">
       <div className="text-center mb-16">
         <div className="inline-flex items-center bg-whaam-red/10 text-whaam-red px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-whaam-red/20">
           <Trophy className="mr-2" size={16} />
@@ -142,58 +143,54 @@ const Portfolio = () => {
       </div>
 
       {/* Before & After Demo Section */}
-      <div className="bg-whaam-black rounded-3xl p-12 mb-20 text-whaam-white border-2 border-whaam-red/20">
+      <LiquidGlassCard variant="primary" className="p-12 mb-20">
         <div className="text-center mb-12">
-          <h3 className="text-3xl font-bold mb-4">Before & After Demonstration</h3>
-          <p className="text-muted-foreground text-lg">
+          <h3 className="text-3xl font-bold mb-4 glass-text-contrast">Before & After Demonstration</h3>
+          <p className="text-muted-foreground text-lg glass-text">
             See how dramatically aim improves with a custom curve.
           </p>
         </div>
         
         <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Before Video */}
-          <div className="relative">
-            <div className="bg-red-500 bg-opacity-20 rounded-2xl p-1">
-              <div className="bg-black rounded-xl aspect-video relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center">
-                  <div className="text-center">
-                    <Play className="text-white mx-auto mb-4" size={48} />
-                    <h4 className="text-xl font-bold mb-2">BEFORE</h4>
-                    <p className="text-red-200">Inconsistent aim, overflicking</p>
-                  </div>
-                </div>
-                <div className="absolute bottom-4 left-4 bg-red-500 px-3 py-1 rounded-full text-sm font-bold">
-                  60% Accuracy
+          <LiquidGlassCard variant="secondary" className="relative">
+            <div className="aspect-video relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-red-600/60 to-red-800/60 flex items-center justify-center">
+                <div className="text-center">
+                  <Play className="text-white mx-auto mb-4" size={48} />
+                  <h4 className="text-xl font-bold mb-2 glass-text-contrast">BEFORE</h4>
+                  <p className="text-red-200 glass-text">Inconsistent aim, overflicking</p>
                 </div>
               </div>
+              <div className="absolute bottom-4 left-4 bg-red-500/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold glass-text-contrast">
+                60% Accuracy
+              </div>
             </div>
-          </div>
+          </LiquidGlassCard>
           
           {/* After Video */}
-          <div className="relative">
-            <div className="bg-green-500 bg-opacity-20 rounded-2xl p-1">
-              <div className="bg-black rounded-xl aspect-video relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-600 to-green-800 flex items-center justify-center">
-                  <div className="text-center">
-                    <Play className="text-white mx-auto mb-4" size={48} />
-                    <h4 className="text-xl font-bold mb-2">AFTER</h4>
-                    <p className="text-green-200">Precise, consistent aim</p>
-                  </div>
-                </div>
-                <div className="absolute bottom-4 left-4 bg-green-500 px-3 py-1 rounded-full text-sm font-bold">
-                  85% Accuracy
-                </div>
-              </div>
-            </div>
-          </div>
+          <LiquidGlassCard variant="secondary" className="relative">
+            <div className="aspect-video relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-600/60 to-green-800/60 flex items-center justify-center">
+                <div className="text-center">
+                  <Play className="text-white mx-auto mb-4" size={48} />
+                  <h4 className="text-xl font-bold mb-2 glass-text-contrast">AFTER</h4>
+                   <p className="text-green-200 glass-text">Precise, consistent aim</p>
+                 </div>
+               </div>
+               <div className="absolute bottom-4 left-4 bg-green-500/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold glass-text-contrast">
+                 85% Accuracy
+               </div>
+             </div>
+           </LiquidGlassCard>
         </div>
-
-          <div className="text-center mt-8">
-          <Badge className="bg-whaam-yellow text-whaam-black px-6 py-2 border-0 text-lg">
+        
+        <div className="text-center mt-8">
+          <Badge className="bg-secondary/80 backdrop-blur-sm text-background px-6 py-2 border-0 text-lg glass-text-contrast">
             +25% Average Accuracy Improvement
           </Badge>
         </div>
-      </div>
+      </LiquidGlassCard>
 
       {/* Enhanced Testimonials Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 animate-fade-in">
@@ -201,7 +198,7 @@ const Portfolio = () => {
             <LiquidGlassCard 
             key={testimonial.name} 
             variant="secondary"
-            className="group overflow-hidden border-2 border-whaam-red/20 shadow-lg hover:shadow-2xl hover:shadow-whaam-red/30 transition-all duration-700 hover:-translate-y-4 hover:scale-105 hover:rotate-1 hover:border-whaam-yellow animate-scale-in"
+            className="group overflow-hidden transition-all duration-300 hover:-translate-y-2 animate-fade-in"
           >
             <CardContent className="p-8">
               {/* Quote Icon */}
@@ -294,10 +291,11 @@ const Portfolio = () => {
           Get Your Custom Curve Now
           <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
         </Button>
-        <p className="text-muted-foreground mt-4">Join over 500 satisfied gamers</p>
-      </div>
-    </div>
-  );
-};
+         <p className="text-muted-foreground mt-4">Join over 500 satisfied gamers</p>
+       </div>
+     </div>
+   </section>
+   );
+ };
 
-export default Portfolio;
+ export default Portfolio;

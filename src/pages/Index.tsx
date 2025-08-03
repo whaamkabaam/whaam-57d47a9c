@@ -133,8 +133,29 @@ const Index = () => {
         </div>
       </footer>
 
-      <CookieConsent />
+        <CookieConsent />
       </div>
+
+      {/* SVG Distortion Filter */}
+      <svg className="absolute w-0 h-0">
+        <defs>
+          <filter id="liquid-distortion-filter">
+            <feTurbulence
+              baseFrequency="0.01 0.03"
+              numOctaves="1"
+              result="turbulence"
+              type="fractalNoise"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="turbulence"
+              scale="15"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
     </>
   );
 };

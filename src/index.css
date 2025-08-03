@@ -453,3 +453,8 @@ section {
   background-color: transparent !important;
   box-shadow: none !important;
 }
+
+/* Applies the SVG filter for a light-bending effect */
+.glass-distort {
+  filter: url(#liquid-distortion-filter);
+}

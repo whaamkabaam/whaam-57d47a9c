@@ -136,14 +136,14 @@ export default function Services() {
 
         {/* Trust Statistics */}
         <LiquidGlassCard 
-          variant="primary"
-          className="text-center p-12"
+          variant="accent"
+          className="text-center p-8 mb-0"
         >
           <h3 className="text-4xl md:text-5xl font-bold mb-6 glass-text-contrast">
             Trusted by <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">500+</span> gamers <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">worldwide</span>
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
             <TrustStatItem 
               end={15} 
               suffix="min" 

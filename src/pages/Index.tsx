@@ -136,19 +136,21 @@ const Index = () => {
         <CookieConsent />
       </div>
 
-      {/* A refined filter for a sharp, beveled edge refraction */}
+      {/* A precise filter that ONLY distorts the edges */}
       <svg className="absolute w-0 h-0">
         <defs>
           <filter id="liquid-distortion-filter">
-            {/* Create a sharper blurred version of the shape's alpha */}
-            <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
-            {/* Create a tighter, more focused highlight */}
-            <feSpecularLighting in="blur" surfaceScale="5" specularConstant="1" specularExponent="30" lightingColor="#white" result="specular">
-              <fePointLight x="-50" y="-100" z="200" />
-            </feSpecularLighting>
-            <feComposite in="specular" in2="SourceAlpha" operator="in" result="specularOut" />
-            {/* Use the highlight as a displacement map with a more subtle scale */}
-            <feDisplacementMap in="SourceGraphic" in2="specularOut" scale="6" xChannelSelector="R" yChannelSelector="A" />
+            {/* 1. Take the shape's alpha channel */}
+            <feMorphology in="SourceAlpha" operator="erode" radius="2" result="eroded" />
+            
+            {/* 2. Subtract the smaller shape from the original to get an outline */}
+            <feComposite in="SourceAlpha" in2="eroded" operator="out" result="outline" />
+            
+            {/* 3. Soften the outline for a smoother effect */}
+            <feGaussianBlur in="outline" stdDeviation="2" result="soft-outline" />
+            
+            {/* 4. Use the soft outline as the displacement map */}
+            <feDisplacementMap in="SourceGraphic" in2="soft-outline" scale="8" xChannelSelector="R" yChannelSelector="A" />
           </filter>
         </defs>
       </svg>

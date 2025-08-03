@@ -239,6 +239,7 @@
 /* The main container for the glass card */
 .glass-container {
   position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   border-radius: var(--radius);
   overflow: hidden; /* Clips the effect layer */
 }

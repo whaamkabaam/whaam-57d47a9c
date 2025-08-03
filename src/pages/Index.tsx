@@ -136,24 +136,6 @@ const Index = () => {
         <CookieConsent />
       </div>
 
-      {/* A precise filter that ONLY distorts the edges */}
-      <svg className="absolute w-0 h-0">
-        <defs>
-          <filter id="liquid-distortion-filter">
-            {/* 1. Take the shape's alpha channel */}
-            <feMorphology in="SourceAlpha" operator="erode" radius="2" result="eroded" />
-            
-            {/* 2. Subtract the smaller shape from the original to get an outline */}
-            <feComposite in="SourceAlpha" in2="eroded" operator="out" result="outline" />
-            
-            {/* 3. Soften the outline for a smoother effect */}
-            <feGaussianBlur in="outline" stdDeviation="2" result="soft-outline" />
-            
-            {/* 4. Use the soft outline as the displacement map */}
-            <feDisplacementMap in="SourceGraphic" in2="soft-outline" scale="8" xChannelSelector="R" yChannelSelector="A" />
-          </filter>
-        </defs>
-      </svg>
     </>
   );
 };

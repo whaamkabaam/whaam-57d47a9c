@@ -261,9 +261,9 @@
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
   .glass-effect-layer {
-    /* A slightly stronger blur complements the new edge distortion */
-    -webkit-backdrop-filter: blur(6px) saturate(1.1); 
-    backdrop-filter: blur(6px) saturate(1.1);
+    /* A slightly lower blur works better with the sharp edge effect */
+    -webkit-backdrop-filter: blur(4px) saturate(1.1);
+    backdrop-filter: blur(4px) saturate(1.1);
   }
 }
 

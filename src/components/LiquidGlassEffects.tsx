@@ -32,17 +32,17 @@ interface LiquidGlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
 export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardProps>(
   ({ children, variant = 'primary', className = '', ...props }, ref) => {
     return (
+      // This is the main container for positioning
       <div
         ref={ref}
-        className={cn(
-          'glass-card',
-          `glass-${variant}`,
-          className
-        )}
+        className={cn('glass-container', className)}
         {...props}
       >
-        {/* Content wrapper that sits above the distortion effect */}
-        <div className="relative z-10">
+        {/* This layer is ONLY for the visual effect */}
+        <div className={cn('glass-effect-layer', `glass-${variant}`)} />
+
+        {/* This layer is ONLY for the content */}
+        <div className="glass-content-layer">
           {children}
         </div>
       </div>

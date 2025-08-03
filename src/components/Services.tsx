@@ -138,7 +138,7 @@ export default function Services() {
         <div className="rounded-lg">
           <LiquidGlassCard
             variant="accent"
-            className="text-center p-8 mb-0"
+            className="text-center"
           >
             <h3 className="text-4xl md:text-5xl font-bold mb-6 glass-text-contrast">
             Trusted by <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">500+</span> gamers <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">worldwide</span>

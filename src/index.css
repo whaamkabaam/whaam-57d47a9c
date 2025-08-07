@@ -262,6 +262,34 @@
     rgba(255, 255, 255, 0.05) 0%,
     rgba(255, 255, 255, 0) 60%
   );
+  pointer-events: none;
+}
+
+/* Animated liquid highlights confined near the edges (no shape distortion) */
+.glass-effect-layer::before {
+  content: "";
+  position: absolute;
+  inset: -8%; /* slightly overscan so blur doesn't clip */
+  border-radius: inherit;
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  filter: blur(8px) saturate(1.05);
+  background:
+    /* Edge light bands */
+    radial-gradient(120% 60% at 50% -10%, rgba(255,255,255,0.22), rgba(255,255,255,0.00) 60%),
+    radial-gradient(60% 120% at -10% 50%, rgba(255,255,255,0.14), rgba(255,255,255,0.00) 60%),
+    radial-gradient(60% 120% at 110% 50%, rgba(255,255,255,0.14), rgba(255,255,255,0.00) 60%),
+    radial-gradient(120% 60% at 50% 110%, rgba(255,255,255,0.18), rgba(255,255,255,0.00) 60%),
+    /* Soft moving caustics */
+    radial-gradient(40% 30% at 30% 40%, rgba(255,255,255,0.10), rgba(255,255,255,0.00) 60%),
+    radial-gradient(40% 35% at 70% 60%, rgba(255,255,255,0.10), rgba(255,255,255,0.00) 60%);
+  animation: liquid-glow 12s ease-in-out infinite;
+}
+
+@keyframes liquid-glow {
+  0%   { transform: translate3d(-2%, -1%, 0) scale(1) rotate(0deg); }
+  50%  { transform: translate3d(2%, 1%, 0)  scale(1.02) rotate(2deg); }
+  100% { transform: translate3d(-2%, -1%, 0) scale(1) rotate(0deg); }
 }
 
 /* The content layer (text, buttons, etc.) */

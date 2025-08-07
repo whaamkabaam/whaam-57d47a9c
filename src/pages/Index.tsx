@@ -14,7 +14,7 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Navigation from "@/components/Navigation";
 import InteractiveBackground from "@/components/InteractiveBackground";
-import { LiquidDistortionFilters } from "@/components/LiquidGlassEffects";
+
 import CookieConsent from "@/components/CookieConsent";
 
 const Index = () => {
@@ -43,7 +43,7 @@ const Index = () => {
   return (
     <>
       <div className="min-h-screen site-overlay">
-        <LiquidDistortionFilters />
+        
         <InteractiveBackground />
         <Navigation activeSection={activeSection} />
       

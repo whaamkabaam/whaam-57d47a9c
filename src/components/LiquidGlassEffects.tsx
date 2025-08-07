@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { cn } from "@/lib/utils";
+import LiquidEdgeFX from "@/components/LiquidEdgeFX";
 
 // SVG filter for liquid distortion effect
 export const LiquidDistortionFilters = () => (
@@ -39,7 +40,11 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
         {...props}
       >
         {/* This layer is ONLY for the visual effect */}
-        <div className={cn('glass-effect-layer', `glass-${variant}`)} />
+        <div className={cn('glass-effect-layer', `glass-${variant}`)}>
+          <div className="webgl-canvas-container pointer-events-none">
+            <LiquidEdgeFX />
+          </div>
+        </div>
 
         {/* This layer is ONLY for the content */}
         <div className="glass-content-layer">

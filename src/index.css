@@ -292,6 +292,34 @@
   100% { transform: translate3d(-2%, -1%, 0) scale(1) rotate(0deg); }
 }
 
+/* Edge light-bending ring (masked backdrop-filter near edges only) */
+.glass-effect-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  /* Subtle refraction-like enhancement of underlying content near edges */
+  -webkit-backdrop-filter: blur(10px) saturate(140%) contrast(1.08);
+  backdrop-filter: blur(10px) saturate(140%) contrast(1.08);
+  /* Show filter only as a thin inner ring (no shape distortion) */
+  padding: var(--edge-ring, 14px);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  /* Gentle animated presence to feel alive */
+  opacity: 0.85;
+  animation: edge-sheen 16s var(--ease-fluid) infinite;
+  mix-blend-mode: screen;
+}
+
+@keyframes edge-sheen {
+  0%, 100% { opacity: 0.82; }
+  50%      { opacity: 0.95; }
+}
+
 /* The content layer (text, buttons, etc.) */
 .glass-content-layer {
   position: relative; /* Sits on top of the effect layer */

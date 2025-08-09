@@ -625,8 +625,8 @@ section {
   filter: saturate(130%) contrast(1.12) brightness(1.02);
   opacity:.55; mix-blend-mode:screen;
 
-  -webkit-mask: radial-gradient(125% 105% at 50% 50%, rgba(255,255,255,0) 0 55%, #fff 78%);
-          mask: radial-gradient(125% 105% at 50% 50%, rgba(255,255,255,0) 0 55%, #fff 78%);
+  -webkit-mask: none;
+          mask: none;
 }
 
 /* keep your ::before rim and ::after specular; put them above the refract */

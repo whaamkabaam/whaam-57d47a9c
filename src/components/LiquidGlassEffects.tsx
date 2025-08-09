@@ -62,17 +62,23 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       };
     }, []);
 
-    // Smooth re-entry tween
+    // Smooth re-entry tween with retargetable animation
     const animFrame = React.useRef<number | null>(null);
     const animating = React.useRef(false);
+
+    // persistent last-known values
     const lastShift = React.useRef({ x: 0, y: 0 });
     const lastMouse = React.useRef({ x: 0.5, y: 0.5 });
 
-    const stopAnim = () => {
-      if (animFrame.current) cancelAnimationFrame(animFrame.current);
-      animFrame.current = null;
-      animating.current = false;
-    };
+    // tween state
+    const startMouse = React.useRef({ x: 0.5, y: 0.5 });
+    const startShift = React.useRef({ x: 0, y: 0 });
+    const targetMouse = React.useRef({ x: 0.5, y: 0.5 });
+    const targetShift = React.useRef({ x: 0, y: 0 });
+    const startTimeRef = React.useRef(0);
+    const durationRef = React.useRef(160);
+
+    const ease = (t: number) => 1 - Math.pow(1 - t, 3);
 
     const setVars = (el: HTMLDivElement, mx: number, my: number, sx: number, sy: number) => {
       el.style.setProperty('--mx', String(mx));
@@ -81,6 +87,34 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       el.style.setProperty('--shiftY', `${sy}px`);
       lastMouse.current = { x: mx, y: my };
       lastShift.current = { x: sx, y: sy };
+    };
+
+    const step = () => {
+      const el = ref.current;
+      if (!el) return;
+      const now = performance.now();
+      const t = Math.min((now - startTimeRef.current) / durationRef.current, 1);
+      const m = ease(t);
+      const mx = startMouse.current.x + (targetMouse.current.x - startMouse.current.x) * m;
+      const my = startMouse.current.y + (targetMouse.current.y - startMouse.current.y) * m;
+      const sx = startShift.current.x + (targetShift.current.x - startShift.current.x) * m;
+      const sy = startShift.current.y + (targetShift.current.y - startShift.current.y) * m;
+
+      setVars(el, mx, my, sx, sy);
+
+      if (t < 1 && animating.current) {
+        animFrame.current = requestAnimationFrame(step);
+      } else {
+        animating.current = false;
+        animFrame.current = null;
+      }
+    };
+
+    const startTween = () => {
+      if (animFrame.current) cancelAnimationFrame(animFrame.current);
+      startTimeRef.current = performance.now();
+      animating.current = true;
+      animFrame.current = requestAnimationFrame(step);
     };
 
     const onEnter = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -98,55 +132,39 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       const targetSx = dx * strength * k;
       const targetSy = dy * strength * k;
 
-      const startMx = lastMouse.current.x;
-      const startMy = lastMouse.current.y;
-      const startSx = lastShift.current.x;
-      const startSy = lastShift.current.y;
+      // set tween endpoints and start from last known position
+      startMouse.current = { ...lastMouse.current };
+      startShift.current = { ...lastShift.current };
+      targetMouse.current = { x, y };
+      targetShift.current = { x: targetSx, y: targetSy };
+      durationRef.current = 160;
 
-      const duration = 140;
-      const startTime = performance.now();
-      animating.current = true;
-      stopAnim();
-
-      const ease = (t: number) => 1 - Math.pow(1 - t, 3);
-
-      const step = (now: number) => {
-        const t = Math.min((now - startTime) / duration, 1);
-        const m = ease(t);
-        const mx = startMx + (x - startMx) * m;
-        const my = startMy + (y - startMy) * m;
-        const sx = startSx + (targetSx - startSx) * m;
-        const sy = startSy + (targetSy - startSy) * m;
-
-        setVars(el, mx, my, sx, sy);
-
-        if (t < 1 && animating.current) {
-          animFrame.current = requestAnimationFrame(step);
-        } else {
-          animating.current = false;
-          animFrame.current = null;
-        }
-      };
-
-      animFrame.current = requestAnimationFrame(step);
+      startTween();
     };
 
     const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
       const el = ref.current;
       if (!el) return;
-      // abort entry animation for immediate tracking
-      stopAnim();
+
       const r = el.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width;
       const y = (e.clientY - r.top) / r.height;
 
-      // Edge-weighted strength (near center -> weaker, near edge -> stronger)
       const dx = x - 0.5, dy = y - 0.5;
       const dist = Math.min(Math.hypot(dx, dy) * 2, 1); // 0 center → 1 edge
       const k = Math.pow(dist, 1.15);                   // curve the response
       const strength = 18;                               // try 16–22
       const sx = dx * strength * k;
       const sy = dy * strength * k;
+
+      if (animating.current) {
+        // retarget ongoing tween smoothly
+        targetMouse.current = { x, y };
+        targetShift.current = { x: sx, y: sy };
+        return;
+      }
+
+      // immediate tracking when not animating
       setVars(el, x, y, sx, sy);
     };
 

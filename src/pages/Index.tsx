@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, type CSSProperties } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -47,31 +47,63 @@ const Index = () => {
         <InteractiveBackground />
         <Navigation activeSection={activeSection} />
       
-      <section id="home">
+      <section
+        id="home"
+        className="glass-stage"
+        style={{
+          "--stage-image": "url('/bg/network.jpg')",
+          "--stage-size": "cover",
+          "--stage-position": "center",
+        } as CSSProperties}
+      >
         <Hero />
       </section>
 
-      <section id="services" className="py-24">
+      <section id="services" className="py-24 glass-stage" style={{
+        "--stage-image": "url('/bg/network.jpg')",
+        "--stage-size": "cover",
+        "--stage-position": "center",
+      } as CSSProperties}>
         <Services />
       </section>
 
-      <section id="portfolio" className="py-24">
+      <section id="portfolio" className="py-24 glass-stage" style={{
+        "--stage-image": "url('/bg/network.jpg')",
+        "--stage-size": "cover",
+        "--stage-position": "center",
+      } as CSSProperties}>
         <Portfolio />
       </section>
 
-      <section id="products" className="py-24">
+      <section id="products" className="py-24 glass-stage" style={{
+        "--stage-image": "url('/bg/network.jpg')",
+        "--stage-size": "cover",
+        "--stage-position": "center",
+      } as CSSProperties}>
         <Products />
       </section>
 
-      <section id="about" className="py-24">
+      <section id="about" className="py-24 glass-stage" style={{
+        "--stage-image": "url('/bg/network.jpg')",
+        "--stage-size": "cover",
+        "--stage-position": "center",
+      } as CSSProperties}>
         <About />
       </section>
 
-      <section id="faq" className="py-24">
+      <section id="faq" className="py-24 glass-stage" style={{
+        "--stage-image": "url('/bg/network.jpg')",
+        "--stage-size": "cover",
+        "--stage-position": "center",
+      } as CSSProperties}>
         <FAQ />
       </section>
 
-      <section id="contact" className="py-24">
+      <section id="contact" className="py-24 glass-stage" style={{
+        "--stage-image": "url('/bg/network.jpg')",
+        "--stage-size": "cover",
+        "--stage-position": "center",
+      } as CSSProperties}>
         <Contact />
       </section>
 

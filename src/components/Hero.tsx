@@ -35,7 +35,16 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section
+      className="relative min-h-screen flex items-center justify-center overflow-hidden glass-stage"
+      style={{
+        "--stage-image": `radial-gradient(60% 50% at 20% 20%, hsl(var(--primary) / 0.22) 0%, transparent 55%),
+                          radial-gradient(60% 50% at 80% 70%, hsl(var(--secondary) / 0.18) 0%, transparent 60%),
+                          radial-gradient(120% 100% at 50% 50%, hsl(var(--accent) / 0.10) 0%, transparent 70%)`,
+        "--stage-size": "cover",
+        "--stage-position": "center"
+      } as any}
+    >
       {/* Liquid Glass Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Static Liquid Elements */}

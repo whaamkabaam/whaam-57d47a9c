@@ -34,7 +34,17 @@ const TrustStatItem = ({ end, suffix = "", value, label, color, delay = 0 }: Tru
 
 export default function Services() {
   return (
-    <section id="services" className="py-24 relative overflow-hidden">
+    <section
+      id="services"
+      className="py-24 relative overflow-hidden glass-stage"
+      style={{
+        "--stage-image": `radial-gradient(60% 50% at 20% 20%, hsl(var(--primary) / 0.22) 0%, transparent 55%),
+                          radial-gradient(60% 50% at 80% 70%, hsl(var(--secondary) / 0.18) 0%, transparent 60%),
+                          radial-gradient(120% 100% at 50% 50%, hsl(var(--accent) / 0.10) 0%, transparent 70%)`,
+        "--stage-size": "cover",
+        "--stage-position": "center"
+      } as any}
+    >
       {/* Background Glass Elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-32 right-20 w-40 h-40 glass-primary rounded-full liquid-glow" style={{ filter: 'url(#liquid-distortion-subtle)' }}></div>

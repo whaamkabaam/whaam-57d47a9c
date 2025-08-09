@@ -124,7 +124,17 @@ const Portfolio = () => {
   ];
 
   return (
-    <section id="portfolio" className="py-24 relative overflow-hidden">
+    <section
+      id="portfolio"
+      className="py-24 relative overflow-hidden glass-stage"
+      style={{
+        "--stage-image": `radial-gradient(60% 50% at 20% 20%, hsl(var(--primary) / 0.22) 0%, transparent 55%),
+                          radial-gradient(60% 50% at 80% 70%, hsl(var(--secondary) / 0.18) 0%, transparent 60%),
+                          radial-gradient(120% 100% at 50% 50%, hsl(var(--accent) / 0.10) 0%, transparent 70%)`,
+        "--stage-size": "cover",
+        "--stage-position": "center"
+      } as any}
+    >
       <div className="container mx-auto px-6">
       <div className="text-center mb-16">
         <div className="inline-flex items-center bg-whaam-red/10 text-whaam-red px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-whaam-red/20">

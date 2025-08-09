@@ -43,22 +43,35 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
     const updateBgAnchors = () => {
       const el = ref.current;
       if (!el) return;
-      const r = el.getBoundingClientRect();
-      const bx = -(r.left + window.scrollX);
-      const by = -(r.top + window.scrollY);
+
+      const stage = el.closest<HTMLElement>(".glass-stage") || document.body;
+      const sr = stage.getBoundingClientRect();
+      const er = el.getBoundingClientRect();
+
+      // Card position inside the stage (works with or without fixed backgrounds)
+      const localLeft = er.left - sr.left + window.scrollX;
+      const localTop  = er.top  - sr.top  + window.scrollY;
+
+      // Read stage background position (px); fall back to 0
+      const cs = getComputedStyle(stage as Element);
+      const px = parseFloat((cs as any).backgroundPositionX) || 0;
+      const py = parseFloat((cs as any).backgroundPositionY) || 0;
+
+      const bx = -(localLeft - px);
+      const by = -(localTop  - py);
+
       el.style.setProperty('--bx', `${bx}px`);
       el.style.setProperty('--by', `${by}px`);
     };
 
     React.useEffect(() => {
       updateBgAnchors();
-      const onScroll = () => updateBgAnchors();
-      const onResize = () => updateBgAnchors();
-      window.addEventListener('scroll', onScroll, { passive: true } as any);
-      window.addEventListener('resize', onResize);
+      const h = () => updateBgAnchors();
+      window.addEventListener('scroll', h, { passive: true } as any);
+      window.addEventListener('resize', h);
       return () => {
-        window.removeEventListener('scroll', onScroll as any);
-        window.removeEventListener('resize', onResize);
+        window.removeEventListener('scroll', h as any);
+        window.removeEventListener('resize', h);
       };
     }, []);
 
@@ -74,8 +87,8 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       // Edge-weighted strength (near center -> weaker, near edge -> stronger)
       const dx = x - 0.5, dy = y - 0.5;
       const dist = Math.min(Math.hypot(dx, dy) * 2, 1); // 0 center → 1 edge
-      const k = Math.pow(dist, 1.15);                   // curve the response
-      const strength = 18;                               // try 16–22
+      const k = Math.pow(dist, 1.25);                   // stronger edge weighting
+      const strength = 22;                               // desktop 20–24, mobile 14–18
       el.style.setProperty('--shiftX', `${dx * strength * k}px`);
       el.style.setProperty('--shiftY', `${dy * strength * k}px`);
     };

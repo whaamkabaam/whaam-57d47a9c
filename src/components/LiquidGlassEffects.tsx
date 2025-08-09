@@ -43,24 +43,9 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
     const updateBgAnchors = () => {
       const el = ref.current;
       if (!el) return;
-
-      const stage = (el.closest('.glass-stage') as HTMLElement) || (document.body as HTMLElement);
-      const sr = stage.getBoundingClientRect();
-      const er = el.getBoundingClientRect();
-
-      // Card position inside the stage
-      const localLeft = er.left - sr.left + window.scrollX;
-      const localTop = er.top - sr.top + window.scrollY;
-
-      // Read stage bg position (px; fall back to 0 if %, browser returns keywords)
-      const cs = getComputedStyle(stage);
-      const px = parseFloat(cs.backgroundPositionX) || 0;
-      const py = parseFloat(cs.backgroundPositionY) || 0;
-
-      // Offsets so the refract layer lines up with the stage image
-      const bx = -(localLeft - px);
-      const by = -(localTop - py);
-
+      const r = el.getBoundingClientRect();
+      const bx = -(r.left + window.scrollX);
+      const by = -(r.top + window.scrollY);
       el.style.setProperty('--bx', `${bx}px`);
       el.style.setProperty('--by', `${by}px`);
     };
@@ -89,8 +74,8 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       // Edge-weighted strength (near center -> weaker, near edge -> stronger)
       const dx = x - 0.5, dy = y - 0.5;
       const dist = Math.min(Math.hypot(dx, dy) * 2, 1); // 0 center → 1 edge
-      const k = Math.pow(dist, 1.25);                   // curve the response
-      const strength = 22;                               // try 20–24 on desktop
+      const k = Math.pow(dist, 1.15);                   // curve the response
+      const strength = 18;                               // try 16–22
       el.style.setProperty('--shiftX', `${dx * strength * k}px`);
       el.style.setProperty('--shiftY', `${dy * strength * k}px`);
     };

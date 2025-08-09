@@ -42,6 +42,29 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       }
     };
 
+    // Align background sampling to the card's position (for refractive layer)
+    const updateBgAnchors = () => {
+      const el = internalRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const bx = -(r.left + window.scrollX);
+      const by = -(r.top + window.scrollY);
+      el.style.setProperty('--bx', `${bx}px`);
+      el.style.setProperty('--by', `${by}px`);
+    };
+
+    React.useEffect(() => {
+      updateBgAnchors();
+      const onScroll = () => updateBgAnchors();
+      const onResize = () => updateBgAnchors();
+      window.addEventListener('scroll', onScroll);
+      window.addEventListener('resize', onResize);
+      return () => {
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onResize);
+      };
+    }, []);
+
     const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
       const el = internalRef.current;
       if (!el) return;
@@ -50,6 +73,9 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       const y = (e.clientY - r.top) / r.height;
       el.style.setProperty('--mx', x.toString());
       el.style.setProperty('--my', y.toString());
+      // refractive offset strength
+      el.style.setProperty('--shiftX', `${(x - 0.5) * 12}px`);
+      el.style.setProperty('--shiftY', `${(y - 0.5) * 12}px`);
     };
 
     return (
@@ -59,7 +85,10 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
         className={cn('liquid-glass rounded-[28px] p-6 md:p-8 overflow-hidden', className)}
         {...props}
       >
-        {children}
+        {/* refractive background sampler */}
+        <span aria-hidden className="liquid-refract" />
+        {/* content above effects */}
+        <div className="relative z-10">{children}</div>
       </div>
     );
   }

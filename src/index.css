@@ -595,3 +595,36 @@ section {
 }
 
 
+/* The card becomes its own stacking context */
+.liquid-glass { isolation: isolate; }
+
+/* Samples parent's background and offsets it -> fake refraction */
+.liquid-refract {
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+
+  /* sample the parent's background */
+  background: inherit;
+  background-attachment: fixed;
+  background-position:
+    calc(var(--bx,0px) + var(--shiftX,0px))
+    calc(var(--by,0px) + var(--shiftY,0px));
+
+  filter: saturate(130%) contrast(1.12) brightness(1.02);
+  opacity: .55;
+  mix-blend-mode: screen;
+
+  /* visible at edges, invisible in the center */
+  -webkit-mask: radial-gradient(130% 110% at 50% 50%,
+      rgba(255,255,255,0) 0 50%,
+      rgba(255,255,255,1) 70%);
+          mask: radial-gradient(130% 110% at 50% 50%,
+      rgba(255,255,255,0) 0 50%,
+      rgba(255,255,255,1) 70%);
+}
+
+/* keep your ::before rim and ::after specular; put them above the refract */
+.liquid-glass::before,
+.liquid-glass::after { z-index: 2; }

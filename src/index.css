@@ -526,3 +526,68 @@ section {
   box-shadow: none !important;
 }
 
+/* Liquid Glass Utility ------------------------------ */
+.liquid-glass {
+  --mx: .5;
+  --my: .3;
+  position: relative;
+  border-radius: 28px;
+  background:
+    radial-gradient(120% 140% at calc(var(--mx)*100%) calc(var(--my)*100%),
+      rgba(255,255,255,.18) 0%,
+      rgba(255,255,255,.06) 35%,
+      rgba(255,255,255,0) 70%)
+    , rgba(255,255,255,.04);
+  backdrop-filter: blur(8px) saturate(120%) brightness(1.08) contrast(1.03);
+  -webkit-backdrop-filter: blur(8px) saturate(120%) brightness(1.08) contrast(1.03);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 20px 40px rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.18);
+}
+
+/* Refractive rim (masked so it’s not a fat border) */
+.liquid-glass::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  padding: 1.25px;
+  background:
+    conic-gradient(from 0deg at calc(var(--mx)*100%) calc(var(--my)*100%),
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,.35) 18%,
+      rgba(255,255,255,0) 40%,
+      rgba(255,255,255,.35) 60%,
+      rgba(255,255,255,0) 100%);
+  filter: blur(6px) saturate(140%);
+  opacity: .65;
+  /* Mask so only the rim shows */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Specular highlights */
+.liquid-glass::after {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(60% 40% at calc(var(--mx)*100%) -10%,
+      rgba(255,255,255,.35) 0%, transparent 60%),
+    radial-gradient(80% 60% at 50% 120%,
+      rgba(255,255,255,.10) 0%, transparent 70%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Fallback when backdrop-filter is unsupported */
+@supports not ((backdrop-filter: blur(8px))) {
+  .liquid-glass {
+    background: rgba(255,255,255,.06);
+  }
+}
+

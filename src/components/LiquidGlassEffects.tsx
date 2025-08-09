@@ -30,21 +30,36 @@ interface LiquidGlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardProps>(
-  ({ children, variant = 'primary', className = '', ...props }, ref) => {
+  ({ children, variant = 'primary', className = '', ...props }, forwardedRef) => {
+    const internalRef = React.useRef<HTMLDivElement>(null);
+
+    const setRefs = (node: HTMLDivElement) => {
+      internalRef.current = node;
+      if (typeof forwardedRef === 'function') {
+        forwardedRef(node);
+      } else if (forwardedRef) {
+        (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+      }
+    };
+
+    const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+      const el = internalRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      el.style.setProperty('--mx', x.toString());
+      el.style.setProperty('--my', y.toString());
+    };
+
     return (
-      // This is the main container for positioning
       <div
-        ref={ref}
-        className={cn('glass-container', className)}
+        ref={setRefs}
+        onMouseMove={onMouseMove}
+        className={cn('liquid-glass rounded-[28px] p-6 md:p-8 overflow-hidden', className)}
         {...props}
       >
-        {/* This layer is ONLY for the visual effect */}
-        <div className={cn('glass-effect-layer', `glass-${variant}`)} />
-
-        {/* This layer is ONLY for the content */}
-        <div className="glass-content-layer">
-          {children}
-        </div>
+        {children}
       </div>
     );
   }

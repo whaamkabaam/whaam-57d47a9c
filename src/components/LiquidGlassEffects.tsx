@@ -62,27 +62,98 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       };
     }, []);
 
-    const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Smooth re-entry tween
+    const animFrame = React.useRef<number | null>(null);
+    const animating = React.useRef(false);
+    const lastShift = React.useRef({ x: 0, y: 0 });
+    const lastMouse = React.useRef({ x: 0.5, y: 0.5 });
+
+    const stopAnim = () => {
+      if (animFrame.current) cancelAnimationFrame(animFrame.current);
+      animFrame.current = null;
+      animating.current = false;
+    };
+
+    const setVars = (el: HTMLDivElement, mx: number, my: number, sx: number, sy: number) => {
+      el.style.setProperty('--mx', String(mx));
+      el.style.setProperty('--my', String(my));
+      el.style.setProperty('--shiftX', `${sx}px`);
+      el.style.setProperty('--shiftY', `${sy}px`);
+      lastMouse.current = { x: mx, y: my };
+      lastShift.current = { x: sx, y: sy };
+    };
+
+    const onEnter = (e: React.MouseEvent<HTMLDivElement>) => {
       const el = ref.current;
       if (!el) return;
+
       const r = el.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width;
       const y = (e.clientY - r.top) / r.height;
-      el.style.setProperty('--mx', `${x}`);
-      el.style.setProperty('--my', `${y}`);
+
+      const dx = x - 0.5, dy = y - 0.5;
+      const dist = Math.min(Math.hypot(dx, dy) * 2, 1);
+      const k = Math.pow(dist, 1.15);
+      const strength = 18;
+      const targetSx = dx * strength * k;
+      const targetSy = dy * strength * k;
+
+      const startMx = lastMouse.current.x;
+      const startMy = lastMouse.current.y;
+      const startSx = lastShift.current.x;
+      const startSy = lastShift.current.y;
+
+      const duration = 140;
+      const startTime = performance.now();
+      animating.current = true;
+      stopAnim();
+
+      const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+
+      const step = (now: number) => {
+        const t = Math.min((now - startTime) / duration, 1);
+        const m = ease(t);
+        const mx = startMx + (x - startMx) * m;
+        const my = startMy + (y - startMy) * m;
+        const sx = startSx + (targetSx - startSx) * m;
+        const sy = startSy + (targetSy - startSy) * m;
+
+        setVars(el, mx, my, sx, sy);
+
+        if (t < 1 && animating.current) {
+          animFrame.current = requestAnimationFrame(step);
+        } else {
+          animating.current = false;
+          animFrame.current = null;
+        }
+      };
+
+      animFrame.current = requestAnimationFrame(step);
+    };
+
+    const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+      const el = ref.current;
+      if (!el) return;
+      // abort entry animation for immediate tracking
+      stopAnim();
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
 
       // Edge-weighted strength (near center -> weaker, near edge -> stronger)
       const dx = x - 0.5, dy = y - 0.5;
       const dist = Math.min(Math.hypot(dx, dy) * 2, 1); // 0 center → 1 edge
       const k = Math.pow(dist, 1.15);                   // curve the response
       const strength = 18;                               // try 16–22
-      el.style.setProperty('--shiftX', `${dx * strength * k}px`);
-      el.style.setProperty('--shiftY', `${dy * strength * k}px`);
+      const sx = dx * strength * k;
+      const sy = dy * strength * k;
+      setVars(el, x, y, sx, sy);
     };
 
     return (
       <div
         ref={ref}
+        onMouseEnter={onEnter}
         onMouseMove={onMove}
         className={cn('liquid-glass rounded-[28px] p-6 md:p-8 overflow-hidden', className)}
         {...props}

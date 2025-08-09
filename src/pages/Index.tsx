@@ -1,5 +1,5 @@
 
-import { useState, useEffect, type CSSProperties } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -47,63 +47,31 @@ const Index = () => {
         <InteractiveBackground />
         <Navigation activeSection={activeSection} />
       
-      <section
-        id="home"
-        className="glass-stage"
-        style={{
-          "--stage-image": "url('/bg/network.jpg')",
-          "--stage-size": "cover",
-          "--stage-position": "center",
-        } as CSSProperties}
-      >
+      <section id="home">
         <Hero />
       </section>
 
-      <section id="services" className="py-24 glass-stage" style={{
-        "--stage-image": "url('/bg/network.jpg')",
-        "--stage-size": "cover",
-        "--stage-position": "center",
-      } as CSSProperties}>
+      <section id="services" className="py-24">
         <Services />
       </section>
 
-      <section id="portfolio" className="py-24 glass-stage" style={{
-        "--stage-image": "url('/bg/network.jpg')",
-        "--stage-size": "cover",
-        "--stage-position": "center",
-      } as CSSProperties}>
+      <section id="portfolio" className="py-24">
         <Portfolio />
       </section>
 
-      <section id="products" className="py-24 glass-stage" style={{
-        "--stage-image": "url('/bg/network.jpg')",
-        "--stage-size": "cover",
-        "--stage-position": "center",
-      } as CSSProperties}>
+      <section id="products" className="py-24">
         <Products />
       </section>
 
-      <section id="about" className="py-24 glass-stage" style={{
-        "--stage-image": "url('/bg/network.jpg')",
-        "--stage-size": "cover",
-        "--stage-position": "center",
-      } as CSSProperties}>
+      <section id="about" className="py-24">
         <About />
       </section>
 
-      <section id="faq" className="py-24 glass-stage" style={{
-        "--stage-image": "url('/bg/network.jpg')",
-        "--stage-size": "cover",
-        "--stage-position": "center",
-      } as CSSProperties}>
+      <section id="faq" className="py-24">
         <FAQ />
       </section>
 
-      <section id="contact" className="py-24 glass-stage" style={{
-        "--stage-image": "url('/bg/network.jpg')",
-        "--stage-size": "cover",
-        "--stage-position": "center",
-      } as CSSProperties}>
+      <section id="contact" className="py-24">
         <Contact />
       </section>
 

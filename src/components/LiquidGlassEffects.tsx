@@ -30,21 +30,18 @@ interface LiquidGlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardProps>(
-  ({ children, variant = 'primary', className = '', ...props }, forwardedRef) => {
-    const internalRef = React.useRef<HTMLDivElement>(null);
+  ({ className = '', children, ...props }, forwardedRef) => {
+    const ref = React.useRef<HTMLDivElement>(null);
 
-    const setRefs = (node: HTMLDivElement) => {
-      internalRef.current = node;
-      if (typeof forwardedRef === 'function') {
-        forwardedRef(node);
-      } else if (forwardedRef) {
-        (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
-      }
-    };
+    // merge refs
+    React.useEffect(() => {
+      if (typeof forwardedRef === 'function') forwardedRef(ref.current!);
+      else if (forwardedRef) (forwardedRef as any).current = ref.current;
+    }, [forwardedRef]);
 
-    // Align background sampling to the card's position (for refractive layer)
+    // align sampling to card’s absolute position
     const updateBgAnchors = () => {
-      const el = internalRef.current;
+      const el = ref.current;
       if (!el) return;
       const r = el.getBoundingClientRect();
       const bx = -(r.left + window.scrollX);
@@ -57,37 +54,46 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       updateBgAnchors();
       const onScroll = () => updateBgAnchors();
       const onResize = () => updateBgAnchors();
-      window.addEventListener('scroll', onScroll);
+      window.addEventListener('scroll', onScroll, { passive: true } as any);
       window.addEventListener('resize', onResize);
       return () => {
-        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('scroll', onScroll as any);
         window.removeEventListener('resize', onResize);
       };
     }, []);
 
-    const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      const el = internalRef.current;
+    const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+      const el = ref.current;
       if (!el) return;
       const r = el.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width;
       const y = (e.clientY - r.top) / r.height;
-      el.style.setProperty('--mx', x.toString());
-      el.style.setProperty('--my', y.toString());
-      // refractive offset strength
-      el.style.setProperty('--shiftX', `${(x - 0.5) * 12}px`);
-      el.style.setProperty('--shiftY', `${(y - 0.5) * 12}px`);
+      el.style.setProperty('--mx', `${x}`);
+      el.style.setProperty('--my', `${y}`);
+
+      // Edge-weighted strength (near center -> weaker, near edge -> stronger)
+      const dx = x - 0.5, dy = y - 0.5;
+      const dist = Math.min(Math.hypot(dx, dy) * 2, 1); // 0 center → 1 edge
+      const k = Math.pow(dist, 1.15);                   // curve the response
+      const strength = 18;                               // try 16–22
+      el.style.setProperty('--shiftX', `${dx * strength * k}px`);
+      el.style.setProperty('--shiftY', `${dy * strength * k}px`);
     };
 
     return (
       <div
-        ref={setRefs}
-        onMouseMove={onMouseMove}
+        ref={ref}
+        onMouseMove={onMove}
         className={cn('liquid-glass rounded-[28px] p-6 md:p-8 overflow-hidden', className)}
         {...props}
       >
-        {/* refractive background sampler */}
+        {/* refractive samplers */}
         <span aria-hidden className="liquid-refract" />
-        {/* content above effects */}
+        {/* optional tiny prism sparkle */}
+        <span aria-hidden className="liquid-refract liquid-refract--r" />
+        <span aria-hidden className="liquid-refract liquid-refract--b" />
+
+        {/* real content (only once) */}
         <div className="relative z-10">{children}</div>
       </div>
     );

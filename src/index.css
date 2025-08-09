@@ -542,8 +542,8 @@ section {
     , rgba(255,255,255,.02);
 
   /* Smaller blur = less frost, more “refraction” look */
-  backdrop-filter: blur(6px) saturate(125%) brightness(1.02) contrast(1.06);
-  -webkit-backdrop-filter: blur(6px) saturate(125%) brightness(1.02) contrast(1.06);
+  backdrop-filter: blur(4px) saturate(130%) brightness(1.02) contrast(1.07);
+  -webkit-backdrop-filter: blur(4px) saturate(130%) brightness(1.02) contrast(1.07);
 
   /* No hard border—just a hairline inset */
   border: 0;
@@ -625,8 +625,8 @@ section {
   filter: saturate(130%) contrast(1.12) brightness(1.02);
   opacity:.55; mix-blend-mode:screen;
 
-  -webkit-mask: radial-gradient(130% 110% at 50% 50%, rgba(255,255,255,0) 0 50%, #fff 70%);
-          mask: radial-gradient(130% 110% at 50% 50%, rgba(255,255,255,0) 0 50%, #fff 70%);
+  -webkit-mask: radial-gradient(125% 105% at 50% 50%, rgba(255,255,255,0) 0 55%, #fff 78%);
+          mask: radial-gradient(125% 105% at 50% 50%, rgba(255,255,255,0) 0 55%, #fff 78%);
 }
 
 /* keep your ::before rim and ::after specular; put them above the refract */

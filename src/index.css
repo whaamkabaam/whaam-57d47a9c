@@ -3,6 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Reserve mobile bottom bar space */
+@media (max-width: 768px) {
+  body { padding-bottom: 64px; }
+}
+
+
 /* Liquid Glass Design System */
 
 @layer base {

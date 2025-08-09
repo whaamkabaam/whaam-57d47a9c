@@ -7,13 +7,16 @@ import { ArrowRight, Star, Users, Code, Palette, Target, CheckCircle } from "luc
 import { Link } from "react-router-dom";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
-import Portfolio from "@/components/Portfolio";
 import Products from "@/components/Products";
 import About from "@/components/About";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Navigation from "@/components/Navigation";
 import InteractiveBackground from "@/components/InteractiveBackground";
+import CredibilityStrip from "@/components/CredibilityStrip";
+import Outcomes from "@/components/Outcomes";
+import Reviews from "@/components/Reviews";
+import StickyCTA from "@/components/StickyCTA";
 
 import CookieConsent from "@/components/CookieConsent";
 
@@ -22,7 +25,7 @@ const Index = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "services", "portfolio", "products", "about", "faq", "contact"];
+      const sections = ["home", "services", "products", "reviews", "about", "faq", "contact"];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -51,26 +54,42 @@ const Index = () => {
         <Hero />
       </section>
 
+      {/* Credibility strip */}
+      <section>
+        <CredibilityStrip />
+      </section>
+
+      {/* Outcomes grid */}
+      <section className="py-12">
+        <Outcomes />
+      </section>
+
+      {/* How it works */}
       <section id="services" className="py-24">
         <Services />
       </section>
 
-      <section id="portfolio" className="py-24">
-        <Portfolio />
-      </section>
-
+      {/* Pricing */}
       <section id="products" className="py-24">
         <Products />
       </section>
 
+      {/* Reviews + Clip */}
+      <section id="reviews" className="py-24">
+        <Reviews />
+      </section>
+
+      {/* Meet your Curve Expert */}
       <section id="about" className="py-24">
         <About />
       </section>
 
+      {/* FAQ */}
       <section id="faq" className="py-24">
         <FAQ />
       </section>
 
+      {/* Contact */}
       <section id="contact" className="py-24">
         <Contact />
       </section>
@@ -134,6 +153,7 @@ const Index = () => {
       </footer>
 
         <CookieConsent />
+        <StickyCTA activeSection={activeSection} />
       </div>
 
     </>

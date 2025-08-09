@@ -56,41 +56,16 @@ export default function Hero() {
             <div className="space-y-8 text-center lg:text-left">
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight glass-text-contrast">
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                  Custom Mouse Acceleration Curves
+                  Perfect your aim with a custom mouse accel curve
                 </span>
               </h1>
               
               <div className="space-y-4">
-                <p className="text-xl md:text-2xl glass-text leading-relaxed">
-                  For <span className="text-primary font-bold">Pin-Point FPS Aim</span>
-                </p>
                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-                  Personalized for your DPI, games & arm-speed. Set up in 3 min – join <span className="text-secondary font-bold">750+</span> aimers winning more duels.
+                  Get dialed settings in one live session—or start with self-serve. Faster flicks, steadier micro-aim, zero guesswork.
                 </p>
               </div>
             </div>
-
-            {/* Trust Bar */}
-            <LiquidGlassCard variant="secondary" className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="fill-current text-secondary" size={18} />
-                    ))}
-                  </div>
-                  <span className="glass-text-contrast font-medium">4.9/5 from 750+ aimers</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Users className="text-accent" size={20} />
-                  <span className="glass-text-contrast font-medium">12K Discord</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <TrendingUp className="text-primary" size={20} />
-                  <span className="glass-text-contrast font-medium">2.1M TikTok</span>
-                </div>
-              </div>
-            </LiquidGlassCard>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-6">
@@ -101,18 +76,22 @@ export default function Hero() {
                   className="relative text-lg px-8 py-4 font-bold text-white shadow-xl"
                   onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
                 >
-                  Get My Curve →
+                  Book 45-min 1-on-1
                 </LiquidGlassButton>
               </div>
               
               <LiquidGlassButton 
                 variant="secondary"
                 className="text-lg px-8 py-4 font-bold"
-                onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
+                onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
               >
-                <Play className="mr-2" size={20} />
-                See Demo
+                See plans (from $39)
               </LiquidGlassButton>
+            </div>
+
+            {/* Micro-proof line */}
+            <div className="text-sm text-muted-foreground mt-3">
+              Verified reviews • Setup in ~45–60 min • Unlimited tweaks
             </div>
           </div>
 

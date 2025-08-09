@@ -21,51 +21,68 @@ const Products = () => {
 
   const plans = [
     {
-      id: "3x-revisions",
-      name: "3× Revisions",
+      id: "self-serve-39",
+      name: "Self-Serve (3 Revisions)",
       price: "$39",
-      originalPrice: "$69",
-      badge: "Standard",
+      badge: "Entry",
       badgeColor: "bg-secondary text-primary font-bold",
-      description: "Perfect for most gamers who want personalized curve optimization",
-      deliveryTime: "First curve delivered in minutes",
+      description: "First curve in minutes • Any game • Personalized • Data-driven",
+      deliveryTime: "Time to results: 1–3 days (DIY)",
       features: [
-        "Three precision revision cycles",
-        "First curve delivered in minutes"
+        "First curve in minutes",
+        "Any game • Personalized • Data-driven",
+        "3 guided revisions (via Discord)",
+        "One-time payment",
+        "No live 1-on-1 session",
+        "No 45-min perfection promise"
       ],
+      cta: "Start Self-Serve — $39",
+      micro: "One-time payment • Secure checkout",
       icon: Mouse,
       highlight: false
     },
     {
-      id: "unlimited-revisions", 
-      name: "Unlimited Revisions",
+      id: "self-serve-pro-47",
+      name: "Most Popular — Self-Serve Pro (Unlimited)",
       price: "$47",
-      originalPrice: "$79",
-      badge: "Most Bought",
+      badge: "Most Popular",
       badgeColor: "bg-gradient-to-r from-primary to-secondary text-white font-bold",
-      description: "For perfectionists who want unlimited fine-tuning until it's perfect",
-      deliveryTime: "First curve delivered in minutes",
+      description: "First curve in minutes • Any game • Personalized • Data-driven",
+      deliveryTime: "Time to results: 1–3 days w/ feedback",
       features: [
-        "Unlimited feedback-based revisions",
-        "First curve delivered in minutes"
+        "First curve in minutes",
+        "Any game • Personalized • Data-driven",
+        "Unlimited revisions (async, 24–48h)",
+        "Satisfaction guarantee",
+        "One-time payment",
+        "No live 1-on-1 session",
+        "No 45-min perfection promise"
       ],
+      cta: "Unlock Unlimited — $47",
+      micro: "One-time payment • Secure checkout",
       icon: Target,
       highlight: true,
       popular: true
     },
     {
-      id: "live-session",
-      name: "Live 1‑on‑1 Session", 
+      id: "live-149",
+      name: "Live 1-on-1 (Perfect in ~45 Minutes)",
       price: "$149",
-      originalPrice: "$249",
-      badge: "Premium",
+      badge: "Fastest Results",
       badgeColor: "bg-accent text-white font-bold",
-      description: "Ultimate experience with real-time curve development and instant testing",
-      deliveryTime: "Personal live 1-on-1 session",
-      emphasis: "Perfect curve guaranteed in 45 minutes",
+      description: "Personal live 1-on-1 session • Unlimited revisions included",
+      deliveryTime: "Time to results: ~45 minutes (live)",
+      emphasis: "Perfect curve in ~45 minutes",
       features: [
-        "Exclusive 45‑minute live session"
+        "First curve in minutes",
+        "Any game • Personalized • Data-driven",
+        "Unlimited revisions included",
+        "Satisfaction guarantee",
+        "Personal live 1-on-1 session",
+        "One-time payment"
       ],
+      cta: "Book Live 45-min — $149",
+      micro: "Limited slots today • Secure checkout",
       icon: Users,
       highlight: false,
       premium: true
@@ -168,11 +185,6 @@ const Products = () => {
                   <span className="text-5xl font-black glass-text-contrast">
                     {plan.price}
                   </span>
-                  {plan.originalPrice && (
-                    <span className="text-xl glass-text line-through">
-                      {plan.originalPrice}
-                    </span>
-                  )}
                 </div>
 
                 <div className="text-secondary font-semibold mb-2">
@@ -203,16 +215,14 @@ const Products = () => {
                     className="w-full font-bold text-lg py-4"
                     onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
                   >
-                    Start Now
+                    {plan.cta}
                     <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
                   </LiquidGlassButton>
 
-                  {/* Savings Badge */}
-                  {plan.originalPrice && (
-                    <div className="text-center mt-4">
-                      <LiquidGlassCard variant="secondary" className="inline-block text-secondary text-sm font-semibold px-4 py-2">
-                        Save ${parseInt(plan.originalPrice.substring(1)) - parseInt(plan.price.substring(1))}
-                      </LiquidGlassCard>
+                  {/* Microline */}
+                  {plan.micro && (
+                    <div className="text-center mt-4 text-sm text-muted-foreground">
+                      {plan.micro}
                     </div>
                   )}
                 </div>

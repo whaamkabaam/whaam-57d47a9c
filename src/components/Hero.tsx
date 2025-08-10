@@ -51,8 +51,8 @@ export default function Hero() {
           <div className="space-y-12">
             {/* Headline */}
             <div className="space-y-8 text-center lg:text-left">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight glass-text-contrast headline-clarity">
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              <h1 className="liquid-headline font-extrabold leading-tight">
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-glass">
                   Perfect your aim with a custom mouse accel curve
                 </span>
               </h1>

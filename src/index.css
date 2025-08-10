@@ -451,6 +451,19 @@
     0 0 32px hsl(var(--secondary) / 0.25);
 }
 
+/* Liquid headline & text effects */
+.liquid-headline {
+  font-size: clamp(2.25rem, 6vw + 0.25rem, 5.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.text-glass {
+  text-shadow:
+    0 2px 10px hsl(var(--background) / 0.65),
+    0 0 24px hsl(var(--secondary) / 0.25),
+    0 0 40px hsl(var(--accent) / 0.15);
+}
+
 /* Accessibility: High Contrast Mode */
 @media (prefers-contrast: high) {
   .glass-primary,

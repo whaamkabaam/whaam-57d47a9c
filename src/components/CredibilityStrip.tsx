@@ -8,7 +8,7 @@ export default function CredibilityStrip() {
           variant="secondary"
           className="text-center py-3 px-4 text-sm text-muted-foreground"
         >
-          Verified reviews • 55k+ Discord • Trusted by competitive FPS players
+          +1100 Real Clients • Instant Start • Real Benefits • 55.000+ Member Discord
         </LiquidGlassCard>
       </div>
     </section>

@@ -17,15 +17,18 @@ export default function InteractiveBackground() {
     const lockedWidth = useRef(0)
     const lockedHeight = useRef(0)
 
-    // Animation + fade durations
-    const fadeInDuration = 500
-    const fadeOutDuration = 500
-    const POP_DURATION = 350
+// Animation + fade durations
+const fadeInDuration = 500
+const fadeOutDuration = 500
+const POP_DURATION = 350
 
-    // Scroll velocity constraints
-    const MAX_VELOCITY = 1
-    const MAX_SCROLL_FRACTION = 0.5
-    const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
+// Rendering toggles
+const DRAW_CIRCLES = false
+
+// Scroll velocity constraints
+const MAX_VELOCITY = 1
+const MAX_SCROLL_FRACTION = 0.5
+const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
 
     // Particle + line interfaces
     interface Particle {
@@ -151,21 +154,26 @@ export default function InteractiveBackground() {
                     const baseSize = particle.popInitialSize ?? particle.size
                     const mainRadius = baseSize * scale
 
-                    // main pop
-                    ctx.beginPath()
-                    ctx.arc(particle.x, particle.y, mainRadius, 0, Math.PI * 2)
-                    ctx.fillStyle = `rgba(255, 215, 0, ${alpha})`
-                    ctx.fill()
+                    if (DRAW_CIRCLES) {
+                        // main pop
+                        ctx.beginPath()
+                        ctx.arc(particle.x, particle.y, mainRadius, 0, Math.PI * 2)
+                        ctx.fillStyle = `rgba(255, 215, 0, ${alpha})`
+                        ctx.fill()
 
-                    // ring
-                    const ringOffset = baseSize * 2 * t
-                    const ringRadius = mainRadius + ringOffset
-                    const ringAlpha = 0.5 * (1 - t)
-                    ctx.beginPath()
-                    ctx.arc(particle.x, particle.y, ringRadius, 0, Math.PI * 2)
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${ringAlpha})`
-                    ctx.lineWidth = 1 + 2 * (1 - t)
-                    ctx.stroke()
+                        // ring
+                        const ringOffset = baseSize * 2 * t
+                        const ringRadius = mainRadius + ringOffset
+                        const ringAlpha = 0.5 * (1 - t)
+                        ctx.beginPath()
+                        ctx.arc(particle.x, particle.y, ringRadius, 0, Math.PI * 2)
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${ringAlpha})`
+                        ctx.lineWidth = 1 + 2 * (1 - t)
+                        ctx.stroke()
+                    } else {
+                        // No circle visuals; simply mark for removal
+                        particle.wentOutOfBoundsThisFrame = true
+                    }
                 } else {
                     // done popping -> mark for removal
                     particle.wentOutOfBoundsThisFrame = true
@@ -220,11 +228,13 @@ export default function InteractiveBackground() {
                 particle.vy += Math.sin(angle) * force * cursorForce
             }
 
-            // Draw dot
-            ctx.beginPath()
-            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
-            ctx.fillStyle = particle.color
-            ctx.fill()
+            if (DRAW_CIRCLES) {
+                // Draw dot
+                ctx.beginPath()
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
+                ctx.fillStyle = particle.color
+                ctx.fill()
+            }
         }
 
         //  -- Lines --

@@ -35,7 +35,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[100svh] flex items-start justify-center overflow-hidden pt-20 sm:pt-24 lg:pt-28">
       {/* Liquid Glass Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Static Liquid Elements */}

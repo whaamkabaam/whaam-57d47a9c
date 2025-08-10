@@ -62,7 +62,8 @@ export default function Hero() {
               </h1>
               
               <div className="space-y-4">
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">Get dialed settings in one live session – or gain access to the Word's First Custom Curve Aim AI. Faster flicks, steadier micro-aim, zero guesswork.</p>
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">Get dialed settings by me personally in a Live Session – or gain access to the Word's First
+Custom Curve Aim AI. Faster flicks, steadier micro-aim, zero guesswork.</p>
               </div>
             </div>
 

@@ -81,7 +81,7 @@ export default function Hero() {
             </div>
 
             {/* Micro-proof line */}
-            <div className="text-sm text-muted-foreground mt-3">+1100 Real Clients • Instant Start • Real Benefits</div>
+            <div className="text-sm text-muted-foreground mt-3">+1100 Real Clients • Instant Start • Real Benefits • 55.000+ Discord</div>
           </div>
 
           {/* Right Column - Stats */}

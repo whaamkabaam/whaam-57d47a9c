@@ -44,16 +44,14 @@ export default function Hero() {
         {/* Floating Glass Orbs removed for clarity */}
       </div>
 
-      {/* Readability overlay */}
-      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/40 to-transparent pointer-events-none"></div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Column - Content */}
           <div className="space-y-12">
             {/* Headline */}
-            <div className="space-y-8 text-center lg:text-left rounded-2xl bg-background/60 backdrop-blur-md ring-1 ring-foreground/10 p-6 md:p-8">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight glass-text-contrast">
+            <div className="space-y-8 text-center lg:text-left">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight glass-text-contrast headline-clarity">
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Perfect your aim with a custom mouse accel curve
                 </span>
@@ -98,8 +96,8 @@ export default function Hero() {
           <div className="space-y-8">
             <div className="grid grid-cols-2 gap-6">
               <LiquidGlassCard variant="accent" className="text-center p-6">
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">Setup time</div>
-                <div className="text-muted-foreground text-lg">~45–60 min</div>
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">2 Minute</div>
+                <div className="text-muted-foreground text-lg">Fast Delivery</div>
               </LiquidGlassCard>
               
               <LiquidGlassCard variant="primary" className="text-center p-6">
@@ -117,16 +115,6 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center space-y-3">
-          <LiquidGlassCard 
-            variant="accent" 
-            className="w-8 h-12 border border-white/20 rounded-full flex justify-center cursor-pointer"
-            onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
-          >
-            <div className="w-2 h-4 bg-gradient-to-b from-primary to-secondary rounded-full mt-3"></div>
-          </LiquidGlassCard>
-        </div>
       </div>
     </section>
   );

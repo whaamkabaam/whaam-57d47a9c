@@ -97,11 +97,7 @@ const Products = () => {
 
   return (
     <section id="products" className="py-24 relative overflow-hidden">
-      {/* Background Glass Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-64 h-64 glass-primary rounded-full liquid-glow" style={{ filter: 'url(#liquid-distortion-subtle)' }}></div>
-        <div className="absolute bottom-20 right-10 w-48 h-48 glass-secondary rounded-full liquid-glow-secondary" style={{ filter: 'url(#liquid-distortion-subtle)' }}></div>
-      </div>
+      {/* Background Glass Elements removed */}
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Header Section */}

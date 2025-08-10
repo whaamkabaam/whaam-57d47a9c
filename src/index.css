@@ -444,6 +444,13 @@
   font-weight: 500;
 }
 
+.headline-clarity {
+  text-shadow:
+    0 2px 10px hsl(var(--background) / 0.6),
+    0 0 24px hsl(var(--background) / 0.45),
+    0 0 32px hsl(var(--secondary) / 0.25);
+}
+
 /* Accessibility: High Contrast Mode */
 @media (prefers-contrast: high) {
   .glass-primary,

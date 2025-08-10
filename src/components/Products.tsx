@@ -250,19 +250,7 @@ const Products = () => {
           </div>
         </LiquidGlassCard>
 
-        {/* Sticky CTA */}
-        <div className="fixed bottom-6 right-6 z-50">
-          <LiquidGlassCard variant="primary" className="p-4 rounded-full shadow-2xl">
-            <LiquidGlassButton 
-              variant="primary"
-              className="rounded-full px-8 py-3 font-bold"
-              onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              <Star className="mr-2 group-hover:rotate-12 transition-transform" size={16} />
-              Start Now
-            </LiquidGlassButton>
-          </LiquidGlassCard>
-        </div>
+        {/* Removed floating sticky CTA in favor of global StickyCTA */}
       </div>
     </section>
   );

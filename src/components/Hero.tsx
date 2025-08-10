@@ -41,19 +41,18 @@ export default function Hero() {
         {/* Static Liquid Elements */}
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
         <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-accent/30 to-transparent"></div>
-        
-        {/* Floating Glass Orbs */}
-        <div className="absolute top-20 left-20 w-32 h-32 glass-primary rounded-full liquid-glow"></div>
-        <div className="absolute bottom-32 right-32 w-24 h-24 glass-secondary rounded-full liquid-glow-secondary"></div>
-        <div className="absolute top-1/2 left-10 w-16 h-16 glass-accent rounded-full liquid-glow-accent"></div>
+        {/* Floating Glass Orbs removed for clarity */}
       </div>
+
+      {/* Readability overlay */}
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/40 to-transparent pointer-events-none"></div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left Column - Content */}
           <div className="space-y-12">
             {/* Headline */}
-            <div className="space-y-8 text-center lg:text-left">
+            <div className="space-y-8 text-center lg:text-left rounded-2xl bg-background/60 backdrop-blur-md ring-1 ring-foreground/10 p-6 md:p-8">
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight glass-text-contrast">
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   Perfect your aim with a custom mouse accel curve

@@ -99,8 +99,8 @@ export default function Hero() {
           <div className="space-y-8">
             <div className="grid grid-cols-2 gap-6">
               <LiquidGlassCard variant="accent" className="text-center p-6">
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-4">Minutes</div>
-                <div className="text-muted-foreground text-lg">Fast Delivery</div>
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">Setup time</div>
+                <div className="text-muted-foreground text-lg">~45–60 min</div>
               </LiquidGlassCard>
               
               <LiquidGlassCard variant="primary" className="text-center p-6">
@@ -108,11 +108,11 @@ export default function Hero() {
               </LiquidGlassCard>
               
               <LiquidGlassCard variant="secondary" className="text-center p-6">
-                <StatItem end={4} suffix="+" label="Years Expert" />
+                <StatItem end={4} suffix="+" label="years experience" />
               </LiquidGlassCard>
               
               <LiquidGlassCard variant="accent" className="text-center p-6">
-                <StatItem end={750} suffix="+" label="Happy Aimers" />
+                <StatItem end={1100} suffix="+" label="Players Helped" />
               </LiquidGlassCard>
             </div>
           </div>

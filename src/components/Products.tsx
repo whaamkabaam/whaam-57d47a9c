@@ -90,9 +90,9 @@ const Products = () => {
   ];
 
   const benefits = [
-    { icon: Shield, title: "100% Satisfaction Guarantee", desc: "Not satisfied? Full refund, no questions asked" },
+    { icon: Shield, title: "100% Satisfaction Guarantee", desc: "Satisfaction guarantee — unlimited tweaks or a refund." },
     { icon: Zap, title: "Lightning Fast Delivery", desc: "First curve delivered in minutes, not days" },
-    { icon: Trophy, title: "Proven Results", desc: "Trusted by 500+ gamers worldwide" }
+    { icon: Trophy, title: "Proven Results", desc: "Trusted by 1,100+ players worldwide" }
   ];
 
   return (
@@ -127,7 +127,7 @@ const Products = () => {
           <div className="flex flex-wrap justify-center items-center gap-6 text-sm glass-text mb-16">
             <div className="flex items-center">
               <Check className="text-secondary mr-2" size={16} />
-              500+ satisfied gamers
+              1,100+ players helped
             </div>
             <div className="flex items-center">
               <Check className="text-secondary mr-2" size={16} />

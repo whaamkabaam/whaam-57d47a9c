@@ -8,7 +8,7 @@ const About = () => {
   const expertStats = [
     { icon: Trophy, value: "1900 RR", label: "Peak Valorant Rank", color: "text-whaam-yellow" },
     { icon: Users, value: "75K+", label: "TikTok Followers", color: "text-whaam-red" },
-    { icon: Target, value: "500+", label: "Gamers Helped", color: "text-whaam-yellow" },
+    { icon: Target, value: "1100+", label: "Players Helped", color: "text-whaam-yellow" },
     { icon: Star, value: "4+ Years", label: "Curve Development", color: "text-whaam-red" }
   ];
 
@@ -24,7 +24,7 @@ const About = () => {
     "75,000+ TikTok followers in gaming community",
     "4+ years of competitive FPS experience",
     "Expert in Raw Accel and mouse optimization",
-    "Helped 500+ gamers improve their aim significantly",
+    "Helped 1,100+ players improve their aim significantly",
     "Data-driven approach with proven results"
   ];
 
@@ -198,7 +198,7 @@ const About = () => {
           <div className="flex items-center justify-center gap-8 text-sm text-muted-foreground mb-8">
             <div className="flex items-center">
               <TrendingUp className="text-whaam-yellow mr-2" size={16} />
-              500+ transformed gamers
+              1,100+ players helped
             </div>
             <div className="flex items-center">
               <Trophy className="text-whaam-yellow mr-2" size={16} />

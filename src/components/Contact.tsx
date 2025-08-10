@@ -67,7 +67,7 @@ const Contact = () => {
               </div>
               <h3 className="text-2xl font-bold mb-4">Questions? Ask directly on Discord</h3>
               <p className="text-whaam-white/80 mb-6 leading-relaxed">
-                Join our community and get instant support from 500+ gamers and experts.
+                Join our community and get instant support from 55k+ members and experts.
               </p>
               <Button 
                 onClick={openDiscord}
@@ -94,7 +94,7 @@ const Contact = () => {
                 <CheckCircle className="text-whaam-black group-hover:scale-110 transition-transform duration-300" size={32} />
               </div>
               <h4 className="text-xl font-semibold text-whaam-white mb-2 group-hover:text-whaam-yellow transition-colors duration-300">100% Satisfaction Guarantee</h4>
-              <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">Not satisfied? Full refund, no questions asked.</p>
+              <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">Satisfaction guarantee — unlimited tweaks or a refund.</p>
             </div>
             <div className="text-center group hover:scale-105 transition-all duration-300 hover:-translate-y-2" style={{ animationDelay: '50ms' }}>
               <div className="w-16 h-16 mx-auto mb-4 bg-whaam-red rounded-2xl flex items-center justify-center group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 group-hover:shadow-xl">
@@ -108,7 +108,7 @@ const Contact = () => {
                 <Users className="text-whaam-black group-hover:scale-110 transition-transform duration-300" size={32} />
               </div>
               <h4 className="text-xl font-semibold text-whaam-white mb-2 group-hover:text-whaam-yellow transition-colors duration-300">Proven Results</h4>
-              <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">Trusted by 500+ gamers worldwide.</p>
+              <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">Trusted by 1,100+ players worldwide.</p>
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@ const Contact = () => {
           <MessageCircle className="mx-auto mb-4 text-whaam-white/80" size={48} />
           <h4 className="font-bold text-2xl mb-3">Join our Discord Community</h4>
           <p className="text-whaam-white/80 mb-6 text-lg">
-            Get instant support, share your progress and connect with 500+ gamers 
+            Get instant support, share your progress and connect with 55k+ members 
             who have already transformed their aim.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm">
@@ -132,7 +132,7 @@ const Contact = () => {
             </div>
             <div className="flex items-center">
               <CheckCircle className="text-whaam-yellow mr-2" size={16} />
-              500+ active gamers
+              55k+ active members
             </div>
           </div>
           <Button 

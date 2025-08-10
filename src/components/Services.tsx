@@ -141,7 +141,7 @@ export default function Services() {
             className="text-center"
           >
             <h3 className="text-4xl md:text-5xl font-bold mb-6 glass-text-contrast">
-            Trusted by <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">500+</span> gamers <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">worldwide</span>
+            Trusted by <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">1,100+</span> players <span className="bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">worldwide</span>
           </h3>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
@@ -158,9 +158,9 @@ export default function Services() {
               color="text-secondary"
             />
             <TrustStatItem 
-              end={750} 
+              end={1100} 
               suffix="+" 
-              label="Happy Customers" 
+              label="Players Helped" 
               color="text-accent"
             />
           </div>

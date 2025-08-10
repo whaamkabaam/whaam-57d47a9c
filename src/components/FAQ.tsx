@@ -29,7 +29,7 @@ const FAQ = () => {
     {
       id: "guarantee",
       question: "What happens if I'm not satisfied?",
-      answer: "We offer a 100% satisfaction guarantee! If you're not completely satisfied with your Custom Curve, you'll receive a full refund - no questions asked. Your satisfaction is our top priority."
+      answer: "Satisfaction guarantee — unlimited tweaks or a refund.",
     },
     {
       id: "installation",
@@ -124,7 +124,7 @@ const FAQ = () => {
               <Shield className="text-whaam-white group-hover:scale-110 transition-transform duration-300" size={32} />
             </div>
             <h3 className="text-xl font-bold text-whaam-white mb-3 group-hover:text-whaam-yellow transition-colors duration-300">100% Guarantee</h3>
-            <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">Not satisfied? Full refund with no questions asked.</p>
+            <p className="text-muted-foreground group-hover:text-whaam-white/90 transition-colors duration-300">Satisfaction guarantee — unlimited tweaks or a refund.</p>
           </CardContent>
         </LiquidGlassCard>
       </div>

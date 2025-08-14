@@ -57,14 +57,10 @@ export default function Hero() {
           <div className="space-y-12">
             {/* Headline */}
             <div className="space-y-8 text-center lg:text-left">
-              {/* Add background for better text readability */}
-              <div className="relative">
-                <div className="absolute inset-0 bg-background/80 backdrop-blur-sm rounded-2xl border border-white/10"></div>
-                <h1 className="relative liquid-headline font-extrabold leading-tight p-8">
-                  <span className="text-foreground drop-shadow-lg">Become the Best Aimer you can be – in any Game, through </span>
-                  <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Custom Curve</span>
-                </h1>
-              </div>
+              <h1 className="liquid-headline font-extrabold leading-tight text-shadow-lg">
+                <span className="text-foreground">Become the Best Aimer you can be – in any Game, through </span>
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Custom Curve</span>
+              </h1>
               
               <div className="space-y-4">
                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">Get dialed settings by me personally in a Live Session – or gain access to the Word's First

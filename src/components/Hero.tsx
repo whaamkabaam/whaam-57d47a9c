@@ -41,72 +41,73 @@ export default function Hero() {
       behavior: "smooth"
     });
   };
-  return <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          {/* Headline */}
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Become the Best Aimer you can be – in any Game, through Custom Curve
-            </span>
-          </h1>
-          
-          {/* Description */}
-          <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            Get dialed settings by me personally in a Live Session – or gain access to the Word's First Custom Curve Aim AI. Faster flicks, steadier micro-aim, zero guesswork.
-          </p>
+  return <section className="relative min-h-[100svh] flex items-start justify-center overflow-hidden pt-20 sm:pt-24 lg:pt-28">
+      {/* Liquid Glass Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Static Liquid Elements */}
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
+        <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-accent/30 to-transparent"></div>
+        {/* Floating Glass Orbs removed for clarity */}
+      </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <LiquidGlassButton 
-              variant="primary" 
-              className="text-lg px-8 py-4 font-bold" 
-              onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              Book 1:1 Live Session
-            </LiquidGlassButton>
+
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Left Column - Content */}
+          <div className="space-y-12">
+            {/* Headline */}
+            <div className="space-y-8 text-center lg:text-left">
+              <h1 className="liquid-headline font-extrabold leading-tight">
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-glass">Become the Best Aimer you can be – in any Game, through Custom Curve</span>
+              </h1>
+              
+              <div className="space-y-4">
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">Get dialed settings by me personally in a Live Session – or gain access to the Word's First
+Custom Curve Aim AI. Faster flicks, steadier micro-aim, zero guesswork.</p>
+              </div>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-6">
+              <div className="relative group">
+                <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <LiquidGlassButton variant="primary" className="relative text-lg px-8 py-4 font-bold text-white shadow-xl" onClick={() => document.getElementById("products")?.scrollIntoView({
+                behavior: "smooth"
+              })}>Book 1:1 Live Session</LiquidGlassButton>
+              </div>
+              
+              <LiquidGlassButton variant="secondary" className="text-lg px-8 py-4 font-bold" onClick={() => document.getElementById("products")?.scrollIntoView({
+              behavior: "smooth"
+            })}>See plans (from 7$)</LiquidGlassButton>
+            </div>
+
+            {/* Micro-proof line */}
             
-            <LiquidGlassButton 
-              variant="secondary" 
-              className="text-lg px-8 py-4 font-bold" 
-              onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              See plans (from 7$)
-            </LiquidGlassButton>
           </div>
 
-          {/* Stats Strip */}
-          <div className="flex flex-wrap justify-center gap-8 pt-8 text-center">
-            <div>
-              <div className="text-2xl font-bold text-primary">2 Min</div>
-              <div className="text-sm text-muted-foreground">Fast Delivery</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-primary">
-                <span ref={useAnimatedCounter({ end: 100, suffix: "%" }).ref}>
-                  {useAnimatedCounter({ end: 100, suffix: "%" }).value}
-                </span>
-              </div>
-              <div className="text-sm text-muted-foreground">Satisfaction</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-primary">
-                <span ref={useAnimatedCounter({ end: 4, suffix: "+" }).ref}>
-                  {useAnimatedCounter({ end: 4, suffix: "+" }).value}
-                </span>
-              </div>
-              <div className="text-sm text-muted-foreground">Years Experience</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-primary">
-                <span ref={useAnimatedCounter({ end: 1100, suffix: "+" }).ref}>
-                  {useAnimatedCounter({ end: 1100, suffix: "+" }).value}
-                </span>
-              </div>
-              <div className="text-sm text-muted-foreground">Players Helped</div>
+          {/* Right Column - Stats */}
+          <div className="space-y-8">
+            <div className="grid grid-cols-2 gap-6">
+              <LiquidGlassCard variant="accent" className="text-center p-6">
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">2 Minute</div>
+                <div className="text-muted-foreground text-lg">Fast Delivery</div>
+              </LiquidGlassCard>
+              
+              <LiquidGlassCard variant="primary" className="text-center p-6">
+                <StatItem end={100} suffix="%" label="Satisfaction" />
+              </LiquidGlassCard>
+              
+              <LiquidGlassCard variant="secondary" className="text-center p-6">
+                <StatItem end={4} suffix="+" label="years experience" />
+              </LiquidGlassCard>
+              
+              <LiquidGlassCard variant="accent" className="text-center p-6">
+                <StatItem end={1100} suffix="+" label="Players Helped" />
+              </LiquidGlassCard>
             </div>
           </div>
         </div>
+
       </div>
     </section>;
 }

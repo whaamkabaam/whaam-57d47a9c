@@ -23,7 +23,7 @@ const fadeOutDuration = 500
 const POP_DURATION = 350
 
 // Rendering toggles
-const DRAW_CIRCLES = false
+const DRAW_CIRCLES = true
 
 // Scroll velocity constraints
 const MAX_VELOCITY = 1
@@ -103,7 +103,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
         const particles: Particle[] = []
 
         // Better particle density across all resolutions
-        const baseParticles = 90
+        const baseParticles = 126 // 40% increase from 90
         const screenArea = window.innerWidth * window.innerHeight
         const referenceArea = 1920 * 1080 // Reference screen size
         const areaRatio = Math.min(screenArea / referenceArea, 1.5) // Cap the scaling
@@ -118,7 +118,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 y: initialY,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
-                size: Math.random() * 2 + 2,
+                size: Math.random() * 3 + 3, // 3-6px range for better visibility
                 color: "rgba(255, 215, 0, 0.8)",
                 scrollFactor: Math.random() * 0.3 + 0.85,
             })

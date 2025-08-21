@@ -5,7 +5,6 @@ import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
 import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
 import { ContainerTextFlip } from "@/components/ui/container-text-flip";
 import whaamLogo from "@/assets/whaam-kabaam-logo.png";
-import { motion } from "motion/react";
 
 // StatItem component for animated statistics
 const StatItem = ({
@@ -65,17 +64,13 @@ export default function Hero() {
               </h1>
               
               {/* Decorative subhead with animated text */}
-              <motion.div 
-                layout
-                className="flex items-center justify-center lg:justify-start py-4"
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-              >
+              <div className="min-h-[120px] flex items-center justify-center lg:justify-start">
                 <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
                   Make your aim{" "}
                   <ContainerTextFlip words={["faster", "steadier", "more consistent", "more natural"]} interval={2200} className="!bg-white/10 !backdrop-blur-md !border-white/20 !shadow-[0_8px_32px_rgba(0,0,0,0.15)] text-primary font-bold" textClassName="!text-primary" />
                   {" "}— without guesswork.
                 </p>
-              </motion.div>
+              </div>
               
               <div className="space-y-4">
                 

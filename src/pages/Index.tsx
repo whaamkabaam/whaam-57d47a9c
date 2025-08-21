@@ -25,7 +25,7 @@ const Index = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "services", "products", "reviews", "about", "faq", "contact"];
+      const sections = ["home", "outcomes", "services", "products", "reviews", "about", "faq", "contact"];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -60,7 +60,7 @@ const Index = () => {
       </section>
 
       {/* Outcomes grid */}
-      <section className="py-12">
+      <section id="outcomes" className="py-12">
         <Outcomes />
       </section>
 

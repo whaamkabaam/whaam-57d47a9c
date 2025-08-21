@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Star, Users, Code, Palette, Target, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import Hero from "@/components/Hero";
+import StoryCards from "@/components/sections/StoryCards";
 import Services from "@/components/Services";
 import Products from "@/components/Products";
 import About from "@/components/About";
@@ -52,6 +53,11 @@ const Index = () => {
       
       <section id="home">
         <Hero />
+      </section>
+
+      {/* Story Cards */}
+      <section>
+        <StoryCards />
       </section>
 
       {/* Credibility strip */}

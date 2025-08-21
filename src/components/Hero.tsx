@@ -78,7 +78,7 @@ export default function Hero() {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6">
+            <div className="flex flex-col sm:flex-row gap-6 transition-all duration-300 ease-out">
               <div className="relative group">
                 <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <LiquidGlassButton variant="primary" className="relative text-lg px-8 py-4 font-bold text-white shadow-xl" onClick={() => document.getElementById("products")?.scrollIntoView({

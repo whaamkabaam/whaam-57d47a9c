@@ -66,18 +66,12 @@ export default function Hero() {
               {/* Decorative subhead with animated text */}
               <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
                 Make your aim{" "}
-                <ContainerTextFlip
-                  words={["faster", "steadier", "more consistent", "more natural"]}
-                  interval={2200}
-                  className="!bg-white/10 !backdrop-blur-md !border-white/20 !shadow-[0_8px_32px_rgba(0,0,0,0.15)] text-primary font-bold"
-                  textClassName="!text-primary"
-                />
+                <ContainerTextFlip words={["faster", "steadier", "more consistent", "more natural"]} interval={2200} className="!bg-white/10 !backdrop-blur-md !border-white/20 !shadow-[0_8px_32px_rgba(0,0,0,0.15)] text-primary font-bold" textClassName="!text-primary" />
                 {" "}— without guesswork.
               </p>
               
               <div className="space-y-4">
-                <p className="text-lg text-muted-foreground leading-relaxed">Get dialed settings by me personally in a Live Session – or gain access to the World's First
-Custom Curve Aim AI. Accurate flicks, steadier micro-adjustments, zero guesswork.</p>
+                
               </div>
             </div>
 

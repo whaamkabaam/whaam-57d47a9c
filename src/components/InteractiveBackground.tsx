@@ -102,8 +102,8 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
         const height = lockedHeight.current
         const particles: Particle[] = []
 
-        // Consistent, less populated particle count across all resolutions
-        const baseParticles = 40
+        // Better particle density across all resolutions
+        const baseParticles = 90
         const screenArea = window.innerWidth * window.innerHeight
         const referenceArea = 1920 * 1080 // Reference screen size
         const areaRatio = Math.min(screenArea / referenceArea, 1.5) // Cap the scaling
@@ -118,7 +118,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 y: initialY,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
-                size: Math.random() * 2 + 1,
+                size: Math.random() * 2 + 2,
                 color: "rgba(255, 215, 0, 0.8)",
                 scrollFactor: Math.random() * 0.3 + 0.85,
             })
@@ -289,7 +289,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                     const cp2x = p2.x - p2.vx * 10
                     const cp2y = p2.y - p2.vy * 10
 
-                    const lineAlpha = (1 - dist / 120) * 0.6 * alpha
+                    const lineAlpha = (1 - dist / 120) * 0.7 * alpha
                     ctx.strokeStyle = `rgba(255, 215, 0, ${lineAlpha})`
                     ctx.lineWidth = 1
                     ctx.beginPath()

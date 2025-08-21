@@ -88,21 +88,21 @@ Custom Curve Aim AI. Faster flicks, steadier micro-aim, zero guesswork.</p>
 
           {/* Right Column - Stats */}
           <div className="space-y-8">
-            <div className="grid grid-cols-2 gap-6">
-              <LiquidGlassCard variant="accent" className="text-center p-6">
-                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">Instant</div>
-                <div className="text-muted-foreground text-lg">Delivery</div>
+            <div className="grid grid-cols-2 gap-8">
+              <LiquidGlassCard variant="accent" className="text-center p-8 aspect-square flex flex-col justify-center">
+                <div className="text-4xl md:text-5xl font-bold text-accent mb-3">Instant</div>
+                <div className="text-muted-foreground text-xl">Delivery</div>
               </LiquidGlassCard>
               
-              <LiquidGlassCard variant="primary" className="text-center p-6">
+              <LiquidGlassCard variant="primary" className="text-center p-8 aspect-square flex flex-col justify-center">
                 <StatItem end={100} suffix="%" label="Satisfaction" />
               </LiquidGlassCard>
               
-              <LiquidGlassCard variant="secondary" className="text-center p-6">
+              <LiquidGlassCard variant="secondary" className="text-center p-8 aspect-square flex flex-col justify-center">
                 <StatItem end={4} suffix="+" label="years experience" />
               </LiquidGlassCard>
               
-              <LiquidGlassCard variant="accent" className="text-center p-6">
+              <LiquidGlassCard variant="accent" className="text-center p-8 aspect-square flex flex-col justify-center">
                 <StatItem end={1100} suffix="+" label="Players Helped" />
               </LiquidGlassCard>
             </div>

@@ -3,6 +3,7 @@ import { Star, Play, Users, Clock, TrendingUp } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
 import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
+import { ContainerTextFlip } from "@/components/ui/container-text-flip";
 import whaamLogo from "@/assets/whaam-kabaam-logo.png";
 
 // StatItem component for animated statistics
@@ -58,12 +59,24 @@ export default function Hero() {
             {/* Headline */}
             <div className="space-y-8 text-center lg:text-left">
               <h1 className="liquid-headline font-extrabold leading-tight text-shadow-lg">
-                <span className="text-foreground">Improve your Aim with a </span>
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Custom Mouse Acceleration Curve</span>
+                <span className="text-foreground">Improve your aim with a </span>
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">custom mouse acceleration curve</span>
               </h1>
               
+              {/* Decorative subhead with animated text */}
+              <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
+                Make your aim{" "}
+                <ContainerTextFlip
+                  words={["faster", "steadier", "more consistent", "more natural"]}
+                  interval={2200}
+                  className="!bg-gradient-to-r !from-primary/20 !to-accent/20 !shadow-lg text-primary font-bold"
+                  textClassName="!text-primary"
+                />
+                {" "}— without guesswork.
+              </p>
+              
               <div className="space-y-4">
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">Get dialed settings by me personally in a Live Session – or gain access to the World's First
+                <p className="text-lg text-muted-foreground leading-relaxed">Get dialed settings by me personally in a Live Session – or gain access to the World's First
 Custom Curve Aim AI. Accurate flicks, steadier micro-adjustments, zero guesswork.</p>
               </div>
             </div>

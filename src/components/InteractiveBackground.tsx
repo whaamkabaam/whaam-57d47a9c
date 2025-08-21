@@ -119,7 +119,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 y: initialY,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
-                size: Math.random() * 3 + 1.5,
+                size: Math.random() * 9 + 4.5,
                 color: "rgba(255, 215, 0, 0.8)",
                 scrollFactor: Math.random() * 0.3 + 0.85,
             })

@@ -58,13 +58,13 @@ export default function Hero() {
             {/* Headline */}
             <div className="space-y-8 text-center lg:text-left">
               <h1 className="liquid-headline font-extrabold leading-tight text-shadow-lg">
-                <span className="text-foreground">Become the Best Aimer you can be – in any Game, through </span>
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Custom Curve</span>
+                <span className="text-foreground">Perfect your aim with a </span>
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">custom mouse accel curve</span>
               </h1>
               
               <div className="space-y-4">
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">Get dialed settings by me personally in a Live Session – or gain access to the Word's First
-Custom Curve Aim AI. Faster flicks, steadier micro-aim, zero guesswork.</p>
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">Get dialed settings by me personally in a Live Session – or gain access to the World's First
+Custom Curve Aim AI. Accurate flicks, steadier micro-adjustments, zero guesswork.</p>
               </div>
             </div>
 
@@ -99,7 +99,7 @@ Custom Curve Aim AI. Faster flicks, steadier micro-aim, zero guesswork.</p>
               </LiquidGlassCard>
               
               <LiquidGlassCard variant="secondary" className="text-center p-6">
-                <StatItem end={4} suffix="+" label="years experience" />
+                <StatItem end={4} suffix="+" label="Years of Experience" />
               </LiquidGlassCard>
               
               <LiquidGlassCard variant="accent" className="text-center p-6">

@@ -71,20 +71,26 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
         const canvas = canvasRef.current
         if (!canvas) return
 
-        // Lock to the browser's width & height on mount
-        lockedWidth.current = window.innerWidth
-        lockedHeight.current = window.innerHeight
+        // Wait for DOM to be ready and get accurate dimensions
+        const initCanvas = () => {
+            lockedWidth.current = window.innerWidth
+            lockedHeight.current = window.innerHeight
 
-        // Multiply by devicePixelRatio for crispness
-        const pixelRatio = window.devicePixelRatio || 1
-        canvas.width = lockedWidth.current * pixelRatio
-        canvas.height = lockedHeight.current * pixelRatio
+            // Multiply by devicePixelRatio for crispness
+            const pixelRatio = window.devicePixelRatio || 1
+            canvas.width = lockedWidth.current * pixelRatio
+            canvas.height = lockedHeight.current * pixelRatio
 
-        // Scale the drawing context
-        const ctx = canvas.getContext("2d")
-        if (ctx) {
-            ctx.scale(pixelRatio, pixelRatio)
+            // Scale the drawing context
+            const ctx = canvas.getContext("2d")
+            if (ctx) {
+                ctx.scale(pixelRatio, pixelRatio)
+                console.log('Canvas initialized:', lockedWidth.current, 'x', lockedHeight.current)
+            }
         }
+
+        // Small delay to ensure DOM is fully rendered
+        setTimeout(initCanvas, 10)
     }, [])
 
     // 2) Initialize particles (once), then start animation
@@ -118,12 +124,13 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 y: initialY,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
-                size: Math.random() * 2 + 2, // 2-4px range (65% of previous size)
+                size: Math.random() * 1.5 + 1.5, // 1.5-3px range for better visibility
                 color: "rgba(255, 215, 0, 0.8)",
                 scrollFactor: Math.random() * 0.3 + 0.85,
             })
         }
         particlesRef.current = particles
+        console.log('Particles initialized:', numParticles, 'particles created')
     }
 
     // 3) Core animation loop
@@ -465,7 +472,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 // Lock the canvas to fill the screen at load time
                 width: "100%",
                 height: "100%",
-                zIndex: 0,
+                zIndex: -10,
                 pointerEvents: "none",
             }}
         />

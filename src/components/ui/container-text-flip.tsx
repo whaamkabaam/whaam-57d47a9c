@@ -48,8 +48,8 @@ export function ContainerTextFlip({
       transition={{ duration: animationDuration / 2000 }}
       className={cn(
         "relative inline-block rounded-lg px-3 py-1 text-center font-bold",
-        "bg-gradient-to-r from-primary/10 to-accent/10",
-        "shadow-[inset_0_-1px_hsl(var(--border)),inset_0_0_0_1px_hsl(var(--border)),_0_2px_4px_hsl(var(--muted))]",
+        "bg-white/5 backdrop-blur-sm border border-white/10",
+        "shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:bg-white/10 transition-all duration-300",
         className
       )}
       key={words[currentWordIndex]}

@@ -69,7 +69,7 @@ export default function Hero() {
                 <ContainerTextFlip
                   words={["faster", "steadier", "more consistent", "more natural"]}
                   interval={2200}
-                  className="!bg-gradient-to-r !from-primary/20 !to-accent/20 !shadow-lg text-primary font-bold"
+                  className="!bg-white/10 !backdrop-blur-md !border-white/20 !shadow-[0_8px_32px_rgba(0,0,0,0.15)] text-primary font-bold"
                   textClassName="!text-primary"
                 />
                 {" "}— without guesswork.

@@ -1,3 +1,4 @@
+// InteractiveBackground.tsx
 import * as React from "react"
 import { useEffect, useRef } from "react"
 
@@ -17,18 +18,15 @@ export default function InteractiveBackground() {
     const lockedWidth = useRef(0)
     const lockedHeight = useRef(0)
 
-// Animation + fade durations
-const fadeInDuration = 500
-const fadeOutDuration = 500
-const POP_DURATION = 350
+    // Animation + fade durations
+    const fadeInDuration = 500
+    const fadeOutDuration = 500
+    const POP_DURATION = 350
 
-// Rendering toggles
-const DRAW_CIRCLES = false
-
-// Scroll velocity constraints
-const MAX_VELOCITY = 1
-const MAX_SCROLL_FRACTION = 0.5
-const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
+    // Scroll velocity constraints
+    const MAX_VELOCITY = 1
+    const MAX_SCROLL_FRACTION = 0.5
+    const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
 
     // Particle + line interfaces
     interface Particle {
@@ -102,12 +100,12 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
         const height = lockedHeight.current
         const particles: Particle[] = []
 
-        let numParticles = 50
+        let numParticles = 100
         const screenWidth = window.innerWidth
         if (screenWidth <= 480) {
-            numParticles = 25
+            numParticles = 50
         } else if (screenWidth > 1024) {
-            numParticles = 100
+            numParticles = 200
         }
 
         for (let i = 0; i < numParticles; i++) {
@@ -119,7 +117,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 y: initialY,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
-                size: Math.random() * 9 + 4.5,
+                size: Math.random() * 2 + 1,
                 color: "rgba(255, 215, 0, 0.8)",
                 scrollFactor: Math.random() * 0.3 + 0.85,
             })
@@ -154,26 +152,21 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                     const baseSize = particle.popInitialSize ?? particle.size
                     const mainRadius = baseSize * scale
 
-                    if (DRAW_CIRCLES) {
-                        // main pop
-                        ctx.beginPath()
-                        ctx.arc(particle.x, particle.y, mainRadius, 0, Math.PI * 2)
-                        ctx.fillStyle = `rgba(255, 215, 0, ${alpha})`
-                        ctx.fill()
+                    // main pop
+                    ctx.beginPath()
+                    ctx.arc(particle.x, particle.y, mainRadius, 0, Math.PI * 2)
+                    ctx.fillStyle = `rgba(255, 215, 0, ${alpha})`
+                    ctx.fill()
 
-                        // ring
-                        const ringOffset = baseSize * 2 * t
-                        const ringRadius = mainRadius + ringOffset
-                        const ringAlpha = 0.5 * (1 - t)
-                        ctx.beginPath()
-                        ctx.arc(particle.x, particle.y, ringRadius, 0, Math.PI * 2)
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${ringAlpha})`
-                        ctx.lineWidth = 1 + 2 * (1 - t)
-                        ctx.stroke()
-                    } else {
-                        // No circle visuals; simply mark for removal
-                        particle.wentOutOfBoundsThisFrame = true
-                    }
+                    // ring
+                    const ringOffset = baseSize * 2 * t
+                    const ringRadius = mainRadius + ringOffset
+                    const ringAlpha = 0.5 * (1 - t)
+                    ctx.beginPath()
+                    ctx.arc(particle.x, particle.y, ringRadius, 0, Math.PI * 2)
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${ringAlpha})`
+                    ctx.lineWidth = 1 + 2 * (1 - t)
+                    ctx.stroke()
                 } else {
                     // done popping -> mark for removal
                     particle.wentOutOfBoundsThisFrame = true
@@ -223,18 +216,16 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
             if (dist < interactionRadius) {
                 const angle = Math.atan2(dy, dx)
                 const force = (interactionRadius - dist) / interactionRadius
-                const cursorForce = 0.05
+                const cursorForce = 0.1
                 particle.vx += Math.cos(angle) * force * cursorForce
                 particle.vy += Math.sin(angle) * force * cursorForce
             }
 
-            if (DRAW_CIRCLES) {
-                // Draw dot
-                ctx.beginPath()
-                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
-                ctx.fillStyle = particle.color
-                ctx.fill()
-            }
+            // Draw dot
+            ctx.beginPath()
+            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
+            ctx.fillStyle = particle.color
+            ctx.fill()
         }
 
         //  -- Lines --
@@ -468,6 +459,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 height: "100%",
                 zIndex: 0,
                 pointerEvents: "none",
+                // You might also do background: "black" if you want
             }}
         />
     )

@@ -59,7 +59,7 @@ export default function Hero() {
             <div className="space-y-8 text-center lg:text-left">
               <h1 className="liquid-headline font-extrabold leading-tight text-shadow-lg">
                 <span className="text-foreground">Perfect your aim with a </span>
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">custom mouse accel curve</span>
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Custom Mouse Acceleration Curve</span>
               </h1>
               
               <div className="space-y-4">

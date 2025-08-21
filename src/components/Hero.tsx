@@ -43,7 +43,7 @@ export default function Hero() {
       behavior: "smooth"
     });
   };
-  return <section className="relative min-h-[100svh] flex items-start justify-center overflow-hidden pt-20 sm:pt-24 lg:pt-28">
+  return <section className="relative min-h-[100svh] flex items-start justify-center overflow-hidden pt-28 sm:pt-32 lg:pt-36">
       {/* Liquid Glass Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Static Liquid Elements */}

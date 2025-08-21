@@ -53,11 +53,11 @@ export default function Hero() {
 
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
           {/* Left Column - Content */}
-          <div className="space-y-12">
+          <div className="space-y-6">
             {/* Headline */}
-            <div className="space-y-8 text-center lg:text-left">
+            <div className="space-y-4 text-center lg:text-left">
               <h1 className="liquid-headline font-extrabold leading-tight text-shadow-lg">
                 <span className="text-foreground">Improve your aim with a </span>
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">custom mouse acceleration curve</span>
@@ -96,8 +96,8 @@ export default function Hero() {
           </div>
 
           {/* Right Column - Stats */}
-          <div className="space-y-8">
-            <div className="grid grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
               <LiquidGlassCard variant="accent" className="text-center p-6">
                 <div className="text-4xl md:text-5xl font-bold text-primary mb-4">Instant</div>
                 <div className="glass-text text-lg">Delivery</div>

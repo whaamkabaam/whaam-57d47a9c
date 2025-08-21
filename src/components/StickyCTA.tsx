@@ -7,7 +7,7 @@ export default function StickyCTA({
   activeSection
 }: Props) {
   const rightIsPlans = activeSection !== "products";
-  const shouldShow = activeSection !== "hero";
+  const shouldShow = activeSection !== "home";
   
   return <div 
     className={`fixed right-4 md:right-6 z-50 transition-all duration-500 ease-out ${

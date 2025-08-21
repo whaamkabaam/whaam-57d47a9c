@@ -73,44 +73,56 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
 
         // Wait for DOM to be ready and get accurate dimensions
         const initCanvas = () => {
-            lockedWidth.current = window.innerWidth
-            lockedHeight.current = window.innerHeight
+            // Ensure we have valid dimensions
+            const width = window.innerWidth || 1920
+            const height = window.innerHeight || 1080
+            
+            lockedWidth.current = width
+            lockedHeight.current = height
 
             // Multiply by devicePixelRatio for crispness
             const pixelRatio = window.devicePixelRatio || 1
-            canvas.width = lockedWidth.current * pixelRatio
-            canvas.height = lockedHeight.current * pixelRatio
+            canvas.width = width * pixelRatio
+            canvas.height = height * pixelRatio
 
             // Scale the drawing context
             const ctx = canvas.getContext("2d")
             if (ctx) {
                 ctx.scale(pixelRatio, pixelRatio)
-                console.log('Canvas initialized:', lockedWidth.current, 'x', lockedHeight.current)
+                console.log('Canvas initialized:', width, 'x', height, 'with pixel ratio:', pixelRatio)
+                
+                // Initialize particles after canvas is ready
+                initParticles()
+                animateParticles()
+            } else {
+                console.error('Failed to get canvas context')
             }
         }
 
-        // Small delay to ensure DOM is fully rendered
-        setTimeout(initCanvas, 10)
+        // Wait for next frame to ensure DOM is fully rendered
+        requestAnimationFrame(initCanvas)
     }, [])
 
-    // 2) Initialize particles (once), then start animation
-    useEffect(() => {
-        initParticles()
-        animateParticles()
-    }, [])
+    // 2) Particles will be initialized from canvas init
 
     // Particle creation
     const initParticles = () => {
         if (!canvasRef.current) return
 
         // We'll spawn them randomly across the *locked* dimensions
-        const width = lockedWidth.current
-        const height = lockedHeight.current
+        const width = lockedWidth.current || window.innerWidth
+        const height = lockedHeight.current || window.innerHeight
+        
+        if (width === 0 || height === 0) {
+            console.warn('Canvas dimensions not ready yet')
+            return
+        }
+
         const particles: Particle[] = []
 
         // Better particle density across all resolutions
         const baseParticles = 126 // 40% increase from 90
-        const screenArea = window.innerWidth * window.innerHeight
+        const screenArea = width * height
         const referenceArea = 1920 * 1080 // Reference screen size
         const areaRatio = Math.min(screenArea / referenceArea, 1.5) // Cap the scaling
         let numParticles = Math.floor(baseParticles * areaRatio)
@@ -124,13 +136,13 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 y: initialY,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
-                size: Math.random() * 1.5 + 1.5, // 1.5-3px range for better visibility
-                color: "rgba(255, 215, 0, 0.8)",
+                size: Math.random() * 2 + 2.5, // 2.5-4.5px range to match reference image
+                color: "rgba(255, 215, 0, 1.0)", // Full opacity for better visibility
                 scrollFactor: Math.random() * 0.3 + 0.85,
             })
         }
         particlesRef.current = particles
-        console.log('Particles initialized:', numParticles, 'particles created')
+        console.log('Particles initialized:', numParticles, 'particles created with dimensions:', width, 'x', height)
     }
 
     // 3) Core animation loop
@@ -235,11 +247,22 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
             }
 
             if (DRAW_CIRCLES) {
-                // Draw dot
+                // Draw particle with glow effect
+                ctx.save()
+                
+                // Create glow effect
+                ctx.shadowColor = "rgba(255, 215, 0, 0.8)"
+                ctx.shadowBlur = 8
+                ctx.shadowOffsetX = 0
+                ctx.shadowOffsetY = 0
+                
+                // Draw main particle
                 ctx.beginPath()
                 ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
                 ctx.fillStyle = particle.color
                 ctx.fill()
+                
+                ctx.restore()
             }
         }
 

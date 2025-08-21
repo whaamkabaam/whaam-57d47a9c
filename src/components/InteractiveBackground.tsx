@@ -102,13 +102,12 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
         const height = lockedHeight.current
         const particles: Particle[] = []
 
-        let numParticles = 100
-        const screenWidth = window.innerWidth
-        if (screenWidth <= 480) {
-            numParticles = 50
-        } else if (screenWidth > 1024) {
-            numParticles = 200
-        }
+        // Consistent, less populated particle count across all resolutions
+        const baseParticles = 40
+        const screenArea = window.innerWidth * window.innerHeight
+        const referenceArea = 1920 * 1080 // Reference screen size
+        const areaRatio = Math.min(screenArea / referenceArea, 1.5) // Cap the scaling
+        let numParticles = Math.floor(baseParticles * areaRatio)
 
         for (let i = 0; i < numParticles; i++) {
             const initialX = Math.random() * width
@@ -258,7 +257,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 const dy = p1.y - p2.y
                 const dist = Math.sqrt(dx * dx + dy * dy)
 
-                if (dist < 150) {
+                if (dist < 120) {
                     // visible line
                     if (lineState?.finalFadeOut) {
                         continue
@@ -290,7 +289,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                     const cp2x = p2.x - p2.vx * 10
                     const cp2y = p2.y - p2.vy * 10
 
-                    const lineAlpha = (1 - dist / 150) * 0.8 * alpha
+                    const lineAlpha = (1 - dist / 120) * 0.6 * alpha
                     ctx.strokeStyle = `rgba(255, 215, 0, ${lineAlpha})`
                     ctx.lineWidth = 1
                     ctx.beginPath()

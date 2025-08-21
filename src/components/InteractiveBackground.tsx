@@ -119,8 +119,13 @@ export default function InteractiveBackground() {
 
         // Gentle breakpoint nudges
         const w = width
-        if (w <= 480) count = Math.round(count * MOBILE_MULTIPLIER)
-        else if (w >= 1600) count = Math.round(count * LARGE_SCREEN_MULTIPLIER)
+        if (w <= 480) {
+            count = Math.round(count * MOBILE_MULTIPLIER)
+        } else {
+            // 1.5x particles for non-mobile screens
+            count = Math.round(count * 1.5)
+            if (w >= 1600) count = Math.round(count * LARGE_SCREEN_MULTIPLIER)
+        }
 
         // Clamp
         count = Math.max(MIN_PARTICLES, Math.min(MAX_PARTICLES, count))

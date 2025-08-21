@@ -18,6 +18,20 @@ export default function InteractiveBackground() {
     const lockedWidth = useRef(0)
     const lockedHeight = useRef(0)
 
+    // --- Tunables (picked to match your older, lighter density) ---
+    const DENSITY_PER_MEGAPIXEL = 65     // particles per 1,000,000 CSS px
+    const MIN_PARTICLES = 35
+    const MAX_PARTICLES = 170
+
+    const MOBILE_MULTIPLIER = 0.75       // fewer on phones
+    const LARGE_SCREEN_MULTIPLIER = 1.15 // gentle bump on ultrawides
+
+    // Scales line range to keep ~constant neighbors per particle
+    const LINK_RANGE_MULTIPLIER = 1.25   // 1.1–1.4 feels good
+
+    // Refs so animate loop can read latest values
+    const linkRangeRef = useRef(150)
+
     // Animation + fade durations
     const fadeInDuration = 500
     const fadeOutDuration = 500
@@ -92,29 +106,49 @@ export default function InteractiveBackground() {
     }, [])
 
     // Particle creation
+    const getTargetParticleCount = () => {
+        const width = lockedWidth.current || window.innerWidth
+        const height = lockedHeight.current || window.innerHeight
+
+        // CSS pixel area (not device pixels)
+        const areaMP = (width * height) / 1_000_000
+
+        // Normalize for high-DPR: more pixels ≠ more dots
+        const dpr = Math.min(window.devicePixelRatio || 1, 2)
+        let count = Math.round(areaMP * DENSITY_PER_MEGAPIXEL / dpr)
+
+        // Gentle breakpoint nudges
+        const w = width
+        if (w <= 480) count = Math.round(count * MOBILE_MULTIPLIER)
+        else if (w >= 1600) count = Math.round(count * LARGE_SCREEN_MULTIPLIER)
+
+        // Clamp
+        count = Math.max(MIN_PARTICLES, Math.min(MAX_PARTICLES, count))
+        return count
+    }
+
+    const setResponsiveLinkRange = (particleCount: number) => {
+        const width = lockedWidth.current || window.innerWidth
+        const height = lockedHeight.current || window.innerHeight
+        // Average spacing ~ sqrt(area / count)
+        const avgSpacing = Math.sqrt((width * height) / Math.max(1, particleCount))
+        linkRangeRef.current = avgSpacing * LINK_RANGE_MULTIPLIER // typically ~110–180
+    }
+
     const initParticles = () => {
         if (!canvasRef.current) return
-
-        // We'll spawn them randomly across the *locked* dimensions
         const width = lockedWidth.current
         const height = lockedHeight.current
+
+        const numParticles = getTargetParticleCount()
+        setResponsiveLinkRange(numParticles)
+
         const particles: Particle[] = []
-
-        let numParticles = 25
-        const screenWidth = window.innerWidth
-        if (screenWidth <= 480) {
-            numParticles = 15
-        } else if (screenWidth > 1024) {
-            numParticles = 35
-        }
-
         for (let i = 0; i < numParticles; i++) {
-            const initialX = Math.random() * width
-            const initialY = Math.random() * height
             particles.push({
                 id: nextParticleId++,
-                x: initialX,
-                y: initialY,
+                x: Math.random() * width,
+                y: Math.random() * height,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
                 size: Math.random() * 2 + 1,
@@ -248,8 +282,9 @@ export default function InteractiveBackground() {
                 const dx = p1.x - p2.x
                 const dy = p1.y - p2.y
                 const dist = Math.sqrt(dx * dx + dy * dy)
+                const LINK_RANGE = linkRangeRef.current
 
-                if (dist < 150) {
+                if (dist < LINK_RANGE) {
                     // visible line
                     if (lineState?.finalFadeOut) {
                         continue
@@ -281,7 +316,7 @@ export default function InteractiveBackground() {
                     const cp2x = p2.x - p2.vx * 10
                     const cp2y = p2.y - p2.vy * 10
 
-                    const lineAlpha = (1 - dist / 150) * 0.8 * alpha
+                    const lineAlpha = (1 - dist / LINK_RANGE) * 0.8 * alpha
                     ctx.strokeStyle = `rgba(255, 215, 0, ${lineAlpha})`
                     ctx.lineWidth = 1
                     ctx.beginPath()
@@ -444,6 +479,35 @@ export default function InteractiveBackground() {
         return () => {
             window.removeEventListener("scroll", handleScroll)
         }
+    }, [])
+
+    // 7) Handle resize with debouncing
+    useEffect(() => {
+        let rAF: number | null = null
+        let last = 0
+
+        const onResize = () => {
+            const now = performance.now()
+            if (now - last < 120) return // debounce ~120ms
+            last = now
+
+            const canvas = canvasRef.current
+            if (!canvas) return
+
+            lockedWidth.current = window.innerWidth
+            lockedHeight.current = window.innerHeight
+
+            const pixelRatio = window.devicePixelRatio || 1
+            canvas.width = lockedWidth.current * pixelRatio
+            canvas.height = lockedHeight.current * pixelRatio
+            const ctx = canvas.getContext("2d")
+            if (ctx) ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
+
+            initParticles() // recompute count + link range
+        }
+
+        window.addEventListener("resize", onResize)
+        return () => window.removeEventListener("resize", onResize)
     }, [])
 
     return (

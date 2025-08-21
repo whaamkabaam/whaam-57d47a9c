@@ -100,12 +100,12 @@ export default function InteractiveBackground() {
         const height = lockedHeight.current
         const particles: Particle[] = []
 
-        let numParticles = 100
+        let numParticles = 25
         const screenWidth = window.innerWidth
         if (screenWidth <= 480) {
-            numParticles = 50
+            numParticles = 15
         } else if (screenWidth > 1024) {
-            numParticles = 200
+            numParticles = 35
         }
 
         for (let i = 0; i < numParticles; i++) {

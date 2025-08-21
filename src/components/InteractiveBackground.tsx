@@ -102,12 +102,12 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
         const height = lockedHeight.current
         const particles: Particle[] = []
 
-        let numParticles = 100
+        let numParticles = 50
         const screenWidth = window.innerWidth
         if (screenWidth <= 480) {
-            numParticles = 50
+            numParticles = 25
         } else if (screenWidth > 1024) {
-            numParticles = 200
+            numParticles = 100
         }
 
         for (let i = 0; i < numParticles; i++) {
@@ -119,7 +119,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 y: initialY,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
-                size: Math.random() * 2 + 1,
+                size: Math.random() * 3 + 1.5,
                 color: "rgba(255, 215, 0, 0.8)",
                 scrollFactor: Math.random() * 0.3 + 0.85,
             })

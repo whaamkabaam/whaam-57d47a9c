@@ -10,6 +10,7 @@ export interface ContainerTextFlipProps {
   className?: string;
   textClassName?: string;
   animationDuration?: number;
+  fixedWidth?: number;
 }
 
 export function ContainerTextFlip({
@@ -18,6 +19,7 @@ export function ContainerTextFlip({
   className,
   textClassName,
   animationDuration = 700,
+  fixedWidth,
 }: ContainerTextFlipProps) {
   const id = useId();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -25,13 +27,15 @@ export function ContainerTextFlip({
   const textRef = React.useRef<HTMLDivElement | null>(null);
 
   const updateWidthForWord = () => {
-    if (textRef.current) {
+    if (fixedWidth) {
+      setWidth(fixedWidth);
+    } else if (textRef.current) {
       const textWidth = textRef.current.scrollWidth + 30; // padding
       setWidth(textWidth);
     }
   };
 
-  useEffect(() => { updateWidthForWord(); }, [currentWordIndex]);
+  useEffect(() => { updateWidthForWord(); }, [currentWordIndex, fixedWidth]);
   useEffect(() => {
     const intervalId = setInterval(
       () => setCurrentWordIndex((i) => (i + 1) % words.length),
@@ -44,12 +48,14 @@ export function ContainerTextFlip({
     <motion.span
       layout
       layoutId={`words-here-${id}`}
-      animate={{ width }}
+      animate={fixedWidth ? {} : { width }}
       transition={{ duration: animationDuration / 2000 }}
+      style={fixedWidth ? { width: fixedWidth } : {}}
       className={cn(
-        "relative inline-block rounded-lg px-3 py-1 text-center font-bold",
+        "relative inline-block rounded-lg px-3 py-1 font-bold",
         "bg-white/5 backdrop-blur-sm border border-white/10",
         "shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:bg-white/10 transition-all duration-300",
+        fixedWidth ? "text-center" : "text-center",
         className
       )}
       key={words[currentWordIndex]}

@@ -23,7 +23,7 @@ const fadeOutDuration = 500
 const POP_DURATION = 350
 
 // Rendering toggles
-const DRAW_CIRCLES = true
+const DRAW_CIRCLES = false
 
 // Scroll velocity constraints
 const MAX_VELOCITY = 1
@@ -71,61 +71,44 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
         const canvas = canvasRef.current
         if (!canvas) return
 
-        // Wait for DOM to be ready and get accurate dimensions
-        const initCanvas = () => {
-            // Ensure we have valid dimensions
-            const width = window.innerWidth || 1920
-            const height = window.innerHeight || 1080
-            
-            lockedWidth.current = width
-            lockedHeight.current = height
+        // Lock to the browser's width & height on mount
+        lockedWidth.current = window.innerWidth
+        lockedHeight.current = window.innerHeight
 
-            // Multiply by devicePixelRatio for crispness
-            const pixelRatio = window.devicePixelRatio || 1
-            canvas.width = width * pixelRatio
-            canvas.height = height * pixelRatio
+        // Multiply by devicePixelRatio for crispness
+        const pixelRatio = window.devicePixelRatio || 1
+        canvas.width = lockedWidth.current * pixelRatio
+        canvas.height = lockedHeight.current * pixelRatio
 
-            // Scale the drawing context
-            const ctx = canvas.getContext("2d")
-            if (ctx) {
-                ctx.scale(pixelRatio, pixelRatio)
-                console.log('Canvas initialized:', width, 'x', height, 'with pixel ratio:', pixelRatio)
-                
-                // Initialize particles after canvas is ready
-                initParticles()
-                animateParticles()
-            } else {
-                console.error('Failed to get canvas context')
-            }
+        // Scale the drawing context
+        const ctx = canvas.getContext("2d")
+        if (ctx) {
+            ctx.scale(pixelRatio, pixelRatio)
         }
-
-        // Wait for next frame to ensure DOM is fully rendered
-        requestAnimationFrame(initCanvas)
     }, [])
 
-    // 2) Particles will be initialized from canvas init
+    // 2) Initialize particles (once), then start animation
+    useEffect(() => {
+        initParticles()
+        animateParticles()
+    }, [])
 
     // Particle creation
     const initParticles = () => {
         if (!canvasRef.current) return
 
         // We'll spawn them randomly across the *locked* dimensions
-        const width = lockedWidth.current || window.innerWidth
-        const height = lockedHeight.current || window.innerHeight
-        
-        if (width === 0 || height === 0) {
-            console.warn('Canvas dimensions not ready yet')
-            return
-        }
-
+        const width = lockedWidth.current
+        const height = lockedHeight.current
         const particles: Particle[] = []
 
-        // Better particle density across all resolutions
-        const baseParticles = 126 // 40% increase from 90
-        const screenArea = width * height
-        const referenceArea = 1920 * 1080 // Reference screen size
-        const areaRatio = Math.min(screenArea / referenceArea, 1.5) // Cap the scaling
-        let numParticles = Math.floor(baseParticles * areaRatio)
+        let numParticles = 100
+        const screenWidth = window.innerWidth
+        if (screenWidth <= 480) {
+            numParticles = 50
+        } else if (screenWidth > 1024) {
+            numParticles = 200
+        }
 
         for (let i = 0; i < numParticles; i++) {
             const initialX = Math.random() * width
@@ -136,13 +119,12 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 y: initialY,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.2,
-                size: Math.random() * 2 + 2.5, // 2.5-4.5px range to match reference image
-                color: "rgba(255, 215, 0, 1.0)", // Full opacity for better visibility
+                size: Math.random() * 2 + 1,
+                color: "rgba(255, 215, 0, 0.8)",
                 scrollFactor: Math.random() * 0.3 + 0.85,
             })
         }
         particlesRef.current = particles
-        console.log('Particles initialized:', numParticles, 'particles created with dimensions:', width, 'x', height)
     }
 
     // 3) Core animation loop
@@ -247,22 +229,11 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
             }
 
             if (DRAW_CIRCLES) {
-                // Draw particle with glow effect
-                ctx.save()
-                
-                // Create glow effect
-                ctx.shadowColor = "rgba(255, 215, 0, 0.8)"
-                ctx.shadowBlur = 8
-                ctx.shadowOffsetX = 0
-                ctx.shadowOffsetY = 0
-                
-                // Draw main particle
+                // Draw dot
                 ctx.beginPath()
                 ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
                 ctx.fillStyle = particle.color
                 ctx.fill()
-                
-                ctx.restore()
             }
         }
 
@@ -287,7 +258,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 const dy = p1.y - p2.y
                 const dist = Math.sqrt(dx * dx + dy * dy)
 
-                if (dist < 120) {
+                if (dist < 150) {
                     // visible line
                     if (lineState?.finalFadeOut) {
                         continue
@@ -319,7 +290,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                     const cp2x = p2.x - p2.vx * 10
                     const cp2y = p2.y - p2.vy * 10
 
-                    const lineAlpha = (1 - dist / 120) * 0.7 * alpha
+                    const lineAlpha = (1 - dist / 150) * 0.8 * alpha
                     ctx.strokeStyle = `rgba(255, 215, 0, ${lineAlpha})`
                     ctx.lineWidth = 1
                     ctx.beginPath()
@@ -495,7 +466,7 @@ const MAX_SCROLL_VY = MAX_VELOCITY * MAX_SCROLL_FRACTION
                 // Lock the canvas to fill the screen at load time
                 width: "100%",
                 height: "100%",
-                zIndex: -10,
+                zIndex: 0,
                 pointerEvents: "none",
             }}
         />

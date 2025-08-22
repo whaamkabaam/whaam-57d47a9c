@@ -5,11 +5,17 @@ export default function StoryCards() {
       aria-labelledby="story-cards-heading"
       className="
         relative isolate z-0 mx-auto max-w-6xl px-4 py-14 md:py-20
-        md:[--stack-top:184px]   /* clearance from navbar (was 172) */
-        md:[--gap:10vh]          /* equal gap between 1→2 and 2→3 (tighter) */
-        md:[--card-w:68vw]       /* narrower cards for better wrap */
+        md:[--stack-top:184px]      /* clears the navbar */
+        md:[--gap:9.5vh]            /* equal spacing steps between cards */
+        md:[--card-w:68vw]          /* narrower for better text wrap */
         md:[--card-max:720px]
-        md:[--card-minh:264px]   /* unify perceived height so gaps look equal */
+
+        /* heights */
+        md:[--h12:300px]            /* #1 & #2 min height */
+        md:[--h3:240px]             /* #3 min height (~20% shorter) */
+
+        /* compensation so 2→3 looks same as 1→2 */
+        md:[--delta:calc((var(--h12)-var(--h3))/2)]
       "
     >
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
@@ -19,7 +25,7 @@ export default function StoryCards() {
         {/* Card 1 */}
         <article
           className="
-            group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--card-minh)]
+            group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
             relative rounded-[26px] border border-white/12 bg-white/7
             p-6 md:px-10 md:py-10 backdrop-blur-xl
             shadow-[0_24px_70px_-24px_rgba(0,0,0,0.6)]
@@ -45,7 +51,7 @@ export default function StoryCards() {
         {/* Card 2 */}
         <article
           className="
-            group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--card-minh)]
+            group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
             relative rounded-[26px] border border-white/12 bg-white/7
             p-6 md:px-10 md:py-10 backdrop-blur-xl
             shadow-[0_24px_70px_-24px_rgba(0,0,0,0.6)]
@@ -71,11 +77,12 @@ export default function StoryCards() {
         {/* Card 3 (headline only, centered) */}
         <article
           className="
-            group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--card-minh)]
+            group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h3)]
             relative rounded-[26px] border border-white/12 bg-white/7
             p-6 md:px-10 md:py-10 backdrop-blur-xl
             shadow-[0_24px_70px_-24px_rgba(0,0,0,0.6)]
-            md:sticky md:top-[var(--stack-top)] md:z-[3] md:mt-[calc(var(--gap)*2)] md:-rotate-[0.45deg]
+            md:sticky md:top-[var(--stack-top)] md:z-[3]
+            md:mt-[calc(var(--gap)*2-var(--delta))] md:-rotate-[0.45deg]
             motion-reduce:transform-none
             flex flex-col justify-center
           "
@@ -86,7 +93,7 @@ export default function StoryCards() {
         </article>
 
         {/* Spacer so the last card unpins before the next section */}
-        <div aria-hidden className="pointer-events-none h-[calc(var(--gap)+22vh)]" />
+        <div aria-hidden className="pointer-events-none h-[calc(var(--gap)+16vh)]" />
       </div>
 
       {/* Mobile (no sticky) unchanged */}

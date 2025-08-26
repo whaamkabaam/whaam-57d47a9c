@@ -1,38 +1,64 @@
-// src/components/sections/StoryCards.tsx
+import { useLayoutEffect, useRef, useState } from "react";
+
 export default function StoryCards() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const c1Ref = useRef<HTMLDivElement>(null);
+  const c2Ref = useRef<HTMLDivElement>(null);
+  const c3Ref = useRef<HTMLDivElement>(null);
+  const [stackH, setStackH] = useState<number>(0);
+
+  // Measure tallest card + 2*gap so the wrapper has the correct height.
+  useLayoutEffect(() => {
+    const recalc = () => {
+      const s = sectionRef.current ? getComputedStyle(sectionRef.current) : null;
+      // read --gap (in px); fallback ~11vh at current viewport
+      const gapPx =
+        s?.getPropertyValue("--gap")?.trim().endsWith("vh")
+          ? (parseFloat(s!.getPropertyValue("--gap")) / 100) * window.innerHeight
+          : parseFloat(s?.getPropertyValue("--gap") || "0");
+
+      const h1 = c1Ref.current?.offsetHeight ?? 0;
+      const h2 = c2Ref.current?.offsetHeight ?? 0;
+      const h3 = c3Ref.current?.offsetHeight ?? 0;
+      setStackH(Math.max(h1, h2, h3) + 2 * gapPx);
+    };
+
+    recalc();
+    window.addEventListener("resize", recalc);
+    return () => window.removeEventListener("resize", recalc);
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       aria-labelledby="story-cards-heading"
       className="
         relative isolate z-0 mx-auto max-w-6xl px-4 py-14 md:py-20
-        md:[--stack-top:196px]           /* more navbar clearance */
-        md:[--gap:12vh]                  /* cards not too close (tweak here) */
-        md:[--revealComp:2.5vh]          /* tiny compensation because card #3 is shorter */
-        md:[--card-w:68vw] md:[--card-max:720px]
-
-        /* Make the parent tall enough so the last card never sticks twice */
-        md:[--H:calc(100vh+var(--gap)*2+28rem)]
-        md:h-[var(--H)]
+        md:[--stack-top:184px]   /* clears navbar */
+        md:[--gap:11vh]         /* distance between cards; tune 10–12vh */
       "
     >
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
-      {/* Pin + stack */}
-      <div className="relative">
+      {/* One sticky wrapper for the whole stack */}
+      <div
+        className="relative md:sticky md:top-[var(--stack-top)]"
+        style={{ height: stackH ? `${stackH}px` : undefined }}
+      >
         {/* Card 1 */}
         <article
+          ref={c1Ref}
           className="
-            group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)]
-            relative rounded-[26px] bg-white/7 backdrop-blur-xl
-            shadow-none border-0 p-6 md:px-10 md:py-10
-            md:sticky md:top-[var(--stack-top)] md:z-[1] md:-rotate-[0.6deg]
-            motion-reduce:transform-none
+            absolute inset-x-0 top-0
+            mx-auto md:w-[68vw] md:max-w-[720px]
+            rounded-[26px] bg-white/7 backdrop-blur-xl
+            p-6 md:px-10 md:py-10 border-0 shadow-none
+            md:-rotate-[0.6deg] motion-reduce:transform-none
           "
         >
-          <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold bg-gradient-to-r from-orange-400 via-amber-300 to-amber-200 bg-clip-text text-transparent">
-            Aiming can be hard. Face your Issues.
+          <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold bg-gradient-to-r from-orange-400 via-amber-300 to-pink-500 bg-clip-text text-transparent">
+            Aiming can be hard. Face your <span className="bg-gradient-to-r from-orange-400 via-amber-300 to-pink-500 bg-clip-text text-transparent">Issues.</span>
           </h3>
-
           <div className="mt-4 text-base md:text-lg text-white/90 leading-relaxed space-y-4">
             <p>
               You often feel like your <strong>Sensitivity</strong> is either <strong>too fast</strong> or <strong>too slow</strong>, and
@@ -46,22 +72,20 @@ export default function StoryCards() {
 
         {/* Card 2 */}
         <article
+          ref={c2Ref}
           className="
-            group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)]
-            relative rounded-[26px] bg-white/7 backdrop-blur-xl
-            shadow-none border-0 p-6 md:px-10 md:py-10
-            md:sticky md:top-[var(--stack-top)] md:z-[2] md:mt-[var(--gap)] md:rotate-[0.6deg]
-            motion-reduce:transform-none
+            absolute inset-x-0 top-[var(--gap)]
+            mx-auto md:w-[68vw] md:max-w-[720px]
+            rounded-[26px] bg-white/7 backdrop-blur-xl
+            p-6 md:px-10 md:py-10 border-0 shadow-none
+            md:rotate-[0.6deg] motion-reduce:transform-none
           "
         >
-          <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold bg-gradient-to-r from-orange-400 via-amber-300 to-amber-200 bg-clip-text text-transparent">
+          <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold bg-gradient-to-r from-orange-400 via-amber-300 to-pink-500 bg-clip-text text-transparent">
             I know that feeling.
           </h3>
-
           <div className="mt-4 text-base md:text-lg text-white/90 leading-relaxed space-y-4">
-            <p>
-              That is how I started four years ago before exploring <strong>Mouse Acceleration</strong>.
-            </p>
+            <p>That is how I started four years ago before exploring <strong>Mouse Acceleration</strong>.</p>
             <p>
               And within my journey I gained a total of over <strong>1900 RR</strong> in <strong>VALORANT</strong> and have
               <strong> 75k followers</strong> on <strong>TikTok</strong>, where I am known for my Aim.
@@ -69,25 +93,22 @@ export default function StoryCards() {
           </div>
         </article>
 
-        {/* Card 3 (headline only, centered) */}
+        {/* Card 3 (headline only) */}
         <article
+          ref={c3Ref}
           className="
-            group mx-auto md:w-[64vw] md:max-w-[680px]
-            relative rounded-[26px] bg-white/7 backdrop-blur-xl
-            shadow-none border-0 p-6 md:px-9 md:py-8
-            md:sticky md:top-[var(--stack-top)] md:z-[3]
-            md:mt-[calc(var(--gap)+var(--revealComp))] md:-rotate-[0.4deg]
-            motion-reduce:transform-none
+            absolute inset-x-0 top-[calc(var(--gap)*2)]
+            mx-auto md:w-[64vw] md:max-w-[680px]  /* slightly smaller so the stack peeks (≈15–20%) */
+            rounded-[26px] bg-white/7 backdrop-blur-xl
+            p-6 md:px-9 md:py-8 border-0 shadow-none
+            md:-rotate-[0.4deg] motion-reduce:transform-none
             flex flex-col justify-center
           "
         >
-          <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold bg-gradient-to-r from-orange-400 via-amber-300 to-amber-200 bg-clip-text text-transparent">
+          <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold bg-gradient-to-r from-orange-400 via-amber-300 to-pink-500 bg-clip-text text-transparent">
             That is why I want to share my knowledge to help you become your best self.
           </h3>
         </article>
-
-        {/* Spacer so the last card unpins before the next section */}
-        <div aria-hidden className="pointer-events-none h-[calc(var(--gap)+16vh)]" />
       </div>
 
       {/* Mobile (no sticky) unchanged */}

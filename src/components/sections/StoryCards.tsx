@@ -2,30 +2,54 @@ import { useLayoutEffect, useRef, useState } from "react";
 
 export default function StoryCards() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
+  const railRef = useRef<HTMLDivElement>(null);
   const c1Ref = useRef<HTMLDivElement>(null);
   const c2Ref = useRef<HTMLDivElement>(null);
   const c3Ref = useRef<HTMLDivElement>(null);
-  const [stackH, setStackH] = useState<number>(0);
+  const [y2, setY2] = useState(0);    // translateY for card 2
+  const [y3, setY3] = useState(0);    // translateY for card 3
 
-  // Measure tallest card + 2*gap so the wrapper has the correct height.
+  // helper to read --gap in px
+  const readGapPx = () => {
+    const s = getComputedStyle(sectionRef.current!);
+    const raw = s.getPropertyValue("--gap").trim();
+    const n = parseFloat(raw);
+    return raw.endsWith("vh") ? (n / 100) * window.innerHeight : n;
+  };
+
+  // measure + scroll progress
   useLayoutEffect(() => {
-    const recalc = () => {
-      const s = sectionRef.current ? getComputedStyle(sectionRef.current) : null;
-      // read --gap (in px); fallback ~11vh at current viewport
-      const gapPx =
-        s?.getPropertyValue("--gap")?.trim().endsWith("vh")
-          ? (parseFloat(s!.getPropertyValue("--gap")) / 100) * window.innerHeight
-          : parseFloat(s?.getPropertyValue("--gap") || "0");
+    let rAF = 0;
+    const onScroll = () => {
+      if (rAF) return;
+      rAF = requestAnimationFrame(() => {
+        rAF = 0;
+        const gap = readGapPx();                 // distance between cards
+        const stackTop = parseFloat(getComputedStyle(sectionRef.current!).getPropertyValue("--stack-top"));
+        const railTop = railRef.current!.getBoundingClientRect().top; // moves while wrapper is sticky
+        const span = gap * 1.8;                  // scroll span for animation (≈ 1.8–2 * gap)
 
-      const h1 = c1Ref.current?.offsetHeight ?? 0;
-      const h2 = c2Ref.current?.offsetHeight ?? 0;
-      const h3 = c3Ref.current?.offsetHeight ?? 0;
-      setStackH(Math.max(h1, h2, h3) + 2 * gapPx);
+        // progress 0..1 while the rail passes the sticky top
+        const p = Math.min(1, Math.max(0, (stackTop - railTop) / span));
+
+        // card2: from top = gap → top = 0
+        setY2(-gap * p);
+
+        // card3: from top = 2*gap → top = gap (leave ~20% reveal)
+        const reveal = gap * 0.2;                // keep 15–20% visible
+        setY3(-(gap - reveal) * p);
+      });
     };
 
-    recalc();
-    window.addEventListener("resize", recalc);
-    return () => window.removeEventListener("resize", recalc);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (rAF) cancelAnimationFrame(rAF);
+    };
   }, []);
 
   return (
@@ -42,8 +66,8 @@ export default function StoryCards() {
 
       {/* One sticky wrapper for the whole stack */}
       <div
+        ref={stickyRef}
         className="relative md:sticky md:top-[var(--stack-top)]"
-        style={{ height: stackH ? `${stackH}px` : undefined }}
       >
         {/* Card 1 */}
         <article
@@ -73,6 +97,7 @@ export default function StoryCards() {
         {/* Card 2 */}
         <article
           ref={c2Ref}
+          style={{ transform: `translateY(${y2}px)` }}
           className="
             absolute inset-x-0 top-[var(--gap)]
             mx-auto md:w-[68vw] md:max-w-[720px]
@@ -96,6 +121,7 @@ export default function StoryCards() {
         {/* Card 3 (headline only) */}
         <article
           ref={c3Ref}
+          style={{ transform: `translateY(${y3}px)` }}
           className="
             absolute inset-x-0 top-[calc(var(--gap)*2)]
             mx-auto md:w-[64vw] md:max-w-[680px]  /* slightly smaller so the stack peeks (≈15–20%) */
@@ -110,6 +136,9 @@ export default function StoryCards() {
           </h3>
         </article>
       </div>
+
+      {/* tiny progress rail = the scroll distance used for the animation */}
+      <div ref={railRef} aria-hidden className="h-[calc(var(--gap)*1.8)]" />
 
       {/* Mobile (no sticky) unchanged */}
       <div className="md:hidden mt-8 space-y-6">

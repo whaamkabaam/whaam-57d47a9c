@@ -15,7 +15,7 @@
   }
   /* Correct brand tone for the word "Issues." (warm, no pink cast) */
   .text-gradient-issues {
-    @apply bg-gradient-to-r from-amber-300 via-orange-400 to-amber-200 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-orange-400 via-amber-400 to-orange-300 bg-clip-text text-transparent;
   }
 }
 

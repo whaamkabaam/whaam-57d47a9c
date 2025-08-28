@@ -83,7 +83,7 @@ export default function StoryCards() {
             p-6 md:px-10 md:py-10 backdrop-blur-xl
             shadow-none overflow-hidden isolate
             md:sticky md:top-[var(--stack-top)] md:z-[3]
-            md:mt-[calc(var(--gap)*1.625-var(--delta))] md:-rotate-[0.45deg]
+            md:mt-[calc(var(--gap)*1.55-var(--delta))] md:-rotate-[0.45deg]
             motion-reduce:transform-none
             flex flex-col justify-center
           "

@@ -39,8 +39,8 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       else if (forwardedRef) (forwardedRef as any).current = ref.current;
     }, [forwardedRef]);
 
-    // align sampling to card’s absolute position
-    const updateBgAnchors = () => {
+    // align sampling to card's absolute position
+    const updateBgAnchors = React.useCallback(() => {
       const el = ref.current;
       if (!el) return;
       const r = el.getBoundingClientRect();

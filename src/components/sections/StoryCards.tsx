@@ -1,9 +1,5 @@
 // src/components/sections/StoryCards.tsx
-import { useCardSticky } from "@/hooks/useCardSticky";
-
 export default function StoryCards() {
-  const { cardRef, triggerRef, cardClasses, cardStyles } = useCardSticky();
-
   return (
     <section
       aria-labelledby="story-cards-heading"
@@ -26,7 +22,7 @@ export default function StoryCards() {
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
       {/* Pin + stack */}
-      <div className="relative">
+      <div className="relative md:h-[122vh]">
         {/* Card 1 */}
         <article
           className="
@@ -81,28 +77,24 @@ export default function StoryCards() {
 
         {/* Card 3 (headline only, centered) */}
         <article
-          ref={cardRef}
-          className={`
+          className="
             group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h3)]
             relative rounded-[26px] border border-white/12 bg-white/7
             p-6 md:px-10 md:py-10 backdrop-blur-xl
             shadow-none overflow-hidden isolate
-            md:mt-[calc(var(--gap)*1.2-var(--delta))] ${cardClasses}
+            md:sticky md:top-[var(--stack-top-card3)] md:z-[3]
+            md:mt-[calc(var(--gap)*1.2-var(--delta))] md:-rotate-[0.45deg]
             motion-reduce:transform-none
             flex flex-col justify-center
-          `}
-          style={cardStyles}
+          "
         >
           <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold text-gradient-warm">
             That is why I want to share my knowledge to help you become your best self.
           </h3>
         </article>
 
-        {/* Trigger element for intersection observer */}
-        <div ref={triggerRef} className="h-px" />
-
-        {/* Spacer for natural flow */}
-        <div aria-hidden className="pointer-events-none h-[50vh]" />
+        {/* Spacer so the last card unpins before the next section */}
+        <div aria-hidden className="pointer-events-none h-[calc(var(--gap)+16vh)]" />
       </div>
 
       {/* Mobile (no sticky) unchanged */}

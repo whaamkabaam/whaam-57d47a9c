@@ -2,7 +2,7 @@
 import { useCardSticky } from "@/hooks/useCardSticky";
 
 export default function StoryCards() {
-  const { cardRef, triggerRef, cardClasses } = useCardSticky();
+  const { cardRef, triggerRef, cardClasses, cardStyles } = useCardSticky();
 
   return (
     <section
@@ -79,9 +79,6 @@ export default function StoryCards() {
           </div>
         </article>
 
-        {/* Trigger element for intersection observer */}
-        <div ref={triggerRef} className="h-px" />
-
         {/* Card 3 (headline only, centered) */}
         <article
           ref={cardRef}
@@ -90,15 +87,19 @@ export default function StoryCards() {
             relative rounded-[26px] border border-white/12 bg-white/7
             p-6 md:px-10 md:py-10 backdrop-blur-xl
             shadow-none overflow-hidden isolate
-            md:mt-[calc(var(--gap)*1.2-var(--delta))] md:${cardClasses}
+            md:mt-[calc(var(--gap)*1.2-var(--delta))] ${cardClasses}
             motion-reduce:transform-none
             flex flex-col justify-center
           `}
+          style={cardStyles}
         >
           <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold text-gradient-warm">
             That is why I want to share my knowledge to help you become your best self.
           </h3>
         </article>
+
+        {/* Trigger element for intersection observer */}
+        <div ref={triggerRef} className="h-px" />
 
         {/* Spacer for natural flow */}
         <div aria-hidden className="pointer-events-none h-[50vh]" />

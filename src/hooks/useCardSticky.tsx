@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 
 export function useCardSticky() {
   const [isFixed, setIsFixed] = useState(false);
-  const [fixedTop, setFixedTop] = useState(0);
   const cardRef = useRef<HTMLElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
 
@@ -17,9 +16,7 @@ export function useCardSticky() {
         const entry = entries[0];
         
         if (entry.isIntersecting && !isFixed) {
-          // Card is becoming sticky - capture its position and fix it
-          const rect = card.getBoundingClientRect();
-          setFixedTop(rect.top);
+          // Card reaches sticky position - fix it in place
           setIsFixed(true);
         } else if (!entry.isIntersecting && entry.boundingClientRect.top > 0 && isFixed) {
           // User scrolled back up - return to normal flow
@@ -28,7 +25,7 @@ export function useCardSticky() {
       },
       {
         threshold: 0,
-        rootMargin: '-140px 0px 0px 0px' // Trigger when card would be at our desired sticky position
+        rootMargin: '-140px 0px 0px 0px' // Trigger when card would be 140px from top
       }
     );
 
@@ -41,9 +38,11 @@ export function useCardSticky() {
     cardRef,
     triggerRef,
     isFixed,
-    fixedTop,
     cardClasses: isFixed 
       ? 'fixed z-[3] -rotate-[0.45deg]' 
-      : 'sticky top-[var(--stack-top-card3)] z-[3] -rotate-[0.45deg]'
+      : 'sticky top-[var(--stack-top-card3)] z-[3] -rotate-[0.45deg]',
+    cardStyles: isFixed 
+      ? { top: '140px' } 
+      : {}
   };
 }

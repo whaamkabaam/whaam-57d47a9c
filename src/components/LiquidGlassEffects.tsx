@@ -53,27 +53,27 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
     React.useEffect(() => {
       updateBgAnchors();
       
-      // Throttle scroll events using requestAnimationFrame
-      let ticking = false;
-      const onScroll = () => {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            updateBgAnchors();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      };
-      
-      // Debounce resize events
-      let resizeTimeout: number;
-      const onResize = () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = window.setTimeout(updateBgAnchors, 16);
-      };
-      
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onResize, { passive: true });
+    // Throttle scroll events using requestAnimationFrame
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateBgAnchors();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    // Debounce resize events
+    let resizeTimeout: number;
+    const onResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = window.setTimeout(updateBgAnchors, 100);
+    };
+    
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
       return () => {
         window.removeEventListener('scroll', onScroll);
         window.removeEventListener('resize', onResize);
@@ -161,9 +161,18 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       startTween();
     };
 
-    const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  // Throttle mouse move events for performance
+  const mouseMoveThrottleRef = React.useRef<number | null>(null);
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (mouseMoveThrottleRef.current) return;
+    
+    mouseMoveThrottleRef.current = requestAnimationFrame(() => {
       const el = ref.current;
-      if (!el) return;
+      if (!el) {
+        mouseMoveThrottleRef.current = null;
+        return;
+      }
 
       const r = el.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width;
@@ -180,12 +189,14 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
         // retarget ongoing tween smoothly
         targetMouse.current = { x, y };
         targetShift.current = { x: sx, y: sy };
-        return;
+      } else {
+        // immediate tracking when not animating
+        setVars(el, x, y, sx, sy);
       }
-
-      // immediate tracking when not animating
-      setVars(el, x, y, sx, sy);
-    };
+      
+      mouseMoveThrottleRef.current = null;
+    });
+  };
 
     return (
       <div

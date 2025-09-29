@@ -50,7 +50,7 @@ export const useAnimatedCounter = ({
     const startTime = Date.now();
     const startValue = start;
     const endValue = end;
-    let animationFrame: number;
+    let animationFrame: number | null = null;
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
@@ -64,14 +64,17 @@ export const useAnimatedCounter = ({
 
       if (progress < 1) {
         animationFrame = requestAnimationFrame(animate);
+      } else {
+        animationFrame = null;
       }
     };
 
     animationFrame = requestAnimationFrame(animate);
 
     return () => {
-      if (animationFrame) {
+      if (animationFrame !== null) {
         cancelAnimationFrame(animationFrame);
+        animationFrame = null;
       }
     };
   }, [isVisible, end, start, duration]);

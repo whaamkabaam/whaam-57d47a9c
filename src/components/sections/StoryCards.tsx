@@ -1,5 +1,9 @@
 // src/components/sections/StoryCards.tsx
+import { useCardSticky } from "@/hooks/useCardSticky";
+
 export default function StoryCards() {
+  const { cardRef, triggerRef, cardClasses } = useCardSticky();
+
   return (
     <section
       aria-labelledby="story-cards-heading"
@@ -22,7 +26,7 @@ export default function StoryCards() {
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
       {/* Pin + stack */}
-      <div className="relative md:h-[122vh]">
+      <div className="relative">
         {/* Card 1 */}
         <article
           className="
@@ -75,26 +79,29 @@ export default function StoryCards() {
           </div>
         </article>
 
+        {/* Trigger element for intersection observer */}
+        <div ref={triggerRef} className="h-px" />
+
         {/* Card 3 (headline only, centered) */}
         <article
-          className="
+          ref={cardRef}
+          className={`
             group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h3)]
             relative rounded-[26px] border border-white/12 bg-white/7
             p-6 md:px-10 md:py-10 backdrop-blur-xl
             shadow-none overflow-hidden isolate
-            md:sticky md:top-[var(--stack-top-card3)] md:z-[3]
-            md:mt-[calc(var(--gap)*1.2-var(--delta))] md:-rotate-[0.45deg]
+            md:mt-[calc(var(--gap)*1.2-var(--delta))] md:${cardClasses}
             motion-reduce:transform-none
             flex flex-col justify-center
-          "
+          `}
         >
           <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold text-gradient-warm">
             That is why I want to share my knowledge to help you become your best self.
           </h3>
         </article>
 
-        {/* Spacer so the last card unpins before the next section */}
-        <div aria-hidden className="pointer-events-none h-[calc(var(--gap)+16vh)]" />
+        {/* Spacer for natural flow */}
+        <div aria-hidden className="pointer-events-none h-[50vh]" />
       </div>
 
       {/* Mobile (no sticky) unchanged */}

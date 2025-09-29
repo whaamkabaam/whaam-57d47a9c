@@ -28,20 +28,14 @@ export const useAnimatedCounter = ({
           setIsVisible(true);
         }
       },
-      { threshold: 0.3, rootMargin: '50px' }
+      { threshold: 0.3 }
     );
 
-    const currentElement = elementRef.current;
-    if (currentElement) {
-      observer.observe(currentElement);
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
     }
 
-    return () => {
-      if (currentElement) {
-        observer.unobserve(currentElement);
-      }
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, [isVisible]);
 
   useEffect(() => {
@@ -50,7 +44,6 @@ export const useAnimatedCounter = ({
     const startTime = Date.now();
     const startValue = start;
     const endValue = end;
-    let animationFrame: number;
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
@@ -63,17 +56,11 @@ export const useAnimatedCounter = ({
       setCount(currentValue);
 
       if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
       }
     };
 
-    animationFrame = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-      }
-    };
+    animate();
   }, [isVisible, end, start, duration]);
 
   const displayValue = decimals > 0 

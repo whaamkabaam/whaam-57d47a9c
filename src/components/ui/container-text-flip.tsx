@@ -41,24 +41,41 @@ export function ContainerTextFlip({
   }, [words, interval]);
 
   return (
-    <span
-      style={{ width: `${width}px` }}
+    <motion.span
+      layout
+      layoutId={`words-here-${id}`}
+      animate={{ width }}
+      transition={{ duration: animationDuration / 2000 }}
       className={cn(
-        "relative inline-block rounded-lg px-3 py-1 text-center font-bold transition-all duration-300",
+        "relative inline-block rounded-lg px-3 py-1 text-center font-bold",
         "bg-white/5 backdrop-blur-sm border border-white/10",
-        "shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:bg-white/10",
+        "shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:bg-white/10 transition-all duration-300",
         className
       )}
-      aria-hidden
+      key={words[currentWordIndex]}
+      aria-hidden     // decorative for a11y/SEO
       suppressHydrationWarning
+      data-animated
     >
-      <div
-        className={cn("inline-block transition-opacity duration-300", textClassName)}
+      <motion.div
+        transition={{ duration: animationDuration / 1000, ease: "easeInOut" }}
+        className={cn("inline-block", textClassName)}
         ref={textRef}
-        key={words[currentWordIndex]}
+        layoutId={`word-div-${words[currentWordIndex]}-${id}`}
       >
-        {words[currentWordIndex]}
-      </div>
-    </span>
+        <motion.div className="inline-block">
+          {words[currentWordIndex].split("").map((letter, index) => (
+            <motion.span
+              key={index}
+              initial={{ opacity: 0, filter: "blur(10px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              transition={{ delay: index * 0.02 }}
+            >
+              {letter}
+            </motion.span>
+          ))}
+        </motion.div>
+      </motion.div>
+    </motion.span>
   );
 }

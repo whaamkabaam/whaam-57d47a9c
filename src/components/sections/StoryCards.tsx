@@ -27,9 +27,9 @@ export default function StoryCards() {
         <article
           className="
             group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
-            relative rounded-[26px] border border-white/12 bg-white/7
-            p-6 md:px-10 md:py-10 backdrop-blur-xl
-            shadow-none overflow-hidden isolate
+            relative rounded-[26px] border border-white/20 bg-gray-900/95
+            p-6 md:px-10 md:py-10 shadow-2xl
+            overflow-hidden isolate
             md:sticky md:top-[var(--stack-top)] md:z-[1] md:-rotate-[0.8deg]
             motion-reduce:transform-none
           "
@@ -53,9 +53,9 @@ export default function StoryCards() {
         <article
           className="
             group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
-            relative rounded-[26px] border border-white/12 bg-white/7
-            p-6 md:px-10 md:py-10 backdrop-blur-xl
-            shadow-none overflow-hidden isolate
+            relative rounded-[26px] border border-white/20 bg-gray-900/95
+            p-6 md:px-10 md:py-10 shadow-2xl
+            overflow-hidden isolate
             md:sticky md:top-[var(--stack-top)] md:z-[2] md:mt-[var(--gap)] md:rotate-[0.8deg]
             motion-reduce:transform-none
           "
@@ -79,9 +79,9 @@ export default function StoryCards() {
         <article
           className="
             group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h3)]
-            relative rounded-[26px] border border-white/12 bg-white/7
-            p-6 md:px-10 md:py-10 backdrop-blur-xl
-            shadow-none overflow-hidden isolate
+            relative rounded-[26px] border border-white/20 bg-gray-900/95
+            p-6 md:px-10 md:py-10 shadow-2xl
+            overflow-hidden isolate
             md:sticky md:top-[var(--stack-top-card3)] md:z-[3]
             md:mt-[calc(var(--gap)*1.2-var(--delta))] md:-rotate-[0.45deg]
             motion-reduce:transform-none
@@ -97,9 +97,9 @@ export default function StoryCards() {
         <div aria-hidden className="pointer-events-none h-[calc(var(--gap)+16vh)]" />
       </div>
 
-      {/* Mobile (no sticky) unchanged */}
+      {/* Mobile (no sticky) */}
       <div className="md:hidden mt-8 space-y-6">
-        <div className="rounded-[26px] border border-white/12 bg-white/7 p-6 backdrop-blur-xl">
+        <div className="rounded-[26px] border border-white/20 bg-gray-900/95 p-6 shadow-2xl">
           <h3 className="text-2xl font-extrabold text-gradient-warm">
             Aiming can be hard. Face your Issues.
           </h3>
@@ -107,7 +107,7 @@ export default function StoryCards() {
             You often feel like your <strong>Sensitivity</strong> is either <strong>too fast</strong> or <strong>too slow</strong>, and through that <strong>not precise enough</strong>. So you often feel <strong>frustrated</strong> and feel like it <strong>limits</strong> your full potential as a player. Aiming should just feel <strong>natural</strong> for maximized <strong>confidence</strong> and <strong>fun</strong>.
           </p>
         </div>
-        <div className="rounded-[26px] border border-white/12 bg-white/7 p-6 backdrop-blur-xl">
+        <div className="rounded-[26px] border border-white/20 bg-gray-900/95 p-6 shadow-2xl">
           <h3 className="text-2xl font-extrabold text-gradient-warm">
             I know that feeling.
           </h3>
@@ -115,7 +115,7 @@ export default function StoryCards() {
             That is how I started four years ago before exploring <strong>Mouse Acceleration</strong>. I reached <strong>1900 RR</strong> in <strong>VALORANT</strong> and have <strong>75k</strong> TikTok followers for my aim work.
           </p>
         </div>
-        <div className="rounded-[26px] border border-white/12 bg-white/7 p-6 backdrop-blur-xl">
+        <div className="rounded-[26px] border border-white/20 bg-gray-900/95 p-6 shadow-2xl">
           <h3 className="text-2xl font-extrabold text-gradient-warm">
             That is why I want to share my knowledge to help you become your best self.
           </h3>

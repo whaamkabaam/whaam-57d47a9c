@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useId } from "react";
-import { motion } from "motion/react";
+import React, { useState, useEffect, useId, useCallback } from "react";
 import { cn } from "@/lib/utils";
 
 export interface ContainerTextFlipProps {
@@ -24,14 +23,23 @@ export function ContainerTextFlip({
   const [width, setWidth] = useState(100);
   const textRef = React.useRef<HTMLDivElement | null>(null);
 
-  const updateWidthForWord = () => {
+  const cachedWidths = React.useRef<Record<string, number>>({});
+  
+  const updateWidthForWord = useCallback(() => {
+    const currentWord = words[currentWordIndex];
+    if (cachedWidths.current[currentWord]) {
+      setWidth(cachedWidths.current[currentWord]);
+      return;
+    }
+    
     if (textRef.current) {
       const textWidth = textRef.current.scrollWidth + 30; // padding
+      cachedWidths.current[currentWord] = textWidth;
       setWidth(textWidth);
     }
-  };
+  }, [words, currentWordIndex]);
 
-  useEffect(() => { updateWidthForWord(); }, [currentWordIndex]);
+  useEffect(() => { updateWidthForWord(); }, [updateWidthForWord]);
   useEffect(() => {
     const intervalId = setInterval(
       () => setCurrentWordIndex((i) => (i + 1) % words.length),
@@ -41,15 +49,17 @@ export function ContainerTextFlip({
   }, [words, interval]);
 
   return (
-    <motion.span
-      layout
-      layoutId={`words-here-${id}`}
-      animate={{ width }}
-      transition={{ duration: animationDuration / 2000 }}
+    <span
+      style={{ 
+        width: `${width}px`,
+        willChange: 'width',
+        contain: 'layout style'
+      }}
       className={cn(
         "relative inline-block rounded-lg px-3 py-1 text-center font-bold",
         "bg-white/5 backdrop-blur-sm border border-white/10",
-        "shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:bg-white/10 transition-all duration-300",
+        "shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:bg-white/10",
+        "transition-all duration-300 ease-out transform translateZ(0)",
         className
       )}
       key={words[currentWordIndex]}
@@ -57,25 +67,18 @@ export function ContainerTextFlip({
       suppressHydrationWarning
       data-animated
     >
-      <motion.div
-        transition={{ duration: animationDuration / 1000, ease: "easeInOut" }}
-        className={cn("inline-block", textClassName)}
+      <div
+        className={cn("inline-block transition-opacity duration-300 ease-out", textClassName)}
         ref={textRef}
-        layoutId={`word-div-${words[currentWordIndex]}-${id}`}
+        style={{ 
+          opacity: 1,
+          willChange: 'opacity'
+        }}
       >
-        <motion.div className="inline-block">
-          {words[currentWordIndex].split("").map((letter, index) => (
-            <motion.span
-              key={index}
-              initial={{ opacity: 0, filter: "blur(10px)" }}
-              animate={{ opacity: 1, filter: "blur(0px)" }}
-              transition={{ delay: index * 0.02 }}
-            >
-              {letter}
-            </motion.span>
-          ))}
-        </motion.div>
-      </motion.div>
-    </motion.span>
+        <span className="inline-block">
+          {words[currentWordIndex]}
+        </span>
+      </div>
+    </span>
   );
 }

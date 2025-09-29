@@ -66,13 +66,13 @@ export default function Hero() {
               
               {/* Decorative subhead with animated text */}
               <div className="min-h-[120px] flex items-center justify-center lg:justify-start">
-                <motion.div layout className="flex items-center justify-center lg:justify-start">
+                <div className="flex items-center justify-center lg:justify-start">
                   <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
                     Make your aim{" "}
                     <ContainerTextFlip words={["faster", "steadier", "more consistent", "more natural"]} interval={2200} className="!bg-white/10 !backdrop-blur-md !border-white/20 !shadow-[0_8px_32px_rgba(0,0,0,0.15)] text-primary font-bold" textClassName="!text-primary" />
                     {" "}— without guesswork.
                   </p>
-                </motion.div>
+                </div>
               </div>
               
               <div className="space-y-4">

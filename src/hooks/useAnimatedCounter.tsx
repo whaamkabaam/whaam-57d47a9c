@@ -44,6 +44,7 @@ export const useAnimatedCounter = ({
     const startTime = Date.now();
     const startValue = start;
     const endValue = end;
+    let animationFrameId: number;
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
@@ -56,11 +57,17 @@ export const useAnimatedCounter = ({
       setCount(currentValue);
 
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
       }
     };
 
     animate();
+    
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, [isVisible, end, start, duration]);
 
   const displayValue = decimals > 0 

@@ -52,13 +52,29 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
 
     React.useEffect(() => {
       updateBgAnchors();
-      const onScroll = () => updateBgAnchors();
-      const onResize = () => updateBgAnchors();
-      window.addEventListener('scroll', onScroll, { passive: true } as any);
-      window.addEventListener('resize', onResize);
+      
+      let scrollFrame: number | null = null;
+      const throttledScroll = () => {
+        if (scrollFrame) return;
+        scrollFrame = requestAnimationFrame(() => {
+          updateBgAnchors();
+          scrollFrame = null;
+        });
+      };
+      
+      let resizeTimeout: number | null = null;
+      const debouncedResize = () => {
+        if (resizeTimeout) clearTimeout(resizeTimeout);
+        resizeTimeout = window.setTimeout(updateBgAnchors, 100);
+      };
+      
+      window.addEventListener('scroll', throttledScroll, { passive: true });
+      window.addEventListener('resize', debouncedResize);
       return () => {
-        window.removeEventListener('scroll', onScroll as any);
-        window.removeEventListener('resize', onResize);
+        window.removeEventListener('scroll', throttledScroll);
+        window.removeEventListener('resize', debouncedResize);
+        if (scrollFrame) cancelAnimationFrame(scrollFrame);
+        if (resizeTimeout) clearTimeout(resizeTimeout);
       };
     }, []);
 
@@ -80,14 +96,14 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
 
     const ease = (t: number) => 1 - Math.pow(1 - t, 3);
 
-    const setVars = (el: HTMLDivElement, mx: number, my: number, sx: number, sy: number) => {
+    const setVars = React.useCallback((el: HTMLDivElement, mx: number, my: number, sx: number, sy: number) => {
       el.style.setProperty('--mx', String(mx));
       el.style.setProperty('--my', String(my));
       el.style.setProperty('--shiftX', `${sx}px`);
       el.style.setProperty('--shiftY', `${sy}px`);
       lastMouse.current = { x: mx, y: my };
       lastShift.current = { x: sx, y: sy };
-    };
+    }, []);
 
     const step = () => {
       const el = ref.current;
@@ -174,6 +190,11 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
         onMouseEnter={onEnter}
         onMouseMove={onMove}
         className={cn('liquid-glass rounded-[28px] p-6 md:p-8 overflow-hidden', className)}
+        style={{
+          willChange: 'transform, opacity',
+          contain: 'layout style',
+          transform: 'translateZ(0)'
+        }}
         {...props}
       >
         {/* refractive samplers */}

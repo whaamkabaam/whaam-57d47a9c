@@ -48,19 +48,38 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       const by = -(r.top + window.scrollY);
       el.style.setProperty('--bx', `${bx}px`);
       el.style.setProperty('--by', `${by}px`);
-    };
+    }, []);
 
     React.useEffect(() => {
       updateBgAnchors();
-      const onScroll = () => updateBgAnchors();
-      const onResize = () => updateBgAnchors();
-      window.addEventListener('scroll', onScroll, { passive: true } as any);
-      window.addEventListener('resize', onResize);
-      return () => {
-        window.removeEventListener('scroll', onScroll as any);
-        window.removeEventListener('resize', onResize);
+      
+      // Throttle scroll events using requestAnimationFrame
+      let ticking = false;
+      const onScroll = () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            updateBgAnchors();
+            ticking = false;
+          });
+          ticking = true;
+        }
       };
-    }, []);
+      
+      // Debounce resize events
+      let resizeTimeout: number;
+      const onResize = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = window.setTimeout(updateBgAnchors, 16);
+      };
+      
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onResize, { passive: true });
+      return () => {
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onResize);
+        clearTimeout(resizeTimeout);
+      };
+    }, [updateBgAnchors]);
 
     // Smooth re-entry tween with retargetable animation
     const animFrame = React.useRef<number | null>(null);
@@ -174,6 +193,11 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
         onMouseEnter={onEnter}
         onMouseMove={onMove}
         className={cn('liquid-glass rounded-[28px] p-6 md:p-8 overflow-hidden', className)}
+        style={{ 
+          transform: 'translateZ(0)', // GPU acceleration
+          contain: 'layout style paint', // Optimize reflows
+          willChange: 'transform' // Hint browser for optimization
+        }}
         {...props}
       >
         {/* refractive samplers */}

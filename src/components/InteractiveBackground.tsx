@@ -455,45 +455,33 @@ export default function InteractiveBackground() {
         }
     }, [])
 
-    // 6) Scroll => modify vy - throttled for performance
+    // 6) Scroll => modify vy
     useEffect(() => {
         let lastScrollTop =
             window.pageYOffset || document.documentElement.scrollTop
-        let scrollFrame: number | null = null
-        let scrollEventCount = 0
 
         const handleScroll = () => {
-            scrollEventCount++
-            // Only process every 3rd scroll event to reduce CPU load
-            if (scrollEventCount % 3 !== 0) return
-            
-            if (scrollFrame) return
-            scrollFrame = requestAnimationFrame(() => {
-                const scrollTop =
-                    window.pageYOffset || document.documentElement.scrollTop
-                const delta = scrollTop - lastScrollTop
+            const scrollTop =
+                window.pageYOffset || document.documentElement.scrollTop
+            const delta = scrollTop - lastScrollTop
 
-                // Slight effect on vy
-                const scrollEffect = delta * 0.001
-                particlesRef.current.forEach((particle) => {
-                    particle.vy -= scrollEffect * particle.scrollFactor
-                    if (particle.vy > MAX_SCROLL_VY) {
-                        particle.vy = MAX_SCROLL_VY
-                    } else if (particle.vy < -MAX_SCROLL_VY) {
-                        particle.vy = -MAX_SCROLL_VY
-                    }
-                })
-
-                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop
-                scrollFrame = null
+            // Slight effect on vy
+            const scrollEffect = delta * 0.001
+            particlesRef.current.forEach((particle) => {
+                particle.vy -= scrollEffect * particle.scrollFactor
+                if (particle.vy > MAX_SCROLL_VY) {
+                    particle.vy = MAX_SCROLL_VY
+                } else if (particle.vy < -MAX_SCROLL_VY) {
+                    particle.vy = -MAX_SCROLL_VY
+                }
             })
+
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop
         }
 
         // We add a scroll listener, but *no* window.resize
-        window.addEventListener("scroll", handleScroll, { passive: true })
+        window.addEventListener("scroll", handleScroll)
         return () => {
-            window.removeEventListener("scroll", handleScroll)
-            if (scrollFrame) cancelAnimationFrame(scrollFrame)
             window.removeEventListener("scroll", handleScroll)
         }
     }, [])

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useId, useCallback } from "react";
+import React, { useState, useEffect, useId } from "react";
+import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 export interface ContainerTextFlipProps {
@@ -23,23 +24,14 @@ export function ContainerTextFlip({
   const [width, setWidth] = useState(100);
   const textRef = React.useRef<HTMLDivElement | null>(null);
 
-  const cachedWidths = React.useRef<Record<string, number>>({});
-  
-  const updateWidthForWord = useCallback(() => {
-    const currentWord = words[currentWordIndex];
-    if (cachedWidths.current[currentWord]) {
-      setWidth(cachedWidths.current[currentWord]);
-      return;
-    }
-    
+  const updateWidthForWord = () => {
     if (textRef.current) {
       const textWidth = textRef.current.scrollWidth + 30; // padding
-      cachedWidths.current[currentWord] = textWidth;
       setWidth(textWidth);
     }
-  }, [words, currentWordIndex]);
+  };
 
-  useEffect(() => { updateWidthForWord(); }, [updateWidthForWord]);
+  useEffect(() => { updateWidthForWord(); }, [currentWordIndex]);
   useEffect(() => {
     const intervalId = setInterval(
       () => setCurrentWordIndex((i) => (i + 1) % words.length),
@@ -50,34 +42,22 @@ export function ContainerTextFlip({
 
   return (
     <span
-      style={{ 
-        width: `${width}px`,
-        willChange: 'width',
-        contain: 'layout style'
-      }}
+      style={{ width: `${width}px` }}
       className={cn(
-        "relative inline-block rounded-lg px-3 py-1 text-center font-bold",
+        "relative inline-block rounded-lg px-3 py-1 text-center font-bold transition-all duration-300",
         "bg-white/5 backdrop-blur-sm border border-white/10",
         "shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:bg-white/10",
-        "transition-all duration-300 ease-out transform translateZ(0)",
         className
       )}
-      key={words[currentWordIndex]}
-      aria-hidden     // decorative for a11y/SEO
+      aria-hidden
       suppressHydrationWarning
-      data-animated
     >
       <div
-        className={cn("inline-block transition-opacity duration-300 ease-out", textClassName)}
+        className={cn("inline-block transition-opacity duration-300", textClassName)}
         ref={textRef}
-        style={{ 
-          opacity: 1,
-          willChange: 'opacity'
-        }}
+        key={words[currentWordIndex]}
       >
-        <span className="inline-block">
-          {words[currentWordIndex]}
-        </span>
+        {words[currentWordIndex]}
       </div>
     </span>
   );

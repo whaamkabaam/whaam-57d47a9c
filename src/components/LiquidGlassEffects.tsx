@@ -39,8 +39,8 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       else if (forwardedRef) (forwardedRef as any).current = ref.current;
     }, [forwardedRef]);
 
-    // align sampling to card’s absolute position
-    const updateBgAnchors = () => {
+    // align sampling to card's absolute position
+    const updateBgAnchors = React.useCallback(() => {
       const el = ref.current;
       if (!el) return;
       const r = el.getBoundingClientRect();
@@ -48,35 +48,38 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       const by = -(r.top + window.scrollY);
       el.style.setProperty('--bx', `${bx}px`);
       el.style.setProperty('--by', `${by}px`);
-    };
+    }, []);
 
     React.useEffect(() => {
       updateBgAnchors();
       
-      let scrollFrame: number | null = null;
-      const throttledScroll = () => {
-        if (scrollFrame) return;
-        scrollFrame = requestAnimationFrame(() => {
-          updateBgAnchors();
-          scrollFrame = null;
-        });
+      // Throttle scroll events using requestAnimationFrame
+      let ticking = false;
+      const onScroll = () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            updateBgAnchors();
+            ticking = false;
+          });
+          ticking = true;
+        }
       };
       
-      let resizeTimeout: number | null = null;
-      const debouncedResize = () => {
-        if (resizeTimeout) clearTimeout(resizeTimeout);
-        resizeTimeout = window.setTimeout(updateBgAnchors, 100);
+      // Debounce resize events
+      let resizeTimeout: number;
+      const onResize = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = window.setTimeout(updateBgAnchors, 16);
       };
       
-      window.addEventListener('scroll', throttledScroll, { passive: true });
-      window.addEventListener('resize', debouncedResize);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onResize, { passive: true });
       return () => {
-        window.removeEventListener('scroll', throttledScroll);
-        window.removeEventListener('resize', debouncedResize);
-        if (scrollFrame) cancelAnimationFrame(scrollFrame);
-        if (resizeTimeout) clearTimeout(resizeTimeout);
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onResize);
+        clearTimeout(resizeTimeout);
       };
-    }, []);
+    }, [updateBgAnchors]);
 
     // Smooth re-entry tween with retargetable animation
     const animFrame = React.useRef<number | null>(null);
@@ -96,14 +99,14 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
 
     const ease = (t: number) => 1 - Math.pow(1 - t, 3);
 
-    const setVars = React.useCallback((el: HTMLDivElement, mx: number, my: number, sx: number, sy: number) => {
+    const setVars = (el: HTMLDivElement, mx: number, my: number, sx: number, sy: number) => {
       el.style.setProperty('--mx', String(mx));
       el.style.setProperty('--my', String(my));
       el.style.setProperty('--shiftX', `${sx}px`);
       el.style.setProperty('--shiftY', `${sy}px`);
       lastMouse.current = { x: mx, y: my };
       lastShift.current = { x: sx, y: sy };
-    }, []);
+    };
 
     const step = () => {
       const el = ref.current;
@@ -190,10 +193,10 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
         onMouseEnter={onEnter}
         onMouseMove={onMove}
         className={cn('liquid-glass rounded-[28px] p-6 md:p-8 overflow-hidden', className)}
-        style={{
-          willChange: 'transform, opacity',
-          contain: 'layout style',
-          transform: 'translateZ(0)'
+        style={{ 
+          transform: 'translateZ(0)', // GPU acceleration
+          contain: 'layout style paint', // Optimize reflows
+          willChange: 'transform' // Hint browser for optimization
         }}
         {...props}
       >

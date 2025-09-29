@@ -12,17 +12,6 @@ export interface ContainerTextFlipProps {
   animationDuration?: number;
 }
 
-// Pre-calculate max width to prevent dynamic layout shifts
-const calculateMaxWidth = (words: string[]): number => {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return 150; // fallback
-  
-  ctx.font = '700 16px system-ui, -apple-system, sans-serif'; // approximate bold font
-  const maxWidth = Math.max(...words.map(word => ctx.measureText(word).width));
-  return maxWidth + 30; // padding
-};
-
 export function ContainerTextFlip({
   words = ["better", "modern", "beautiful", "awesome"],
   interval = 3000,
@@ -32,16 +21,17 @@ export function ContainerTextFlip({
 }: ContainerTextFlipProps) {
   const id = useId();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [maxWidth, setMaxWidth] = useState(150);
-  
-  // Calculate max width once on mount to prevent layout shifts
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const width = calculateMaxWidth(words);
-      setMaxWidth(width);
-    }
-  }, [words]);
+  const [width, setWidth] = useState(100);
+  const textRef = React.useRef<HTMLDivElement | null>(null);
 
+  const updateWidthForWord = () => {
+    if (textRef.current) {
+      const textWidth = textRef.current.scrollWidth + 30; // padding
+      setWidth(textWidth);
+    }
+  };
+
+  useEffect(() => { updateWidthForWord(); }, [currentWordIndex]);
   useEffect(() => {
     const intervalId = setInterval(
       () => setCurrentWordIndex((i) => (i + 1) % words.length),
@@ -52,36 +42,39 @@ export function ContainerTextFlip({
 
   return (
     <motion.span
-      style={{ width: `${maxWidth}px` }}
+      layout
+      layoutId={`words-here-${id}`}
+      animate={{ width }}
+      transition={{ duration: animationDuration / 2000 }}
       className={cn(
         "relative inline-block rounded-lg px-3 py-1 text-center font-bold",
-        "bg-gradient-to-r from-red-500/20 to-orange-500/20 backdrop-blur-sm border border-red-500/30",
-        "shadow-[0_8px_32px_rgba(239,68,68,0.2)] hover:from-red-500/30 hover:to-orange-500/30",
-        "transition-all duration-300 will-change-transform",
+        "bg-white/5 backdrop-blur-sm border border-white/10",
+        "shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:bg-white/10 transition-all duration-300",
         className
       )}
-      layoutId={`text-flip-${id}`}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3 }}
-      aria-hidden
+      key={words[currentWordIndex]}
+      aria-hidden     // decorative for a11y/SEO
       suppressHydrationWarning
+      data-animated
     >
       <motion.div
-        className={cn(
-          "inline-block text-red-400 font-bold",
-          textClassName
-        )}
-        key={words[currentWordIndex]}
-        initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-        transition={{ 
-          duration: animationDuration / 1000,
-          ease: "easeOut"
-        }}
+        transition={{ duration: animationDuration / 1000, ease: "easeInOut" }}
+        className={cn("inline-block", textClassName)}
+        ref={textRef}
+        layoutId={`word-div-${words[currentWordIndex]}-${id}`}
       >
-        {words[currentWordIndex]}
+        <motion.div className="inline-block">
+          {words[currentWordIndex].split("").map((letter, index) => (
+            <motion.span
+              key={index}
+              initial={{ opacity: 0, filter: "blur(10px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              transition={{ delay: index * 0.02 }}
+            >
+              {letter}
+            </motion.span>
+          ))}
+        </motion.div>
       </motion.div>
     </motion.span>
   );

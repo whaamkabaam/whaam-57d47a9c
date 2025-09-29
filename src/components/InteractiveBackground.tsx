@@ -455,17 +455,12 @@ export default function InteractiveBackground() {
         }
     }, [])
 
-    // 6) Scroll => modify vy (throttled for performance)
+    // 6) Scroll => modify vy
     useEffect(() => {
         let lastScrollTop =
             window.pageYOffset || document.documentElement.scrollTop
-        let scrollThrottleCount = 0;
 
         const handleScroll = () => {
-            // Only update every 3rd scroll event to reduce CPU usage
-            scrollThrottleCount++;
-            if (scrollThrottleCount % 3 !== 0) return;
-
             const scrollTop =
                 window.pageYOffset || document.documentElement.scrollTop
             const delta = scrollTop - lastScrollTop
@@ -485,7 +480,7 @@ export default function InteractiveBackground() {
         }
 
         // We add a scroll listener, but *no* window.resize
-        window.addEventListener("scroll", handleScroll, { passive: true })
+        window.addEventListener("scroll", handleScroll)
         return () => {
             window.removeEventListener("scroll", handleScroll)
         }

@@ -6,6 +6,7 @@ export default function StoryCards() {
       className="
         relative isolate z-0 mx-auto max-w-6xl px-4 py-14 md:py-20
         md:[--stack-top:184px]      /* clears the navbar */
+        md:[--stack-top-card3:140px] /* custom position for card 3 to stay centered */
         md:[--gap:9.5vh]            /* equal spacing steps between cards */
         md:[--card-w:68vw]          /* narrower for better text wrap */
         md:[--card-max:720px]
@@ -81,7 +82,7 @@ export default function StoryCards() {
             relative rounded-[26px] border border-white/12 bg-white/7
             p-6 md:px-10 md:py-10 backdrop-blur-xl
             shadow-none overflow-hidden isolate
-            md:sticky md:top-[var(--stack-top)] md:z-[3]
+            md:sticky md:top-[var(--stack-top-card3)] md:z-[3]
             md:mt-[calc(var(--gap)*1.2-var(--delta))] md:-rotate-[0.45deg]
             motion-reduce:transform-none
             flex flex-col justify-center

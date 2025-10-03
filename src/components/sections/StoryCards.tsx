@@ -6,8 +6,7 @@ export default function StoryCards() {
       className="
         relative isolate z-0 mx-auto max-w-6xl px-4 py-14 md:py-20
         md:[--stack-top:184px]      /* clears the navbar */
-        md:[--stack-top-card3:200px] /* custom position for card 3 below navbar */
-        md:[--gap:8vh]              /* optimized spacing between cards */
+        md:[--gap:12vh]             /* spacing between cards */
         md:[--card-w:68vw]          /* narrower for better text wrap */
         md:[--card-max:720px]
 
@@ -22,7 +21,7 @@ export default function StoryCards() {
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
       {/* Pin + stack */}
-      <div className="relative md:h-[122vh]">
+      <div className="relative md:h-[calc(3*var(--gap)+50vh)]">
         {/* Card 1 */}
         <div className="md:sticky md:top-[var(--stack-top)] md:z-[1] h-fit">
           <article
@@ -80,7 +79,7 @@ export default function StoryCards() {
         </div>
 
         {/* Card 3 (headline only, centered) */}
-        <div className="md:sticky md:top-[var(--stack-top-card3)] md:z-[3] md:mt-[var(--gap)] h-fit">
+        <div className="md:sticky md:top-[var(--stack-top)] md:z-[3] md:mt-[var(--gap)] h-fit">
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h3)]
@@ -99,7 +98,7 @@ export default function StoryCards() {
         </div>
 
         {/* Spacer so the last card unpins before the next section */}
-        <div aria-hidden className="pointer-events-none h-[200vh]" />
+        <div aria-hidden className="pointer-events-none h-[20vh]" />
       </div>
 
       {/* Mobile (no sticky) */}

@@ -21,7 +21,7 @@ export default function StoryCards() {
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
       {/* Pin + stack */}
-      <div className="relative md:h-[calc(2*var(--gap)+var(--h3))]">
+      <div className="relative md:h-[calc(3*var(--gap)+50vh)]">
         {/* Card 1 */}
         <div className="md:sticky md:top-[var(--stack-top)] md:z-[1] h-fit">
           <article
@@ -97,6 +97,8 @@ export default function StoryCards() {
           </article>
         </div>
 
+        {/* Spacer so the last card unpins before the next section */}
+        <div aria-hidden className="pointer-events-none h-[20vh]" />
       </div>
 
       {/* Mobile (no sticky) */}

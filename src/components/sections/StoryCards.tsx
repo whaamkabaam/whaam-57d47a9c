@@ -21,7 +21,7 @@ export default function StoryCards() {
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
       {/* Pin + stack */}
-      <div className="relative md:h-[calc(2*var(--gap)+50vh)]">
+      <div className="relative md:h-[calc(2*var(--gap)+var(--h3))]">
         {/* Card 1 */}
         <div className="md:sticky md:top-[var(--stack-top)] md:z-[1] h-fit">
           <article

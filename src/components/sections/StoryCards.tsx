@@ -16,17 +16,14 @@ export default function StoryCards() {
 
         /* compensation so 2→3 looks same as 1→2 */
         md:[--delta:calc((var(--h12)-var(--h3))/2)]
-        
-        /* scroll snap */
-        md:scroll-snap-type-y md:scroll-snap-mandatory
       "
     >
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
       {/* Pin + stack */}
-      <div className="relative md:h-[calc(3*var(--gap)+20vh)]">
+      <div className="relative md:h-[calc(3*var(--gap)+50vh)]">
         {/* Card 1 */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[1] md:scroll-snap-align-start h-fit">
+        <div className="md:sticky md:top-[var(--stack-top)] md:z-[1] h-fit">
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
@@ -54,7 +51,7 @@ export default function StoryCards() {
         </div>
 
         {/* Card 2 */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[2] md:mt-[var(--gap)] md:scroll-snap-align-start h-fit">
+        <div className="md:sticky md:top-[var(--stack-top)] md:z-[2] md:mt-[var(--gap)] h-fit">
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
@@ -82,7 +79,7 @@ export default function StoryCards() {
         </div>
 
         {/* Card 3 (headline only, centered) */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[3] md:mt-[var(--gap)] md:scroll-snap-align-start h-fit">
+        <div className="md:sticky md:top-[var(--stack-top)] md:z-[3] md:mt-[var(--gap)] h-fit">
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h3)]
@@ -101,7 +98,7 @@ export default function StoryCards() {
         </div>
 
         {/* Spacer so the last card unpins before the next section */}
-        <div aria-hidden className="pointer-events-none h-[10vh]" />
+        <div aria-hidden className="pointer-events-none h-[20vh]" />
       </div>
 
       {/* Mobile (no sticky) */}

@@ -80,7 +80,7 @@ export default function StoryCards() {
         </div>
 
         {/* Card 3 (headline only, centered) */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[3] md:mt-[var(--gap)] h-fit">
+        <div className="md:sticky md:top-[var(--stack-top-card3)] md:z-[3] md:mt-[var(--gap)] h-fit">
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h3)]
@@ -90,7 +90,6 @@ export default function StoryCards() {
               md:-rotate-[0.45deg]
               motion-reduce:transform-none
               flex flex-col justify-center
-              md:translate-y-[var(--delta)]
             "
           >
             <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold text-gradient-warm">
@@ -98,6 +97,9 @@ export default function StoryCards() {
             </h3>
           </article>
         </div>
+
+        {/* Spacer so the last card unpins before the next section */}
+        <div aria-hidden className="pointer-events-none h-[200vh]" />
       </div>
 
       {/* Mobile (no sticky) */}

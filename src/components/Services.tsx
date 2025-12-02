@@ -34,7 +34,7 @@ const TrustStatItem = ({ end, suffix = "", value, label, color, delay = 0 }: Tru
 
 export default function Services() {
   return (
-    <section id="services" className="py-24 relative overflow-hidden">
+    <section id="services" className="pt-12 pb-24 relative overflow-hidden">
       {/* Background elements removed for cleaner look */}
 
       <div className="container mx-auto px-6 relative z-10">

@@ -10,7 +10,7 @@ const items = [
 
 export default function Outcomes() {
   return (
-    <section aria-labelledby="outcomes-heading" className="pt-16 pb-8">
+    <section aria-labelledby="outcomes-heading" className="pt-16 pb-4">
       <div className="container mx-auto px-6">
         <h2 id="outcomes-heading" className="sr-only">Outcomes</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

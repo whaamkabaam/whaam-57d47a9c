@@ -16,7 +16,7 @@ import Navigation from "@/components/Navigation";
 import InteractiveBackground from "@/components/InteractiveBackground";
 
 import Outcomes from "@/components/Outcomes";
-import Reviews from "@/components/Reviews";
+import ReviewsParallax from "@/components/ReviewsParallax";
 import StickyCTA from "@/components/StickyCTA";
 
 import CookieConsent from "@/components/CookieConsent";
@@ -58,9 +58,9 @@ const Index = () => {
       {/* Story Cards with integrated CredibilityStrip */}
       <StoryCards />
 
-      {/* Reviews */}
-      <section id="reviews" className="py-16">
-        <Reviews />
+      {/* Reviews Parallax Gallery */}
+      <section id="reviews">
+        <ReviewsParallax />
       </section>
 
       {/* Outcomes grid */}

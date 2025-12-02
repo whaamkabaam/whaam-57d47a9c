@@ -5,25 +5,12 @@ export default function StoryCards() {
   return (
     <section
       aria-labelledby="story-cards-heading"
-      className="
-        relative isolate z-0 mx-auto max-w-6xl px-4 py-8 md:py-12
-        md:[--stack-top:220px]      /* clears navbar + larger gap + credibility strip */
-        md:[--gap:8vh]              /* optimized spacing between cards */
-        md:[--card-w:68vw]          /* narrower for better text wrap */
-        md:[--card-max:720px]
-
-        /* heights */
-        md:[--h12:300px]            /* #1 & #2 min height */
-        md:[--h3:240px]             /* #3 min height (~20% shorter) */
-
-        /* compensation so 2→3 looks same as 1→2 */
-        md:[--delta:calc((var(--h12)-var(--h3))/2)]
-      "
+      className="relative isolate z-0 mx-auto max-w-6xl px-4 py-8 md:py-12"
     >
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
-      {/* Pin + stack */}
-      <div className="relative">
+      {/* Sticky container - fixed height determines when sticky elements release */}
+      <div className="relative md:min-h-[1200px]">
         {/* CredibilityStrip - first sticky element */}
         <div className="md:sticky md:top-[120px] md:z-[4] h-fit py-4">
           <div className="flex justify-center px-6">
@@ -35,11 +22,12 @@ export default function StoryCards() {
             </LiquidGlassCard>
           </div>
         </div>
-        {/* Card 1 */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[1] h-fit">
+
+        {/* Card 1 - stacks at base top position */}
+        <div className="md:sticky md:top-[220px] md:z-[1] h-fit md:pt-4">
           <article
             className="
-              group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
+              group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[300px]
               relative rounded-[26px] border border-white/20 bg-gray-900/95
               p-6 md:px-10 md:py-10 shadow-2xl
               overflow-hidden isolate
@@ -63,11 +51,11 @@ export default function StoryCards() {
           </article>
         </div>
 
-        {/* Card 2 */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[2] md:mt-[var(--gap)] h-fit">
+        {/* Card 2 - incremented top value for stacking */}
+        <div className="md:sticky md:top-[240px] md:z-[2] h-fit md:pt-[8vh]">
           <article
             className="
-              group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
+              group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[300px]
               relative rounded-[26px] border border-white/20 bg-gray-900/95
               p-6 md:px-10 md:py-10 shadow-2xl
               overflow-hidden isolate
@@ -91,11 +79,11 @@ export default function StoryCards() {
           </article>
         </div>
 
-        {/* Card 3 (headline only, centered) */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[3] md:mt-[var(--gap)] h-fit">
+        {/* Card 3 - final incremented top value */}
+        <div className="md:sticky md:top-[260px] md:z-[3] h-fit md:pt-[8vh]">
           <article
             className="
-              group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h3)]
+              group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[240px]
               relative rounded-[26px] border border-white/20 bg-gray-900/95
               p-6 md:px-10 md:py-10 shadow-2xl
               overflow-hidden isolate
@@ -109,9 +97,6 @@ export default function StoryCards() {
             </h3>
           </article>
         </div>
-
-        {/* Spacer to allow cards to fully stack before section ends */}
-        <div className="hidden md:block md:h-[calc(var(--h3)+var(--gap))]" aria-hidden="true" />
       </div>
 
       {/* Mobile (no sticky) */}

@@ -52,7 +52,7 @@ export default function StoryCards() {
         </div>
 
         {/* Card 2 - margin-top delays entry */}
-        <div className="md:sticky md:top-56 md:z-20 md:mt-24 h-fit">
+        <div className="md:sticky md:top-56 md:z-20 md:mt-16 h-fit">
           <article
             className="
               group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[300px]
@@ -80,7 +80,7 @@ export default function StoryCards() {
         </div>
 
         {/* Card 3 - margin-top delays entry */}
-        <div className="md:sticky md:top-64 md:z-30 md:mt-24 h-fit">
+        <div className="md:sticky md:top-64 md:z-30 md:mt-16 h-fit">
           <article
             className="
               group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[240px]

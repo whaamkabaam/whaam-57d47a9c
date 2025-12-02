@@ -6,7 +6,7 @@ export default function StoryCards() {
     <section
       aria-labelledby="story-cards-heading"
       className="
-        relative z-0 mx-auto max-w-6xl px-4 py-8 md:py-12
+        relative isolate z-0 mx-auto max-w-6xl px-4 py-8 md:py-12
         md:[--stack-top:200px]      /* clears navbar + gap + credibility strip */
         md:[--gap:8vh]              /* optimized spacing between cards */
         md:[--card-w:68vw]          /* narrower for better text wrap */
@@ -22,16 +22,14 @@ export default function StoryCards() {
     >
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
-      {/* Overflow-hidden wrapper forces sticky to unstick when section scrolls away */}
-      <div className="md:overflow-hidden">
-        {/* Pin + stack */}
-        <div className="relative">
+      {/* Pin + stack */}
+      <div className="relative">
         {/* CredibilityStrip - first sticky element */}
         <div className="md:sticky md:top-[100px] md:z-[4] h-fit py-4">
           <div className="flex justify-center px-6">
             <LiquidGlassCard
               variant="secondary"
-              className="text-center py-3 px-6 text-sm text-muted-foreground max-w-4xl w-full"
+              className="text-center py-3 px-6 text-sm text-muted-foreground max-w-2xl w-full"
             >
               +1100 Real Clients • Instant Start • Real Benefits • 55.000+ Member Discord
             </LiquidGlassCard>
@@ -42,9 +40,9 @@ export default function StoryCards() {
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
-              relative rounded-[26px] border border-white/20 bg-gray-900
+              relative rounded-[26px] border border-white/20 bg-gray-900/95
               p-6 md:px-10 md:py-10 shadow-2xl
-              overflow-hidden
+              overflow-hidden isolate
               md:-rotate-[0.8deg]
               motion-reduce:transform-none
             "
@@ -70,9 +68,9 @@ export default function StoryCards() {
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
-              relative rounded-[26px] border border-white/20 bg-gray-900
+              relative rounded-[26px] border border-white/20 bg-gray-900/95
               p-6 md:px-10 md:py-10 shadow-2xl
-              overflow-hidden
+              overflow-hidden isolate
               md:rotate-[0.8deg]
               motion-reduce:transform-none
             "
@@ -98,9 +96,9 @@ export default function StoryCards() {
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h3)]
-              relative rounded-[26px] border border-white/20 bg-gray-900
+              relative rounded-[26px] border border-white/20 bg-gray-900/95
               p-6 md:px-10 md:py-10 shadow-2xl
-              overflow-hidden
+              overflow-hidden isolate
               md:-rotate-[0.45deg]
               motion-reduce:transform-none
               flex flex-col justify-center
@@ -113,8 +111,7 @@ export default function StoryCards() {
         </div>
 
         {/* Spacer to allow cards to fully stack before section ends */}
-        <div className="hidden md:block md:h-[350px]" aria-hidden="true" />
-        </div>
+        <div className="hidden md:block md:h-[80px]" aria-hidden="true" />
       </div>
 
       {/* Mobile (no sticky) */}

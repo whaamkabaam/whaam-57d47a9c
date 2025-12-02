@@ -64,7 +64,7 @@ const Index = () => {
       </section>
 
       {/* Outcomes grid */}
-      <section id="outcomes" className="py-12 relative z-10 md:-mt-24">
+      <section id="outcomes" className="py-12 relative z-10 md:-mt-16">
         <Outcomes />
       </section>
 

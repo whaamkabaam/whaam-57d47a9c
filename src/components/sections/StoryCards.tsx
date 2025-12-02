@@ -5,7 +5,7 @@ export default function StoryCards() {
       aria-labelledby="story-cards-heading"
       className="
         relative isolate z-0 mx-auto max-w-6xl px-4 py-8 md:py-12
-        md:[--stack-top:184px]      /* clears the navbar */
+        md:[--stack-top:200px]      /* clears navbar + gap + credibility strip */
         md:[--gap:8vh]              /* optimized spacing between cards */
         md:[--card-w:68vw]          /* narrower for better text wrap */
         md:[--card-max:720px]
@@ -98,7 +98,7 @@ export default function StoryCards() {
         </div>
 
         {/* Spacer to allow cards to fully stack before section ends */}
-        <div className="hidden md:block md:h-[calc(100vh-var(--stack-top)-var(--h3))]" aria-hidden="true" />
+        <div className="hidden md:block md:h-[80px]" aria-hidden="true" />
       </div>
 
       {/* Mobile (no sticky) */}

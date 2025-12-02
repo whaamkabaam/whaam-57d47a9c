@@ -9,10 +9,10 @@ export default function StoryCards() {
     >
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
-      {/* Sticky container - fixed height determines when sticky elements release */}
-      <div className="relative md:min-h-[1200px]">
-        {/* CredibilityStrip - first sticky element */}
-        <div className="md:sticky md:top-[120px] md:z-[4] h-fit py-4">
+      {/* Sticky container - viewport-based height + bottom padding prevents shift */}
+      <div className="relative md:min-h-[150vh] md:pb-24">
+        {/* CredibilityStrip */}
+        <div className="md:sticky md:top-24 md:z-40 h-fit py-4">
           <div className="flex justify-center px-6">
             <LiquidGlassCard
               variant="secondary"
@@ -23,8 +23,8 @@ export default function StoryCards() {
           </div>
         </div>
 
-        {/* Card 1 - stacks at base top position */}
-        <div className="md:sticky md:top-[220px] md:z-[1] h-fit md:pt-4">
+        {/* Card 1 */}
+        <div className="md:sticky md:top-48 md:z-10 h-fit">
           <article
             className="
               group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[300px]
@@ -51,8 +51,8 @@ export default function StoryCards() {
           </article>
         </div>
 
-        {/* Card 2 - incremented top value for stacking */}
-        <div className="md:sticky md:top-[240px] md:z-[2] h-fit md:pt-[8vh]">
+        {/* Card 2 - margin-top delays entry */}
+        <div className="md:sticky md:top-56 md:z-20 md:mt-24 h-fit">
           <article
             className="
               group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[300px]
@@ -79,8 +79,8 @@ export default function StoryCards() {
           </article>
         </div>
 
-        {/* Card 3 - final incremented top value */}
-        <div className="md:sticky md:top-[260px] md:z-[3] h-fit md:pt-[8vh]">
+        {/* Card 3 - margin-top delays entry */}
+        <div className="md:sticky md:top-64 md:z-30 md:mt-24 h-fit">
           <article
             className="
               group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[240px]

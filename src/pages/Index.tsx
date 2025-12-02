@@ -14,7 +14,7 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Navigation from "@/components/Navigation";
 import InteractiveBackground from "@/components/InteractiveBackground";
-import CredibilityStrip from "@/components/CredibilityStrip";
+
 import Outcomes from "@/components/Outcomes";
 import Reviews from "@/components/Reviews";
 import StickyCTA from "@/components/StickyCTA";
@@ -55,13 +55,8 @@ const Index = () => {
         <Hero />
       </section>
 
-      {/* Combined Sticky Section - CredibilityStrip + Story Cards */}
-      <section className="relative">
-        <div className="relative">
-          <CredibilityStrip />
-          <StoryCards />
-        </div>
-      </section>
+      {/* Story Cards with integrated CredibilityStrip */}
+      <StoryCards />
 
       {/* Outcomes grid */}
       <section id="outcomes" className="py-12 relative z-10 md:-mt-16">

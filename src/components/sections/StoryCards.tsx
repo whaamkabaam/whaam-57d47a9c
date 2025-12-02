@@ -1,4 +1,6 @@
 // src/components/sections/StoryCards.tsx
+import { LiquidGlassCard } from "../LiquidGlassEffects";
+
 export default function StoryCards() {
   return (
     <section
@@ -22,6 +24,17 @@ export default function StoryCards() {
 
       {/* Pin + stack */}
       <div className="relative">
+        {/* CredibilityStrip - first sticky element */}
+        <div className="md:sticky md:top-[100px] md:z-[4] h-fit py-4">
+          <div className="flex justify-center px-6">
+            <LiquidGlassCard
+              variant="secondary"
+              className="text-center py-3 px-6 text-sm text-muted-foreground max-w-2xl w-full"
+            >
+              +1100 Real Clients • Instant Start • Real Benefits • 55.000+ Member Discord
+            </LiquidGlassCard>
+          </div>
+        </div>
         {/* Card 1 */}
         <div className="md:sticky md:top-[var(--stack-top)] md:z-[1] h-fit">
           <article

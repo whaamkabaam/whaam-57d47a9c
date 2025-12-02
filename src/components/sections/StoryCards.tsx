@@ -7,7 +7,7 @@ export default function StoryCards() {
       aria-labelledby="story-cards-heading"
       className="
         relative isolate z-0 mx-auto max-w-6xl px-4 py-8 md:py-12
-        md:[--stack-top:200px]      /* clears navbar + gap + credibility strip */
+        md:[--stack-top:220px]      /* clears navbar + larger gap + credibility strip */
         md:[--gap:8vh]              /* optimized spacing between cards */
         md:[--card-w:68vw]          /* narrower for better text wrap */
         md:[--card-max:720px]
@@ -25,11 +25,11 @@ export default function StoryCards() {
       {/* Pin + stack */}
       <div className="relative">
         {/* CredibilityStrip - first sticky element */}
-        <div className="md:sticky md:top-[100px] md:z-[4] h-fit py-4">
+        <div className="md:sticky md:top-[120px] md:z-[4] h-fit py-4">
           <div className="flex justify-center px-6">
             <LiquidGlassCard
               variant="secondary"
-              className="text-center py-3 px-6 text-sm text-muted-foreground max-w-2xl w-full"
+              className="text-center py-3 px-6 text-sm text-muted-foreground max-w-3xl w-full"
             >
               +1100 Real Clients • Instant Start • Real Benefits • 55.000+ Member Discord
             </LiquidGlassCard>
@@ -111,7 +111,7 @@ export default function StoryCards() {
         </div>
 
         {/* Spacer to allow cards to fully stack before section ends */}
-        <div className="hidden md:block md:h-[80px]" aria-hidden="true" />
+        <div className="hidden md:block md:h-[calc(var(--h3)+var(--gap))]" aria-hidden="true" />
       </div>
 
       {/* Mobile (no sticky) */}

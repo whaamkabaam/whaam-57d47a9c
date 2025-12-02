@@ -12,7 +12,7 @@ export default function StoryCards() {
       {/* Sticky container - viewport-based height + bottom padding prevents shift */}
       <div className="relative md:min-h-[150vh] md:pb-24">
         {/* CredibilityStrip */}
-        <div className="md:sticky md:top-24 md:z-40 h-fit py-4">
+        <div className="md:sticky md:top-24 md:z-[1] h-fit py-4">
           <div className="flex justify-center px-6">
             <LiquidGlassCard
               variant="secondary"

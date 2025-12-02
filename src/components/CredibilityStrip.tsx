@@ -2,7 +2,7 @@ import { LiquidGlassCard } from "./LiquidGlassEffects";
 
 export default function CredibilityStrip() {
   return (
-    <section aria-label="credibility" className="sticky top-[80px] z-40 py-6">
+    <section aria-label="credibility" className="sticky top-[80px] z-40 py-8 md:py-10">
       <div className="container mx-auto px-6">
         <LiquidGlassCard
           variant="secondary"

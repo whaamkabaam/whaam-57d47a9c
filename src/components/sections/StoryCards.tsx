@@ -9,8 +9,22 @@ export default function StoryCards() {
     >
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
-      {/* CredibilityStrip - OUTSIDE card container for independent sticky */}
-      <div className="md:sticky md:top-24 md:z-50 py-4">
+      {/* CredibilityStrip wrapper - absolute positioned to span full section height */}
+      <div className="hidden md:block absolute inset-x-0 top-0 bottom-0 pointer-events-none">
+        <div className="sticky top-24 z-50 py-4 pointer-events-auto">
+          <div className="flex justify-center px-6">
+            <LiquidGlassCard
+              variant="secondary"
+              className="text-center py-3 px-6 text-sm text-muted-foreground max-w-3xl w-full"
+            >
+              +1100 Real Clients • Instant Start • Real Benefits • 55.000+ Member Discord
+            </LiquidGlassCard>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile-only strip (not sticky) */}
+      <div className="md:hidden py-4">
         <div className="flex justify-center px-6">
           <LiquidGlassCard
             variant="secondary"
@@ -21,7 +35,7 @@ export default function StoryCards() {
         </div>
       </div>
 
-      {/* Card stacking container - separate from strip */}
+      {/* Card stacking container */}
       <div className="relative md:min-h-[150vh] md:pb-24">
         {/* Card 1 */}
         <div className="md:sticky md:top-48 md:z-10 h-fit">

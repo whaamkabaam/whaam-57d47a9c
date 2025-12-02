@@ -21,9 +21,9 @@ export default function StoryCards() {
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
       {/* Pin + stack */}
-      <div className="relative md:h-[calc(2*var(--gap)+var(--h12))]">
+      <div className="relative">
         {/* Card 1 */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[1] h-fit">
+        <div className="md:sticky md:top-[var(--stack-top)] md:z-[1] h-fit" style={{ marginTop: 0 }}>
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
@@ -51,7 +51,7 @@ export default function StoryCards() {
         </div>
 
         {/* Card 2 */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[2] md:mt-[var(--gap)] h-fit">
+        <div className="md:sticky md:top-[var(--stack-top)] md:z-[2] h-fit" style={{ marginTop: 'var(--gap)' }}>
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
@@ -79,7 +79,7 @@ export default function StoryCards() {
         </div>
 
         {/* Card 3 (headline only, centered) */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[3] md:mt-[var(--gap)] h-fit">
+        <div className="md:sticky md:top-[var(--stack-top)] md:z-[3] h-fit" style={{ marginTop: 'var(--gap)' }}>
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h3)]
@@ -96,6 +96,9 @@ export default function StoryCards() {
             </h3>
           </article>
         </div>
+
+        {/* Sentinel - stops scrolling after cards stack */}
+        <div className="md:h-[calc(100vh-var(--stack-top)-var(--h3))]" aria-hidden="true" />
       </div>
 
       {/* Mobile (no sticky) */}

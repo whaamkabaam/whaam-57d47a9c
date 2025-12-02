@@ -55,14 +55,12 @@ const Index = () => {
         <Hero />
       </section>
 
-      {/* Credibility strip */}
-      <section>
-        <CredibilityStrip />
-      </section>
-
-      {/* Story Cards */}
-      <section>
-        <StoryCards />
+      {/* Combined Sticky Section - CredibilityStrip + Story Cards */}
+      <section className="relative">
+        <div className="relative md:h-[250vh]">
+          <CredibilityStrip />
+          <StoryCards />
+        </div>
       </section>
 
       {/* Outcomes grid */}

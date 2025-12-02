@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Privacy from "./pages/Privacy";
 import TermsOfService from "./pages/TermsOfService";
 import ReviewsGallery from "./pages/ReviewsGallery";
+import Backend from "./pages/Backend";
 import NotFound from "./pages/NotFound";
 import InteractiveBackground from "./components/InteractiveBackground";
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/reviews" element={<ReviewsGallery />} />
+          <Route path="/backend" element={<Backend />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

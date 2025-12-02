@@ -25,103 +25,84 @@ export default function StoryCards() {
       <div className="relative md:min-h-[120vh] md:pb-24">
         {/* Card 1 */}
         <div className="md:sticky md:top-48 md:z-10 h-fit">
-          <article
-            className="
-              group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[300px]
-              relative rounded-[26px] border border-white/20 bg-gray-900/95
-              p-6 md:px-10 md:py-10 shadow-2xl
-              overflow-hidden isolate
-              md:-rotate-[0.8deg]
-              motion-reduce:transform-none
-            "
+          <LiquidGlassCard
+            variant="secondary"
+            className="mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[300px] p-6 md:px-10 md:py-10 md:-rotate-[0.8deg] motion-reduce:transform-none"
           >
             <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold text-gradient-warm">
               Aiming can be hard. Face your Issues.
             </h3>
 
-            <div className="mt-4 text-base md:text-lg text-white/90 leading-relaxed space-y-4">
+            <div className="mt-4 text-base md:text-lg glass-text leading-relaxed space-y-4">
               <p>
-                You often feel like your <strong>Sensitivity</strong> is either <strong>too fast</strong> or <strong>too slow</strong>, and
-                through that <strong>not precise enough</strong>. So you often feel <strong>frustrated</strong> and feel like it <strong>limits</strong> your full potential as a player.
+                You often feel like your <strong className="glass-text-contrast">Sensitivity</strong> is either <strong className="glass-text-contrast">too fast</strong> or <strong className="glass-text-contrast">too slow</strong>, and
+                through that <strong className="glass-text-contrast">not precise enough</strong>. So you often feel <strong className="glass-text-contrast">frustrated</strong> and feel like it <strong className="glass-text-contrast">limits</strong> your full potential as a player.
               </p>
               <p>
-                Aiming should just feel <strong>natural</strong> for maximized <strong>confidence</strong> and <strong>fun</strong>.
+                Aiming should just feel <strong className="glass-text-contrast">natural</strong> for maximized <strong className="glass-text-contrast">confidence</strong> and <strong className="glass-text-contrast">fun</strong>.
               </p>
             </div>
-          </article>
+          </LiquidGlassCard>
         </div>
 
         {/* Card 2 - margin-top delays entry */}
         <div className="md:sticky md:top-56 md:z-20 md:mt-16 h-fit">
-          <article
-            className="
-              group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[300px]
-              relative rounded-[26px] border border-white/20 bg-gray-900/95
-              p-6 md:px-10 md:py-10 shadow-2xl
-              overflow-hidden isolate
-              md:rotate-[0.8deg]
-              motion-reduce:transform-none
-            "
+          <LiquidGlassCard
+            variant="secondary"
+            className="mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[300px] p-6 md:px-10 md:py-10 md:rotate-[0.8deg] motion-reduce:transform-none"
           >
             <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold text-gradient-warm">
               I know that feeling.
             </h3>
 
-            <div className="mt-4 text-base md:text-lg text-white/90 leading-relaxed space-y-4">
+            <div className="mt-4 text-base md:text-lg glass-text leading-relaxed space-y-4">
               <p>
-                That is how I started four years ago before exploring <strong>Mouse Acceleration</strong>.
+                That is how I started four years ago before exploring <strong className="glass-text-contrast">Mouse Acceleration</strong>.
               </p>
               <p>
-                And within my journey I gained a total of over <strong>1900 RR</strong> in <strong>VALORANT</strong> and have
-                <strong> 75k followers</strong> on <strong>TikTok</strong>, where I am known for my Aim.
+                And within my journey I gained a total of over <strong className="glass-text-contrast">1900 RR</strong> in <strong className="glass-text-contrast">VALORANT</strong> and have
+                <strong className="glass-text-contrast"> 75k followers</strong> on <strong className="glass-text-contrast">TikTok</strong>, where I am known for my Aim.
               </p>
             </div>
-          </article>
+          </LiquidGlassCard>
         </div>
 
         {/* Card 3 - margin-top delays entry */}
         <div className="md:sticky md:top-64 md:z-30 md:mt-16 h-fit">
-          <article
-            className="
-              group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[240px]
-              relative rounded-[26px] border border-white/20 bg-gray-900/95
-              p-6 md:px-10 md:py-10 shadow-2xl
-              overflow-hidden isolate
-              md:-rotate-[0.45deg]
-              motion-reduce:transform-none
-              flex flex-col justify-center
-            "
+          <LiquidGlassCard
+            variant="secondary"
+            className="mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[240px] p-6 md:px-10 md:py-10 md:-rotate-[0.45deg] motion-reduce:transform-none flex flex-col justify-center"
           >
             <h3 className="text-2xl md:text-[30px] leading-tight tracking-[-0.01em] font-extrabold text-gradient-warm">
               That is why I want to share my knowledge to help you become your best self.
             </h3>
-          </article>
+          </LiquidGlassCard>
         </div>
       </div>
 
       {/* Mobile (no sticky) */}
       <div className="md:hidden mt-8 space-y-6">
-        <div className="rounded-[26px] border border-white/20 bg-gray-900/95 p-6 shadow-2xl">
+        <LiquidGlassCard variant="secondary" className="p-6">
           <h3 className="text-2xl font-extrabold text-gradient-warm">
             Aiming can be hard. Face your Issues.
           </h3>
-          <p className="mt-3 text-white/90 leading-relaxed">
-            You often feel like your <strong>Sensitivity</strong> is either <strong>too fast</strong> or <strong>too slow</strong>, and through that <strong>not precise enough</strong>. So you often feel <strong>frustrated</strong> and feel like it <strong>limits</strong> your full potential as a player. Aiming should just feel <strong>natural</strong> for maximized <strong>confidence</strong> and <strong>fun</strong>.
+          <p className="mt-3 glass-text leading-relaxed">
+            You often feel like your <strong className="glass-text-contrast">Sensitivity</strong> is either <strong className="glass-text-contrast">too fast</strong> or <strong className="glass-text-contrast">too slow</strong>, and through that <strong className="glass-text-contrast">not precise enough</strong>. So you often feel <strong className="glass-text-contrast">frustrated</strong> and feel like it <strong className="glass-text-contrast">limits</strong> your full potential as a player. Aiming should just feel <strong className="glass-text-contrast">natural</strong> for maximized <strong className="glass-text-contrast">confidence</strong> and <strong className="glass-text-contrast">fun</strong>.
           </p>
-        </div>
-        <div className="rounded-[26px] border border-white/20 bg-gray-900/95 p-6 shadow-2xl">
+        </LiquidGlassCard>
+        <LiquidGlassCard variant="secondary" className="p-6">
           <h3 className="text-2xl font-extrabold text-gradient-warm">
             I know that feeling.
           </h3>
-          <p className="mt-3 text-white/90 leading-relaxed">
-            That is how I started four years ago before exploring <strong>Mouse Acceleration</strong>. I reached <strong>1900 RR</strong> in <strong>VALORANT</strong> and have <strong>75k</strong> TikTok followers for my aim work.
+          <p className="mt-3 glass-text leading-relaxed">
+            That is how I started four years ago before exploring <strong className="glass-text-contrast">Mouse Acceleration</strong>. I reached <strong className="glass-text-contrast">1900 RR</strong> in <strong className="glass-text-contrast">VALORANT</strong> and have <strong className="glass-text-contrast">75k</strong> TikTok followers for my aim work.
           </p>
-        </div>
-        <div className="rounded-[26px] border border-white/20 bg-gray-900/95 p-6 shadow-2xl">
+        </LiquidGlassCard>
+        <LiquidGlassCard variant="secondary" className="p-6">
           <h3 className="text-2xl font-extrabold text-gradient-warm">
             That is why I want to share my knowledge to help you become your best self.
           </h3>
-        </div>
+        </LiquidGlassCard>
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Upload, CheckCircle, XCircle, Loader2, Trash2, RotateCcw } from "lucide-react";
+import { Upload, CheckCircle, XCircle, Loader2, Trash2, RotateCcw, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { LiquidGlassCard } from "@/components/LiquidGlassEffects";
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 interface QueuedFile {
   id: string;
@@ -17,14 +18,33 @@ interface QueuedFile {
 }
 
 const GAME_TAGS = ["Valorant", "CS2", "Apex Legends", "Fortnite", "League of Legends", "Other"];
+const BACKEND_PASSWORD = "whaamkabaam2024";
 
 export default function Backend() {
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    () => sessionStorage.getItem("backend-auth") === "true"
+  );
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+
   const [queue, setQueue] = useState<QueuedFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [gameTag, setGameTag] = useState<string>("");
   const [isFeatured, setIsFeatured] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const { toast } = useToast();
+
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passwordInput === BACKEND_PASSWORD) {
+      sessionStorage.setItem("backend-auth", "true");
+      setIsAuthenticated(true);
+      setPasswordError(false);
+    } else {
+      setPasswordError(true);
+      setPasswordInput("");
+    }
+  };
 
   const addFiles = useCallback((files: FileList | File[]) => {
     const newFiles: QueuedFile[] = Array.from(files)
@@ -103,7 +123,6 @@ export default function Backend() {
       const success = await uploadFile(queuedFile);
       if (success) successCount++;
       else errorCount++;
-      // Small delay between uploads to avoid rate limits
       await new Promise((r) => setTimeout(r, 300));
     }
 
@@ -131,6 +150,39 @@ export default function Backend() {
     success: queue.filter((f) => f.status === "success").length,
     error: queue.filter((f) => f.status === "error").length,
   };
+
+  // Password protection screen
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <LiquidGlassCard variant="secondary" className="p-8 w-full max-w-sm">
+          <form onSubmit={handlePasswordSubmit} className="space-y-6">
+            <div className="text-center">
+              <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
+              <h1 className="text-2xl font-bold text-foreground mb-2">Backend Access</h1>
+              <p className="text-sm text-muted-foreground">Enter password to continue</p>
+            </div>
+            <div className="space-y-2">
+              <Input
+                type="password"
+                placeholder="Password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                className={passwordError ? "border-destructive animate-shake" : ""}
+                autoFocus
+              />
+              {passwordError && (
+                <p className="text-sm text-destructive">Incorrect password</p>
+              )}
+            </div>
+            <Button type="submit" className="w-full">
+              Unlock
+            </Button>
+          </form>
+        </LiquidGlassCard>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background p-6 md:p-12">

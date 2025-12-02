@@ -59,7 +59,7 @@ const Index = () => {
       <StoryCards />
 
       {/* Outcomes grid */}
-      <section id="outcomes" className="py-12 relative z-20 md:-mt-[200px] bg-transparent">
+      <section id="outcomes" className="py-12 relative z-10 bg-[#121212]">
         <Outcomes />
       </section>
 

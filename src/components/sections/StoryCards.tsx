@@ -22,8 +22,10 @@ export default function StoryCards() {
     >
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
-      {/* Pin + stack */}
-      <div className="relative">
+      {/* Overflow-hidden wrapper forces sticky to unstick when section scrolls away */}
+      <div className="md:overflow-hidden">
+        {/* Pin + stack */}
+        <div className="relative">
         {/* CredibilityStrip - first sticky element */}
         <div className="md:sticky md:top-[100px] md:z-[4] h-fit py-4">
           <div className="flex justify-center px-6">
@@ -40,9 +42,9 @@ export default function StoryCards() {
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
-              relative rounded-[26px] border border-white/20 bg-gray-900/95
+              relative rounded-[26px] border border-white/20 bg-gray-900
               p-6 md:px-10 md:py-10 shadow-2xl
-              overflow-hidden isolate
+              overflow-hidden
               md:-rotate-[0.8deg]
               motion-reduce:transform-none
             "
@@ -68,9 +70,9 @@ export default function StoryCards() {
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
-              relative rounded-[26px] border border-white/20 bg-gray-900/95
+              relative rounded-[26px] border border-white/20 bg-gray-900
               p-6 md:px-10 md:py-10 shadow-2xl
-              overflow-hidden isolate
+              overflow-hidden
               md:rotate-[0.8deg]
               motion-reduce:transform-none
             "
@@ -96,9 +98,9 @@ export default function StoryCards() {
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h3)]
-              relative rounded-[26px] border border-white/20 bg-gray-900/95
+              relative rounded-[26px] border border-white/20 bg-gray-900
               p-6 md:px-10 md:py-10 shadow-2xl
-              overflow-hidden isolate
+              overflow-hidden
               md:-rotate-[0.45deg]
               motion-reduce:transform-none
               flex flex-col justify-center
@@ -111,7 +113,8 @@ export default function StoryCards() {
         </div>
 
         {/* Spacer to allow cards to fully stack before section ends */}
-        <div className="hidden md:block md:h-[300px]" aria-hidden="true" />
+        <div className="hidden md:block md:h-[350px]" aria-hidden="true" />
+        </div>
       </div>
 
       {/* Mobile (no sticky) */}

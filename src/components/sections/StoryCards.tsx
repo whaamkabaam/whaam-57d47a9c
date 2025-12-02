@@ -23,7 +23,7 @@ export default function StoryCards() {
       {/* Pin + stack */}
       <div className="relative">
         {/* Card 1 */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[1] h-fit" style={{ marginTop: 0 }}>
+        <div className="md:sticky md:top-[var(--stack-top)] md:z-[1] h-fit">
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
@@ -51,7 +51,7 @@ export default function StoryCards() {
         </div>
 
         {/* Card 2 */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[2] h-fit" style={{ marginTop: 'var(--gap)' }}>
+        <div className="md:sticky md:top-[var(--stack-top)] md:z-[2] md:mt-[var(--gap)] h-fit">
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h12)]
@@ -79,7 +79,7 @@ export default function StoryCards() {
         </div>
 
         {/* Card 3 (headline only, centered) */}
-        <div className="md:sticky md:top-[var(--stack-top)] md:z-[3] h-fit" style={{ marginTop: 'var(--gap)' }}>
+        <div className="md:sticky md:top-[var(--stack-top)] md:z-[3] md:mt-[var(--gap)] h-fit">
           <article
             className="
               group mx-auto md:w-[var(--card-w)] md:max-w-[var(--card-max)] md:min-h-[var(--h3)]
@@ -97,8 +97,8 @@ export default function StoryCards() {
           </article>
         </div>
 
-        {/* Sentinel - stops scrolling after cards stack */}
-        <div className="md:h-[calc(100vh-var(--stack-top)-var(--h3))]" aria-hidden="true" />
+        {/* Spacer to allow cards to fully stack before section ends */}
+        <div className="hidden md:block md:h-[var(--stack-top)]" aria-hidden="true" />
       </div>
 
       {/* Mobile (no sticky) */}

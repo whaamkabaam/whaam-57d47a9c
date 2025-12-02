@@ -55,14 +55,14 @@ const Index = () => {
         <Hero />
       </section>
 
-      {/* Story Cards */}
-      <section>
-        <StoryCards />
-      </section>
-
       {/* Credibility strip */}
       <section>
         <CredibilityStrip />
+      </section>
+
+      {/* Story Cards */}
+      <section>
+        <StoryCards />
       </section>
 
       {/* Outcomes grid */}

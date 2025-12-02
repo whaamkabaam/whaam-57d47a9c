@@ -9,10 +9,10 @@ export default function StoryCards() {
     >
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 
-      {/* Sticky container - viewport-based height + bottom padding prevents shift */}
-      <div className="relative md:min-h-[150vh] md:pb-24">
+      {/* Sticky container - extra height + bottom padding prevents unstick collision */}
+      <div className="relative md:min-h-[250vh] md:pb-[40vh]">
         {/* CredibilityStrip */}
-        <div className="md:sticky md:top-24 md:z-40 h-fit py-4">
+        <div className="md:sticky md:top-24 md:z-40 h-fit py-4 mb-12">
           <div className="flex justify-center px-6">
             <LiquidGlassCard
               variant="secondary"
@@ -51,8 +51,8 @@ export default function StoryCards() {
           </article>
         </div>
 
-        {/* Card 2 - margin-top delays entry */}
-        <div className="md:sticky md:top-56 md:z-20 md:mt-24 h-fit">
+        {/* Card 2 - spaced via padding, not margin */}
+        <div className="md:sticky md:top-56 md:z-20 h-fit md:pt-24">
           <article
             className="
               group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[300px]
@@ -79,8 +79,8 @@ export default function StoryCards() {
           </article>
         </div>
 
-        {/* Card 3 - margin-top delays entry */}
-        <div className="md:sticky md:top-64 md:z-30 md:mt-24 h-fit">
+        {/* Card 3 - spaced via padding, not margin */}
+        <div className="md:sticky md:top-64 md:z-30 h-fit md:pt-24">
           <article
             className="
               group mx-auto md:w-[68vw] md:max-w-[720px] md:min-h-[240px]

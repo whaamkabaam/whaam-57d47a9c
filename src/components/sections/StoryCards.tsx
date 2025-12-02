@@ -16,7 +16,7 @@ export default function StoryCards() {
             variant="secondary"
             className="text-center py-3 px-6 text-sm text-muted-foreground max-w-3xl w-full"
           >
-            +1100 Real Clients • Instant Start • Real Benefits • 55.000+ Member Discord
+            +1100 Real Clients • Instant Start • Real Benefits • 50.000+ Member Discord
           </LiquidGlassCard>
         </div>
       </div>
@@ -61,7 +61,7 @@ export default function StoryCards() {
               </p>
               <p>
                 And within my journey I gained a total of over <strong className="glass-text-contrast">1900 RR</strong> in <strong className="glass-text-contrast">VALORANT</strong> and have
-                <strong className="glass-text-contrast"> 75k followers</strong> on <strong className="glass-text-contrast">TikTok</strong>, where I am known for my Aim.
+                <strong className="glass-text-contrast"> 80k followers</strong> on <strong className="glass-text-contrast">TikTok</strong>, where I am known for my Aim.
               </p>
             </div>
           </LiquidGlassCard>
@@ -95,7 +95,7 @@ export default function StoryCards() {
             I know that feeling.
           </h3>
           <p className="mt-3 glass-text leading-relaxed">
-            That is how I started four years ago before exploring <strong className="glass-text-contrast">Mouse Acceleration</strong>. I reached <strong className="glass-text-contrast">1900 RR</strong> in <strong className="glass-text-contrast">VALORANT</strong> and have <strong className="glass-text-contrast">75k</strong> TikTok followers for my aim work.
+            That is how I started four years ago before exploring <strong className="glass-text-contrast">Mouse Acceleration</strong>. I reached <strong className="glass-text-contrast">1900 RR</strong> in <strong className="glass-text-contrast">VALORANT</strong> and have <strong className="glass-text-contrast">80k</strong> TikTok followers for my aim work.
           </p>
         </LiquidGlassCard>
         <LiquidGlassCard variant="secondary" className="p-6">

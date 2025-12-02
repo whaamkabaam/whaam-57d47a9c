@@ -8,7 +8,7 @@ export default function CredibilityStrip() {
           variant="secondary"
           className="text-center py-3 px-4 text-sm text-muted-foreground"
         >
-          +1100 Real Clients • Instant Start • Real Benefits • 55.000+ Member Discord
+          +1100 Real Clients • Instant Start • Real Benefits • 50.000+ Member Discord
         </LiquidGlassCard>
       </div>
     </section>

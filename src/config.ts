@@ -10,7 +10,7 @@ export const CONFIG = {
   },
   discord: {
     invite: "https://discord.com/invite/placeholder",
-    count: 55000,
+    count: 50000,
   },
   reviews: {
     count: 100,

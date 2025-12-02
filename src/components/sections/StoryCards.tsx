@@ -6,7 +6,7 @@ export default function StoryCards() {
     <section
       aria-labelledby="story-cards-heading"
       className="
-        relative isolate z-0 mx-auto max-w-6xl px-4 py-8 md:py-12
+        relative z-0 mx-auto max-w-6xl px-4 py-8 md:py-12
         md:[--stack-top:200px]      /* clears navbar + gap + credibility strip */
         md:[--gap:8vh]              /* optimized spacing between cards */
         md:[--card-w:68vw]          /* narrower for better text wrap */
@@ -29,7 +29,7 @@ export default function StoryCards() {
           <div className="flex justify-center px-6">
             <LiquidGlassCard
               variant="secondary"
-              className="text-center py-3 px-6 text-sm text-muted-foreground max-w-2xl w-full"
+              className="text-center py-3 px-6 text-sm text-muted-foreground max-w-4xl w-full"
             >
               +1100 Real Clients • Instant Start • Real Benefits • 55.000+ Member Discord
             </LiquidGlassCard>
@@ -111,7 +111,7 @@ export default function StoryCards() {
         </div>
 
         {/* Spacer to allow cards to fully stack before section ends */}
-        <div className="hidden md:block md:h-[80px]" aria-hidden="true" />
+        <div className="hidden md:block md:h-[300px]" aria-hidden="true" />
       </div>
 
       {/* Mobile (no sticky) */}

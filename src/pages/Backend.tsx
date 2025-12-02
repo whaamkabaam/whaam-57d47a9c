@@ -172,12 +172,12 @@ export default function Backend() {
           <div className="flex flex-wrap gap-6 items-center">
             <div className="flex-1 min-w-[200px]">
               <Label className="text-sm text-muted-foreground mb-2 block">Game Tag</Label>
-              <Select value={gameTag} onValueChange={setGameTag}>
+              <Select value={gameTag} onValueChange={(val) => setGameTag(val === "none" ? "" : val)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select game (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="none">None</SelectItem>
                   {GAME_TAGS.map((tag) => (
                     <SelectItem key={tag} value={tag}>{tag}</SelectItem>
                   ))}

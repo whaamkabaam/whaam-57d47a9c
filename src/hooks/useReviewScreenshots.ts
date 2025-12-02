@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface ReviewScreenshot {
@@ -13,6 +13,7 @@ export interface ReviewScreenshot {
 }
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const PAGE_SIZE = 20;
 
 function getPublicUrl(storagePath: string): string {
   return `${SUPABASE_URL}/storage/v1/object/public/reviews/${storagePath}`;
@@ -52,6 +53,40 @@ export function useReviewScreenshots(options?: {
         ...item,
         url: getPublicUrl(item.storage_path),
       }));
+    },
+  });
+}
+
+// Infinite scroll version for gallery
+export function useInfiniteReviewScreenshots(options?: {
+  gameTag?: string;
+}) {
+  return useInfiniteQuery({
+    queryKey: ["review-screenshots-infinite", options],
+    queryFn: async ({ pageParam = 0 }): Promise<ReviewScreenshot[]> => {
+      let query = supabase
+        .from("review_screenshots")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .range(pageParam, pageParam + PAGE_SIZE - 1);
+
+      if (options?.gameTag) {
+        query = query.eq("game_tag", options.gameTag);
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      return (data || []).map((item) => ({
+        ...item,
+        url: getPublicUrl(item.storage_path),
+      }));
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length < PAGE_SIZE) return undefined;
+      return allPages.length * PAGE_SIZE;
     },
   });
 }

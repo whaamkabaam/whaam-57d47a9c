@@ -57,7 +57,7 @@ const Index = () => {
 
       {/* Combined Sticky Section - CredibilityStrip + Story Cards */}
       <section className="relative">
-        <div className="relative md:h-[250vh]">
+        <div className="relative">
           <CredibilityStrip />
           <StoryCards />
         </div>

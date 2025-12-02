@@ -26,7 +26,7 @@ const Index = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "outcomes", "services", "products", "reviews", "about", "faq", "contact"];
+      const sections = ["home", "reviews", "outcomes", "services", "products", "about", "faq", "contact"];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -58,8 +58,13 @@ const Index = () => {
       {/* Story Cards with integrated CredibilityStrip */}
       <StoryCards />
 
+      {/* Reviews */}
+      <section id="reviews" className="py-16">
+        <Reviews />
+      </section>
+
       {/* Outcomes grid */}
-      <section id="outcomes" className="py-12 relative z-10 md:-mt-56">
+      <section id="outcomes" className="py-12 relative z-10">
         <Outcomes />
       </section>
 
@@ -71,11 +76,6 @@ const Index = () => {
       {/* Pricing */}
       <section id="products" className="py-24">
         <Products />
-      </section>
-
-      {/* Reviews + Clip */}
-      <section id="reviews" className="py-24">
-        <Reviews />
       </section>
 
       {/* Meet your Curve Expert */}

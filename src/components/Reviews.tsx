@@ -33,8 +33,9 @@ export default function Reviews() {
       <div className="container mx-auto px-6">
         {/* Header with link to full gallery */}
         <div className="flex items-center justify-between mb-6">
-          <h2 id="reviews-heading" className="text-3xl font-bold glass-text-contrast">
-            What players say
+          <h2 id="reviews-heading" className="text-3xl md:text-4xl font-bold glass-text-contrast">
+            Here are 100+ Reviews from my<br />
+            51.000+ Members Discord Server.
           </h2>
           <Link
             to="/reviews"

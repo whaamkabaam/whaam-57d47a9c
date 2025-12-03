@@ -7,15 +7,18 @@ import {
   MotionValue,
 } from "motion/react";
 
+export interface Product {
+  title: string;
+  link: string;
+  thumbnail: string;
+  size?: "sm" | "md" | "lg";
+}
+
 export const HeroParallax = ({
   products,
   header,
 }: {
-  products: {
-    title: string;
-    link: string;
-    thumbnail: string;
-  }[];
+  products: Product[];
   header?: React.ReactNode;
 }) => {
   const firstRow = products.slice(0, 5);
@@ -69,30 +72,33 @@ export const HeroParallax = ({
         }}
         className=""
       >
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-20 mb-20">
-          {firstRow.map((product) => (
+        <motion.div className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20 mb-12 md:mb-20">
+          {firstRow.map((product, idx) => (
             <ProductCard
               product={product}
               translate={translateX}
-              key={product.title}
+              key={`${product.title}-${idx}`}
+              index={idx}
             />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row mb-20 space-x-20">
-          {secondRow.map((product) => (
+        <motion.div className="flex flex-row mb-12 md:mb-20 space-x-12 md:space-x-20">
+          {secondRow.map((product, idx) => (
             <ProductCard
               product={product}
               translate={translateXReverse}
-              key={product.title}
+              key={`${product.title}-${idx}`}
+              index={idx + 5}
             />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-20">
-          {thirdRow.map((product) => (
+        <motion.div className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20">
+          {thirdRow.map((product, idx) => (
             <ProductCard
               product={product}
               translate={translateX}
-              key={product.title}
+              key={`${product.title}-${idx}`}
+              index={idx + 10}
             />
           ))}
         </motion.div>
@@ -101,17 +107,31 @@ export const HeroParallax = ({
   );
 };
 
+// Size variants for visual interest
+const sizeClasses = {
+  lg: "h-[22rem] w-[26rem] md:h-[28rem] md:w-[32rem]",
+  md: "h-[20rem] w-[24rem] md:h-96 md:w-[28rem]",
+  sm: "h-[18rem] w-[22rem] md:h-80 md:w-[26rem]",
+};
+
+// Pattern for varied sizes across rows
+const sizePattern: ("lg" | "md" | "sm")[] = [
+  "lg", "md", "sm", "md", "lg",
+  "md", "lg", "md", "sm", "md",
+  "sm", "md", "lg", "md", "sm",
+];
+
 export const ProductCard = ({
   product,
   translate,
+  index = 0,
 }: {
-  product: {
-    title: string;
-    link: string;
-    thumbnail: string;
-  };
+  product: Product;
   translate: MotionValue<number>;
+  index?: number;
 }) => {
+  const size = product.size || sizePattern[index % sizePattern.length];
+  
   return (
     <motion.div
       style={{
@@ -119,26 +139,41 @@ export const ProductCard = ({
       }}
       whileHover={{
         y: -20,
+        scale: 1.02,
       }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
       key={product.title}
-      className="group/product h-96 w-[30rem] relative shrink-0"
+      className={`group/product ${sizeClasses[size]} relative shrink-0`}
     >
       <a
         href={product.link}
-        className="block group-hover/product:shadow-2xl"
+        className="block h-full w-full"
       >
-        <img
-          src={product.thumbnail}
-          height="600"
-          width="600"
-          className="object-cover object-left-top absolute h-full w-full inset-0 rounded-xl"
-          alt={product.title}
-        />
+        {/* Glassmorphic card frame */}
+        <div className="relative h-full w-full rounded-2xl p-2 bg-background/20 backdrop-blur-xl border border-white/10 shadow-xl transition-all duration-300 group-hover/product:border-white/20 group-hover/product:shadow-2xl group-hover/product:shadow-primary/10">
+          {/* Inner image container */}
+          <div className="relative h-full w-full rounded-xl overflow-hidden">
+            <img
+              src={product.thumbnail}
+              className="object-cover h-full w-full transition-transform duration-500 group-hover/product:scale-105"
+              alt={product.title}
+            />
+            
+            {/* Bottom gradient overlay */}
+            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-60 group-hover/product:opacity-80 transition-opacity duration-300" />
+            
+            {/* Game tag badge */}
+            {product.title && (
+              <span className="absolute top-3 left-3 px-3 py-1.5 rounded-full text-xs font-medium bg-background/40 backdrop-blur-md border border-white/10 text-foreground/90 opacity-0 group-hover/product:opacity-100 transition-all duration-300 transform -translate-y-2 group-hover/product:translate-y-0">
+                {product.title}
+              </span>
+            )}
+            
+            {/* Hover glow effect */}
+            <div className="absolute inset-0 rounded-xl opacity-0 group-hover/product:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br from-primary/5 via-transparent to-primary/10" />
+          </div>
+        </div>
       </a>
-      <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none rounded-xl"></div>
-      <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white">
-        {product.title}
-      </h2>
     </motion.div>
   );
 };

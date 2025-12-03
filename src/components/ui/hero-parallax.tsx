@@ -53,14 +53,14 @@ export const HeroParallax = ({
     springConfig
   );
   const translateY = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [-400, 300]),
+    useTransform(scrollYProgress, [0, 0.2], [-400, 0]),
     springConfig
   );
 
   return (
     <div
       ref={ref}
-      className="h-[150vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="h-[120vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       {/* Header with z-index to stay above 3D cards */}
       <div className="relative z-50 pointer-events-none">

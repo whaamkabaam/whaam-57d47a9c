@@ -41,19 +41,19 @@ export const HeroParallax = ({
     springConfig
   );
   const rotateX = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [8, 0]),
+    useTransform(scrollYProgress, [0, 0.2], [15, 0]),
     springConfig
   );
   const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [0.3, 1]),
+    useTransform(scrollYProgress, [0, 0.2], [0.2, 1]),
     springConfig
   );
   const rotateZ = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [10, 0]),
+    useTransform(scrollYProgress, [0, 0.2], [20, 0]),
     springConfig
   );
   const translateY = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [200, 600]),
+    useTransform(scrollYProgress, [0, 0.2], [-700, 500]),
     springConfig
   );
 
@@ -70,9 +70,9 @@ export const HeroParallax = ({
           translateY,
           opacity,
         }}
-        className="relative z-10"
+        className=""
       >
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20 mb-12 md:mb-20 pl-4 md:pl-8">
+        <motion.div className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20 mb-12 md:mb-20">
           {firstRow.map((product, idx) => (
             <ProductCard
               product={product}
@@ -82,7 +82,7 @@ export const HeroParallax = ({
             />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row mb-12 md:mb-20 space-x-12 md:space-x-20 pl-4 md:pl-8">
+        <motion.div className="flex flex-row mb-12 md:mb-20 space-x-12 md:space-x-20">
           {secondRow.map((product, idx) => (
             <ProductCard
               product={product}
@@ -92,7 +92,7 @@ export const HeroParallax = ({
             />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20 pl-4 md:pl-8">
+        <motion.div className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20">
           {thirdRow.map((product, idx) => (
             <ProductCard
               product={product}

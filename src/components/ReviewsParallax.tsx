@@ -29,7 +29,7 @@ export default function ReviewsParallax() {
 
   if (isLoading) {
     return (
-      <div className="h-[150vh] py-40">
+      <div className="h-[120vh] py-40">
         <div className="max-w-7xl mx-auto px-4">
           <Skeleton className="h-20 w-3/4 mb-4" />
           <Skeleton className="h-6 w-1/2 mb-8" />

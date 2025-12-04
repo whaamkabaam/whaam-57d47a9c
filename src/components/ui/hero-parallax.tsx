@@ -38,7 +38,7 @@ export const HeroParallax = ({
   }, []);
 
   // Cards start higher up, animate down - reaches final position with less scrolling
-  const translateYStart = windowHeight * -0.15;
+  const translateYStart = windowHeight * -0.25;
   
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -56,15 +56,15 @@ export const HeroParallax = ({
     springConfig
   );
   const rotateX = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [15, 0]),
+    useTransform(scrollYProgress, [0, 0.35], [15, 0]),
     springConfig
   );
   const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [0.2, 1]),
+    useTransform(scrollYProgress, [0, 0.35], [0.2, 1]),
     springConfig
   );
   const rotateZ = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [20, 0]),
+    useTransform(scrollYProgress, [0, 0.35], [20, 0]),
     springConfig
   );
   const translateY = useSpring(

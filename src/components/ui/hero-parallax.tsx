@@ -37,8 +37,8 @@ export const HeroParallax = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Calculate responsive translateY - cards start BELOW and animate UP
-  const translateYStart = windowHeight * 0.5;
+  // Cards start at natural position - 3D rotation creates depth effect
+  const translateYStart = 0;
   
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -90,7 +90,7 @@ export const HeroParallax = ({
           translateY,
           opacity,
         }}
-        className="mt-32"
+        className="mt-4"
       >
         <motion.div className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20 mb-12 md:mb-20">
           {firstRow.map((product, idx) => (

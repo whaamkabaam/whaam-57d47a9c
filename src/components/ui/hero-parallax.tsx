@@ -25,6 +25,21 @@ export const HeroParallax = ({
   const secondRow = products.slice(5, 10);
   const thirdRow = products.slice(10, 15);
   const ref = React.useRef(null);
+  
+  // Dynamic viewport-based values
+  const [windowHeight, setWindowHeight] = React.useState(
+    typeof window !== 'undefined' ? window.innerHeight : 800
+  );
+
+  React.useEffect(() => {
+    const handleResize = () => setWindowHeight(window.innerHeight);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Calculate responsive translateY based on viewport (-25vh)
+  const translateYStart = windowHeight * -0.25;
+  
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -53,14 +68,14 @@ export const HeroParallax = ({
     springConfig
   );
   const translateY = useSpring(
-    useTransform(scrollYProgress, [0, 0.2], [-400, 0]),
+    useTransform(scrollYProgress, [0, 0.8], [translateYStart, 0]),
     springConfig
   );
 
   return (
     <div
       ref={ref}
-      className="h-[120vh] py-40 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="h-screen py-20 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       {/* Header with z-index to stay above 3D cards */}
       <div className="relative z-50 pointer-events-none">
@@ -75,7 +90,7 @@ export const HeroParallax = ({
           translateY,
           opacity,
         }}
-        className="mt-32"
+        className="mt-8"
       >
         <motion.div className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20 mb-12 md:mb-20">
           {firstRow.map((product, idx) => (

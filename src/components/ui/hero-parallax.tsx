@@ -37,8 +37,8 @@ export const HeroParallax = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Cards start at natural position - 3D rotation creates depth effect
-  const translateYStart = 0;
+  // Cards start higher up, animate down - reaches final position with less scrolling
+  const translateYStart = windowHeight * -0.15;
   
   const { scrollYProgress } = useScroll({
     target: ref,

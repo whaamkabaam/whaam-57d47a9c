@@ -37,8 +37,8 @@ export const HeroParallax = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Calculate responsive translateY based on viewport (-25vh)
-  const translateYStart = windowHeight * -0.25;
+  // Calculate responsive translateY - cards start BELOW and animate UP
+  const translateYStart = windowHeight * 0.5;
   
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -48,34 +48,34 @@ export const HeroParallax = ({
   const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
 
   const translateX = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, 1000]),
+    useTransform(scrollYProgress, [0, 1], [0, windowHeight * 0.6]),
     springConfig
   );
   const translateXReverse = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, -1000]),
+    useTransform(scrollYProgress, [0, 1], [0, windowHeight * -0.6]),
     springConfig
   );
   const rotateX = useSpring(
-    useTransform(scrollYProgress, [0, 0.1], [15, 0]),
+    useTransform(scrollYProgress, [0, 0.2], [15, 0]),
     springConfig
   );
   const opacity = useSpring(
-    useTransform(scrollYProgress, [0, 0.1], [0.2, 1]),
+    useTransform(scrollYProgress, [0, 0.2], [0.2, 1]),
     springConfig
   );
   const rotateZ = useSpring(
-    useTransform(scrollYProgress, [0, 0.1], [20, 0]),
+    useTransform(scrollYProgress, [0, 0.2], [20, 0]),
     springConfig
   );
   const translateY = useSpring(
-    useTransform(scrollYProgress, [0, 0.8], [translateYStart, 0]),
+    useTransform(scrollYProgress, [0, 0.4], [translateYStart, 0]),
     springConfig
   );
 
   return (
     <div
       ref={ref}
-      className="h-screen py-20 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="h-[200vh] py-20 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       {/* Header with z-index to stay above 3D cards */}
       <div className="relative z-50 pointer-events-none">
@@ -90,7 +90,7 @@ export const HeroParallax = ({
           translateY,
           opacity,
         }}
-        className="mt-8"
+        className="mt-32"
       >
         <motion.div className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20 mb-12 md:mb-20">
           {firstRow.map((product, idx) => (

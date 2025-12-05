@@ -92,7 +92,13 @@ export const HeroParallax = ({
         }}
         className="mt-4"
       >
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20 mb-12 md:mb-20">
+        <motion.div 
+          className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20 mb-12 md:mb-20 cursor-grab active:cursor-grabbing"
+          drag="x"
+          dragConstraints={{ left: -1500, right: 500 }}
+          dragElastic={0.05}
+          dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
+        >
           {firstRow.map((product, idx) => (
             <ProductCard
               product={product}
@@ -101,7 +107,13 @@ export const HeroParallax = ({
             />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row mb-12 md:mb-20 space-x-12 md:space-x-20">
+        <motion.div 
+          className="flex flex-row mb-12 md:mb-20 space-x-12 md:space-x-20 cursor-grab active:cursor-grabbing"
+          drag="x"
+          dragConstraints={{ left: -500, right: 1500 }}
+          dragElastic={0.05}
+          dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
+        >
           {secondRow.map((product, idx) => (
             <ProductCard
               product={product}
@@ -110,7 +122,13 @@ export const HeroParallax = ({
             />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20">
+        <motion.div 
+          className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20 cursor-grab active:cursor-grabbing"
+          drag="x"
+          dragConstraints={{ left: -1500, right: 500 }}
+          dragElastic={0.05}
+          dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
+        >
           {thirdRow.map((product, idx) => (
             <ProductCard
               product={product}

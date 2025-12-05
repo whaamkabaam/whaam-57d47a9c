@@ -21,9 +21,11 @@ export const HeroParallax = ({
   products: Product[];
   header?: React.ReactNode;
 }) => {
-  const firstRow = products.slice(0, 5);
-  const secondRow = products.slice(5, 10);
-  const thirdRow = products.slice(10, 15);
+  // Split products into 3 columns
+  const firstColumn = products.filter((_, i) => i % 3 === 0);
+  const secondColumn = products.filter((_, i) => i % 3 === 1);
+  const thirdColumn = products.filter((_, i) => i % 3 === 2);
+  
   const ref = React.useRef(null);
   
   // Dynamic viewport-based values
@@ -47,14 +49,17 @@ export const HeroParallax = ({
 
   const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
 
-  const translateX = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, windowHeight * 0.6]),
+  // Vertical scroll-based movement for columns
+  const translateYColumn = useSpring(
+    useTransform(scrollYProgress, [0, 1], [0, windowHeight * 0.4]),
     springConfig
   );
-  const translateXReverse = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, windowHeight * -0.6]),
+  const translateYColumnReverse = useSpring(
+    useTransform(scrollYProgress, [0, 1], [0, windowHeight * -0.4]),
     springConfig
   );
+  
+  // Keep the same 3D tilt animation
   const rotateX = useSpring(
     useTransform(scrollYProgress, [0, 0.15], [15, 0]),
     springConfig
@@ -92,51 +97,59 @@ export const HeroParallax = ({
         }}
         className="mt-4"
       >
-        <motion.div 
-          className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20 mb-12 md:mb-20 cursor-grab active:cursor-grabbing"
-          drag="x"
-          dragConstraints={{ left: -1500, right: 500 }}
-          dragElastic={0.05}
-          dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
-        >
-          {firstRow.map((product, idx) => (
-            <ProductCard
-              product={product}
-              translate={translateX}
-              key={`${product.title}-${idx}`}
-            />
-          ))}
-        </motion.div>
-        <motion.div 
-          className="flex flex-row mb-12 md:mb-20 space-x-12 md:space-x-20 cursor-grab active:cursor-grabbing"
-          drag="x"
-          dragConstraints={{ left: -500, right: 1500 }}
-          dragElastic={0.05}
-          dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
-        >
-          {secondRow.map((product, idx) => (
-            <ProductCard
-              product={product}
-              translate={translateXReverse}
-              key={`${product.title}-${idx}`}
-            />
-          ))}
-        </motion.div>
-        <motion.div 
-          className="flex flex-row-reverse space-x-reverse space-x-12 md:space-x-20 cursor-grab active:cursor-grabbing"
-          drag="x"
-          dragConstraints={{ left: -1500, right: 500 }}
-          dragElastic={0.05}
-          dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
-        >
-          {thirdRow.map((product, idx) => (
-            <ProductCard
-              product={product}
-              translate={translateX}
-              key={`${product.title}-${idx}`}
-            />
-          ))}
-        </motion.div>
+        {/* 3 vertical columns side by side */}
+        <div className="flex flex-row justify-center gap-6 md:gap-10">
+          {/* Column 1 - moves down */}
+          <motion.div 
+            className="flex flex-col space-y-6 md:space-y-10 cursor-grab active:cursor-grabbing"
+            drag="y"
+            dragConstraints={{ top: -500, bottom: 500 }}
+            dragElastic={0.05}
+            dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
+          >
+            {firstColumn.map((product, idx) => (
+              <ProductCard
+                product={product}
+                translate={translateYColumn}
+                key={`${product.title}-${idx}`}
+              />
+            ))}
+          </motion.div>
+          
+          {/* Column 2 - moves up (reverse) */}
+          <motion.div 
+            className="flex flex-col space-y-6 md:space-y-10 cursor-grab active:cursor-grabbing"
+            drag="y"
+            dragConstraints={{ top: -500, bottom: 500 }}
+            dragElastic={0.05}
+            dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
+          >
+            {secondColumn.map((product, idx) => (
+              <ProductCard
+                product={product}
+                translate={translateYColumnReverse}
+                key={`${product.title}-${idx}`}
+              />
+            ))}
+          </motion.div>
+          
+          {/* Column 3 - moves down */}
+          <motion.div 
+            className="flex flex-col space-y-6 md:space-y-10 cursor-grab active:cursor-grabbing"
+            drag="y"
+            dragConstraints={{ top: -500, bottom: 500 }}
+            dragElastic={0.05}
+            dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
+          >
+            {thirdColumn.map((product, idx) => (
+              <ProductCard
+                product={product}
+                translate={translateYColumn}
+                key={`${product.title}-${idx}`}
+              />
+            ))}
+          </motion.div>
+        </div>
       </motion.div>
     </div>
   );
@@ -152,7 +165,7 @@ export const ProductCard = ({
   return (
     <motion.div
       style={{
-        x: translate,
+        y: translate,
       }}
       whileHover={{
         y: -20,
@@ -160,7 +173,7 @@ export const ProductCard = ({
       }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       key={product.title}
-      className="group/product w-[28rem] md:w-[34rem] max-h-[40rem] relative shrink-0"
+      className="group/product w-[18rem] md:w-[22rem] lg:w-[26rem] relative shrink-0"
     >
       {/* Glassmorphic card frame */}
       <div className="relative rounded-2xl p-2 bg-background/20 backdrop-blur-xl border border-white/10 shadow-xl transition-all duration-300 group-hover/product:border-white/20 group-hover/product:shadow-2xl group-hover/product:shadow-primary/10">

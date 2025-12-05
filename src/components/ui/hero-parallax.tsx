@@ -40,7 +40,7 @@ export const HeroParallax = ({
   }, []);
 
   // Cards start higher up, animate down - reaches final position with less scrolling
-  const translateYStart = windowHeight * -0.25;
+  const translateYStart = windowHeight * -0.15;
   
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -61,7 +61,7 @@ export const HeroParallax = ({
   
   // Keep the same 3D tilt animation
   const rotateX = useSpring(
-    useTransform(scrollYProgress, [0, 0.15], [15, 0]),
+    useTransform(scrollYProgress, [0, 0.15], [12, 0]),
     springConfig
   );
   const opacity = useSpring(
@@ -69,7 +69,7 @@ export const HeroParallax = ({
     springConfig
   );
   const rotateZ = useSpring(
-    useTransform(scrollYProgress, [0, 0.15], [20, 0]),
+    useTransform(scrollYProgress, [0, 0.15], [8, 0]),
     springConfig
   );
   const translateY = useSpring(
@@ -95,7 +95,7 @@ export const HeroParallax = ({
           translateY,
           opacity,
         }}
-        className="mt-4"
+        className="mt-4 flex justify-center [transform-origin:center_center]"
       >
         {/* 3 vertical columns side by side */}
         <div className="flex flex-row justify-center gap-6 md:gap-10">

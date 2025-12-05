@@ -149,31 +149,34 @@ export const ProductCard = ({
       style={{
         y: translate,
       }}
-      whileHover={{
-        y: -20,
-        scale: 1.02,
-      }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      key={product.title}
-      className="group/product w-[18rem] md:w-[22rem] lg:w-[26rem] relative shrink-0"
+      className="w-[18rem] md:w-[22rem] lg:w-[26rem] relative shrink-0"
     >
-      {/* Glassmorphic card frame */}
-      <div className="relative rounded-2xl p-2 bg-background/20 backdrop-blur-xl border border-white/10 shadow-xl transition-all duration-300 group-hover/product:border-white/20 group-hover/product:shadow-2xl group-hover/product:shadow-primary/10">
-        {/* Inner image container */}
-        <div className="relative rounded-xl overflow-hidden bg-black/40">
-          <img
-            src={product.thumbnail}
-            className="w-full h-auto transition-transform duration-500 group-hover/product:scale-105 pointer-events-none"
-            alt={product.title}
-          />
-          
-          {/* Bottom gradient overlay */}
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover/product:opacity-80 transition-opacity duration-300 pointer-events-none" />
-          
-          {/* Hover glow effect */}
-          <div className="absolute inset-0 rounded-xl opacity-0 group-hover/product:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br from-primary/5 via-transparent to-primary/10" />
+      <motion.div
+        whileHover={{
+          y: -20,
+          scale: 1.02,
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="group/product"
+      >
+        {/* Glassmorphic card frame */}
+        <div className="relative rounded-2xl p-2 bg-background/20 backdrop-blur-xl border border-white/10 shadow-xl transition-all duration-300 group-hover/product:border-white/20 group-hover/product:shadow-2xl group-hover/product:shadow-primary/10">
+          {/* Inner image container */}
+          <div className="relative rounded-xl overflow-hidden bg-black/40">
+            <img
+              src={product.thumbnail}
+              className="w-full h-auto transition-transform duration-500 group-hover/product:scale-105 pointer-events-none"
+              alt={product.title}
+            />
+            
+            {/* Bottom gradient overlay */}
+            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover/product:opacity-80 transition-opacity duration-300 pointer-events-none" />
+            
+            {/* Hover glow effect */}
+            <div className="absolute inset-0 rounded-xl opacity-0 group-hover/product:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br from-primary/5 via-transparent to-primary/10" />
+          </div>
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };

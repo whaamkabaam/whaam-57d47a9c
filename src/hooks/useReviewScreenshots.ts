@@ -1,5 +1,6 @@
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useState, useEffect } from "react";
 
 export interface ReviewScreenshot {
   id: string;
@@ -106,4 +107,77 @@ export function useGameTags() {
       return uniqueTags as string[];
     },
   });
+}
+
+// Progressive loading: first 30 immediately, then lazy load rest
+export function useProgressiveReviewScreenshots(initialBatchSize = 30) {
+  const [allReviews, setAllReviews] = useState<ReviewScreenshot[]>([]);
+  const [isInitialLoaded, setIsInitialLoaded] = useState(false);
+  const [isFullyLoaded, setIsFullyLoaded] = useState(false);
+
+  // Load first batch immediately
+  const { data: initialBatch, isLoading: isInitialLoading } = useQuery({
+    queryKey: ["review-screenshots-initial", initialBatchSize],
+    queryFn: async (): Promise<ReviewScreenshot[]> => {
+      const { data, error } = await supabase
+        .from("review_screenshots")
+        .select("*")
+        .eq("is_featured", true)
+        .order("display_order", { ascending: true, nullsFirst: false })
+        .order("created_at", { ascending: false })
+        .limit(initialBatchSize);
+
+      if (error) throw error;
+
+      return (data || []).map((item) => ({
+        ...item,
+        url: getPublicUrl(item.storage_path),
+      }));
+    },
+  });
+
+  // Lazy load remaining after initial batch is set
+  const { data: remainingBatch } = useQuery({
+    queryKey: ["review-screenshots-remaining", initialBatchSize],
+    queryFn: async (): Promise<ReviewScreenshot[]> => {
+      const { data, error } = await supabase
+        .from("review_screenshots")
+        .select("*")
+        .eq("is_featured", true)
+        .order("display_order", { ascending: true, nullsFirst: false })
+        .order("created_at", { ascending: false })
+        .range(initialBatchSize, 999);
+
+      if (error) throw error;
+
+      return (data || []).map((item) => ({
+        ...item,
+        url: getPublicUrl(item.storage_path),
+      }));
+    },
+    enabled: isInitialLoaded,
+  });
+
+  // Set initial batch
+  useEffect(() => {
+    if (initialBatch && !isInitialLoaded) {
+      setAllReviews(initialBatch);
+      setIsInitialLoaded(true);
+    }
+  }, [initialBatch, isInitialLoaded]);
+
+  // Append remaining batch
+  useEffect(() => {
+    if (remainingBatch && isInitialLoaded && !isFullyLoaded) {
+      setAllReviews((prev) => [...prev, ...remainingBatch]);
+      setIsFullyLoaded(true);
+    }
+  }, [remainingBatch, isInitialLoaded, isFullyLoaded]);
+
+  return {
+    reviews: allReviews,
+    isInitialLoading,
+    isInitialLoaded,
+    isFullyLoaded,
+  };
 }

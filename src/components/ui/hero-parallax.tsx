@@ -51,11 +51,11 @@ export const HeroParallax = ({
 
   // Vertical scroll-based movement for columns
   const translateYColumn = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, windowHeight * 0.4]),
+    useTransform(scrollYProgress, [0, 1], [0, windowHeight * 0.25]),
     springConfig
   );
   const translateYColumnReverse = useSpring(
-    useTransform(scrollYProgress, [0, 1], [0, windowHeight * -0.4]),
+    useTransform(scrollYProgress, [0, 1], [0, windowHeight * -0.25]),
     springConfig
   );
   
@@ -80,7 +80,7 @@ export const HeroParallax = ({
   return (
     <div
       ref={ref}
-      className="h-[200vh] py-20 overflow-x-clip overflow-y-visible antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="h-[150vh] py-20 overflow-hidden antialiased relative z-0 flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       {/* Header with z-index to stay above 3D cards */}
       <div className="relative z-50 pointer-events-none">
@@ -100,13 +100,7 @@ export const HeroParallax = ({
         {/* 3 vertical columns side by side */}
         <div className="flex flex-row justify-center gap-6 md:gap-10">
           {/* Column 1 - moves down */}
-          <motion.div 
-            className="flex flex-col space-y-6 md:space-y-10 cursor-grab active:cursor-grabbing"
-            drag="y"
-            dragConstraints={{ top: -500, bottom: 500 }}
-            dragElastic={0.05}
-            dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
-          >
+          <motion.div className="flex flex-col space-y-6 md:space-y-10">
             {firstColumn.map((product, idx) => (
               <ProductCard
                 product={product}
@@ -117,13 +111,7 @@ export const HeroParallax = ({
           </motion.div>
           
           {/* Column 2 - moves up (reverse) */}
-          <motion.div 
-            className="flex flex-col space-y-6 md:space-y-10 cursor-grab active:cursor-grabbing"
-            drag="y"
-            dragConstraints={{ top: -500, bottom: 500 }}
-            dragElastic={0.05}
-            dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
-          >
+          <motion.div className="flex flex-col space-y-6 md:space-y-10">
             {secondColumn.map((product, idx) => (
               <ProductCard
                 product={product}
@@ -134,13 +122,7 @@ export const HeroParallax = ({
           </motion.div>
           
           {/* Column 3 - moves down */}
-          <motion.div 
-            className="flex flex-col space-y-6 md:space-y-10 cursor-grab active:cursor-grabbing"
-            drag="y"
-            dragConstraints={{ top: -500, bottom: 500 }}
-            dragElastic={0.05}
-            dragTransition={{ bounceStiffness: 300, bounceDamping: 30 }}
-          >
+          <motion.div className="flex flex-col space-y-6 md:space-y-10">
             {thirdColumn.map((product, idx) => (
               <ProductCard
                 product={product}

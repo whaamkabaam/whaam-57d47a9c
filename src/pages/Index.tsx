@@ -59,7 +59,7 @@ const Index = () => {
       <StoryCards />
 
       {/* Reviews Parallax Gallery */}
-      <section id="reviews">
+      <section id="reviews" className="relative z-0">
         <ReviewsParallax />
       </section>
 

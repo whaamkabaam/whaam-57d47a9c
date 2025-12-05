@@ -1,6 +1,5 @@
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useState } from "react";
 
 export interface ReviewScreenshot {
   id: string;
@@ -56,66 +55,6 @@ export function useReviewScreenshots(options?: {
       }));
     },
   });
-}
-
-// Progressive loading hook: loads initial batch, then rest on demand
-export function useProgressiveReviewScreenshots(initialLimit: number = 30) {
-  const [loadMore, setLoadMore] = useState(false);
-
-  // First query: get initial batch
-  const initialQuery = useQuery({
-    queryKey: ["review-screenshots-initial", initialLimit],
-    queryFn: async (): Promise<ReviewScreenshot[]> => {
-      const { data, error } = await supabase
-        .from("review_screenshots")
-        .select("*")
-        .order("display_order", { ascending: true, nullsFirst: false })
-        .order("created_at", { ascending: false })
-        .limit(initialLimit);
-
-      if (error) throw error;
-
-      return (data || []).map((item) => ({
-        ...item,
-        url: getPublicUrl(item.storage_path),
-      }));
-    },
-  });
-
-  // Second query: get remaining reviews (lazy loaded)
-  const remainingQuery = useQuery({
-    queryKey: ["review-screenshots-remaining", initialLimit],
-    queryFn: async (): Promise<ReviewScreenshot[]> => {
-      const { data, error } = await supabase
-        .from("review_screenshots")
-        .select("*")
-        .order("display_order", { ascending: true, nullsFirst: false })
-        .order("created_at", { ascending: false })
-        .range(initialLimit, 500);
-
-      if (error) throw error;
-
-      return (data || []).map((item) => ({
-        ...item,
-        url: getPublicUrl(item.storage_path),
-      }));
-    },
-    enabled: loadMore,
-  });
-
-  const allData = [
-    ...(initialQuery.data || []),
-    ...(loadMore && remainingQuery.data ? remainingQuery.data : []),
-  ];
-
-  return {
-    initialData: initialQuery.data,
-    remainingData: remainingQuery.data,
-    isInitialLoading: initialQuery.isLoading,
-    isLoadingMore: remainingQuery.isLoading,
-    triggerLoadMore: () => setLoadMore(true),
-    allData,
-  };
 }
 
 // Infinite scroll version for gallery

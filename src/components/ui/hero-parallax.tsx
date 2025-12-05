@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React from "react";
 import {
   motion,
   useScroll,
@@ -17,30 +17,23 @@ export interface Product {
 export const HeroParallax = ({
   products,
   header,
-  autoScroll = false,
 }: {
   products: Product[];
   header?: React.ReactNode;
-  autoScroll?: boolean;
 }) => {
   // Split products into 3 columns
   const firstColumn = products.filter((_, i) => i % 3 === 0);
   const secondColumn = products.filter((_, i) => i % 3 === 1);
   const thirdColumn = products.filter((_, i) => i % 3 === 2);
   
-  const ref = useRef(null);
-  
-  // Auto-scroll offsets for each column
-  const [autoOffset1, setAutoOffset1] = useState(0);
-  const [autoOffset2, setAutoOffset2] = useState(0);
-  const [autoOffset3, setAutoOffset3] = useState(0);
+  const ref = React.useRef(null);
   
   // Dynamic viewport-based values
-  const [windowHeight, setWindowHeight] = useState(
+  const [windowHeight, setWindowHeight] = React.useState(
     typeof window !== 'undefined' ? window.innerHeight : 800
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleResize = () => setWindowHeight(window.innerHeight);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -84,44 +77,6 @@ export const HeroParallax = ({
     springConfig
   );
 
-  // Auto-scroll animation with progressive speed
-  useEffect(() => {
-    if (!autoScroll) return;
-    
-    let animationId: number;
-    let lastTime = 0;
-    
-    const animate = (time: number) => {
-      if (lastTime) {
-        const delta = time - lastTime;
-        
-        // Get current scroll progress (0-1)
-        const progress = scrollYProgress.get();
-        
-        // Progressive speed: starts slow, gets faster as you scroll down
-        // Base: 0.015, Max: 0.06 (4x faster at bottom)
-        const baseSpeed = 0.015;
-        const maxSpeed = 0.06;
-        const speed = baseSpeed + (progress * (maxSpeed - baseSpeed));
-        
-        // Update offsets - different speeds per column for organic feel
-        setAutoOffset1(prev => prev + speed * delta);
-        setAutoOffset2(prev => prev - speed * delta * 0.7); // Slower, opposite
-        setAutoOffset3(prev => prev + speed * delta * 1.3); // Faster
-      }
-      lastTime = time;
-      animationId = requestAnimationFrame(animate);
-    };
-    
-    animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
-  }, [autoScroll, scrollYProgress]);
-
-  // Duplicate products for seamless loop effect
-  const duplicatedFirst = autoScroll ? [...firstColumn, ...firstColumn] : firstColumn;
-  const duplicatedSecond = autoScroll ? [...secondColumn, ...secondColumn] : secondColumn;
-  const duplicatedThird = autoScroll ? [...thirdColumn, ...thirdColumn] : thirdColumn;
-
   return (
     <div
       ref={ref}
@@ -144,44 +99,35 @@ export const HeroParallax = ({
       >
         {/* 3 vertical columns side by side */}
         <div className="flex flex-row justify-center gap-6 md:gap-10">
-          {/* Column 1 - moves down + auto-scroll */}
-          <motion.div 
-            className="flex flex-col space-y-6 md:space-y-10"
-            style={{ y: autoScroll ? autoOffset1 : undefined }}
-          >
-            {duplicatedFirst.map((product, idx) => (
+          {/* Column 1 - moves down */}
+          <motion.div className="flex flex-col space-y-6 md:space-y-10">
+            {firstColumn.map((product, idx) => (
               <ProductCard
                 product={product}
                 translate={translateYColumn}
-                key={`col1-${product.title}-${idx}`}
+                key={`${product.title}-${idx}`}
               />
             ))}
           </motion.div>
           
-          {/* Column 2 - moves up (reverse) + auto-scroll opposite */}
-          <motion.div 
-            className="flex flex-col space-y-6 md:space-y-10"
-            style={{ y: autoScroll ? autoOffset2 : undefined }}
-          >
-            {duplicatedSecond.map((product, idx) => (
+          {/* Column 2 - moves up (reverse) */}
+          <motion.div className="flex flex-col space-y-6 md:space-y-10">
+            {secondColumn.map((product, idx) => (
               <ProductCard
                 product={product}
                 translate={translateYColumnReverse}
-                key={`col2-${product.title}-${idx}`}
+                key={`${product.title}-${idx}`}
               />
             ))}
           </motion.div>
           
-          {/* Column 3 - moves down + auto-scroll fastest */}
-          <motion.div 
-            className="flex flex-col space-y-6 md:space-y-10"
-            style={{ y: autoScroll ? autoOffset3 : undefined }}
-          >
-            {duplicatedThird.map((product, idx) => (
+          {/* Column 3 - moves down */}
+          <motion.div className="flex flex-col space-y-6 md:space-y-10">
+            {thirdColumn.map((product, idx) => (
               <ProductCard
                 product={product}
                 translate={translateYColumn}
-                key={`col3-${product.title}-${idx}`}
+                key={`${product.title}-${idx}`}
               />
             ))}
           </motion.div>

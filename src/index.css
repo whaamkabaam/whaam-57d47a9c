@@ -701,7 +701,7 @@ section {
 }
 
 .parallax-auto-scroll-down-fast {
-  animation: parallax-scroll-down 300s linear infinite;
+  animation: parallax-scroll-down 252s linear infinite;
   will-change: transform;
 }
 

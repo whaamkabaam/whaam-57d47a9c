@@ -71,7 +71,7 @@ export const ProductCard = ({
   product: Product;
 }) => {
   return (
-    <div className="w-[26vw] md:w-[28vw] lg:w-[22rem] max-w-[22rem] relative shrink-0">
+    <div className="w-[26vw] md:w-[28vw] lg:w-[24vw] xl:w-[22vw] 2xl:w-[20vw] max-w-[28rem] relative shrink-0">
       <div className="relative rounded-2xl p-2 bg-background/20 backdrop-blur-xl border border-white/10 shadow-xl">
         <div className="relative rounded-xl overflow-hidden bg-black/40">
           <img

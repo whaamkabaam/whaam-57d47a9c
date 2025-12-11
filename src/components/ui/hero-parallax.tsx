@@ -25,9 +25,9 @@ export const HeroParallax = ({
     <div className="py-20 overflow-hidden">
       {header}
       <div className="mt-8 flex flex-row justify-center gap-2 md:gap-4 lg:gap-8 px-2 md:px-4 w-full max-w-7xl mx-auto overflow-hidden">
-        {/* Column 1 - scrolls up faster */}
+        {/* Column 1 - outer, slower */}
         <div className="flex flex-col overflow-hidden h-[75vh]">
-          <div className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down-fast">
+          <div className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down">
             {[...firstColumn, ...firstColumn].map((product, idx) => (
               <ProductCard
                 product={product}
@@ -37,9 +37,9 @@ export const HeroParallax = ({
           </div>
         </div>
         
-        {/* Column 2 - scrolls up */}
+        {/* Column 2 - middle, faster */}
         <div className="flex flex-col overflow-hidden h-[75vh]">
-          <div className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down">
+          <div className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down-fast">
             {[...secondColumn, ...secondColumn].map((product, idx) => (
               <ProductCard
                 product={product}
@@ -49,7 +49,7 @@ export const HeroParallax = ({
           </div>
         </div>
         
-        {/* Column 3 - scrolls up */}
+        {/* Column 3 - outer, slower */}
         <div className="flex flex-col overflow-hidden h-[75vh]">
           <div className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down">
             {[...thirdColumn, ...thirdColumn].map((product, idx) => (
@@ -71,7 +71,7 @@ export const ProductCard = ({
   product: Product;
 }) => {
   return (
-    <div className="w-[28vw] md:w-[30vw] lg:w-[24rem] max-w-[24rem] relative shrink-0">
+    <div className="w-[26vw] md:w-[28vw] lg:w-[22rem] max-w-[22rem] relative shrink-0">
       <div className="relative rounded-2xl p-2 bg-background/20 backdrop-blur-xl border border-white/10 shadow-xl">
         <div className="relative rounded-xl overflow-hidden bg-black/40">
           <img

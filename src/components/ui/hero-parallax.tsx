@@ -19,6 +19,19 @@ const useParallaxAnimation = (
   const currentSpeedRef = useRef(targetSpeed);
   const animationRef = useRef<number>();
   const lastTimeRef = useRef<number>(0);
+  
+  // Use refs to avoid recreating animation loop on prop changes
+  const isPausedRef = useRef(isPaused);
+  const targetSpeedRef = useRef(targetSpeed);
+  
+  // Update refs when props change (without triggering animation restart)
+  useEffect(() => {
+    isPausedRef.current = isPaused;
+  }, [isPaused]);
+  
+  useEffect(() => {
+    targetSpeedRef.current = targetSpeed;
+  }, [targetSpeed]);
 
   useEffect(() => {
     const animate = (timestamp: number) => {
@@ -27,12 +40,13 @@ const useParallaxAnimation = (
         return;
       }
 
-      // Calculate delta time
-      const deltaTime = lastTimeRef.current ? (timestamp - lastTimeRef.current) / 1000 : 0;
+      // Calculate delta time, clamped to max 50ms to prevent huge jumps on tab focus loss
+      const rawDelta = lastTimeRef.current ? (timestamp - lastTimeRef.current) / 1000 : 0;
+      const deltaTime = Math.min(rawDelta, 0.05);
       lastTimeRef.current = timestamp;
 
       // Determine target (0 if paused, otherwise the speed multiplier)
-      const target = isPaused ? 0 : targetSpeed;
+      const target = isPausedRef.current ? 0 : targetSpeedRef.current;
 
       // Smoothly interpolate current speed toward target (lerp factor ~0.15 for snappy ~80ms transition)
       const lerpFactor = 0.15;
@@ -48,8 +62,8 @@ const useParallaxAnimation = (
         positionRef.current = positionRef.current % scrollHeight;
       }
 
-      // Apply transform
-      columnRef.current.style.transform = `translateY(-${positionRef.current}px)`;
+      // Apply transform using translate3d for better GPU acceleration
+      columnRef.current.style.transform = `translate3d(0, -${positionRef.current}px, 0)`;
 
       animationRef.current = requestAnimationFrame(animate);
     };
@@ -61,7 +75,7 @@ const useParallaxAnimation = (
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isPaused, targetSpeed, baseSpeed]);
+  }, [baseSpeed]); // Only baseSpeed in deps - isPaused and targetSpeed use refs
 
   return columnRef;
 };

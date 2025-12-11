@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { HeroParallax } from "@/components/ui/hero-parallax";
 import { useProgressiveReviewScreenshots } from "@/hooks/useReviewScreenshots";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowRight } from "lucide-react";
+import ParallaxControls from "@/components/ParallaxControls";
 
 const ReviewsHeader = () => {
   return (
@@ -26,6 +28,8 @@ const ReviewsHeader = () => {
 
 export default function ReviewsParallax() {
   const { reviews, isInitialLoading, isInitialLoaded } = useProgressiveReviewScreenshots(30);
+  const [isPaused, setIsPaused] = useState(false);
+  const [speed, setSpeed] = useState(1);
 
   if (isInitialLoading || !isInitialLoaded) {
     return (
@@ -56,9 +60,19 @@ export default function ReviewsParallax() {
   }
 
   return (
-    <HeroParallax 
-      products={products} 
-      header={<ReviewsHeader />}
-    />
+    <>
+      <HeroParallax 
+        products={products} 
+        header={<ReviewsHeader />}
+        isPaused={isPaused}
+        speedMultiplier={speed}
+      />
+      <ParallaxControls
+        isPaused={isPaused}
+        speed={speed}
+        onPauseToggle={() => setIsPaused(!isPaused)}
+        onSpeedChange={setSpeed}
+      />
+    </>
   );
 }

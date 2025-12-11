@@ -10,9 +10,13 @@ export interface Product {
 export const HeroParallax = ({
   products,
   header,
+  isPaused = false,
+  speedMultiplier = 1,
 }: {
   products: Product[];
   header?: React.ReactNode;
+  isPaused?: boolean;
+  speedMultiplier?: number;
 }) => {
   // Split products into 3 columns
   const { firstColumn, secondColumn, thirdColumn } = useMemo(() => ({
@@ -27,7 +31,10 @@ export const HeroParallax = ({
       <div className="mt-8 flex flex-row justify-center gap-3 md:gap-5 lg:gap-6 px-2 md:px-4 w-full max-w-7xl mx-auto overflow-hidden">
         {/* Column 1 - outer, slower */}
         <div className="flex flex-col overflow-hidden h-[75vh]">
-          <div className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down">
+          <div 
+            className={`flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down ${isPaused ? 'parallax-auto-scroll-paused' : ''}`}
+            style={{ animationDuration: `${315 / speedMultiplier}s` }}
+          >
             {[...firstColumn, ...firstColumn].map((product, idx) => (
               <ProductCard
                 product={product}
@@ -39,7 +46,10 @@ export const HeroParallax = ({
         
         {/* Column 2 - middle, faster */}
         <div className="flex flex-col overflow-hidden h-[75vh]">
-          <div className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down-fast">
+          <div 
+            className={`flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down-fast ${isPaused ? 'parallax-auto-scroll-paused' : ''}`}
+            style={{ animationDuration: `${252 / speedMultiplier}s` }}
+          >
             {[...secondColumn, ...secondColumn].map((product, idx) => (
               <ProductCard
                 product={product}
@@ -51,7 +61,10 @@ export const HeroParallax = ({
         
         {/* Column 3 - outer, slower */}
         <div className="flex flex-col overflow-hidden h-[75vh]">
-          <div className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down">
+          <div 
+            className={`flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down ${isPaused ? 'parallax-auto-scroll-paused' : ''}`}
+            style={{ animationDuration: `${315 / speedMultiplier}s` }}
+          >
             {[...thirdColumn, ...thirdColumn].map((product, idx) => (
               <ProductCard
                 product={product}

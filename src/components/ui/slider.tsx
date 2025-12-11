@@ -36,16 +36,20 @@ const Slider = React.forwardRef<
       className={cn(
         "relative w-full grow overflow-hidden rounded-full",
         variant === "glass"
-          ? "h-[3px] bg-white/20"
+          ? "h-6 bg-transparent cursor-pointer" // Tall hit area for easier clicking
           : "h-2 bg-secondary"
       )}
     >
+      {/* Visual track line - thin but clickable area is large */}
+      {variant === "glass" && (
+        <div className="absolute top-1/2 left-0 right-0 h-[3px] -translate-y-1/2 bg-white/20 rounded-full" />
+      )}
       <SliderPrimitive.Range
         className={cn(
-          "absolute h-full",
+          "absolute",
           variant === "glass"
-            ? "bg-gradient-to-r from-white/30 to-white/60"
-            : "bg-primary"
+            ? "h-[3px] top-1/2 -translate-y-1/2 bg-gradient-to-r from-white/30 to-white/60"
+            : "h-full bg-primary"
         )}
       />
     </SliderPrimitive.Track>

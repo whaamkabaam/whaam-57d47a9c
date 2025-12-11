@@ -24,7 +24,7 @@ export const HeroParallax = ({
   return (
     <div className="py-10 overflow-hidden">
       {header}
-      <div className="mt-8 flex flex-row justify-center gap-2 md:gap-4 lg:gap-8 px-2 md:px-4 w-full max-w-7xl mx-auto overflow-hidden">
+      <div className="mt-8 flex flex-row justify-center gap-3 md:gap-5 lg:gap-6 px-2 md:px-4 w-full max-w-7xl mx-auto overflow-hidden">
         {/* Column 1 - outer, slower */}
         <div className="flex flex-col overflow-hidden h-[75vh]">
           <div className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down">
@@ -71,7 +71,7 @@ export const ProductCard = ({
   product: Product;
 }) => {
   return (
-    <div className="w-[26vw] md:w-[28vw] lg:w-[24vw] xl:w-[22vw] 2xl:w-[20vw] max-w-[28rem] relative shrink-0">
+    <div className="w-[30vw] md:w-[30vw] lg:w-[28vw] xl:w-[26vw] 2xl:w-[24vw] max-w-[32rem] relative shrink-0">
       <div className="relative rounded-2xl p-2 bg-background/20 backdrop-blur-xl border border-white/10 shadow-xl">
         <div className="relative rounded-xl overflow-hidden bg-black/40">
           <img

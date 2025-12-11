@@ -34,8 +34,8 @@ const useParallaxAnimation = (
       // Determine target (0 if paused, otherwise the speed multiplier)
       const target = isPaused ? 0 : targetSpeed;
 
-      // Smoothly interpolate current speed toward target (lerp factor ~0.03 for ~300ms transition)
-      const lerpFactor = 0.03;
+      // Smoothly interpolate current speed toward target (lerp factor ~0.15 for snappy ~80ms transition)
+      const lerpFactor = 0.15;
       currentSpeedRef.current += (target - currentSpeedRef.current) * lerpFactor;
 
       // Update position based on current speed (in pixels per second)

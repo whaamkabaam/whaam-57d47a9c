@@ -34,10 +34,10 @@ const Slider = React.forwardRef<
   >
     <SliderPrimitive.Track
       className={cn(
-        "relative w-full grow overflow-hidden rounded-full",
+        "relative w-full grow rounded-full",
         variant === "glass"
           ? "h-6 bg-transparent cursor-pointer" // Tall hit area for easier clicking
-          : "h-2 bg-secondary"
+          : "h-2 bg-secondary overflow-hidden"
       )}
     >
       {/* Visual track line - thin but clickable area is large */}

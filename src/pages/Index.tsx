@@ -16,6 +16,7 @@ import Navigation from "@/components/Navigation";
 import InteractiveBackground from "@/components/InteractiveBackground";
 
 import Outcomes from "@/components/Outcomes";
+import ThreeSteps from "@/components/ThreeSteps";
 import ReviewsParallax from "@/components/ReviewsParallax";
 import StickyCTA from "@/components/StickyCTA";
 
@@ -61,6 +62,11 @@ const Index = () => {
       {/* Reviews Parallax Gallery */}
       <section id="reviews" className="relative z-0">
         <ReviewsParallax />
+      </section>
+
+      {/* 3 Easy Steps */}
+      <section className="py-16 md:py-24 relative z-10">
+        <ThreeSteps />
       </section>
 
       {/* Outcomes grid */}

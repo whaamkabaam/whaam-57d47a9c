@@ -59,7 +59,6 @@ export default function ReviewsParallax() {
     <HeroParallax 
       products={products} 
       header={<ReviewsHeader />}
-      enableAutoScroll={true}
     />
   );
 }

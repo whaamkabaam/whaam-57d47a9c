@@ -42,24 +42,26 @@ export default function ParallaxControls({
           )} />
         </button>
 
-        {/* Speed Slider - Expandable */}
+        {/* Speed Slider - Expandable with grid for symmetric animation */}
         <div
           className={cn(
-            "overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
-            isExpanded ? "w-[160px] md:w-[200px] opacity-100" : "w-0 opacity-0"
+            "grid transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
+            isExpanded ? "grid-cols-[1fr] opacity-100" : "grid-cols-[0fr] opacity-0"
           )}
         >
-          <div className="flex items-center gap-1.5 px-1">
-            <span className="text-[10px] text-muted-foreground whitespace-nowrap">Slow</span>
-            <Slider
-              value={[speed]}
-              onValueChange={(value) => onSpeedChange(value[0])}
-              min={0.3}
-              max={3}
-              step={0.1}
-              className="flex-1"
-            />
-            <span className="text-[10px] text-muted-foreground whitespace-nowrap">Fast</span>
+          <div className="overflow-hidden">
+            <div className="flex items-center gap-1.5 px-1 min-w-[160px] md:min-w-[200px]">
+              <span className="text-[10px] text-muted-foreground whitespace-nowrap">Slow</span>
+              <Slider
+                value={[speed]}
+                onValueChange={(value) => onSpeedChange(value[0])}
+                min={0.3}
+                max={3}
+                step={0.1}
+                className="flex-1"
+              />
+              <span className="text-[10px] text-muted-foreground whitespace-nowrap">Fast</span>
+            </div>
           </div>
         </div>
 

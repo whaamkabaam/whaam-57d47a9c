@@ -51,10 +51,10 @@ const Slider = React.forwardRef<
     </SliderPrimitive.Track>
     <SliderPrimitive.Thumb
       className={cn(
-        "block rounded-full transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
+        "block rounded-full focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
         variant === "glass"
-          ? "h-3 w-3 bg-white border border-white/50 shadow-[0_0_8px_rgba(255,255,255,0.4)]"
-          : "h-5 w-5 border-2 border-primary bg-background ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          ? "h-4 w-4 bg-white border-2 border-white/60 shadow-[0_0_10px_rgba(255,255,255,0.5)] cursor-grab active:cursor-grabbing hover:scale-125 hover:shadow-[0_0_16px_rgba(255,255,255,0.7)] transition-all duration-200"
+          : "h-5 w-5 border-2 border-primary bg-background ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors"
       )}
     />
   </SliderPrimitive.Root>

@@ -19,35 +19,38 @@ export default function ParallaxControls({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="fixed bottom-6 right-6 z-40">
+    <div className="flex justify-center w-full mb-4">
       <div
         className={cn(
-          "liquid-glass flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 ease-out",
-          isExpanded ? "w-[280px] md:w-[320px]" : "w-auto"
+          "liquid-glass flex items-center gap-2 px-3 py-2 rounded-full transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
+          isExpanded ? "w-[260px] md:w-[300px]" : "w-auto"
         )}
       >
         {/* Rabbit Button */}
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className={cn(
-            "p-2 rounded-xl transition-all duration-200",
-            "hover:bg-white/10 active:scale-95",
-            isExpanded && "bg-white/10"
+            "p-1.5 rounded-full transition-all duration-200",
+            "hover:bg-white/10 active:scale-90",
+            isExpanded && "bg-white/10 rotate-12"
           )}
           aria-label="Toggle speed controls"
         >
-          <Rabbit className="w-5 h-5 text-foreground" />
+          <Rabbit className={cn(
+            "w-4 h-4 text-foreground transition-transform duration-300",
+            isExpanded && "scale-110"
+          )} />
         </button>
 
         {/* Speed Slider - Expandable */}
         <div
           className={cn(
-            "overflow-hidden transition-all duration-300 ease-out",
-            isExpanded ? "w-full opacity-100" : "w-0 opacity-0"
+            "overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
+            isExpanded ? "w-[160px] md:w-[200px] opacity-100" : "w-0 opacity-0"
           )}
         >
-          <div className="flex items-center gap-2 min-w-[140px] md:min-w-[180px]">
-            <span className="text-xs text-muted-foreground whitespace-nowrap">Slow</span>
+          <div className="flex items-center gap-1.5 px-1">
+            <span className="text-[10px] text-muted-foreground whitespace-nowrap">Slow</span>
             <Slider
               value={[speed]}
               onValueChange={(value) => onSpeedChange(value[0])}
@@ -56,7 +59,7 @@ export default function ParallaxControls({
               step={0.1}
               className="flex-1"
             />
-            <span className="text-xs text-muted-foreground whitespace-nowrap">Fast</span>
+            <span className="text-[10px] text-muted-foreground whitespace-nowrap">Fast</span>
           </div>
         </div>
 
@@ -64,16 +67,16 @@ export default function ParallaxControls({
         <button
           onClick={onPauseToggle}
           className={cn(
-            "p-2 rounded-xl transition-all duration-200",
-            "hover:bg-white/10 active:scale-95",
+            "p-1.5 rounded-full transition-all duration-200",
+            "hover:bg-white/10 active:scale-90",
             isPaused && "bg-primary/20"
           )}
           aria-label={isPaused ? "Play" : "Pause"}
         >
           {isPaused ? (
-            <Play className="w-5 h-5 text-foreground" />
+            <Play className="w-4 h-4 text-foreground" />
           ) : (
-            <Pause className="w-5 h-5 text-foreground" />
+            <Pause className="w-4 h-4 text-foreground" />
           )}
         </button>
       </div>

@@ -50,7 +50,7 @@ export default function ParallaxControls({
                 value={[speed]}
                 onValueChange={(value) => onSpeedChange(value[0])}
                 min={0.3}
-                max={3}
+                max={4.5}
                 step={0.1}
                 variant="glass"
                 className="flex-1"

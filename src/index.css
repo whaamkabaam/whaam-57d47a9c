@@ -696,16 +696,38 @@ section {
 }
 
 .parallax-auto-scroll-down {
-  animation: parallax-scroll-down 315s linear infinite;
+  animation: parallax-scroll-down linear infinite;
   will-change: transform;
 }
 
 .parallax-auto-scroll-down-fast {
-  animation: parallax-scroll-down 252s linear infinite;
+  animation: parallax-scroll-down linear infinite;
   will-change: transform;
 }
 
-.parallax-auto-scroll-paused {
-  animation-play-state: paused;
+/* Column fade effect - top and bottom gradients */
+.parallax-column-fade {
+  position: relative;
+}
+
+.parallax-column-fade::before,
+.parallax-column-fade::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 80px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.parallax-column-fade::before {
+  top: 0;
+  background: linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 100%);
+}
+
+.parallax-column-fade::after {
+  bottom: 0;
+  background: linear-gradient(to top, hsl(var(--background)) 0%, transparent 100%);
 }
 

@@ -34,24 +34,15 @@ export const HeroParallax = ({
     <div className="py-10 overflow-hidden">
       {header}
       
-      {/* Sticky Controls */}
-      {onPauseToggle && onSpeedChange && (
-        <div className="sticky top-[72px] z-30">
-          <ParallaxControls
-            isPaused={isPaused}
-            speed={speedMultiplier}
-            onPauseToggle={onPauseToggle}
-            onSpeedChange={onSpeedChange}
-          />
-        </div>
-      )}
-      
       <div className="flex flex-row justify-center gap-3 md:gap-5 lg:gap-6 px-2 md:px-4 w-full max-w-7xl mx-auto overflow-hidden">
         {/* Column 1 - outer, slower */}
-        <div className="flex flex-col overflow-hidden h-[75vh]">
+        <div className="parallax-column-fade flex flex-col overflow-hidden h-[75vh]">
           <div 
-            className={`flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down ${isPaused ? 'parallax-auto-scroll-paused' : ''}`}
-            style={{ animationDuration: `${315 / speedMultiplier}s` }}
+            className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down"
+            style={{ 
+              animationDuration: `${315 / speedMultiplier}s`,
+              animationPlayState: isPaused ? 'paused' : 'running'
+            }}
           >
             {[...firstColumn, ...firstColumn].map((product, idx) => (
               <ProductCard
@@ -63,10 +54,13 @@ export const HeroParallax = ({
         </div>
         
         {/* Column 2 - middle, faster */}
-        <div className="flex flex-col overflow-hidden h-[75vh]">
+        <div className="parallax-column-fade flex flex-col overflow-hidden h-[75vh]">
           <div 
-            className={`flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down-fast ${isPaused ? 'parallax-auto-scroll-paused' : ''}`}
-            style={{ animationDuration: `${252 / speedMultiplier}s` }}
+            className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down-fast"
+            style={{ 
+              animationDuration: `${252 / speedMultiplier}s`,
+              animationPlayState: isPaused ? 'paused' : 'running'
+            }}
           >
             {[...secondColumn, ...secondColumn].map((product, idx) => (
               <ProductCard
@@ -78,10 +72,13 @@ export const HeroParallax = ({
         </div>
         
         {/* Column 3 - outer, slower */}
-        <div className="flex flex-col overflow-hidden h-[75vh]">
+        <div className="parallax-column-fade flex flex-col overflow-hidden h-[75vh]">
           <div 
-            className={`flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down ${isPaused ? 'parallax-auto-scroll-paused' : ''}`}
-            style={{ animationDuration: `${315 / speedMultiplier}s` }}
+            className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down"
+            style={{ 
+              animationDuration: `${315 / speedMultiplier}s`,
+              animationPlayState: isPaused ? 'paused' : 'running'
+            }}
           >
             {[...thirdColumn, ...thirdColumn].map((product, idx) => (
               <ProductCard
@@ -92,6 +89,18 @@ export const HeroParallax = ({
           </div>
         </div>
       </div>
+      
+      {/* Controls underneath columns */}
+      {onPauseToggle && onSpeedChange && (
+        <div className="sticky bottom-6 z-30 mt-6">
+          <ParallaxControls
+            isPaused={isPaused}
+            speed={speedMultiplier}
+            onPauseToggle={onPauseToggle}
+            onSpeedChange={onSpeedChange}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef, useEffect, useCallback } from "react";
 import ParallaxControls from "@/components/ParallaxControls";
 
 export interface Product {
@@ -7,6 +7,64 @@ export interface Product {
   thumbnail: string;
   size?: "sm" | "md" | "lg";
 }
+
+// Hook for smooth animated scrolling with speed interpolation
+const useParallaxAnimation = (
+  isPaused: boolean,
+  targetSpeed: number,
+  baseSpeed: number // pixels per second at 1x speed
+) => {
+  const columnRef = useRef<HTMLDivElement>(null);
+  const positionRef = useRef(0);
+  const currentSpeedRef = useRef(targetSpeed);
+  const animationRef = useRef<number>();
+  const lastTimeRef = useRef<number>(0);
+
+  useEffect(() => {
+    const animate = (timestamp: number) => {
+      if (!columnRef.current) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
+      // Calculate delta time
+      const deltaTime = lastTimeRef.current ? (timestamp - lastTimeRef.current) / 1000 : 0;
+      lastTimeRef.current = timestamp;
+
+      // Determine target (0 if paused, otherwise the speed multiplier)
+      const target = isPaused ? 0 : targetSpeed;
+
+      // Smoothly interpolate current speed toward target (lerp factor ~0.03 for ~300ms transition)
+      const lerpFactor = 0.03;
+      currentSpeedRef.current += (target - currentSpeedRef.current) * lerpFactor;
+
+      // Update position based on current speed (in pixels per second)
+      const pixelsPerFrame = baseSpeed * currentSpeedRef.current * deltaTime;
+      positionRef.current += pixelsPerFrame;
+
+      // Get the scroll height for wrapping
+      const scrollHeight = columnRef.current.scrollHeight / 2; // Half because content is duplicated
+      if (scrollHeight > 0) {
+        positionRef.current = positionRef.current % scrollHeight;
+      }
+
+      // Apply transform
+      columnRef.current.style.transform = `translateY(-${positionRef.current}px)`;
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+    
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [isPaused, targetSpeed, baseSpeed]);
+
+  return columnRef;
+};
 
 export const HeroParallax = ({
   products,
@@ -30,6 +88,15 @@ export const HeroParallax = ({
     thirdColumn: products.filter((_, i) => i % 3 === 2),
   }), [products]);
 
+  // Base speeds: outer columns slower, middle column faster
+  const outerBaseSpeed = 25; // pixels per second at 1x
+  const middleBaseSpeed = 32; // ~28% faster
+
+  // Create refs for each column with smooth animation
+  const col1Ref = useParallaxAnimation(isPaused, speedMultiplier, outerBaseSpeed);
+  const col2Ref = useParallaxAnimation(isPaused, speedMultiplier, middleBaseSpeed);
+  const col3Ref = useParallaxAnimation(isPaused, speedMultiplier, outerBaseSpeed);
+
   return (
     <div className="py-10 overflow-hidden">
       {header}
@@ -38,11 +105,8 @@ export const HeroParallax = ({
         {/* Column 1 - outer, slower */}
         <div className="parallax-column-fade flex flex-col overflow-hidden h-[75vh]">
           <div 
-            className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down"
-            style={{ 
-              animationDuration: `${315 / speedMultiplier}s`,
-              animationPlayState: isPaused ? 'paused' : 'running'
-            }}
+            ref={col1Ref}
+            className="flex flex-col space-y-6 md:space-y-10 will-change-transform"
           >
             {[...firstColumn, ...firstColumn].map((product, idx) => (
               <ProductCard
@@ -56,11 +120,8 @@ export const HeroParallax = ({
         {/* Column 2 - middle, faster */}
         <div className="parallax-column-fade flex flex-col overflow-hidden h-[75vh]">
           <div 
-            className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down-fast"
-            style={{ 
-              animationDuration: `${252 / speedMultiplier}s`,
-              animationPlayState: isPaused ? 'paused' : 'running'
-            }}
+            ref={col2Ref}
+            className="flex flex-col space-y-6 md:space-y-10 will-change-transform"
           >
             {[...secondColumn, ...secondColumn].map((product, idx) => (
               <ProductCard
@@ -74,11 +135,8 @@ export const HeroParallax = ({
         {/* Column 3 - outer, slower */}
         <div className="parallax-column-fade flex flex-col overflow-hidden h-[75vh]">
           <div 
-            className="flex flex-col space-y-6 md:space-y-10 parallax-auto-scroll-down"
-            style={{ 
-              animationDuration: `${315 / speedMultiplier}s`,
-              animationPlayState: isPaused ? 'paused' : 'running'
-            }}
+            ref={col3Ref}
+            className="flex flex-col space-y-6 md:space-y-10 will-change-transform"
           >
             {[...thirdColumn, ...thirdColumn].map((product, idx) => (
               <ProductCard

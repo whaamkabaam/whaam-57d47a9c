@@ -695,13 +695,13 @@ section {
   100% { transform: translateY(0); }
 }
 
-.parallax-auto-scroll-up {
-  animation: parallax-scroll-up 225s linear infinite;
+.parallax-auto-scroll-down {
+  animation: parallax-scroll-down 225s linear infinite;
   will-change: transform;
 }
 
-.parallax-auto-scroll-up-fast {
-  animation: parallax-scroll-up 214s linear infinite;
+.parallax-auto-scroll-down-fast {
+  animation: parallax-scroll-down 214s linear infinite;
   will-change: transform;
 }
 

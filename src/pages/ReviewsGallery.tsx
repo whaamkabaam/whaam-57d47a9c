@@ -65,10 +65,10 @@ export default function ReviewsGallery() {
             Back to home
           </Link>
           <h1 className="text-4xl font-bold glass-text-contrast mb-2">
-            Player Reviews
+            What 50,000+ Discord Members Are Saying
           </h1>
           <p className="text-muted-foreground">
-            Real feedback from real players. {screenshots.length}+ reviews and counting.
+            Real results from real players. {screenshots.length}+ reviews and counting.
           </p>
         </div>
 

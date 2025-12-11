@@ -684,3 +684,28 @@ section {
 .liquid-refract--r{ mix-blend-mode:screen; filter:hue-rotate(-8deg) saturate(150%); opacity:.12; transform: translateX(.6px) translateY(.3px); }
 .liquid-refract--b{ mix-blend-mode:screen; filter:hue-rotate(8deg)  saturate(150%); opacity:.10; transform: translateX(-.6px) translateY(-.3px); }
 
+/* Parallax auto-scroll animations - GPU-accelerated CSS */
+@keyframes parallax-scroll-down {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+@keyframes parallax-scroll-up {
+  0% { transform: translateY(-50%); }
+  100% { transform: translateY(0); }
+}
+
+.parallax-auto-scroll-down {
+  animation: parallax-scroll-down 80s linear infinite;
+  will-change: transform;
+}
+
+.parallax-auto-scroll-up {
+  animation: parallax-scroll-up 80s linear infinite;
+  will-change: transform;
+}
+
+.parallax-auto-scroll-paused {
+  animation-play-state: paused;
+}
+

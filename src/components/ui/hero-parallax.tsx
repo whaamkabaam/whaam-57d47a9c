@@ -22,7 +22,7 @@ export const HeroParallax = ({
   }), [products]);
 
   return (
-    <div className="py-20 overflow-hidden">
+    <div className="py-10 overflow-hidden">
       {header}
       <div className="mt-8 flex flex-row justify-center gap-2 md:gap-4 lg:gap-8 px-2 md:px-4 w-full max-w-7xl mx-auto overflow-hidden">
         {/* Column 1 - outer, slower */}

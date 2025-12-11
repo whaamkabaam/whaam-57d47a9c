@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 
 const ReviewsHeader = () => {
   return (
-    <div className="max-w-7xl relative mx-auto py-8 md:py-16 px-4 w-full left-0 top-0">
+    <div className="max-w-7xl relative mx-auto py-4 md:py-8 px-4 w-full left-0 top-0">
       <h2 className="text-2xl md:text-5xl lg:text-7xl font-bold text-foreground">
         Here are 100+ Reviews from my<br />
         51.000+ Members Discord Server.

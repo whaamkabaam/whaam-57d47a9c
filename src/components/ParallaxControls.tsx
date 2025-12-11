@@ -44,8 +44,8 @@ export default function ParallaxControls({
             isExpanded ? "grid-cols-[1fr] opacity-100" : "grid-cols-[0fr] opacity-0"
           )}
         >
-          <div className="overflow-hidden">
-            <div className="flex items-center gap-2 px-2 w-[140px] md:w-[180px]">
+          <div className="overflow-visible">
+            <div className="flex items-center gap-2 px-2 py-3 w-[140px] md:w-[180px]">
               <Slider
                 value={[speed]}
                 onValueChange={(value) => onSpeedChange(value[0])}

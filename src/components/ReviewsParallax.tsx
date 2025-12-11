@@ -4,7 +4,7 @@ import { HeroParallax } from "@/components/ui/hero-parallax";
 import { useProgressiveReviewScreenshots } from "@/hooks/useReviewScreenshots";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowRight } from "lucide-react";
-import ParallaxControls from "@/components/ParallaxControls";
+
 
 const ReviewsHeader = () => {
   return (
@@ -60,19 +60,13 @@ export default function ReviewsParallax() {
   }
 
   return (
-    <>
-      <HeroParallax 
-        products={products} 
-        header={<ReviewsHeader />}
-        isPaused={isPaused}
-        speedMultiplier={speed}
-      />
-      <ParallaxControls
-        isPaused={isPaused}
-        speed={speed}
-        onPauseToggle={() => setIsPaused(!isPaused)}
-        onSpeedChange={setSpeed}
-      />
-    </>
+    <HeroParallax 
+      products={products} 
+      header={<ReviewsHeader />}
+      isPaused={isPaused}
+      speedMultiplier={speed}
+      onPauseToggle={() => setIsPaused(!isPaused)}
+      onSpeedChange={setSpeed}
+    />
   );
 }

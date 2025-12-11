@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import ParallaxControls from "@/components/ParallaxControls";
 
 export interface Product {
   title: string;
@@ -12,11 +13,15 @@ export const HeroParallax = ({
   header,
   isPaused = false,
   speedMultiplier = 1,
+  onPauseToggle,
+  onSpeedChange,
 }: {
   products: Product[];
   header?: React.ReactNode;
   isPaused?: boolean;
   speedMultiplier?: number;
+  onPauseToggle?: () => void;
+  onSpeedChange?: (speed: number) => void;
 }) => {
   // Split products into 3 columns
   const { firstColumn, secondColumn, thirdColumn } = useMemo(() => ({
@@ -28,7 +33,20 @@ export const HeroParallax = ({
   return (
     <div className="py-10 overflow-hidden">
       {header}
-      <div className="mt-8 flex flex-row justify-center gap-3 md:gap-5 lg:gap-6 px-2 md:px-4 w-full max-w-7xl mx-auto overflow-hidden">
+      
+      {/* Sticky Controls */}
+      {onPauseToggle && onSpeedChange && (
+        <div className="sticky top-[72px] z-30">
+          <ParallaxControls
+            isPaused={isPaused}
+            speed={speedMultiplier}
+            onPauseToggle={onPauseToggle}
+            onSpeedChange={onSpeedChange}
+          />
+        </div>
+      )}
+      
+      <div className="flex flex-row justify-center gap-3 md:gap-5 lg:gap-6 px-2 md:px-4 w-full max-w-7xl mx-auto overflow-hidden">
         {/* Column 1 - outer, slower */}
         <div className="flex flex-col overflow-hidden h-[75vh]">
           <div 

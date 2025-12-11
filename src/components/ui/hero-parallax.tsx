@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import {
   motion,
   useScroll,
@@ -23,18 +23,23 @@ export const HeroParallax = ({
   header?: React.ReactNode;
   enableAutoScroll?: boolean;
 }) => {
-  // Split products into 3 columns
-  const firstColumn = products.filter((_, i) => i % 3 === 0);
-  const secondColumn = products.filter((_, i) => i % 3 === 1);
-  const thirdColumn = products.filter((_, i) => i % 3 === 2);
+  // Split products into 3 columns - useMemo ensures lazy-loaded products get distributed
+  const { firstColumn, secondColumn, thirdColumn } = useMemo(() => ({
+    firstColumn: products.filter((_, i) => i % 3 === 0),
+    secondColumn: products.filter((_, i) => i % 3 === 1),
+    thirdColumn: products.filter((_, i) => i % 3 === 2),
+  }), [products]);
   
   const ref = useRef(null);
   
-  // Auto-scroll state
+  // Auto-scroll state with max bound
   const [autoScrollOffset, setAutoScrollOffset] = useState(0);
   const [isAutoScrollActive, setIsAutoScrollActive] = useState(false);
   const lastScrollProgress = useRef(0);
   const animationRef = useRef<number | null>(null);
+  
+  // Max auto-scroll offset to prevent infinite scrolling
+  const maxAutoScrollOffset = 800;
   
   // Dynamic viewport-based values
   const [windowHeight, setWindowHeight] = useState(
@@ -69,7 +74,7 @@ export const HeroParallax = ({
     return () => unsubscribe();
   }, [scrollYProgress, enableAutoScroll]);
 
-  // Time-based auto-scroll with progressive speed
+  // Time-based auto-scroll with progressive speed and max bound
   useEffect(() => {
     if (!enableAutoScroll || !isAutoScrollActive) {
       if (animationRef.current) {
@@ -93,7 +98,11 @@ export const HeroParallax = ({
       const normalizedDepth = Math.min(1, (scrollDepth - 0.15) / 0.85);
       const speed = baseSpeed + (normalizedDepth * normalizedDepth * (maxSpeed - baseSpeed));
       
-      setAutoScrollOffset(prev => prev + speed * (deltaTime / 16));
+      setAutoScrollOffset(prev => {
+        const newOffset = prev + speed * (deltaTime / 16);
+        // Clamp to max offset
+        return Math.min(newOffset, maxAutoScrollOffset);
+      });
       animationRef.current = requestAnimationFrame(animate);
     };
     
@@ -156,7 +165,7 @@ export const HeroParallax = ({
         {/* 3 vertical columns side by side */}
         <div className="flex flex-row justify-center gap-6 md:gap-10">
           {/* Column 1 - moves down + auto-scroll down */}
-          <motion.div className="flex flex-col space-y-6 md:space-y-10">
+          <motion.div className="flex flex-col space-y-6 md:space-y-10 overflow-hidden">
             {firstColumn.map((product, idx) => (
               <ProductCard
                 product={product}
@@ -168,8 +177,8 @@ export const HeroParallax = ({
             ))}
           </motion.div>
           
-          {/* Column 2 - moves up (reverse) + auto-scroll up */}
-          <motion.div className="flex flex-col space-y-6 md:space-y-10">
+          {/* Column 2 - moves up (reverse) + auto-scroll up (CLAMPED) */}
+          <motion.div className="flex flex-col space-y-6 md:space-y-10 overflow-hidden">
             {secondColumn.map((product, idx) => (
               <ProductCard
                 product={product}
@@ -182,7 +191,7 @@ export const HeroParallax = ({
           </motion.div>
           
           {/* Column 3 - moves down + auto-scroll down */}
-          <motion.div className="flex flex-col space-y-6 md:space-y-10">
+          <motion.div className="flex flex-col space-y-6 md:space-y-10 overflow-hidden">
             {thirdColumn.map((product, idx) => (
               <ProductCard
                 product={product}
@@ -225,32 +234,20 @@ export const ProductCard = ({
         animate={{ y: autoOffset }}
         transition={{ type: "tween", duration: 0.1, ease: "linear" }}
       >
-        <motion.div
-          whileHover={{
-            y: -20,
-            scale: 1.02,
-          }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="group/product"
-        >
-          {/* Glassmorphic card frame */}
-          <div className="relative rounded-2xl p-2 bg-background/20 backdrop-blur-xl border border-white/10 shadow-xl transition-all duration-300 group-hover/product:border-white/20 group-hover/product:shadow-2xl group-hover/product:shadow-primary/10">
-            {/* Inner image container */}
-            <div className="relative rounded-xl overflow-hidden bg-black/40">
-              <img
-                src={product.thumbnail}
-                className="w-full h-auto transition-transform duration-500 group-hover/product:scale-105 pointer-events-none"
-                alt={product.title}
-              />
-              
-              {/* Bottom gradient overlay */}
-              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover/product:opacity-80 transition-opacity duration-300 pointer-events-none" />
-              
-              {/* Hover glow effect */}
-              <div className="absolute inset-0 rounded-xl opacity-0 group-hover/product:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-br from-primary/5 via-transparent to-primary/10" />
-            </div>
+        {/* Glassmorphic card frame - no hover effects */}
+        <div className="relative rounded-2xl p-2 bg-background/20 backdrop-blur-xl border border-white/10 shadow-xl">
+          {/* Inner image container */}
+          <div className="relative rounded-xl overflow-hidden bg-black/40">
+            <img
+              src={product.thumbnail}
+              className="w-full h-auto pointer-events-none"
+              alt={product.title}
+            />
+            
+            {/* Bottom gradient overlay */}
+            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/60 to-transparent opacity-60 pointer-events-none" />
           </div>
-        </motion.div>
+        </div>
       </motion.div>
     </motion.div>
   );

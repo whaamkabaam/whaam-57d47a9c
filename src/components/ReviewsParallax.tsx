@@ -10,11 +10,10 @@ const ReviewsHeader = () => {
   return (
     <div className="max-w-7xl relative mx-auto py-4 md:py-8 px-4 w-full left-0 top-0">
       <h2 className="text-2xl md:text-5xl lg:text-7xl font-bold text-foreground">
-        Here are 100+ Reviews from my<br />
-        51.000+ Members Discord Server.
+        What 50,000+ Discord Members Are Saying
       </h2>
       <p className="max-w-2xl text-base md:text-xl mt-8 text-muted-foreground">
-        Real feedback from the community. Hover over any review to see details.
+        Real results from real players
       </p>
       <Link
         to="/reviews"

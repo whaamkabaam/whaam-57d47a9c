@@ -90,7 +90,10 @@ export const ThreeSteps = () => {
             {/* Animated conic gradient */}
             <div className="absolute inset-0 animate-spin-slow bg-[conic-gradient(from_0deg,hsl(var(--primary)),hsl(var(--accent)),hsl(var(--primary)))]" />
             
-            <LiquidGlassButton 
+            {/* Opaque background to block gradient from bleeding through */}
+            <div className="absolute inset-[2px] rounded-[14px] bg-background" />
+            
+            <LiquidGlassButton
               variant="primary" 
               className="relative inline-flex items-center whitespace-nowrap"
               onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}

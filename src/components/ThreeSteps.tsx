@@ -6,17 +6,17 @@ const steps = [
   {
     number: 1,
     title: "Tell us how you aim.",
-    description: "Quick form: your game, sens, DPI, role and how your aim feels right now."
+    description: "Answer a super short form: your game, sens, DPI, role and what currently feels off with your aim."
   },
   {
     number: 2,
     title: "Get your Custom Curve built for you.",
-    description: "We take your data, run it through our system and design a Custom Curve that fixes your pain points (overflicks, underflicks, shaky micro-adjustments)."
+    description: "We turn that data into a Custom Curve tuned to your mechanics – built to stop overflicks, underflicks and shaky micro-adjustments."
   },
   {
     number: 3,
     title: "Enjoy your upgraded aim.",
-    description: "You get your personal Custom Curve graphs, plug them into Custom Curve, and just play. Your mouse finally tracks your intention: smoother micro-adjusts, cleaner flicks, more confidence in every duel."
+    description: "Drop your personal graphs into Custom Curve and queue. Your mouse finally matches your intention: smoother micro-adjusts, cleaner flicks, more confidence in every duel."
   }
 ];
 

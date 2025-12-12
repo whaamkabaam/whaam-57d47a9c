@@ -26,11 +26,12 @@ export const LiquidDistortionFilters = () => (
 interface LiquidGlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'accent';
+  glassVariant?: 'default' | 'nav';
   className?: string;
 }
 
 export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardProps>(
-  ({ className = '', children, ...props }, forwardedRef) => {
+  ({ className = '', children, glassVariant = 'default', ...props }, forwardedRef) => {
     const ref = React.useRef<HTMLDivElement>(null);
 
     // merge refs
@@ -173,7 +174,11 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
         ref={ref}
         onMouseEnter={onEnter}
         onMouseMove={onMove}
-        className={cn('liquid-glass rounded-[28px] p-6 md:p-8 overflow-hidden', className)}
+        className={cn(
+          glassVariant === 'nav' ? 'liquid-glass-nav' : 'liquid-glass',
+          'rounded-[28px] p-6 md:p-8 overflow-hidden',
+          className
+        )}
         {...props}
       >
         {/* refractive samplers */}

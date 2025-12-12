@@ -69,6 +69,11 @@ const Index = () => {
         <ThreeSteps />
       </section>
 
+      {/* Pricing - immediately after 3 steps */}
+      <section id="products" className="py-16 relative z-10">
+        <Products />
+      </section>
+
       {/* Outcomes grid */}
       <section id="outcomes" className="py-12 relative z-10">
         <Outcomes />
@@ -77,11 +82,6 @@ const Index = () => {
       {/* How it works */}
       <section id="services" className="py-24">
         <Services />
-      </section>
-
-      {/* Pricing */}
-      <section id="products" className="py-24">
-        <Products />
       </section>
 
       {/* Meet your Curve Expert */}

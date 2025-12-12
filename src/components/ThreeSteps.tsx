@@ -1,22 +1,22 @@
 import { motion } from "framer-motion";
 import { LiquidGlassCard } from "./LiquidGlassEffects";
+import { Button } from "./ui/button";
 
 const steps = [
   {
     number: 1,
-    title: "Download Custom Curve.",
-    description: "The basis for your Aim Improvement is Mouse Acceleration, specifically Custom Curve.",
-    footnote: 'Pro Version is optional, but recommended (10$ w/ code "whaam").'
+    title: "Tell us how you aim.",
+    description: "Quick form: your game, sens, DPI, role and how your aim feels right now."
   },
   {
     number: 2,
-    title: "Get your Custom Curve Graph tailored.",
-    description: "Get the best possible Custom Curve Graph, which is uniquely based on your personal abilities and playstyle."
+    title: "Get your Custom Curve built for you.",
+    description: "We take your data, run it through our system and design a Custom Curve that fixes your pain points (overflicks, underflicks, shaky micro-adjustments)."
   },
   {
     number: 3,
-    title: "Enjoy Confidence.",
-    description: "As Aiming feels very natural for you now, enjoy your new found ability to easily micro adjust, while still being able to quickly flick on your enemies like a Pro!"
+    title: "Enjoy your upgraded aim.",
+    description: "You get your personal Custom Curve graphs, plug them into Custom Curve, and just play. Your mouse finally tracks your intention: smoother micro-adjusts, cleaner flicks, more confidence in every duel."
   }
 ];
 
@@ -33,10 +33,10 @@ export const ThreeSteps = () => {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient-warm mb-4">
-            Become the best Aimer you can be in 3 easy steps
+            Become the best aimer you've ever been – in 3 simple steps
           </h2>
           <p className="glass-text text-lg max-w-2xl mx-auto">
-            A simple, proven process to transform your aim
+            No guesswork. No copy-pasting random pro settings. Just a curve built for <em className="italic">you</em>.
           </p>
         </motion.div>
 
@@ -66,16 +66,26 @@ export const ThreeSteps = () => {
                   {step.description}
                 </p>
 
-                {/* Footnote */}
-                {step.footnote && (
-                  <p className="text-sm text-muted-foreground mt-4 pt-4 border-t border-white/10">
-                    {step.footnote}
-                  </p>
-                )}
               </LiquidGlassCard>
             </motion.div>
           ))}
         </div>
+
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="text-center mt-16"
+        >
+          <p className="glass-text text-lg mb-6">
+            Ready? Step 1 takes under 2 minutes.
+          </p>
+          <Button variant="whaam" size="lg">
+            Get My Custom Curve
+          </Button>
+        </motion.div>
       </div>
     </section>
   );

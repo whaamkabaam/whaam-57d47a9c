@@ -3,6 +3,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CSS @property for animating conic-gradient angle */
+@property --glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate-glow {
+  to { --glow-angle: 360deg; }
+}
+
+.rotating-edge-glow {
+  background: conic-gradient(from var(--glow-angle), hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)));
+  animation: rotate-glow 3s linear infinite;
+}
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   20%, 60% { transform: translateX(-4px); }

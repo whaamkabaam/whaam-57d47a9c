@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { LiquidGlassCard } from "./LiquidGlassEffects";
+import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
 import { ArrowRight } from "lucide-react";
 
 const steps = [{
@@ -80,13 +80,14 @@ export const ThreeSteps = () => {
             Ready? Step 1 takes under 2 minutes.
           </p>
           
-          <button
-            className="cta-warm-btn"
+          <LiquidGlassButton 
+            variant="primary"
+            className="cta-prominent"
             onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
           >
             Get Your Custom Curve
-            <ArrowRight size={18} />
-          </button>
+            <ArrowRight size={18} className="ml-2" />
+          </LiquidGlassButton>
         </motion.div>
       </div>
     </section>

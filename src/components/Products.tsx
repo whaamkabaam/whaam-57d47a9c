@@ -1,18 +1,16 @@
 import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Check, X, Zap, Users, Target, ArrowRight, Shield, Trophy, Mouse } from "lucide-react";
+import { Check, X, ArrowRight, Shield, Zap, Trophy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
 
 const Products = () => {
-  const [hoveredPlan, setHoveredPlan] = useState<string | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleGetCurve = (planName: string, price: string, planId: string) => {
     setSelectedPlan(planId);
     toast({
-      title: `${planName} Selected! 🎯`,
+      title: `${planName} Selected!`,
       description: `Ready to perfect your aim with ${planName} for ${price}? Let's get started!`,
     });
   };
@@ -23,7 +21,6 @@ const Products = () => {
       name: "Self-Serve",
       price: "$39",
       badge: "DIY",
-      badgeColor: "bg-secondary text-primary font-bold",
       description: "For players who like to tinker and figure things out on their own.",
       deliveryTime: "First curve in minutes • Dialed in over 1–3 days",
       features: [
@@ -36,7 +33,6 @@ const Products = () => {
       ],
       cta: "Get My Curve — $39",
       micro: "One-time payment • No subscription",
-      icon: Mouse,
       highlight: false
     },
     {
@@ -44,7 +40,6 @@ const Products = () => {
       name: "Self-Serve Pro",
       price: "$47",
       badge: "Most Popular",
-      badgeColor: "bg-gradient-to-r from-primary to-secondary text-white font-bold",
       description: "For players who want room to tweak until it feels perfect.",
       deliveryTime: "First curve in minutes • Unlimited tweaks over 1–3 days",
       features: [
@@ -57,7 +52,6 @@ const Products = () => {
       ],
       cta: "Get Unlimited — $47",
       micro: "One-time payment • Satisfaction guaranteed",
-      icon: Target,
       highlight: true,
       popular: true
     },
@@ -66,10 +60,8 @@ const Products = () => {
       name: "Live 1-on-1 Session",
       price: "$149",
       badge: "Done in 45 min",
-      badgeColor: "bg-accent text-white font-bold",
       description: "For players who want it done right, right now—no back-and-forth.",
       deliveryTime: "Perfectly tuned curve in ~45 minutes (live)",
-      emphasis: "⚡ Perfect curve in ~45 minutes",
       features: [
         { text: "Live screen-share session with me", included: true },
         { text: "Curve tuned together in real time", included: true },
@@ -80,7 +72,6 @@ const Products = () => {
       ],
       cta: "Book Live 45-min — $149",
       micro: "Limited slots • Secure checkout",
-      icon: Users,
       highlight: false,
       premium: true
     }
@@ -111,105 +102,135 @@ const Products = () => {
         </div>
 
         {/* Plans Grid */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16 pt-8">
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto mb-16 items-start">
           {plans.map((plan) => (
-            <LiquidGlassCard
+            <div
               key={plan.id}
-              variant={plan.highlight ? "primary" : plan.premium ? "accent" : "secondary"}
-              className={`group text-center min-h-[560px] flex flex-col transition-all duration-700 hover:-translate-y-4 hover:scale-[1.02] ${
-                plan.highlight ? 'ring-2 ring-secondary/50 scale-[1.02]' : ''
-              } ${hoveredPlan === plan.id ? 'scale-[1.02]' : ''} ${
-                selectedPlan === plan.id ? 'ring-2 ring-primary/50' : ''
-              }`}
-              onMouseEnter={() => setHoveredPlan(plan.id)}
-              onMouseLeave={() => setHoveredPlan(null)}
+              className={`relative ${plan.popular ? 'md:-mt-4 md:mb-4' : ''}`}
             >
-              {/* Badge */}
-              <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 z-20">
-                <Badge className={`${plan.badgeColor} px-5 py-1.5 text-sm shadow-xl border-0 hover:scale-110 transition-all duration-300 whitespace-nowrap`}>
-                  {plan.badge}
-                </Badge>
-              </div>
-
-              {/* Popular Plan Glow Effect */}
+              {/* Popular card glow effect */}
               {plan.popular && (
-                <div className="absolute inset-0 bg-primary/5 pointer-events-none rounded-[inherit]"></div>
+                <div className="absolute -inset-[2px] bg-gradient-to-b from-primary via-secondary to-accent rounded-[20px] opacity-60 blur-sm" />
               )}
-
-              <div className="text-center pt-14 pb-4 flex-shrink-0 px-6">
-                <div className={`w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${
-                  plan.highlight ? 'glass-primary liquid-glow' : plan.premium ? 'glass-accent liquid-glow-accent' : 'glass-secondary liquid-glow-secondary'
-                }`}>
-                  <plan.icon className="text-primary" size={28} />
+              
+              <LiquidGlassCard
+                variant={plan.highlight ? "primary" : plan.premium ? "accent" : "secondary"}
+                className={`relative text-left flex flex-col transition-all duration-300 ${
+                  plan.popular 
+                    ? 'ring-1 ring-primary/30' 
+                    : 'hover:ring-1 hover:ring-white/10'
+                } ${selectedPlan === plan.id ? 'ring-2 ring-primary/50' : ''}`}
+              >
+                {/* Card Header */}
+                <div className="p-6 pb-4 border-b border-white/5">
+                  {/* Badge inline with name */}
+                  <div className="flex items-center justify-between mb-3">
+                    <span className={`text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${
+                      plan.popular 
+                        ? 'bg-gradient-to-r from-primary to-secondary text-white' 
+                        : plan.premium
+                          ? 'bg-accent/20 text-accent'
+                          : 'bg-white/10 text-white/70'
+                    }`}>
+                      {plan.badge}
+                    </span>
+                    {plan.popular && (
+                      <span className="text-xs text-secondary font-medium">Best value</span>
+                    )}
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold glass-text-contrast mb-1">
+                    {plan.name}
+                  </h3>
+                  
+                  <p className="glass-text text-sm leading-relaxed opacity-70">
+                    {plan.description}
+                  </p>
                 </div>
-                
-                <h3 className="text-xl font-bold glass-text-contrast mb-2">
-                  {plan.name}
-                </h3>
-                
-                <p className="glass-text text-sm mb-4 px-2 leading-relaxed min-h-[40px]">
-                  {plan.description}
-                </p>
-                
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <span className="text-4xl font-black glass-text-contrast">
-                    {plan.price}
-                  </span>
+
+                {/* Pricing */}
+                <div className="p-6 pb-4">
+                  <div className="flex items-baseline gap-1 mb-2">
+                    <span className="text-5xl font-black glass-text-contrast tracking-tight">
+                      {plan.price}
+                    </span>
+                    <span className="text-sm glass-text opacity-60">one-time</span>
+                  </div>
+
+                  <div className="text-sm text-secondary/80 font-medium">
+                    {plan.deliveryTime}
+                  </div>
                 </div>
 
-                <div className="text-secondary font-medium text-sm mb-2">
-                  {plan.deliveryTime}
+                {/* Features */}
+                <div className="px-6 pb-4 flex-grow">
+                  <ul className="space-y-3">
+                    {plan.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-start gap-3">
+                        {feature.included ? (
+                          <Check 
+                            className={`flex-shrink-0 mt-0.5 ${
+                              feature.highlight ? 'text-primary' : 'text-secondary/70'
+                            }`} 
+                            size={18} 
+                            strokeWidth={2.5}
+                          />
+                        ) : (
+                          <X 
+                            className="text-white/20 flex-shrink-0 mt-0.5" 
+                            size={18} 
+                            strokeWidth={2}
+                          />
+                        )}
+                        <span className={`text-sm leading-relaxed ${
+                          feature.included 
+                            ? feature.highlight 
+                              ? 'glass-text-contrast font-semibold' 
+                              : 'glass-text'
+                            : 'text-white/30 line-through'
+                        }`}>
+                          {feature.text}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                {plan.emphasis && (
-                  <LiquidGlassCard variant="accent" className="text-accent font-semibold text-sm px-3 py-1.5 mx-auto inline-flex items-center gap-1">
-                    {plan.emphasis}
-                  </LiquidGlassCard>
-                )}
-              </div>
-
-              <div className="px-6 flex-grow flex flex-col">
-                <ul className="space-y-3 mb-6 flex-grow text-left">
-                  {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-start space-x-2.5">
-                      {feature.included ? (
-                        <Check className={`flex-shrink-0 mt-0.5 ${feature.highlight ? 'text-primary' : 'text-secondary'}`} size={16} />
-                      ) : (
-                        <X className="text-muted-foreground/50 flex-shrink-0 mt-0.5" size={16} />
-                      )}
-                      <span className={`text-sm leading-relaxed ${
-                        feature.included 
-                          ? feature.highlight 
-                            ? 'glass-text-contrast font-medium' 
-                            : 'glass-text'
-                          : 'text-muted-foreground/60'
-                      }`}>
-                        {feature.text}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Button */}
-                <div className="mt-auto pb-6">
-                  <LiquidGlassButton 
-                    variant={plan.highlight ? "primary" : plan.premium ? "accent" : "primary"}
-                    className="w-full font-bold text-base py-3"
-                    onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
-                  >
-                    {plan.cta}
-                    <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
-                  </LiquidGlassButton>
+                {/* CTA Button */}
+                <div className="p-6 pt-4">
+                  {plan.popular ? (
+                    <div className="relative">
+                      {/* Glow backdrop for popular plan */}
+                      <div className="absolute -inset-1 bg-gradient-to-r from-primary/40 via-secondary/40 to-accent/40 rounded-xl blur-md opacity-70" />
+                      <LiquidGlassButton 
+                        variant="primary"
+                        className="relative w-full font-bold text-base py-3.5 flex items-center justify-center gap-2"
+                        onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
+                      >
+                        {plan.cta}
+                        <ArrowRight size={18} />
+                      </LiquidGlassButton>
+                    </div>
+                  ) : (
+                    <LiquidGlassButton 
+                      variant={plan.premium ? "accent" : "secondary"}
+                      className="w-full font-bold text-base py-3.5 flex items-center justify-center gap-2"
+                      onClick={() => handleGetCurve(plan.name, plan.price, plan.id)}
+                    >
+                      {plan.cta}
+                      <ArrowRight size={18} />
+                    </LiquidGlassButton>
+                  )}
 
                   {/* Microline */}
                   {plan.micro && (
-                    <div className="text-center mt-3 text-xs text-muted-foreground">
+                    <p className="text-center mt-3 text-xs text-white/40">
                       {plan.micro}
-                    </div>
+                    </p>
                   )}
                 </div>
-              </div>
-            </LiquidGlassCard>
+              </LiquidGlassCard>
+            </div>
           ))}
         </div>
 

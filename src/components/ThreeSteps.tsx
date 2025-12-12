@@ -80,21 +80,13 @@ export const ThreeSteps = () => {
             Ready? Step 1 takes under 2 minutes.
           </p>
           
-          {/* Premium Glass Button */}
-          <div className="inline-flex items-center justify-center">
-            <div className="premium-glass-wrap">
-              <button
-                className="premium-glass-btn"
-                onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-              >
-                <span className="flex items-center gap-2">
-                  Get Your Custom Curve
-                  <ArrowRight size={18} />
-                </span>
-              </button>
-              <div className="premium-glass-shadow" />
-            </div>
-          </div>
+          <button
+            className="cta-warm-btn"
+            onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            Get Your Custom Curve
+            <ArrowRight size={18} />
+          </button>
         </motion.div>
       </div>
     </section>

@@ -86,12 +86,16 @@ export const ThreeSteps = () => {
           </p>
           
           {/* Rotating gradient edge glow wrapper */}
-          <div className="relative inline-flex items-center justify-center p-[2px] rounded-2xl overflow-hidden">
-            {/* Animated conic gradient */}
-            <div className="absolute inset-0 animate-spin-slow bg-[conic-gradient(from_0deg,hsl(var(--primary)),hsl(var(--accent)),hsl(var(--primary)))]" />
-            
-            {/* Opaque background to block gradient from bleeding through */}
-            <div className="absolute inset-[2px] rounded-[14px] bg-background" />
+          <div className="relative inline-flex items-center justify-center">
+            {/* Animated gradient glow - masked to only show at edges */}
+            <div 
+              className="absolute -inset-[4px] rounded-2xl blur-sm animate-spin-slow opacity-80"
+              style={{
+                background: 'conic-gradient(from 0deg, hsl(var(--primary)), hsl(var(--accent)) 50%, hsl(var(--primary)) 100%)',
+                maskImage: 'radial-gradient(ellipse at center, transparent 60%, black 100%)',
+                WebkitMaskImage: 'radial-gradient(ellipse at center, transparent 60%, black 100%)'
+              }}
+            />
             
             <LiquidGlassButton
               variant="primary" 

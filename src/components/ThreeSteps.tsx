@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
 import { ArrowRight } from "lucide-react";
-
 const steps = [{
   number: 1,
   title: "Tell us how you aim.",
@@ -15,22 +14,24 @@ const steps = [{
   title: "Enjoy your upgraded aim.",
   description: "Drop your personal graphs into Custom Curve and queue. Your mouse finally matches your intention: smoother micro-adjusts, cleaner flicks, more confidence in every duel."
 }];
-
 export const ThreeSteps = () => {
-  return (
-    <section id="three-steps" className="py-24 px-4 relative">
+  return <section id="three-steps" className="py-24 px-4 relative">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} whileInView={{
+        opacity: 1,
+        y: 0
+      }} viewport={{
+        once: true
+      }} transition={{
+        duration: 0.6
+      }} className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient-warm mb-4">
             Become the best aimer you've ever been:<br />
-            in 3 simple steps
+            in 3 simple Steps.
           </h2>
           <p className="glass-text text-lg max-w-2xl mx-auto">
             No guesswork. No copy-pasting random pro settings.<br />
@@ -40,14 +41,18 @@ export const ThreeSteps = () => {
 
         {/* Steps Grid */}
         <div className="grid md:grid-cols-3 gap-8">
-          {steps.map((step, index) => (
-            <motion.div
-              key={step.number}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
-            >
+          {steps.map((step, index) => <motion.div key={step.number} initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.5,
+          delay: index * 0.15
+        }}>
               <LiquidGlassCard variant="secondary" className="h-full p-8 flex flex-col">
                 {/* Step Number */}
                 <div className="glass-primary w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
@@ -64,18 +69,22 @@ export const ThreeSteps = () => {
                   {step.description}
                 </p>
               </LiquidGlassCard>
-            </motion.div>
-          ))}
+            </motion.div>)}
         </div>
 
         {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-center mt-16"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} whileInView={{
+        opacity: 1,
+        y: 0
+      }} viewport={{
+        once: true
+      }} transition={{
+        duration: 0.6,
+        delay: 0.5
+      }} className="text-center mt-16">
           <p className="glass-text text-lg mb-6">
             Ready? Step 1 takes under 2 minutes.
           </p>
@@ -85,11 +94,9 @@ export const ThreeSteps = () => {
             <div className="absolute -inset-2 bg-gradient-to-r from-whaam-yellow via-primary to-accent rounded-full blur-lg opacity-50 group-hover:opacity-90 transition-opacity duration-500" />
             
             {/* Glass button with yellow border accent */}
-            <LiquidGlassButton 
-              variant="primary"
-              className="relative cta-prominent px-8 py-4 border border-whaam-yellow/30 hover:border-whaam-yellow/60"
-              onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-            >
+            <LiquidGlassButton variant="primary" className="relative cta-prominent px-8 py-4 border border-whaam-yellow/30 hover:border-whaam-yellow/60" onClick={() => document.getElementById("products")?.scrollIntoView({
+            behavior: "smooth"
+          })}>
               <span className="flex items-center gap-2">
                 Get Your Custom Curve
                 <ArrowRight size={18} />
@@ -98,8 +105,6 @@ export const ThreeSteps = () => {
           </div>
         </motion.div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ThreeSteps;

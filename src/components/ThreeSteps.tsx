@@ -15,7 +15,7 @@ const steps = [{
   description: "Drop your personal graphs into Custom Curve and queue. Your mouse finally matches your intention: smoother micro-adjusts, cleaner flicks, more confidence in every duel."
 }];
 export const ThreeSteps = () => {
-  return <section id="three-steps" className="py-24 px-4 relative">
+  return <section id="three-steps" className="py-8 px-4 relative">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <motion.div initial={{

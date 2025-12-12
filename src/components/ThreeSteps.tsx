@@ -4,15 +4,15 @@ import { ArrowRight } from "lucide-react";
 const steps = [{
   number: 1,
   title: "Tell us how you aim.",
-  description: "Answer a super short form: your game, sens, DPI, role and what currently feels off with your aim."
+  description: "Fill out a short form with your game, sens, DPI, role, and what currently feels off with your aim."
 }, {
   number: 2,
   title: "Get your Custom Curve built for you.",
-  description: "We turn that data into a Custom Curve tuned to your mechanics – built to stop overflicks, underflicks and shaky micro-adjustments."
+  description: "We turn that data into a Custom Curve tuned to your mechanics – built to stop overflicks, underflicks, and shaky micro-adjustments."
 }, {
   number: 3,
   title: "Enjoy your upgraded aim.",
-  description: "Drop your personal graphs into Custom Curve and queue. Your mouse finally matches your intention: smoother micro-adjusts, cleaner flicks, more confidence in every duel."
+  description: "Drop your personal graphs into Custom Curve and queue up. Your mouse finally matches your intention: smoother micro-adjusts, cleaner flicks, more confidence in every duel."
 }];
 export const ThreeSteps = () => {
   return <section id="three-steps" className="py-8 px-4 relative">
@@ -30,8 +30,8 @@ export const ThreeSteps = () => {
         duration: 0.6
       }} className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient-warm mb-4">
-            Become the best aimer you've ever been:<br />
-            in 3 simple Steps.
+            Become the best aimer you've ever been<br />
+            in 3 simple steps.
           </h2>
           <p className="glass-text text-lg max-w-2xl mx-auto">
             No guesswork. No copy-pasting random pro settings.<br />

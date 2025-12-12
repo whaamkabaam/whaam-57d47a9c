@@ -20,7 +20,7 @@ export default function ParallaxControls({
 
   return (
     <div className="flex justify-center w-full mb-4">
-      <div className="liquid-glass flex items-center gap-1 px-2 py-2 rounded-full">
+      <div className="liquid-glass flex items-center gap-1 px-2 py-1.5 rounded-full">
         {/* Rabbit Button */}
         <button
           onClick={() => setIsExpanded(!isExpanded)}
@@ -45,7 +45,7 @@ export default function ParallaxControls({
           )}
         >
           <div className="overflow-hidden">
-            <div className="flex items-center gap-2 px-2 py-3 w-[140px] md:w-[180px]">
+            <div className="flex items-center gap-2 px-2 py-3 -my-3 w-[140px] md:w-[180px]">
               <Slider
                 value={[speed]}
                 onValueChange={(value) => onSpeedChange(value[0])}

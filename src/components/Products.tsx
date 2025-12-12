@@ -24,8 +24,8 @@ const Products = () => {
       price: "$39",
       badge: "DIY",
       badgeColor: "bg-secondary text-primary font-bold",
-      description: "For players who like to tinker and figure things out themselves.",
-      deliveryTime: "Get your curve in 1–3 days",
+      description: "For players who like to tinker and figure things out on their own.",
+      deliveryTime: "First curve in minutes • Dialed in over 1–3 days",
       features: [
         { text: "Custom Curve delivered in minutes", included: true },
         { text: "Works with any FPS game", included: true },
@@ -34,7 +34,7 @@ const Products = () => {
         { text: "No live 1-on-1 session", included: false },
         { text: "No unlimited revisions", included: false },
       ],
-      cta: "Get My Curve – $39",
+      cta: "Get My Curve — $39",
       micro: "One-time payment • No subscription",
       icon: Mouse,
       highlight: false
@@ -45,17 +45,17 @@ const Products = () => {
       price: "$47",
       badge: "Most Popular",
       badgeColor: "bg-gradient-to-r from-primary to-secondary text-white font-bold",
-      description: "For players who want room to dial it in until it's perfect.",
-      deliveryTime: "Get your curve in 1–3 days + unlimited tweaks",
+      description: "For players who want room to tweak until it feels perfect.",
+      deliveryTime: "First curve in minutes • Unlimited tweaks over 1–3 days",
       features: [
         { text: "Custom Curve delivered in minutes", included: true },
         { text: "Works with any FPS game", included: true },
         { text: "Unlimited revisions (24–48h async)", included: true, highlight: true },
-        { text: "Satisfaction guarantee", included: true },
+        { text: "Satisfaction guarantee", included: true, highlight: true },
         { text: "One-time payment", included: true },
         { text: "No live 1-on-1 session", included: false },
       ],
-      cta: "Get Unlimited – $47",
+      cta: "Get Unlimited — $47",
       micro: "One-time payment • Satisfaction guaranteed",
       icon: Target,
       highlight: true,
@@ -68,18 +68,18 @@ const Products = () => {
       badge: "Done in 45 min",
       badgeColor: "bg-accent text-white font-bold",
       description: "For players who want it done right, right now—no back-and-forth.",
-      deliveryTime: "Walk away with your perfect curve today",
+      deliveryTime: "Perfectly tuned curve in ~45 minutes (live)",
       emphasis: "⚡ Perfect curve in ~45 minutes",
       features: [
         { text: "Live screen-share session with me", included: true },
-        { text: "Perfect curve tuned in ~45 minutes", included: true },
+        { text: "Curve tuned together in real time", included: true },
         { text: "Works with any FPS game", included: true },
         { text: "Unlimited revisions included", included: true },
         { text: "Satisfaction guarantee", included: true },
         { text: "One-time payment", included: true },
       ],
-      cta: "Book Live Session – $149",
-      micro: "Limited slots • One-time payment",
+      cta: "Book Live 45-min — $149",
+      micro: "Limited slots • Secure checkout",
       icon: Users,
       highlight: false,
       premium: true
@@ -105,8 +105,8 @@ const Products = () => {
           </h2>
           
           <p className="text-lg md:text-xl glass-text max-w-3xl mx-auto">
-            Every plan gets you a Custom Curve built for your game, your sens, your mechanics. 
-            The only difference? How fast you want it and how much hand-holding you need.
+            Every plan gives you a Custom Curve built for your game, your sens and your mechanics. 
+            The only difference is how fast you want results and how much support you want from me.
           </p>
         </div>
 

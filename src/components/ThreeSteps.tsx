@@ -80,14 +80,22 @@ export const ThreeSteps = () => {
             Ready? Step 1 takes under 2 minutes.
           </p>
           
-          <LiquidGlassButton 
-            variant="primary"
-            className="cta-prominent"
-            onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-          >
-            Get Your Custom Curve
-            <ArrowRight size={18} className="ml-2" />
-          </LiquidGlassButton>
+          <div className="relative group inline-flex">
+            {/* Yellow-orange glow backdrop */}
+            <div className="absolute -inset-2 bg-gradient-to-r from-whaam-yellow via-primary to-accent rounded-full blur-lg opacity-50 group-hover:opacity-90 transition-opacity duration-500" />
+            
+            {/* Glass button with yellow border accent */}
+            <LiquidGlassButton 
+              variant="primary"
+              className="relative cta-prominent px-8 py-4 border border-whaam-yellow/30 hover:border-whaam-yellow/60"
+              onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              <span className="flex items-center gap-2">
+                Get Your Custom Curve
+                <ArrowRight size={18} />
+              </span>
+            </LiquidGlassButton>
+          </div>
         </motion.div>
       </div>
     </section>

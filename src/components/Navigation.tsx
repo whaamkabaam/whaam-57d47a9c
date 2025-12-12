@@ -31,7 +31,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+      <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style={{ transform: 'translateZ(0)' }}>
         <LiquidGlassCard 
           variant="primary"
           className="mx-6 mt-2 p-3"

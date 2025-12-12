@@ -727,5 +727,8 @@ section {
     black 92%,
     transparent 100%
   );
+  contain: paint;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 

@@ -121,6 +121,7 @@ export const HeroParallax = ({
           <div 
             ref={col1Ref}
             className="flex flex-col space-y-6 md:space-y-10 will-change-transform"
+            style={{ backfaceVisibility: 'hidden' }}
           >
             {[...firstColumn, ...firstColumn].map((product, idx) => (
               <ProductCard
@@ -136,6 +137,7 @@ export const HeroParallax = ({
           <div 
             ref={col2Ref}
             className="flex flex-col space-y-6 md:space-y-10 will-change-transform"
+            style={{ backfaceVisibility: 'hidden' }}
           >
             {[...secondColumn, ...secondColumn].map((product, idx) => (
               <ProductCard
@@ -151,6 +153,7 @@ export const HeroParallax = ({
           <div 
             ref={col3Ref}
             className="flex flex-col space-y-6 md:space-y-10 will-change-transform"
+            style={{ backfaceVisibility: 'hidden' }}
           >
             {[...thirdColumn, ...thirdColumn].map((product, idx) => (
               <ProductCard

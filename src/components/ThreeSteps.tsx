@@ -74,30 +74,24 @@ export const ThreeSteps = () => {
         </div>
 
         {/* CTA Section */}
-        <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} viewport={{
-        once: true
-      }} transition={{
-        duration: 0.6,
-        delay: 0.5
-      }} className="text-center mt-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="text-center mt-16"
+        >
           <p className="glass-text text-lg mb-6">
             Ready? Step 1 takes under 2 minutes.
           </p>
-          <div className="relative group inline-block">
-            <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <LiquidGlassButton variant="primary" className="relative text-lg px-8 py-4 font-bold text-white shadow-xl" onClick={() => document.getElementById("products")?.scrollIntoView({
-            behavior: "smooth"
-          })}>
-              Get My Custom Curve
-              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
-            </LiquidGlassButton>
-          </div>
+          <LiquidGlassButton 
+            variant="primary" 
+            className="inline-flex items-center whitespace-nowrap"
+            onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            Get My Custom Curve
+            <ArrowRight className="ml-2" size={18} />
+          </LiquidGlassButton>
         </motion.div>
       </div>
     </section>;

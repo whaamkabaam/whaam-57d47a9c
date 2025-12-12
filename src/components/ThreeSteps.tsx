@@ -82,16 +82,15 @@ export const ThreeSteps = () => {
       }} viewport={{
         once: true
       }} transition={{
-        duration: 0.6,
-        delay: 0.5
+        duration: 0.6
       }} className="text-center mt-16">
           <p className="glass-text text-lg mb-6">
             Ready? Step 1 takes under 2 minutes.
           </p>
           
           <div className="relative group inline-flex">
-            {/* Yellow-orange glow backdrop */}
-            <div className="absolute -inset-2 bg-gradient-to-r from-whaam-yellow via-primary to-accent rounded-full blur-lg opacity-50 group-hover:opacity-90 transition-opacity duration-500" />
+            {/* Yellow-orange glow backdrop with breathing animation */}
+            <div className="absolute -inset-2 bg-gradient-to-r from-whaam-yellow via-primary to-accent rounded-full blur-lg animate-breathe group-hover:opacity-90 group-hover:scale-105 transition-all duration-500" />
             
             {/* Glass button with yellow border accent */}
             <LiquidGlassButton variant="primary" className="relative cta-prominent px-8 py-4 border border-whaam-yellow/30 hover:border-whaam-yellow/60" onClick={() => document.getElementById("products")?.scrollIntoView({

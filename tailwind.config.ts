@@ -104,7 +104,8 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'shimmer': 'shimmer 0.8s ease-out forwards'
+				'shimmer': 'shimmer 0.8s ease-out forwards',
+				'spin-slow': 'spin 3s linear infinite'
 			},
 			backdropBlur: {
 				'glass': '20px',

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { LiquidGlassCard } from "./LiquidGlassEffects";
-import { Button } from "./ui/button";
+import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
+import { ArrowRight } from "lucide-react";
 
 const steps = [
   {
@@ -82,9 +82,17 @@ export const ThreeSteps = () => {
           <p className="glass-text text-lg mb-6">
             Ready? Step 1 takes under 2 minutes.
           </p>
-          <Button variant="whaam" size="lg">
-            Get My Custom Curve
-          </Button>
+          <div className="relative group inline-block">
+            <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <LiquidGlassButton 
+              variant="primary" 
+              className="relative text-lg px-8 py-4 font-bold text-white shadow-xl"
+              onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              Get My Custom Curve
+              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
+            </LiquidGlassButton>
+          </div>
         </motion.div>
       </div>
     </section>

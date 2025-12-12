@@ -1,40 +1,37 @@
 import { motion } from "framer-motion";
 import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
 import { ArrowRight } from "lucide-react";
-
-const steps = [
-  {
-    number: 1,
-    title: "Tell us how you aim.",
-    description: "Answer a super short form: your game, sens, DPI, role and what currently feels off with your aim."
-  },
-  {
-    number: 2,
-    title: "Get your Custom Curve built for you.",
-    description: "We turn that data into a Custom Curve tuned to your mechanics – built to stop overflicks, underflicks and shaky micro-adjustments."
-  },
-  {
-    number: 3,
-    title: "Enjoy your upgraded aim.",
-    description: "Drop your personal graphs into Custom Curve and queue. Your mouse finally matches your intention: smoother micro-adjusts, cleaner flicks, more confidence in every duel."
-  }
-];
-
+const steps = [{
+  number: 1,
+  title: "Tell us how you aim.",
+  description: "Answer a super short form: your game, sens, DPI, role and what currently feels off with your aim."
+}, {
+  number: 2,
+  title: "Get your Custom Curve built for you.",
+  description: "We turn that data into a Custom Curve tuned to your mechanics – built to stop overflicks, underflicks and shaky micro-adjustments."
+}, {
+  number: 3,
+  title: "Enjoy your upgraded aim.",
+  description: "Drop your personal graphs into Custom Curve and queue. Your mouse finally matches your intention: smoother micro-adjusts, cleaner flicks, more confidence in every duel."
+}];
 export const ThreeSteps = () => {
-  return (
-    <section id="three-steps" className="py-24 px-4 relative">
+  return <section id="three-steps" className="py-24 px-4 relative">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient-warm mb-4">
-            Become the best aimer you've ever been – in 3 simple steps
-          </h2>
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} whileInView={{
+        opacity: 1,
+        y: 0
+      }} viewport={{
+        once: true
+      }} transition={{
+        duration: 0.6
+      }} className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient-warm mb-4">Become the best aimer you've ever been:
+in 3 simple steps
+        </h2>
           <p className="glass-text text-lg max-w-2xl mx-auto">
             No guesswork. No copy-pasting random pro settings. Just a curve built for <em className="italic">you</em>.
           </p>
@@ -42,14 +39,18 @@ export const ThreeSteps = () => {
 
         {/* Steps Grid */}
         <div className="grid md:grid-cols-3 gap-8">
-          {steps.map((step, index) => (
-            <motion.div
-              key={step.number}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
-            >
+          {steps.map((step, index) => <motion.div key={step.number} initial={{
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.5,
+          delay: index * 0.15
+        }}>
               <LiquidGlassCard variant="secondary" className="h-full p-8 flex flex-col">
                 {/* Step Number */}
                 <div className="glass-primary w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
@@ -67,36 +68,36 @@ export const ThreeSteps = () => {
                 </p>
 
               </LiquidGlassCard>
-            </motion.div>
-          ))}
+            </motion.div>)}
         </div>
 
         {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-center mt-16"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} whileInView={{
+        opacity: 1,
+        y: 0
+      }} viewport={{
+        once: true
+      }} transition={{
+        duration: 0.6,
+        delay: 0.5
+      }} className="text-center mt-16">
           <p className="glass-text text-lg mb-6">
             Ready? Step 1 takes under 2 minutes.
           </p>
           <div className="relative group inline-block">
             <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <LiquidGlassButton 
-              variant="primary" 
-              className="relative text-lg px-8 py-4 font-bold text-white shadow-xl"
-              onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-            >
+            <LiquidGlassButton variant="primary" className="relative text-lg px-8 py-4 font-bold text-white shadow-xl" onClick={() => document.getElementById("products")?.scrollIntoView({
+            behavior: "smooth"
+          })}>
               Get My Custom Curve
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
             </LiquidGlassButton>
           </div>
         </motion.div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ThreeSteps;

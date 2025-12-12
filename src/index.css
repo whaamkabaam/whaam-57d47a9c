@@ -3,32 +3,220 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Rotating glow effect - bulletproof 200% pseudo-element technique */
-@keyframes rotate-glow-effect {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* Premium Glass Button - Animated Conic Gradient Border */
+@property --angle-1 {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: -75deg;
+}
+@property --angle-2 {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: -45deg;
 }
 
-.rotating-glow-effect {
+.premium-glass-wrap {
+  z-index: 2;
+  pointer-events: none;
+  background: transparent;
+  border-radius: 999vw;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   position: relative;
-  overflow: hidden;
-  filter: blur(8px);
+  perspective: 800px;
 }
 
-.rotating-glow-effect::before {
-  content: '';
+.premium-glass-shadow {
+  --shadow-cuttoff-fix: 2em;
+  width: calc(100% + var(--shadow-cuttoff-fix));
+  height: calc(100% + var(--shadow-cuttoff-fix));
+  top: calc(0% - var(--shadow-cuttoff-fix) / 2);
+  left: calc(0% - var(--shadow-cuttoff-fix) / 2);
+  filter: blur(clamp(2px, 0.125em, 12px));
+  pointer-events: none;
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(
-    from 0deg,
-    hsl(var(--primary)),
-    hsl(var(--accent)),
-    hsl(var(--primary))
-  );
-  animation: rotate-glow-effect 3s linear infinite;
+  overflow: visible;
+}
+
+.premium-glass-shadow::after {
+  content: "";
+  z-index: 0;
+  width: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
+  height: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
+  inset: 0;
+  top: calc(var(--shadow-cuttoff-fix) - 0.5em);
+  left: calc(var(--shadow-cuttoff-fix) - 0.875em);
+  box-sizing: border-box;
+  opacity: 1;
+  background: linear-gradient(hsl(var(--primary) / 0.3), hsl(var(--primary) / 0.1));
+  border-radius: 999vw;
+  padding: 0.125em;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  position: absolute;
+  overflow: visible;
+  mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  mask-position: 0 0, 0 0;
+  mask-size: auto, auto;
+  mask-repeat: repeat, repeat;
+  mask-clip: content-box, border-box;
+  mask-origin: content-box, border-box;
+  mask-composite: exclude;
+}
+
+.premium-glass-btn {
+  --border-width: clamp(1px, 0.0625em, 4px);
+  all: unset;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+  z-index: 3;
+  backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+  background: linear-gradient(-75deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.25), hsl(var(--primary) / 0.1));
+  border-radius: 999vw;
+  justify-content: center;
+  align-items: center;
+  padding: 0.875em 1.75em;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  display: flex;
+  position: relative;
+  box-shadow: 
+    inset 0 0.125em 0.125em hsl(0 0% 0% / 0.05),
+    inset 0 -0.125em 0.125em hsl(0 0% 100% / 0.15),
+    0 0.25em 0.125em -0.125em hsl(0 0% 0% / 0.2),
+    inset 0 0 0.1em 0.25em hsl(0 0% 100% / 0.1),
+    0 0 hsl(0 0% 100% / 0);
+}
+
+.premium-glass-btn:hover {
+  backdrop-filter: blur(0.01em);
+  transform: scale(0.975);
+  box-shadow: 
+    inset 0 0.125em 0.125em hsl(0 0% 0% / 0.05),
+    inset 0 -0.125em 0.125em hsl(0 0% 100% / 0.15),
+    0 0.15em 0.05em -0.1em hsl(0 0% 0% / 0.25),
+    inset 0 0 0.05em 0.1em hsl(0 0% 100% / 0.15),
+    0 0 hsl(0 0% 100% / 0);
+}
+
+.premium-glass-btn span {
+  user-select: none;
+  color: hsl(var(--foreground));
+  text-shadow: 0 0.05em 0.05em hsl(0 0% 0% / 0.1);
+  letter-spacing: -0.18px;
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  display: flex;
+  position: relative;
+}
+
+.premium-glass-btn:hover span {
+  text-shadow: 0.025em 0.025em 0.025em hsl(0 0% 0% / 0.1);
+}
+
+.premium-glass-btn span::after {
+  content: "";
+  z-index: 1;
+  width: calc(100% - var(--border-width));
+  height: calc(100% - var(--border-width));
+  top: calc(0% + var(--border-width) / 2);
+  left: calc(0% + var(--border-width) / 2);
+  box-sizing: border-box;
+  background: linear-gradient(var(--angle-2), transparent 0, hsl(0 0% 100% / 0.5) 40% 50%, transparent 55%);
+  z-index: 3;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  background-position: 0;
+  background-repeat: no-repeat;
+  background-size: 200% 200%;
+  border-radius: 999vw;
+  transition: background-position 0.5s cubic-bezier(0.25, 1, 0.5, 1), --angle-2 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  display: block;
+  position: absolute;
+  overflow: clip;
+}
+
+.premium-glass-btn:hover span::after {
+  background-position: 25%;
+}
+
+.premium-glass-btn:active span::after {
+  --angle-2: -15deg;
+  background-position: 50% 15%;
+}
+
+.premium-glass-btn::after {
+  content: "";
+  z-index: 1;
+  width: calc(100% + var(--border-width));
+  height: calc(100% + var(--border-width));
+  inset: 0;
+  top: calc(0% - var(--border-width) / 2);
+  left: calc(0% - var(--border-width) / 2);
+  padding: var(--border-width);
+  box-sizing: border-box;
+  background: 
+    conic-gradient(from var(--angle-1) at 50% 50%, hsl(var(--primary) / 0.6), transparent 5% 40%, hsl(var(--primary) / 0.6) 50%, transparent 60% 95%, hsl(var(--primary) / 0.6)),
+    linear-gradient(180deg, hsl(0 0% 100% / 0.3), hsl(0 0% 100% / 0.3));
+  box-shadow: inset 0 0 0 calc(var(--border-width) / 2) hsl(0 0% 100% / 0.2);
+  border-radius: 999vw;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1), --angle-1 0.5s;
+  position: absolute;
+  mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  mask-position: 0 0, 0 0;
+  mask-size: auto, auto;
+  mask-repeat: repeat, repeat;
+  mask-clip: content-box, border-box;
+  mask-origin: content-box, border-box;
+  mask-composite: exclude;
+}
+
+.premium-glass-btn:hover::after {
+  --angle-1: -125deg;
+}
+
+.premium-glass-btn:active::after {
+  --angle-1: -75deg;
+}
+
+.premium-glass-wrap:has(button:hover) .premium-glass-shadow {
+  filter: blur(clamp(2px, 0.0625em, 6px));
+  transition: filter 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.premium-glass-wrap:has(button:hover) .premium-glass-shadow::after {
+  top: calc(var(--shadow-cuttoff-fix) - 0.875em);
+  opacity: 1;
+}
+
+.premium-glass-wrap:has(button:active) {
+  transform: rotateX(25deg);
+}
+
+.premium-glass-wrap:has(button:active) .premium-glass-btn {
+  box-shadow: 
+    inset 0 0.125em 0.125em hsl(0 0% 0% / 0.05),
+    inset 0 -0.125em 0.125em hsl(0 0% 100% / 0.15),
+    0 0.125em 0.125em -0.125em hsl(0 0% 0% / 0.2),
+    inset 0 0 0.1em 0.25em hsl(0 0% 100% / 0.1),
+    0 0.225em 0.05em hsl(0 0% 0% / 0.05),
+    0 0.25em hsl(0 0% 100% / 0.25),
+    inset 0 0.25em 0.05em hsl(0 0% 0% / 0.15);
+}
+
+.premium-glass-wrap:has(button:active) .premium-glass-shadow {
+  filter: blur(clamp(2px, 0.125em, 12px));
+}
+
+.premium-glass-wrap:has(button:active) .premium-glass-shadow::after {
+  top: calc(var(--shadow-cuttoff-fix) - 0.5em);
+  opacity: 0.75;
+}
+
+.premium-glass-wrap:has(button:active) span {
+  text-shadow: 0.025em 0.1em 0.05em hsl(0 0% 0% / 0.08);
 }
 
 @keyframes shake {

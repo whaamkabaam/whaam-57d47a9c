@@ -84,14 +84,21 @@ export const ThreeSteps = () => {
           <p className="glass-text text-lg mb-6">
             Ready? Step 1 takes under 2 minutes.
           </p>
-          <LiquidGlassButton 
-            variant="primary" 
-            className="inline-flex items-center whitespace-nowrap"
-            onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-          >
-            Get My Custom Curve
-            <ArrowRight className="ml-2" size={18} />
-          </LiquidGlassButton>
+          
+          {/* Rotating gradient edge glow wrapper */}
+          <div className="relative inline-flex items-center justify-center p-[2px] rounded-2xl overflow-hidden">
+            {/* Animated conic gradient */}
+            <div className="absolute inset-0 animate-spin-slow bg-[conic-gradient(from_0deg,hsl(var(--primary)),hsl(var(--accent)),hsl(var(--primary)))]" />
+            
+            <LiquidGlassButton 
+              variant="primary" 
+              className="relative inline-flex items-center whitespace-nowrap"
+              onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              Get Your Custom Curve
+              <ArrowRight className="ml-2" size={18} />
+            </LiquidGlassButton>
+          </div>
         </motion.div>
       </div>
     </section>;

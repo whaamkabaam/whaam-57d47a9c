@@ -5,7 +5,7 @@ export default function StoryCards() {
   return (
     <section
       aria-labelledby="story-cards-heading"
-      className="relative isolate z-0 mx-auto max-w-6xl px-4 py-8 md:py-12"
+      className="relative isolate z-0 mx-auto max-w-6xl px-4 pt-8 pb-4 md:pt-12 md:pb-6"
     >
       <h2 id="story-cards-heading" className="sr-only">From problem to solution</h2>
 

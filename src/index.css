@@ -3,224 +3,46 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Premium Glass Button - Animated Conic Gradient Border */
-@property --angle-1 {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: -75deg;
-}
-@property --angle-2 {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: -45deg;
-}
-
-.premium-glass-wrap {
-  z-index: 2;
-  pointer-events: none;
-  background: transparent;
-  border-radius: 999vw;
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+/* Clean CTA Button with Gradient Border */
+.cta-warm-btn {
   position: relative;
-  perspective: 800px;
-}
-
-.premium-glass-shadow {
-  --shadow-cuttoff-fix: 2em;
-  width: calc(100% + var(--shadow-cuttoff-fix));
-  height: calc(100% + var(--shadow-cuttoff-fix));
-  top: calc(0% - var(--shadow-cuttoff-fix) / 2);
-  left: calc(0% - var(--shadow-cuttoff-fix) / 2);
-  filter: blur(clamp(2px, 0.125em, 12px));
-  pointer-events: none;
-  position: absolute;
-  overflow: visible;
-}
-
-.premium-glass-shadow::after {
-  content: "";
-  z-index: 0;
-  width: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
-  height: calc(100% - var(--shadow-cuttoff-fix) - 0.25em);
-  inset: 0;
-  top: calc(var(--shadow-cuttoff-fix) - 0.5em);
-  left: calc(var(--shadow-cuttoff-fix) - 0.875em);
-  box-sizing: border-box;
-  opacity: 1;
-  background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.1));
-  border-radius: 999vw;
-  padding: 0.125em;
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  position: absolute;
-  overflow: visible;
-  mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
-  mask-position: 0 0, 0 0;
-  mask-size: auto, auto;
-  mask-repeat: repeat, repeat;
-  mask-clip: content-box, border-box;
-  mask-origin: content-box, border-box;
-  mask-composite: exclude;
-}
-
-.premium-glass-btn {
-  --border-width: clamp(1px, 0.0625em, 4px);
-  all: unset;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  pointer-events: auto;
-  z-index: 3;
-  backdrop-filter: blur(clamp(1px, 0.125em, 4px));
-  background: linear-gradient(-75deg, rgba(255,255,255,0.05), rgba(255,255,255,0.2), rgba(255,255,255,0.05));
-  border-radius: 999vw;
-  justify-content: center;
+  display: inline-flex;
   align-items: center;
-  min-width: 200px;
-  height: 52px;
-  padding: 0 1.75em;
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  display: flex;
-  position: relative;
-  box-shadow: 
-    inset 0 0.125em 0.125em rgba(0,0,0,0.05),
-    inset 0 -0.125em 0.125em rgba(255,255,255,0.5),
-    0 0.25em 0.125em -0.125em rgba(0,0,0,0.2),
-    inset 0 0 0.1em 0.25em rgba(255,255,255,0.2),
-    0 0 transparent;
-}
-
-.premium-glass-btn:hover {
-  backdrop-filter: blur(0.01em);
-  transform: scale(0.975);
-  box-shadow: 
-    inset 0 0.125em 0.125em rgba(0,0,0,0.05),
-    inset 0 -0.125em 0.125em rgba(255,255,255,0.5),
-    0 0.15em 0.05em -0.1em rgba(0,0,0,0.25),
-    inset 0 0 0.05em 0.1em rgba(255,255,255,0.5),
-    0 0 transparent;
-}
-
-.premium-glass-btn span {
-  user-select: none;
-  color: #323232;
-  text-shadow: 0 0.05em 0.05em rgba(0,0,0,0.05);
-  letter-spacing: -0.18px;
-  white-space: nowrap;
   justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
   font-size: 1.125rem;
-  font-weight: 500;
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-  display: flex;
-  position: relative;
-}
-
-.premium-glass-btn:hover span {
-  text-shadow: 0.025em 0.025em 0.025em hsl(0 0% 0% / 0.1);
-}
-
-.premium-glass-btn span::after {
-  content: "";
-  z-index: 1;
-  width: calc(100% - var(--border-width));
-  height: calc(100% - var(--border-width));
-  top: calc(0% + var(--border-width) / 2);
-  left: calc(0% + var(--border-width) / 2);
-  box-sizing: border-box;
-  background: linear-gradient(var(--angle-2), transparent 0, hsl(0 0% 100% / 0.5) 40% 50%, transparent 55%);
-  z-index: 3;
-  mix-blend-mode: screen;
-  pointer-events: none;
-  background-position: 0;
-  background-repeat: no-repeat;
-  background-size: 200% 200%;
-  border-radius: 999vw;
-  transition: background-position 0.5s cubic-bezier(0.25, 1, 0.5, 1), --angle-2 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-  display: block;
-  position: absolute;
-  overflow: clip;
-}
-
-.premium-glass-btn:hover span::after {
-  background-position: 25%;
-}
-
-.premium-glass-btn:active span::after {
-  --angle-2: -15deg;
-  background-position: 50% 15%;
-}
-
-.premium-glass-btn::after {
-  content: "";
-  z-index: 1;
-  width: calc(100% + var(--border-width));
-  height: calc(100% + var(--border-width));
-  inset: 0;
-  top: calc(0% - var(--border-width) / 2);
-  left: calc(0% - var(--border-width) / 2);
-  padding: var(--border-width);
-  box-sizing: border-box;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  border-radius: 999px;
+  cursor: pointer;
+  
+  /* Gradient border using background */
   background: 
-    conic-gradient(from var(--angle-1) at 50% 50%, rgba(0,0,0,0.5), transparent 5% 40%, rgba(0,0,0,0.5) 50%, transparent 60% 95%, rgba(0,0,0,0.5)),
-    linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.5));
-  box-shadow: inset 0 0 0 calc(var(--border-width) / 2) rgba(255,255,255,0.5);
-  border-radius: 999vw;
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1), --angle-1 0.5s;
-  position: absolute;
-  mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
-  mask-position: 0 0, 0 0;
-  mask-size: auto, auto;
-  mask-repeat: repeat, repeat;
-  mask-clip: content-box, border-box;
-  mask-origin: content-box, border-box;
-  mask-composite: exclude;
-}
-
-.premium-glass-btn:hover::after {
-  --angle-1: -125deg;
-}
-
-.premium-glass-btn:active::after {
-  --angle-1: -75deg;
-}
-
-.premium-glass-wrap:has(button:hover) .premium-glass-shadow {
-  filter: blur(clamp(2px, 0.0625em, 6px));
-  transition: filter 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.premium-glass-wrap:has(button:hover) .premium-glass-shadow::after {
-  top: calc(var(--shadow-cuttoff-fix) - 0.875em);
-  opacity: 1;
-}
-
-.premium-glass-wrap:has(button:active) {
-  transform: rotateX(25deg);
-}
-
-.premium-glass-wrap:has(button:active) .premium-glass-btn {
+    linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box,
+    linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--secondary))) border-box;
+  border: 2px solid transparent;
+  
+  /* Soft glow */
   box-shadow: 
-    inset 0 0.125em 0.125em hsl(0 0% 0% / 0.05),
-    inset 0 -0.125em 0.125em hsl(0 0% 100% / 0.15),
-    0 0.125em 0.125em -0.125em hsl(0 0% 0% / 0.2),
-    inset 0 0 0.1em 0.25em hsl(0 0% 100% / 0.1),
-    0 0.225em 0.05em hsl(0 0% 0% / 0.05),
-    0 0.25em hsl(0 0% 100% / 0.25),
-    inset 0 0.25em 0.05em hsl(0 0% 0% / 0.15);
+    0 0 20px hsl(var(--primary) / 0.2),
+    0 4px 16px hsl(0 0% 0% / 0.2),
+    inset 0 1px 1px hsl(0 0% 100% / 0.1);
+  
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.premium-glass-wrap:has(button:active) .premium-glass-shadow {
-  filter: blur(clamp(2px, 0.125em, 12px));
+.cta-warm-btn:hover {
+  transform: scale(1.03) translateY(-2px);
+  box-shadow: 
+    0 0 30px hsl(var(--primary) / 0.4),
+    0 0 60px hsl(var(--accent) / 0.2),
+    0 8px 25px hsl(0 0% 0% / 0.25),
+    inset 0 1px 1px hsl(0 0% 100% / 0.15);
 }
 
-.premium-glass-wrap:has(button:active) .premium-glass-shadow::after {
-  top: calc(var(--shadow-cuttoff-fix) - 0.5em);
-  opacity: 0.75;
-}
-
-.premium-glass-wrap:has(button:active) span {
-  text-shadow: 0.025em 0.1em 0.05em hsl(0 0% 0% / 0.08);
+.cta-warm-btn:active {
+  transform: scale(0.98);
 }
 
 @keyframes shake {

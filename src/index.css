@@ -3,38 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Prominent CTA - enhances glass system with warm glow */
+/* Prominent CTA - just ensures proper sizing, glow handled by wrapper */
 .cta-prominent {
-  padding: 1rem 2.5rem !important;
   font-size: 1.125rem !important;
-  font-weight: 600;
-  border-radius: 999px !important;
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-prominent::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, 
-    hsl(var(--primary) / 0.15), 
-    hsl(var(--accent) / 0.1));
-  opacity: 0;
-  transition: opacity 0.4s var(--ease-fluid);
-  pointer-events: none;
-}
-
-.cta-prominent:hover::before {
-  opacity: 1;
-}
-
-.cta-prominent:hover {
-  box-shadow: 
-    0 0 30px hsl(var(--primary) / 0.4),
-    0 0 60px hsl(var(--secondary) / 0.2),
-    0 8px 32px hsl(0 0% 0% / 0.3) !important;
-  transform: translateY(-2px);
+  font-weight: 600 !important;
 }
 
 @keyframes shake {

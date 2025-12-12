@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
+import { LiquidGlassCard } from "./LiquidGlassEffects";
 import { ArrowRight } from "lucide-react";
+
 const steps = [{
   number: 1,
   title: "Tell us how you aim.",
@@ -14,21 +15,19 @@ const steps = [{
   title: "Enjoy your upgraded aim.",
   description: "Drop your personal graphs into Custom Curve and queue. Your mouse finally matches your intention: smoother micro-adjusts, cleaner flicks, more confidence in every duel."
 }];
+
 export const ThreeSteps = () => {
-  return <section id="three-steps" className="py-24 px-4 relative">
+  return (
+    <section id="three-steps" className="py-24 px-4 relative">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} whileInView={{
-        opacity: 1,
-        y: 0
-      }} viewport={{
-        once: true
-      }} transition={{
-        duration: 0.6
-      }} className="text-center mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient-warm mb-4">
             Become the best aimer you've ever been:<br />
             in 3 simple steps
@@ -41,18 +40,14 @@ export const ThreeSteps = () => {
 
         {/* Steps Grid */}
         <div className="grid md:grid-cols-3 gap-8">
-          {steps.map((step, index) => <motion.div key={step.number} initial={{
-          opacity: 0,
-          y: 30
-        }} whileInView={{
-          opacity: 1,
-          y: 0
-        }} viewport={{
-          once: true
-        }} transition={{
-          duration: 0.5,
-          delay: index * 0.15
-        }}>
+          {steps.map((step, index) => (
+            <motion.div
+              key={step.number}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.15 }}
+            >
               <LiquidGlassCard variant="secondary" className="h-full p-8 flex flex-col">
                 {/* Step Number */}
                 <div className="glass-primary w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
@@ -68,9 +63,9 @@ export const ThreeSteps = () => {
                 <p className="glass-text flex-grow">
                   {step.description}
                 </p>
-
               </LiquidGlassCard>
-            </motion.div>)}
+            </motion.div>
+          ))}
         </div>
 
         {/* CTA Section */}
@@ -85,22 +80,25 @@ export const ThreeSteps = () => {
             Ready? Step 1 takes under 2 minutes.
           </p>
           
-          {/* Rotating gradient edge glow wrapper */}
-          <div className="relative inline-flex items-center justify-center">
-            {/* Animated gradient glow - 200% oversized rotating pseudo-element */}
-            <div className="rotating-glow-effect absolute -inset-[6px] rounded-2xl opacity-75" />
-            
-            <LiquidGlassButton
-              variant="primary" 
-              className="relative inline-flex items-center whitespace-nowrap"
-              onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-            >
-              Get Your Custom Curve
-              <ArrowRight className="ml-2" size={18} />
-            </LiquidGlassButton>
+          {/* Premium Glass Button */}
+          <div className="inline-flex items-center justify-center">
+            <div className="premium-glass-wrap">
+              <button
+                className="premium-glass-btn"
+                onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
+              >
+                <span className="flex items-center gap-2">
+                  Get Your Custom Curve
+                  <ArrowRight size={18} />
+                </span>
+              </button>
+              <div className="premium-glass-shadow" />
+            </div>
           </div>
         </motion.div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default ThreeSteps;

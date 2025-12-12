@@ -87,14 +87,8 @@ export const ThreeSteps = () => {
           
           {/* Rotating gradient edge glow wrapper */}
           <div className="relative inline-flex items-center justify-center">
-            {/* Animated gradient glow - uses CSS @property for smooth angle animation */}
-            <div 
-              className="absolute -inset-[4px] rounded-2xl blur-sm opacity-80 rotating-edge-glow"
-              style={{
-                maskImage: 'radial-gradient(ellipse at center, transparent 60%, black 100%)',
-                WebkitMaskImage: 'radial-gradient(ellipse at center, transparent 60%, black 100%)'
-              }}
-            />
+            {/* Animated gradient glow - 200% oversized rotating pseudo-element */}
+            <div className="rotating-glow-effect absolute -inset-[6px] rounded-2xl opacity-75" />
             
             <LiquidGlassButton
               variant="primary" 

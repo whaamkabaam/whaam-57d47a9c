@@ -24,7 +24,7 @@ export function CurveGraph({
   height = 200,
   showControls = true,
 }: CurveGraphProps) {
-  const { curveData, yAxisData, hasDifferentCurves, maxX, maxY } = useMemo(() => {
+  const { curveData, yAxisData, hasDifferentCurves, maxX, minY, maxY } = useMemo(() => {
     try {
       const parsed = parseCcurveContent(curveContent);
       const xCurve = parsed.xAxisCurve;
@@ -34,17 +34,28 @@ export function CurveGraph({
       const allPoints = different ? [...xCurve, ...yCurve] : xCurve;
       
       const maxX = Math.max(...allPoints.map(p => p.x), 80);
-      const maxY = Math.max(...allPoints.map(p => p.y), 2);
+      
+      // Calculate dynamic Y-axis range based on actual data
+      const actualMinY = Math.min(...allPoints.map(p => p.y));
+      const actualMaxY = Math.max(...allPoints.map(p => p.y));
+      
+      // Add padding for readability (10% or at least 0.05)
+      const range = actualMaxY - actualMinY;
+      const padding = Math.max(range * 0.1, 0.05);
+      
+      const minY = Math.max(0, actualMinY - padding);
+      const maxY = actualMaxY + padding;
       
       return { 
         curveData: xCurve, 
         yAxisData: different ? yCurve : null,
         hasDifferentCurves: different,
-        maxX, 
+        maxX,
+        minY,
         maxY 
       };
     } catch {
-      return { curveData: [], yAxisData: null, hasDifferentCurves: false, maxX: 80, maxY: 2 };
+      return { curveData: [], yAxisData: null, hasDifferentCurves: false, maxX: 80, minY: 0, maxY: 2 };
     }
   }, [curveContent]);
 
@@ -87,7 +98,7 @@ export function CurveGraph({
             }}
           />
           <YAxis
-            domain={[0, Math.ceil(maxY * 10) / 10]}
+            domain={[minY, maxY]}
             tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
             axisLine={{ stroke: 'hsl(var(--border))' }}
             tickLine={{ stroke: 'hsl(var(--border))' }}
@@ -99,13 +110,15 @@ export function CurveGraph({
               fontSize: 10,
             }}
           />
-          {/* Reference line for 1:1 response */}
-          <ReferenceLine
-            y={1}
-            stroke="hsl(var(--muted-foreground))"
-            strokeDasharray="5 5"
-            opacity={0.5}
-          />
+          {/* Reference line for 1:1 response - only show if visible */}
+          {minY <= 1 && maxY >= 1 && (
+            <ReferenceLine
+              y={1}
+              stroke="hsl(var(--muted-foreground))"
+              strokeDasharray="5 5"
+              opacity={0.5}
+            />
+          )}
           <Tooltip
             contentStyle={{
               backgroundColor: 'hsl(var(--card))',

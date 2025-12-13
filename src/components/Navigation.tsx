@@ -65,8 +65,8 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 </button>
               ))}
             
-              {!isLoading && (
-                isAuthenticated ? (
+              <div className={`flex items-center space-x-4 transition-opacity duration-200 ${isLoading ? 'opacity-50' : 'opacity-100'}`}>
+                {isAuthenticated ? (
                   <LiquidGlassButton 
                     variant="primary"
                     className="px-6 py-2 font-bold"
@@ -91,8 +91,8 @@ export default function Navigation({ activeSection }: NavigationProps) {
                       Get Started
                     </LiquidGlassButton>
                   </>
-                )
-              )}
+                )}
+              </div>
             </div>
           
           {/* Mobile Menu Button */}
@@ -126,8 +126,8 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 </button>
               ))}
               
-              {!isLoading && (
-                isAuthenticated ? (
+              <div className={`transition-opacity duration-200 ${isLoading ? 'opacity-50' : 'opacity-100'}`}>
+                {isAuthenticated ? (
                   <LiquidGlassButton 
                     variant="primary"
                     className="w-full mt-4 py-3 font-bold"
@@ -161,8 +161,8 @@ export default function Navigation({ activeSection }: NavigationProps) {
                       Get Started
                     </LiquidGlassButton>
                   </>
-                )
-              )}
+                )}
+              </div>
             </div>
           </LiquidGlassCard>
         )}

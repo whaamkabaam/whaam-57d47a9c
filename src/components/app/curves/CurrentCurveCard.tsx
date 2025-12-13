@@ -104,7 +104,7 @@ export function CurrentCurveCard({
       </div>
 
       {/* Curve Graph */}
-      <div className="mb-8 rounded-xl p-4 relative group overflow-hidden"
+      <div className="mb-8 rounded-2xl p-4 relative group overflow-hidden"
         style={{
           background: 'linear-gradient(180deg, hsl(var(--background) / 0.6) 0%, hsl(var(--background) / 0.3) 100%)',
           boxShadow: 'inset 0 1px 0 hsl(var(--border) / 0.1), 0 4px 24px hsl(var(--background) / 0.4)',
@@ -121,7 +121,7 @@ export function CurrentCurveCard({
             {onViewGraph && (
               <button
                 onClick={onViewGraph}
-                className="absolute top-3 right-3 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 bg-background/50 hover:bg-background/80 backdrop-blur-sm border border-border/20"
+                className="absolute top-3 right-3 p-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-200 bg-background/50 hover:bg-background/80 backdrop-blur-sm border border-border/20"
               >
                 <Maximize2 className="h-4 w-4 text-muted-foreground" />
               </button>

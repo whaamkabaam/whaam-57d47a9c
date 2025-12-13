@@ -171,14 +171,14 @@ export function CurveGraph({
           />
           {/* Gradient area fill under curve */}
           <Area
-            type="monotone"
+            type="natural"
             dataKey="y"
             stroke="none"
             fill="url(#curveGradient)"
             animationDuration={800}
           />
           <Line
-            type="monotone"
+            type="natural"
             dataKey="y"
             stroke="#FFD740"
             strokeWidth={2.5}
@@ -201,14 +201,14 @@ export function CurveGraph({
           {yAxisData && (
             <>
               <Area
-                type="monotone"
+                type="natural"
                 data={yAxisData}
                 dataKey="y"
                 stroke="none"
                 fill="url(#yAxisGradient)"
               />
               <Line
-                type="monotone"
+                type="natural"
                 data={yAxisData}
                 dataKey="y"
                 stroke="hsl(var(--accent))"

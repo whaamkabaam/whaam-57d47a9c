@@ -21,41 +21,25 @@ interface CurrentCurveCardProps {
   isMarkingPerfect?: boolean;
 }
 
-interface ScalingBarProps {
-  label: string;
-  value: number;
-}
-
-function ScalingBar({ label, value }: ScalingBarProps) {
-  // Normalize to 0-100% based on typical range 0-2
-  const percentage = Math.min(100, Math.max(0, (value / 2) * 100));
+// Compact scaling value component (modal-style horizontal layout)
+function ScalingValue({ label, value }: { label: string; value: number }) {
+  const percentage = Math.min(Math.max((value / 2) * 100, 0), 100);
   
   return (
     <div className="space-y-2">
-      <div className="flex justify-between items-center">
-        <span className="text-sm text-muted-foreground font-medium">{label}</span>
-        <span className="font-mono text-sm font-semibold text-foreground tabular-nums">
-          {value.toFixed(2)}
-        </span>
-      </div>
-      <div className="relative h-2 rounded-full bg-background/50 overflow-hidden backdrop-blur-sm border border-border/20">
-        {/* Gradient fill */}
-        <div 
-          className="absolute inset-y-0 left-0 rounded-full transition-all duration-500 ease-out"
-          style={{ 
-            width: `${percentage}%`,
-            background: 'linear-gradient(90deg, hsl(var(--destructive)) 0%, #FFD740 50%, #FFD740 100%)',
-            boxShadow: '0 0 12px rgba(255, 215, 64, 0.4), inset 0 1px 0 rgba(255,255,255,0.2)',
-          }}
-        />
-        {/* Subtle glow overlay */}
-        <div 
-          className="absolute inset-y-0 left-0 rounded-full opacity-60"
-          style={{ 
-            width: `${percentage}%`,
-            background: 'linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 50%)',
-          }}
-        />
+      <span className="text-xs text-muted-foreground uppercase tracking-wide font-medium">{label}</span>
+      <div className="flex items-center gap-2">
+        <div className="flex-1 h-1.5 rounded-full bg-background/50 overflow-hidden border border-border/10">
+          <div 
+            className="h-full rounded-full transition-all duration-500"
+            style={{ 
+              width: `${percentage}%`,
+              background: '#FFD740',
+              boxShadow: '0 0 8px rgba(255, 215, 64, 0.3)',
+            }}
+          />
+        </div>
+        <span className="text-sm font-semibold text-foreground tabular-nums w-10 text-right font-mono">{value.toFixed(2)}</span>
       </div>
     </div>
   );
@@ -134,16 +118,11 @@ export function CurrentCurveCard({
         )}
       </div>
 
-      {/* Scaling Values */}
-      <div className="mb-8">
-        <h3 className="text-xs text-muted-foreground uppercase tracking-widest mb-4 font-medium">
-          Scaling Values
-        </h3>
-        <div className="space-y-4">
-          <ScalingBar label="Long Range" value={curve.long_range_scaling} />
-          <ScalingBar label="Mid Range" value={curve.mid_range_scaling} />
-          <ScalingBar label="Short Range" value={curve.short_range_scaling} />
-        </div>
+      {/* Scaling Values - Horizontal 3-column layout */}
+      <div className="grid grid-cols-3 gap-6 mb-8">
+        <ScalingValue label="Long Range" value={curve.long_range_scaling} />
+        <ScalingValue label="Mid Range" value={curve.mid_range_scaling} />
+        <ScalingValue label="Short Range" value={curve.short_range_scaling} />
       </div>
 
       {/* Actions */}

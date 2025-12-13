@@ -16,14 +16,17 @@ import {
   useDownloadCurve,
   useRevertCurve,
   useMarkCurvePerfect,
+  useCurveContent,
 } from '@/hooks/api/useCurves';
 
 import { CurrentCurveCard } from '@/components/app/curves/CurrentCurveCard';
 import { CurveListItem } from '@/components/app/curves/CurveListItem';
 import { CurveHistoryModal } from '@/components/app/curves/CurveHistoryModal';
+import { CurveDetailModal } from '@/components/app/curves/CurveDetailModal';
 
 export default function Curves() {
   const [historyModalOpen, setHistoryModalOpen] = useState(false);
+  const [graphModalOpen, setGraphModalOpen] = useState(false);
   const [selectedCurveId, setSelectedCurveId] = useState<number | null>(null);
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [revertingId, setRevertingId] = useState<number | null>(null);
@@ -31,6 +34,17 @@ export default function Curves() {
   // Data fetching
   const { data: currentCurve, isLoading: isLoadingCurrent } = useCurrentCurve();
   const { data: curvesData, isLoading: isLoadingCurves } = useCurves();
+  
+  // Fetch current curve content for inline graph
+  const { data: currentCurveContent, isLoading: isLoadingContent } = useCurveContent(
+    currentCurve?.id ?? null
+  );
+  
+  // Fetch selected curve content for modal
+  const selectedCurve = curvesData?.curves?.find(c => c.id === selectedCurveId) ?? currentCurve;
+  const { data: selectedCurveContent, isLoading: isLoadingSelectedContent } = useCurveContent(
+    graphModalOpen ? selectedCurveId : null
+  );
 
   // Mutations
   const downloadMutation = useDownloadCurve();
@@ -53,6 +67,11 @@ export default function Curves() {
   const handleViewHistory = (id: number) => {
     setSelectedCurveId(id);
     setHistoryModalOpen(true);
+  };
+
+  const handleViewGraph = (id: number) => {
+    setSelectedCurveId(id);
+    setGraphModalOpen(true);
   };
 
   const handleRevert = async (id: number) => {
@@ -94,6 +113,7 @@ export default function Curves() {
         <LiquidGlassCard variant="secondary" className="p-6">
           <Skeleton className="h-4 w-24 mb-2" />
           <Skeleton className="h-8 w-48 mb-4" />
+          <Skeleton className="h-[180px] w-full mb-6 rounded-lg" />
           <div className="space-y-3 mb-6">
             <Skeleton className="h-6 w-full" />
             <Skeleton className="h-6 w-full" />
@@ -107,9 +127,12 @@ export default function Curves() {
       ) : currentCurve ? (
         <CurrentCurveCard
           curve={currentCurve}
+          curveContent={currentCurveContent}
+          isLoadingContent={isLoadingContent}
           onDownload={() => handleDownload(currentCurve.id)}
           onViewHistory={() => handleViewHistory(currentCurve.id)}
           onMarkPerfect={handleMarkPerfect}
+          onViewGraph={() => handleViewGraph(currentCurve.id)}
           isDownloading={downloadingId === currentCurve.id}
           isMarkingPerfect={markPerfectMutation.isPending}
         />
@@ -189,6 +212,17 @@ export default function Curves() {
         curveId={selectedCurveId}
         open={historyModalOpen}
         onOpenChange={setHistoryModalOpen}
+      />
+
+      {/* Graph Detail Modal */}
+      <CurveDetailModal
+        open={graphModalOpen}
+        onOpenChange={setGraphModalOpen}
+        curve={selectedCurve ?? null}
+        curveContent={selectedCurveContent ?? null}
+        isLoading={isLoadingSelectedContent}
+        onDownload={() => selectedCurveId && handleDownload(selectedCurveId)}
+        isDownloading={downloadingId === selectedCurveId}
       />
     </div>
   );

@@ -8,6 +8,8 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
+  Area,
+  ComposedChart,
 } from 'recharts';
 import { parseCcurveContent, curvesAreEqual, CurvePoint } from '@/lib/curveParser';
 
@@ -73,22 +75,44 @@ export function CurveGraph({
   return (
     <div className={`${className}`}>
       <ResponsiveContainer width="100%" height={height}>
-        <LineChart
+        <ComposedChart
           data={curveData}
           margin={{ top: 10, right: 20, left: 10, bottom: 20 }}
         >
+          <defs>
+            {/* Gradient for area fill under curve */}
+            <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#FFD740" stopOpacity={0.4} />
+              <stop offset="50%" stopColor="#FFD740" stopOpacity={0.15} />
+              <stop offset="100%" stopColor="#FFD740" stopOpacity={0} />
+            </linearGradient>
+            {/* Glow filter for the curve line */}
+            <filter id="curveGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="2" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            {/* Y-axis curve gradient */}
+            <linearGradient id="yAxisGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity={0.3} />
+              <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity={0} />
+            </linearGradient>
+          </defs>
           <CartesianGrid 
             strokeDasharray="3 3" 
             stroke="hsl(var(--border))" 
-            opacity={0.3}
+            opacity={0.15}
+            vertical={false}
           />
           <XAxis
             dataKey="x"
             type="number"
             domain={[0, Math.ceil(maxX / 10) * 10]}
             tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
-            axisLine={{ stroke: 'hsl(var(--border))' }}
-            tickLine={{ stroke: 'hsl(var(--border))' }}
+            axisLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
+            tickLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
             label={{
               value: 'Mouse Speed (dpm)',
               position: 'bottom',
@@ -99,9 +123,10 @@ export function CurveGraph({
           />
           <YAxis
             domain={[minY, maxY]}
+            tickFormatter={(value) => value.toFixed(2)}
             tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
-            axisLine={{ stroke: 'hsl(var(--border))' }}
-            tickLine={{ stroke: 'hsl(var(--border))' }}
+            axisLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
+            tickLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
             label={{
               value: 'Sensitivity',
               angle: -90,
@@ -116,64 +141,96 @@ export function CurveGraph({
               y={1}
               stroke="hsl(var(--muted-foreground))"
               strokeDasharray="5 5"
-              opacity={0.5}
+              opacity={0.3}
+              label={{
+                value: '1:1',
+                position: 'right',
+                fill: 'hsl(var(--muted-foreground))',
+                fontSize: 9,
+                opacity: 0.6,
+              }}
             />
           )}
           <Tooltip
             contentStyle={{
-              backgroundColor: 'hsl(var(--card))',
-              border: '1px solid hsl(var(--border))',
-              borderRadius: '8px',
-              padding: '8px 12px',
+              backgroundColor: 'hsl(var(--card) / 0.95)',
+              border: '1px solid hsl(var(--border) / 0.5)',
+              borderRadius: '12px',
+              padding: '10px 14px',
+              backdropFilter: 'blur(12px)',
+              boxShadow: '0 8px 32px hsl(var(--background) / 0.5)',
             }}
-            labelStyle={{ color: 'hsl(var(--foreground))' }}
+            labelStyle={{ 
+              color: 'hsl(var(--foreground))',
+              fontWeight: 600,
+              marginBottom: '4px',
+            }}
             itemStyle={{ color: '#FFD740' }}
             formatter={(value: number) => [value.toFixed(3), 'Sensitivity']}
             labelFormatter={(value: number) => `Speed: ${value.toFixed(1)} dpm`}
+          />
+          {/* Gradient area fill under curve */}
+          <Area
+            type="monotone"
+            dataKey="y"
+            stroke="none"
+            fill="url(#curveGradient)"
+            animationDuration={800}
           />
           <Line
             type="monotone"
             dataKey="y"
             stroke="#FFD740"
-            strokeWidth={2}
+            strokeWidth={2.5}
             name="X-Axis"
+            filter="url(#curveGlow)"
             dot={showControls ? { 
               fill: '#FFD740', 
-              r: 3,
+              r: 4,
               stroke: 'hsl(var(--background))',
-              strokeWidth: 1,
+              strokeWidth: 2,
             } : false}
             activeDot={{ 
-              r: 5, 
+              r: 6, 
               fill: '#FFD740',
               stroke: 'hsl(var(--background))',
               strokeWidth: 2,
+              filter: 'url(#curveGlow)',
             }}
           />
           {yAxisData && (
-            <Line
-              type="monotone"
-              data={yAxisData}
-              dataKey="y"
-              stroke="hsl(var(--accent))"
-              strokeWidth={2}
-              strokeDasharray="4 2"
-              name="Y-Axis"
-              dot={showControls ? { 
-                fill: 'hsl(var(--accent))', 
-                r: 3,
-                stroke: 'hsl(var(--background))',
-                strokeWidth: 1,
-              } : false}
-              activeDot={{ 
-                r: 5, 
-                fill: 'hsl(var(--accent))',
-                stroke: 'hsl(var(--background))',
-                strokeWidth: 2,
-              }}
-            />
+            <>
+              <Area
+                type="monotone"
+                data={yAxisData}
+                dataKey="y"
+                stroke="none"
+                fill="url(#yAxisGradient)"
+              />
+              <Line
+                type="monotone"
+                data={yAxisData}
+                dataKey="y"
+                stroke="hsl(var(--accent))"
+                strokeWidth={2}
+                strokeDasharray="4 2"
+                name="Y-Axis"
+                dot={showControls ? { 
+                  fill: 'hsl(var(--accent))', 
+                  r: 3,
+                  stroke: 'hsl(var(--background))',
+                  strokeWidth: 1,
+                } : false}
+                activeDot={{ 
+                  r: 5, 
+                  fill: 'hsl(var(--accent))',
+                  stroke: 'hsl(var(--background))',
+                  strokeWidth: 2,
+                }}
+              />
+            </>
           )}
-        </LineChart>
+        </ComposedChart>
       </ResponsiveContainer>
     </div>
   );

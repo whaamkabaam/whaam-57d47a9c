@@ -65,7 +65,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 </button>
               ))}
             
-              <div className={`flex items-center space-x-4 transition-opacity duration-200 ${isLoading ? 'opacity-50' : 'opacity-100'}`}>
+              <div className={`flex items-center justify-end space-x-4 min-w-[220px] transition-opacity duration-200 ${isLoading ? 'opacity-50' : 'opacity-100'}`}>
                 {isAuthenticated ? (
                   <LiquidGlassButton 
                     variant="primary"

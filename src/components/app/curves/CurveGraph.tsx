@@ -114,25 +114,25 @@ export function CurveGraph({
               padding: '8px 12px',
             }}
             labelStyle={{ color: 'hsl(var(--foreground))' }}
-            itemStyle={{ color: 'hsl(var(--whaam-yellow))' }}
+            itemStyle={{ color: '#FFD740' }}
             formatter={(value: number) => [value.toFixed(3), 'Sensitivity']}
             labelFormatter={(value: number) => `Speed: ${value.toFixed(1)} dpm`}
           />
           <Line
             type="monotone"
             dataKey="y"
-            stroke="hsl(var(--whaam-yellow))"
+            stroke="#FFD740"
             strokeWidth={2}
             name="X-Axis"
             dot={showControls ? { 
-              fill: 'hsl(var(--whaam-yellow))', 
+              fill: '#FFD740', 
               r: 3,
               stroke: 'hsl(var(--background))',
               strokeWidth: 1,
             } : false}
             activeDot={{ 
               r: 5, 
-              fill: 'hsl(var(--whaam-yellow))',
+              fill: '#FFD740',
               stroke: 'hsl(var(--background))',
               strokeWidth: 2,
             }}

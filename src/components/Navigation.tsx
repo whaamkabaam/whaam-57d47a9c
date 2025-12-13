@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
-// Using direct URL for the logo
+import { useAuth } from "@/contexts/AuthContext";
+
 const whaamLogo = "/lovable-uploads/25252925-5ec6-4d83-aa0a-70a6e27f7b9e.png";
 
 interface NavigationProps {
@@ -11,6 +12,8 @@ interface NavigationProps {
 
 export default function Navigation({ activeSection }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated, isLoading } = useAuth();
+  const navigate = useNavigate();
 
   const navItems = [
     { label: "How", href: "services" },
@@ -62,14 +65,35 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 </button>
               ))}
             
-            <LiquidGlassButton 
-              variant="primary"
-              className="px-6 py-2 font-bold"
-              onClick={() => scrollToSection("products")}
-            >
-              Get Started
-            </LiquidGlassButton>
-          </div>
+              {!isLoading && (
+                isAuthenticated ? (
+                  <LiquidGlassButton 
+                    variant="primary"
+                    className="px-6 py-2 font-bold"
+                    onClick={() => navigate("/app")}
+                  >
+                    Dashboard
+                  </LiquidGlassButton>
+                ) : (
+                  <>
+                    <LiquidGlassButton 
+                      variant="secondary"
+                      className="px-4 py-2 font-medium"
+                      onClick={() => navigate("/auth")}
+                    >
+                      Sign In
+                    </LiquidGlassButton>
+                    <LiquidGlassButton 
+                      variant="primary"
+                      className="px-6 py-2 font-bold"
+                      onClick={() => navigate("/auth")}
+                    >
+                      Get Started
+                    </LiquidGlassButton>
+                  </>
+                )
+              )}
+            </div>
           
           {/* Mobile Menu Button */}
           <button
@@ -102,16 +126,43 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 </button>
               ))}
               
-              <LiquidGlassButton 
-                variant="primary"
-                className="w-full mt-4 py-3 font-bold"
-                onClick={() => {
-                  scrollToSection("products");
-                  setIsMenuOpen(false);
-                }}
-              >
-                Get Started
-              </LiquidGlassButton>
+              {!isLoading && (
+                isAuthenticated ? (
+                  <LiquidGlassButton 
+                    variant="primary"
+                    className="w-full mt-4 py-3 font-bold"
+                    onClick={() => {
+                      navigate("/app");
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Dashboard
+                  </LiquidGlassButton>
+                ) : (
+                  <>
+                    <LiquidGlassButton 
+                      variant="secondary"
+                      className="w-full mt-4 py-3 font-medium"
+                      onClick={() => {
+                        navigate("/auth");
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Sign In
+                    </LiquidGlassButton>
+                    <LiquidGlassButton 
+                      variant="primary"
+                      className="w-full mt-2 py-3 font-bold"
+                      onClick={() => {
+                        navigate("/auth");
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Get Started
+                    </LiquidGlassButton>
+                  </>
+                )
+              )}
             </div>
           </LiquidGlassCard>
         )}

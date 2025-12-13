@@ -11,6 +11,7 @@ export const curveKeys = {
   current: () => [...curveKeys.all, 'current'] as const,
   detail: (id: number) => [...curveKeys.all, 'detail', id] as const,
   history: (id: number) => [...curveKeys.all, 'history', id] as const,
+  content: (id: number) => [...curveKeys.all, 'content', id] as const,
 };
 
 // List all curves with pagination
@@ -43,6 +44,18 @@ export function useCurveHistory(id: number) {
   return useQuery({
     queryKey: curveKeys.history(id),
     queryFn: () => curvesApi.getHistory(id),
+    enabled: !!id,
+  });
+}
+
+// Get curve file content as text for visualization
+export function useCurveContent(id: number | null) {
+  return useQuery({
+    queryKey: curveKeys.content(id!),
+    queryFn: async () => {
+      const blob = await curvesApi.download(id!);
+      return blob.text();
+    },
     enabled: !!id,
   });
 }

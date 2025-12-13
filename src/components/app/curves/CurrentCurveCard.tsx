@@ -7,14 +7,18 @@ import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Download, History, Star, Check, Loader2 } from 'lucide-react';
+import { Download, History, Star, Check, Loader2, Maximize2 } from 'lucide-react';
 import { format } from 'date-fns';
+import { CurveGraph } from './CurveGraph';
 
 interface CurrentCurveCardProps {
   curve: Curve;
+  curveContent?: string | null;
+  isLoadingContent?: boolean;
   onDownload: () => void;
   onViewHistory: () => void;
   onMarkPerfect: () => void;
+  onViewGraph?: () => void;
   isDownloading?: boolean;
   isMarkingPerfect?: boolean;
 }
@@ -25,7 +29,6 @@ interface ScalingBarProps {
 }
 
 function ScalingBar({ label, value }: ScalingBarProps) {
-  // Scaling values are typically 0-2 range, normalize to 0-100 for display
   const percentage = Math.min(100, Math.max(0, (value / 2) * 100));
   
   return (
@@ -41,9 +44,12 @@ function ScalingBar({ label, value }: ScalingBarProps) {
 
 export function CurrentCurveCard({
   curve,
+  curveContent,
+  isLoadingContent,
   onDownload,
   onViewHistory,
   onMarkPerfect,
+  onViewGraph,
   isDownloading,
   isMarkingPerfect,
 }: CurrentCurveCardProps) {
@@ -74,6 +80,33 @@ export function CurrentCurveCard({
             </Badge>
           )}
         </div>
+      </div>
+
+      {/* Curve Graph */}
+      <div className="mb-6 bg-background/30 rounded-lg p-3 relative group">
+        {isLoadingContent ? (
+          <div className="h-[180px] flex items-center justify-center">
+            <div className="animate-spin h-6 w-6 border-2 border-whaam-yellow border-t-transparent rounded-full" />
+          </div>
+        ) : curveContent ? (
+          <>
+            <CurveGraph curveContent={curveContent} height={180} showControls={false} />
+            {onViewGraph && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onViewGraph}
+                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8"
+              >
+                <Maximize2 className="h-4 w-4" />
+              </Button>
+            )}
+          </>
+        ) : (
+          <div className="h-[180px] flex items-center justify-center text-muted-foreground text-sm">
+            No graph data available
+          </div>
+        )}
       </div>
 
       {/* Scaling Values */}

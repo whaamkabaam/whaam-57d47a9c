@@ -85,6 +85,22 @@ export function parseCcurveContent(content: string): ParsedCurve {
 /**
  * Generate reference line points for 1:1 linear response
  */
+/**
+ * Compare two curves for equality with floating-point tolerance
+ */
+export function curvesAreEqual(curve1: CurvePoint[], curve2: CurvePoint[]): boolean {
+  if (curve1.length !== curve2.length) return false;
+  
+  const tolerance = 0.0001;
+  return curve1.every((point, i) => 
+    Math.abs(point.x - curve2[i].x) < tolerance &&
+    Math.abs(point.y - curve2[i].y) < tolerance
+  );
+}
+
+/**
+ * Generate reference line points for 1:1 linear response
+ */
 export function generateReferenceLine(maxX: number): CurvePoint[] {
   return [
     { x: 0, y: 1 },

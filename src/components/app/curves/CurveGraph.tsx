@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from 'recharts';
-import { parseCcurveContent, CurvePoint } from '@/lib/curveParser';
+import { parseCcurveContent, curvesAreEqual, CurvePoint } from '@/lib/curveParser';
 
 interface CurveGraphProps {
   curveContent: string;
@@ -24,17 +24,27 @@ export function CurveGraph({
   height = 200,
   showControls = true,
 }: CurveGraphProps) {
-  const { curveData, maxX, maxY } = useMemo(() => {
+  const { curveData, yAxisData, hasDifferentCurves, maxX, maxY } = useMemo(() => {
     try {
       const parsed = parseCcurveContent(curveContent);
-      const curve = parsed.xAxisCurve;
+      const xCurve = parsed.xAxisCurve;
+      const yCurve = parsed.yAxisCurve;
       
-      const maxX = Math.max(...curve.map(p => p.x), 80);
-      const maxY = Math.max(...curve.map(p => p.y), 2);
+      const different = !curvesAreEqual(xCurve, yCurve);
+      const allPoints = different ? [...xCurve, ...yCurve] : xCurve;
       
-      return { curveData: curve, maxX, maxY };
+      const maxX = Math.max(...allPoints.map(p => p.x), 80);
+      const maxY = Math.max(...allPoints.map(p => p.y), 2);
+      
+      return { 
+        curveData: xCurve, 
+        yAxisData: different ? yCurve : null,
+        hasDifferentCurves: different,
+        maxX, 
+        maxY 
+      };
     } catch {
-      return { curveData: [], maxX: 80, maxY: 2 };
+      return { curveData: [], yAxisData: null, hasDifferentCurves: false, maxX: 80, maxY: 2 };
     }
   }, [curveContent]);
 
@@ -113,6 +123,7 @@ export function CurveGraph({
             dataKey="y"
             stroke="hsl(var(--whaam-yellow))"
             strokeWidth={2}
+            name="X-Axis"
             dot={showControls ? { 
               fill: 'hsl(var(--whaam-yellow))', 
               r: 3,
@@ -126,6 +137,29 @@ export function CurveGraph({
               strokeWidth: 2,
             }}
           />
+          {yAxisData && (
+            <Line
+              type="monotone"
+              data={yAxisData}
+              dataKey="y"
+              stroke="hsl(var(--accent))"
+              strokeWidth={2}
+              strokeDasharray="4 2"
+              name="Y-Axis"
+              dot={showControls ? { 
+                fill: 'hsl(var(--accent))', 
+                r: 3,
+                stroke: 'hsl(var(--background))',
+                strokeWidth: 1,
+              } : false}
+              activeDot={{ 
+                r: 5, 
+                fill: 'hsl(var(--accent))',
+                stroke: 'hsl(var(--background))',
+                strokeWidth: 2,
+              }}
+            />
+          )}
         </LineChart>
       </ResponsiveContainer>
     </div>

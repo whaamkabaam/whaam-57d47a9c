@@ -88,7 +88,7 @@ export function CurrentCurveCard({
       </div>
 
       {/* Curve Graph */}
-      <div className="mb-8 rounded-2xl p-4 relative group overflow-hidden"
+      <div className="mb-8 rounded-2xl p-4 relative group overflow-hidden max-w-lg mx-auto"
         style={{
           background: 'linear-gradient(180deg, hsl(var(--background) / 0.6) 0%, hsl(var(--background) / 0.3) 100%)',
           boxShadow: 'inset 0 1px 0 hsl(var(--border) / 0.1), 0 4px 24px hsl(var(--background) / 0.4)',
@@ -96,12 +96,12 @@ export function CurrentCurveCard({
         }}
       >
         {isLoadingContent ? (
-          <div className="h-[200px] flex items-center justify-center">
+          <div className="h-[280px] flex items-center justify-center">
             <div className="animate-spin h-8 w-8 border-2 border-whaam-yellow border-t-transparent rounded-full" />
           </div>
         ) : curveContent ? (
           <>
-            <CurveGraph curveContent={curveContent} height={200} showControls={false} />
+            <CurveGraph curveContent={curveContent} height={280} showControls={true} />
             {onViewGraph && (
               <button
                 onClick={onViewGraph}
@@ -112,7 +112,7 @@ export function CurrentCurveCard({
             )}
           </>
         ) : (
-          <div className="h-[200px] flex items-center justify-center text-muted-foreground text-sm">
+          <div className="h-[280px] flex items-center justify-center text-muted-foreground text-sm">
             No graph data available
           </div>
         )}

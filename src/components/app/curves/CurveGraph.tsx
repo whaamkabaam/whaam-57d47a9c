@@ -37,16 +37,12 @@ export function CurveGraph({
       
       const maxX = Math.max(...allPoints.map(p => p.x), 80);
       
-      // Calculate dynamic Y-axis range based on actual data
-      const actualMinY = Math.min(...allPoints.map(p => p.y));
+      // Y-axis always starts at 0 like reference design
       const actualMaxY = Math.max(...allPoints.map(p => p.y));
       
-      // Add padding for readability (10% or at least 0.05)
-      const range = actualMaxY - actualMinY;
-      const padding = Math.max(range * 0.1, 0.05);
-      
-      const minY = Math.max(0, actualMinY - padding);
-      const maxY = actualMaxY + padding;
+      // Add padding at top for readability
+      const minY = 0;
+      const maxY = Math.ceil(actualMaxY * 10) / 10 + 0.1; // Round up with small padding
       
       return { 
         curveData: xCurve, 
@@ -74,10 +70,10 @@ export function CurveGraph({
 
   return (
     <div className={`${className}`}>
-      <ResponsiveContainer width="100%" height={height}>
+      <ResponsiveContainer width="100%" aspect={1.4}>
         <ComposedChart
           data={curveData}
-          margin={{ top: 10, right: 20, left: 10, bottom: 20 }}
+          margin={{ top: 10, right: 30, left: 10, bottom: 25 }}
         >
           <defs>
             {/* Gradient for area fill under curve */}
@@ -103,8 +99,8 @@ export function CurveGraph({
           <CartesianGrid 
             strokeDasharray="3 3" 
             stroke="hsl(var(--border))" 
-            opacity={0.15}
-            vertical={false}
+            opacity={0.3}
+            vertical={true}
           />
           <XAxis
             dataKey="x"
@@ -184,12 +180,12 @@ export function CurveGraph({
             strokeWidth={2.5}
             name="X-Axis"
             filter="url(#curveGlow)"
-            dot={showControls ? { 
-              fill: '#FFD740', 
-              r: 4,
+            dot={{ 
+              fill: 'hsl(var(--muted-foreground))', 
+              r: 5,
               stroke: 'hsl(var(--background))',
               strokeWidth: 2,
-            } : false}
+            }}
             activeDot={{ 
               r: 6, 
               fill: '#FFD740',
@@ -215,12 +211,12 @@ export function CurveGraph({
                 strokeWidth={2}
                 strokeDasharray="4 2"
                 name="Y-Axis"
-                dot={showControls ? { 
-                  fill: 'hsl(var(--accent))', 
-                  r: 3,
+                dot={{ 
+                  fill: 'hsl(var(--muted-foreground))', 
+                  r: 4,
                   stroke: 'hsl(var(--background))',
-                  strokeWidth: 1,
-                } : false}
+                  strokeWidth: 2,
+                }}
                 activeDot={{ 
                   r: 5, 
                   fill: 'hsl(var(--accent))',

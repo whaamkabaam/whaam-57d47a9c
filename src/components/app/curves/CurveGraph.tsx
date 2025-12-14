@@ -148,22 +148,26 @@ export function CurveGraph({
             />
           )}
           <Tooltip
-            contentStyle={{
-              backgroundColor: 'hsl(var(--card) / 0.95)',
-              border: '1px solid hsl(var(--border) / 0.5)',
-              borderRadius: '12px',
-              padding: '10px 14px',
-              backdropFilter: 'blur(12px)',
-              boxShadow: '0 8px 32px hsl(var(--background) / 0.5)',
+            content={({ active, payload, label }) => {
+              if (!active || !payload?.length) return null;
+              
+              const xValue = payload.find(p => p.name === 'X-Axis')?.value as number | undefined;
+              const yValue = payload.find(p => p.name === 'Y-Axis')?.value as number | undefined;
+              
+              return (
+                <div className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
+                  <p className="text-foreground font-semibold mb-1">Speed: {Number(label).toFixed(1)} dpm</p>
+                  {yValue !== undefined && yValue !== xValue ? (
+                    <>
+                      <p className="text-[#FFD740]">X: {xValue?.toFixed(3)}</p>
+                      <p className="text-accent">Y: {yValue?.toFixed(3)}</p>
+                    </>
+                  ) : (
+                    <p className="text-[#FFD740]">Sensitivity: {xValue?.toFixed(3)}</p>
+                  )}
+                </div>
+              );
             }}
-            labelStyle={{ 
-              color: 'hsl(var(--foreground))',
-              fontWeight: 600,
-              marginBottom: '4px',
-            }}
-            itemStyle={{ color: '#FFD740' }}
-            formatter={(value: number) => [value.toFixed(3), 'Sensitivity']}
-            labelFormatter={(value: number) => `Speed: ${value.toFixed(1)} dpm`}
           />
           {/* Gradient area fill under curve */}
           <Area

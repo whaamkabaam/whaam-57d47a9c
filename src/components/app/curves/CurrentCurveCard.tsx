@@ -21,9 +21,26 @@ interface CurrentCurveCardProps {
   isMarkingPerfect?: boolean;
 }
 
-// Compact scaling value component (modal-style horizontal layout)
-function ScalingValue({ label, value }: { label: string; value: number }) {
-  const percentage = Math.min(Math.max((value / 2) * 100, 0), 100);
+// Feedback value component with color-coded interpretation
+function FeedbackValue({ label, value }: { label: string; value: number | null }) {
+  if (value === null) {
+    return (
+      <div className="space-y-2">
+        <span className="text-xs text-muted-foreground uppercase tracking-wide font-medium">{label}</span>
+        <div className="text-sm text-muted-foreground/60">—</div>
+      </div>
+    );
+  }
+  
+  const percentage = (value / 10) * 100;
+  
+  // Color based on value: 0-3=red (wanted faster), 4-6=green (perfect), 7-10=blue (wanted slower)
+  const getColorInfo = () => {
+    if (value < 4) return { bg: 'hsl(0, 84%, 60%)', label: 'wanted faster' };
+    if (value > 6) return { bg: 'hsl(217, 91%, 60%)', label: 'wanted slower' };
+    return { bg: 'hsl(142, 71%, 45%)', label: 'perfect' };
+  };
+  const colorInfo = getColorInfo();
   
   return (
     <div className="space-y-2">
@@ -34,13 +51,14 @@ function ScalingValue({ label, value }: { label: string; value: number }) {
             className="h-full rounded-full transition-all duration-500"
             style={{ 
               width: `${percentage}%`,
-              background: '#FFD740',
-              boxShadow: '0 0 8px rgba(255, 215, 64, 0.3)',
+              background: colorInfo.bg,
+              boxShadow: `0 0 8px ${colorInfo.bg}40`,
             }}
           />
         </div>
-        <span className="text-sm font-semibold text-foreground tabular-nums w-10 text-right font-mono">{value.toFixed(2)}</span>
+        <span className="text-sm font-semibold text-foreground tabular-nums w-6 text-right font-mono">{value}</span>
       </div>
+      <span className="text-xs text-muted-foreground/80">{colorInfo.label}</span>
     </div>
   );
 }
@@ -118,12 +136,21 @@ export function CurrentCurveCard({
         )}
       </div>
 
-      {/* Scaling Values - Horizontal 3-column layout */}
-      <div className="grid grid-cols-3 gap-6 mb-8">
-        <ScalingValue label="Long Range" value={curve.long_range_scaling} />
-        <ScalingValue label="Mid Range" value={curve.mid_range_scaling} />
-        <ScalingValue label="Short Range" value={curve.short_range_scaling} />
-      </div>
+      {/* Feedback Values */}
+      {(curve.long_range_feedback !== null || curve.mid_range_feedback !== null || curve.short_range_feedback !== null) ? (
+        <>
+          <p className="text-xs text-muted-foreground mb-3">This curve was created from your feedback:</p>
+          <div className="grid grid-cols-3 gap-6 mb-8">
+            <FeedbackValue label="Long Range" value={curve.long_range_feedback} />
+            <FeedbackValue label="Mid Range" value={curve.mid_range_feedback} />
+            <FeedbackValue label="Short Range" value={curve.short_range_feedback} />
+          </div>
+        </>
+      ) : (
+        <div className="mb-8 text-sm text-muted-foreground/60 text-center py-4 border border-border/10 rounded-lg bg-background/30">
+          Initial Upload — No feedback data
+        </div>
+      )}
 
       {/* Actions */}
       <div className="flex flex-wrap gap-3 pt-2">

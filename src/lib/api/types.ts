@@ -31,14 +31,16 @@ export interface MessageResponse {
 export interface Curve {
   id: number;
   name: string;
-  upload_number: number;
+  upload_number: number | null;
   is_current: boolean;
   is_perfect: boolean;
   created_at: string;
   parent_curve_id: number | null;
-  long_range_scaling: number;
-  mid_range_scaling: number;
-  short_range_scaling: number;
+  // Feedback that created this curve (0-10 scale, 5=perfect)
+  // null for initial uploads (V1), populated for iterated curves (V2+)
+  long_range_feedback: number | null;
+  mid_range_feedback: number | null;
+  short_range_feedback: number | null;
 }
 
 export interface CurvesListResponse {

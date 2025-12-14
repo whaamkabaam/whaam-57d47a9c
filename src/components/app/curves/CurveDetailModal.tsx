@@ -70,12 +70,21 @@ export function CurveDetailModal({
             )}
           </div>
 
-          {/* Scaling Values */}
-          <div className="grid grid-cols-3 gap-4">
-            <ScalingValue label="Long Range" value={curve.long_range_scaling} />
-            <ScalingValue label="Mid Range" value={curve.mid_range_scaling} />
-            <ScalingValue label="Short Range" value={curve.short_range_scaling} />
-          </div>
+          {/* Feedback Values */}
+          {(curve.long_range_feedback !== null || curve.mid_range_feedback !== null || curve.short_range_feedback !== null) ? (
+            <>
+              <p className="text-xs text-muted-foreground mb-2">This curve was created from your feedback:</p>
+              <div className="grid grid-cols-3 gap-4">
+                <FeedbackValue label="Long Range" value={curve.long_range_feedback} />
+                <FeedbackValue label="Mid Range" value={curve.mid_range_feedback} />
+                <FeedbackValue label="Short Range" value={curve.short_range_feedback} />
+              </div>
+            </>
+          ) : (
+            <div className="text-sm text-muted-foreground/60 text-center py-4 border border-border/10 rounded-lg bg-background/30">
+              Initial Upload — No feedback data
+            </div>
+          )}
 
           {/* Actions */}
           <div className="flex justify-end">
@@ -98,8 +107,25 @@ export function CurveDetailModal({
   );
 }
 
-function ScalingValue({ label, value }: { label: string; value: number }) {
-  const percentage = Math.min(value * 100, 100);
+function FeedbackValue({ label, value }: { label: string; value: number | null }) {
+  if (value === null) {
+    return (
+      <div className="bg-background/30 rounded-lg p-3">
+        <div className="text-xs text-muted-foreground mb-1">{label}</div>
+        <div className="text-sm text-muted-foreground/60">—</div>
+      </div>
+    );
+  }
+  
+  const percentage = (value / 10) * 100;
+  
+  // Color based on value: 0-3=red (wanted faster), 4-6=green (perfect), 7-10=blue (wanted slower)
+  const getColorInfo = () => {
+    if (value < 4) return { bg: 'hsl(0, 84%, 60%)', label: 'wanted faster' };
+    if (value > 6) return { bg: 'hsl(217, 91%, 60%)', label: 'wanted slower' };
+    return { bg: 'hsl(142, 71%, 45%)', label: 'perfect' };
+  };
+  const colorInfo = getColorInfo();
   
   return (
     <div className="bg-background/30 rounded-lg p-3">
@@ -107,14 +133,17 @@ function ScalingValue({ label, value }: { label: string; value: number }) {
       <div className="flex items-center gap-2">
         <div className="flex-1 h-1.5 bg-background/50 rounded-full overflow-hidden">
           <div 
-            className="h-full bg-whaam-yellow rounded-full transition-all"
-            style={{ width: `${percentage}%` }}
+            className="h-full rounded-full transition-all"
+            style={{ 
+              width: `${percentage}%`,
+              background: colorInfo.bg,
+              boxShadow: `0 0 6px ${colorInfo.bg}40`,
+            }}
           />
         </div>
-        <span className="text-sm font-medium text-foreground w-10 text-right">
-          {value.toFixed(2)}
-        </span>
+        <span className="text-sm font-medium text-foreground w-6 text-right">{value}</span>
       </div>
+      <div className="text-xs text-muted-foreground/80 mt-1">{colorInfo.label}</div>
     </div>
   );
 }

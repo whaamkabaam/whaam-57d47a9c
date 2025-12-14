@@ -156,15 +156,15 @@ export function CurveGraph({
               
               return (
                 <div className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
-                  <p className="text-foreground font-semibold mb-1">Speed: {Number(label).toFixed(1)} dpm</p>
                   {yValue !== undefined && yValue !== xValue ? (
                     <>
-                      <p className="text-[#FFD740]">X: {xValue?.toFixed(3)}</p>
-                      <p className="text-accent">Y: {yValue?.toFixed(3)}</p>
+                      <p className="text-foreground">X: {xValue?.toFixed(3)}</p>
+                      <p className="text-foreground">Y: {yValue?.toFixed(3)}</p>
                     </>
                   ) : (
-                    <p className="text-[#FFD740]">Sensitivity: {xValue?.toFixed(3)}</p>
+                    <p className="text-foreground">Sensitivity: {xValue?.toFixed(3)}</p>
                   )}
+                  <p className="text-foreground">Speed: {Number(label).toFixed(1)} dpms</p>
                 </div>
               );
             }}

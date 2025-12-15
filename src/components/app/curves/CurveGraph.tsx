@@ -68,11 +68,11 @@ export function CurveGraph({
   }
 
   return (
-    <div className={`${className} relative`}>
+    <div className={`${className} relative overflow-visible`}>
       <ResponsiveContainer width="100%" height={height}>
         <ComposedChart
           data={curveData}
-          margin={{ top: 10, right: 30, left: 10, bottom: 25 }}
+          margin={{ top: 40, right: 30, left: 10, bottom: 25 }}
         >
           <defs>
             {/* Gradient for area fill under curve */}

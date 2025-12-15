@@ -134,6 +134,7 @@ export function CurveGraph({
           <Tooltip
             cursor={false}
             isAnimationActive={false}
+            offset={20}
             wrapperStyle={{
               transition: 'transform 100ms ease-out, opacity 100ms ease-out',
               pointerEvents: 'none',
@@ -142,11 +143,17 @@ export function CurveGraph({
             content={({ active, payload, coordinate }) => {
               if (!active || !payload?.length || !coordinate) return null;
               const point = payload[0].payload;
+              
+              // If cursor is in the top 80px of the chart, show tooltip below instead of above
+              const isNearTop = coordinate.y < 80;
+              
               return (
                 <div 
                   className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg"
                   style={{
-                    transform: 'translate(-50%, -120%)',
+                    transform: isNearTop 
+                      ? 'translate(-50%, 20%)' 
+                      : 'translate(-50%, -120%)',
                   }}
                 >
                   <p className="text-foreground text-sm">Sensitivity: {point.y.toFixed(3)}</p>

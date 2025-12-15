@@ -134,6 +134,7 @@ export function CurveGraph({
           <Tooltip
             cursor={false}
             isAnimationActive={false}
+            allowEscapeViewBox={{ x: false, y: true }}
             wrapperStyle={{
               transition: 'transform 100ms ease-out, opacity 100ms ease-out',
               pointerEvents: 'none',

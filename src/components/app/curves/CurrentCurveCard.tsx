@@ -163,7 +163,7 @@ export function CurrentCurveCard({
       <div className="px-6 py-6 md:px-8 md:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
           {/* Left: Curve Graph (3 cols) */}
-          <div className="lg:col-span-3 rounded-xl relative group overflow-hidden min-h-[320px]"
+          <div className="lg:col-span-3 rounded-xl relative group overflow-hidden min-h-[480px]"
             style={{
               background: 'linear-gradient(180deg, hsl(var(--muted) / 0.15) 0%, hsl(var(--muted) / 0.05) 100%)',
               border: '1px solid hsl(var(--border) / 0.15)',
@@ -175,8 +175,8 @@ export function CurrentCurveCard({
               </div>
             ) : curveContent ? (
               <div className="p-4 h-full flex items-center justify-center">
-                <div className="w-full max-w-[485px] relative">
-                  <CurveGraph curveContent={curveContent} height={364} showControls={true} />
+              <div className="w-full max-w-[600px] relative">
+                  <CurveGraph curveContent={curveContent} height={450} showControls={true} />
                   {onViewGraph && (
                     <button
                       onClick={onViewGraph}

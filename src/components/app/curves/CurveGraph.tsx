@@ -131,20 +131,26 @@ export function CurveGraph({
               fontSize: 10,
             }}
           />
-          {/* Tooltip with smooth CSS transition */}
+          {/* Tooltip with smooth CSS transform transition */}
           <Tooltip
             cursor={false}
             isAnimationActive={false}
+            allowEscapeViewBox={{ x: true, y: true }}
             wrapperStyle={{
-              transition: 'left 120ms ease-out, top 120ms ease-out',
+              transition: 'transform 100ms ease-out, opacity 100ms ease-out',
               pointerEvents: 'none',
               zIndex: 10,
             }}
-            content={({ active, payload }) => {
-              if (!active || !payload?.length) return null;
+            content={({ active, payload, coordinate }) => {
+              if (!active || !payload?.length || !coordinate) return null;
               const point = payload[0].payload;
               return (
-                <div className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
+                <div 
+                  className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg"
+                  style={{
+                    transform: 'translate(-50%, -120%)',
+                  }}
+                >
                   <p className="text-foreground text-sm">Sensitivity: {point.y.toFixed(3)}</p>
                   <p className="text-muted-foreground text-xs">Speed: {point.x.toFixed(1)} dpms</p>
                 </div>
@@ -184,9 +190,9 @@ export function CurveGraph({
             name="X-Axis"
             filter="url(#curveGlow)"
             dot={{
-              r: 4,
-              fill: 'rgba(180, 180, 180, 0.9)',
-              stroke: 'rgba(0,0,0,0.3)',
+              r: 5,
+              fill: '#B4B4B4',
+              stroke: 'rgba(255,255,255,0.25)',
               strokeWidth: 1.5,
             }}
             activeDot={{
@@ -214,8 +220,8 @@ export function CurveGraph({
                 strokeDasharray="4 2"
                 name="Y-Axis"
                 dot={{
-                  r: 3.5,
-                  fill: 'rgba(180, 180, 180, 0.9)',
+                  r: 4.5,
+                  fill: '#B4B4B4',
                   stroke: 'rgba(0,0,0,0.3)',
                   strokeWidth: 1,
                 }}

@@ -29,42 +29,54 @@ function getZoneInfo(value: number): { label: string; color: string; bgColor: st
 
 export function FeedbackSlider({ label, hint, value, onChange, disabled }: FeedbackSliderProps) {
   const zone = getZoneInfo(value);
+  const isPerfect = value === 5;
 
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-2">
       {/* Label row with hint */}
       <div className="flex items-baseline justify-between">
         <div className="flex items-baseline gap-2">
-          <span className="text-sm font-medium text-foreground">{label}</span>
+          <span className="text-sm font-semibold text-foreground">{label}</span>
           {hint && (
-            <span className="text-[11px] text-muted-foreground/50">{hint}</span>
+            <span className="text-[11px] text-muted-foreground/60">{hint}</span>
           )}
         </div>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           <span className={cn("text-sm font-mono font-bold tabular-nums", zone.color)}>
             {Number.isInteger(value) ? value : value.toFixed(1)}
           </span>
-          <span className={cn(
-            "text-[9px] px-1.5 py-0.5 rounded-full uppercase tracking-wide",
-            zone.bgColor,
-            "text-white font-medium whitespace-nowrap"
-          )}>
-            {zone.label}
-          </span>
+          {/* Only show badge when NOT perfect - reduces visual noise */}
+          {!isPerfect && (
+            <span className={cn(
+              "text-[9px] px-1.5 py-0.5 rounded-full uppercase tracking-wide",
+              zone.bgColor,
+              "text-white font-medium whitespace-nowrap"
+            )}>
+              {zone.label}
+            </span>
+          )}
         </div>
       </div>
       
-      {/* Slider */}
-      <Slider
-        value={[value]}
-        onValueChange={([v]) => onChange(v)}
-        min={0}
-        max={10}
-        step={0.1}
-        disabled={disabled}
-        variant="glass"
-        className="w-full"
-      />
+      {/* Slider with tick marks */}
+      <div className="relative">
+        <Slider
+          value={[value]}
+          onValueChange={([v]) => onChange(v)}
+          min={0}
+          max={10}
+          step={0.1}
+          disabled={disabled}
+          variant="glass"
+          className="w-full"
+        />
+        {/* Tick marks at 0, 5, 10 */}
+        <div className="absolute top-full mt-1 w-full flex justify-between px-[6px] pointer-events-none">
+          <span className="text-[9px] text-muted-foreground/40">0</span>
+          <span className="text-[9px] text-green-400/60">5</span>
+          <span className="text-[9px] text-muted-foreground/40">10</span>
+        </div>
+      </div>
     </div>
   );
 }

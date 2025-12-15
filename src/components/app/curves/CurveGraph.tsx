@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef, useEffect } from 'react';
+import { useMemo, useRef } from 'react';
 import {
   Line,
   XAxis,
@@ -10,6 +10,7 @@ import {
   ComposedChart,
   Tooltip,
 } from 'recharts';
+import { useSpring, animated } from '@react-spring/web';
 import { parseCcurveContent, curvesAreEqual } from '@/lib/curveParser';
 
 interface CurveGraphProps {
@@ -56,30 +57,17 @@ export function CurveGraph({
     }
   }, [curveContent]);
 
-  // Smooth "gravity" tooltip positioning
-  const [smoothPos, setSmoothPos] = useState<{ x: number; y: number } | null>(null);
-  const targetPos = useRef<{ x: number; y: number } | null>(null);
-  const animationRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    const animate = () => {
-      setSmoothPos(prev => {
-        if (!targetPos.current) return null;
-        if (!prev) return targetPos.current;
-        
-        const lerp = 0.15;
-        const newX = prev.x + (targetPos.current.x - prev.x) * lerp;
-        const newY = prev.y + (targetPos.current.y - prev.y) * lerp;
-        return { x: newX, y: newY };
-      });
-      animationRef.current = requestAnimationFrame(animate);
-    };
-    
-    animationRef.current = requestAnimationFrame(animate);
-    return () => {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    };
-  }, []);
+  // Spring physics tooltip with smart positioning
+  const chartHeight = useRef(300);
+  const tooltipData = useRef<{ x: number; y: number; sensitivity: number; speed: number } | null>(null);
+  
+  const [springProps, api] = useSpring(() => ({
+    x: 0,
+    y: 0,
+    opacity: 0,
+    scale: 0.95,
+    config: { mass: 0.8, tension: 320, friction: 28 }, // Snappy spring with slight overshoot
+  }));
 
   if (curveData.length === 0) {
     return (
@@ -94,19 +82,67 @@ export function CurveGraph({
 
   return (
     <div className={`${className} relative overflow-visible`}>
+      {/* Animated tooltip rendered outside chart for spring physics */}
+      <animated.div
+        style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          transform: springProps.x.to((x) => {
+            const y = springProps.y.get();
+            return `translate3d(${x + 15}px, ${y}px, 0)`;
+          }),
+          opacity: springProps.opacity,
+          scale: springProps.scale,
+          pointerEvents: 'none',
+          zIndex: 50,
+        }}
+      >
+        {tooltipData.current && (
+          <div className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
+            <p className="text-foreground text-sm">Sensitivity: {tooltipData.current.sensitivity.toFixed(3)}</p>
+            <p className="text-muted-foreground text-xs">Speed: {tooltipData.current.speed.toFixed(1)} dpms</p>
+          </div>
+        )}
+      </animated.div>
+
       <ResponsiveContainer width="100%" height={height}>
         <ComposedChart
           data={curveData}
           margin={{ top: 60, right: 30, left: 10, bottom: 25 }}
-          onMouseMove={(e) => {
+          onMouseMove={(e: any) => {
             if (e?.chartX !== undefined && e?.chartY !== undefined) {
-              targetPos.current = { x: e.chartX, y: e.chartY };
-              if (!smoothPos) setSmoothPos({ x: e.chartX, y: e.chartY });
+              // Store chart height for smart positioning
+              if (e.height) chartHeight.current = e.height;
+              
+              // Smart vertical positioning: flip based on cursor position
+              const isUpperRegion = e.chartY < chartHeight.current * 0.35;
+              const yOffset = isUpperRegion ? 70 : -90;
+              
+              // Store tooltip data
+              if (e.activePayload?.[0]?.payload) {
+                const point = e.activePayload[0].payload;
+                tooltipData.current = { 
+                  x: e.chartX, 
+                  y: e.chartY,
+                  sensitivity: point.y,
+                  speed: point.x
+                };
+              }
+              
+              api.start({ 
+                x: e.chartX + 10,
+                y: e.chartY + yOffset,
+                opacity: 1,
+                scale: 1,
+              });
             }
           }}
           onMouseLeave={() => {
-            targetPos.current = null;
-            setSmoothPos(null);
+            api.start({ 
+              opacity: 0,
+              scale: 0.95,
+            });
           }}
         >
           <defs>
@@ -165,27 +201,8 @@ export function CurveGraph({
               fontSize: 10,
             }}
           />
-          {/* Tooltip with smooth CSS transform transition */}
-          <Tooltip
-            cursor={false}
-            isAnimationActive={false}
-            allowEscapeViewBox={{ x: true, y: true }}
-            position={smoothPos ? { x: smoothPos.x, y: smoothPos.y - 100 } : undefined}
-            wrapperStyle={{
-              pointerEvents: 'none',
-              zIndex: 50,
-            }}
-            content={({ active, payload }) => {
-              if (!active || !payload?.length) return null;
-              const point = payload[0].payload;
-              return (
-                <div className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
-                  <p className="text-foreground text-sm">Sensitivity: {point.y.toFixed(3)}</p>
-                  <p className="text-muted-foreground text-xs">Speed: {point.x.toFixed(1)} dpms</p>
-                </div>
-              );
-            }}
-          />
+          {/* Native Recharts tooltip hidden - we use custom animated one */}
+          <Tooltip content={() => null} />
           {/* Reference line for 1:1 response - only show if visible */}
           {minY <= 1 && maxY >= 1 && (
             <ReferenceLine

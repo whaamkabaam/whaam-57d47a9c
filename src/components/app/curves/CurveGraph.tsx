@@ -148,6 +148,10 @@ export function CurveGraph({
             />
           )}
           <Tooltip
+            wrapperStyle={{
+              transition: 'transform 0.15s ease-out, opacity 0.15s ease-out',
+              willChange: 'transform',
+            }}
             content={({ active, payload, label }) => {
               if (!active || !payload?.length) return null;
               

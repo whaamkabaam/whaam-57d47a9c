@@ -163,7 +163,7 @@ export function CurrentCurveCard({
       <div className="px-6 py-6 md:px-8 md:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
           {/* Left: Curve Graph (3 cols) */}
-          <div className="lg:col-span-3 rounded-xl relative group overflow-hidden min-h-[480px]"
+          <div className="lg:col-span-3 rounded-xl relative group overflow-visible min-h-[480px]"
             style={{
               background: 'linear-gradient(180deg, hsl(var(--muted) / 0.15) 0%, hsl(var(--muted) / 0.05) 100%)',
               border: '1px solid hsl(var(--border) / 0.15)',

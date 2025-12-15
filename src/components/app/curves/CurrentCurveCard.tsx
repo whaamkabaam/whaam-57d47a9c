@@ -119,6 +119,10 @@ export function CurrentCurveCard({
   const handleSubmit = () => {
     if (onSubmitFeedback) {
       onSubmitFeedback(longRange, midRange, shortRange);
+      // Reset sliders to default "Perfect" value after submission
+      setLongRange(5);
+      setMidRange(5);
+      setShortRange(5);
     }
   };
 

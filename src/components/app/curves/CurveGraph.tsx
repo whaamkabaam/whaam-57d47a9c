@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Line,
   XAxis,
@@ -56,6 +56,8 @@ export function CurveGraph({
     }
   }, [curveContent]);
 
+  const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null);
+
   if (curveData.length === 0) {
     return (
       <div 
@@ -73,6 +75,12 @@ export function CurveGraph({
         <ComposedChart
           data={curveData}
           margin={{ top: 60, right: 30, left: 10, bottom: 25 }}
+          onMouseMove={(e) => {
+            if (e?.chartX !== undefined && e?.chartY !== undefined) {
+              setMousePos({ x: e.chartX, y: e.chartY });
+            }
+          }}
+          onMouseLeave={() => setMousePos(null)}
         >
           <defs>
             {/* Gradient for area fill under curve */}
@@ -135,10 +143,11 @@ export function CurveGraph({
             cursor={false}
             isAnimationActive={false}
             allowEscapeViewBox={{ x: true, y: true }}
-            offset={20}
+            position={mousePos ? { x: mousePos.x, y: mousePos.y - 70 } : undefined}
             wrapperStyle={{
               pointerEvents: 'none',
               zIndex: 50,
+              transition: 'none',
             }}
             content={({ active, payload }) => {
               if (!active || !payload?.length) return null;

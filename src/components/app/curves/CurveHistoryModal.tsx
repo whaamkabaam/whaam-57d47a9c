@@ -2,6 +2,7 @@
 // Curve History Modal Component
 // ============================================
 
+import { useState, useEffect } from 'react';
 import { Curve } from '@/lib/api/types';
 import { useCurveHistory, useRevertCurve } from '@/hooks/api/useCurves';
 import {
@@ -14,7 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { RotateCcw, Star, GitBranch, Loader2 } from 'lucide-react';
+import { RotateCcw, Star, GitBranch, Loader2, ChevronDown } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 
@@ -27,6 +28,15 @@ interface CurveHistoryModalProps {
 export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryModalProps) {
   const { data: history, isLoading } = useCurveHistory(curveId ?? 0);
   const revertMutation = useRevertCurve();
+  const [visibleCount, setVisibleCount] = useState(10);
+
+  // Reset visible count when modal opens/closes
+  useEffect(() => {
+    if (!open) setVisibleCount(10);
+  }, [open]);
+
+  const visibleHistory = history?.slice(0, visibleCount) ?? [];
+  const hasMore = history && history.length > visibleCount;
 
   const handleRevert = async (id: number) => {
     try {
@@ -65,13 +75,14 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
               ))}
             </>
           ) : history && Array.isArray(history) && history.length > 0 ? (
-            history.map((curve: Curve, index: number) => (
+            <>
+            {visibleHistory.map((curve: Curve, index: number) => (
               <div
                 key={curve.id}
                 className="relative flex items-center gap-3 p-3 rounded-lg border border-border/30 bg-muted/20"
               >
                 {/* Timeline connector */}
-                {index < history.length - 1 && (
+                {index < visibleHistory.length - 1 && (
                   <div className="absolute left-6 top-full h-3 w-px bg-border/50" />
                 )}
 
@@ -120,7 +131,19 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
                   </Button>
                 )}
               </div>
-            ))
+            ))}
+            {hasMore && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full text-muted-foreground"
+                onClick={() => setVisibleCount(prev => prev + 10)}
+              >
+                <ChevronDown className="h-4 w-4 mr-2" />
+                Show {Math.min(10, history.length - visibleCount)} more
+              </Button>
+            )}
+            </>
           ) : (
             <p className="text-center text-muted-foreground py-8">
               No history available for this curve

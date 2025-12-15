@@ -130,26 +130,20 @@ export function CurveGraph({
               fontSize: 10,
             }}
           />
-          {/* Tooltip with smooth CSS transform transition */}
+          {/* Tooltip constrained within graph bounds */}
           <Tooltip
             cursor={false}
             isAnimationActive={false}
-            allowEscapeViewBox={{ x: true, y: true }}
+            allowEscapeViewBox={{ x: false, y: false }}
             wrapperStyle={{
-              transition: 'transform 100ms ease-out, opacity 100ms ease-out',
               pointerEvents: 'none',
               zIndex: 10,
             }}
-            content={({ active, payload, coordinate }) => {
-              if (!active || !payload?.length || !coordinate) return null;
+            content={({ active, payload }) => {
+              if (!active || !payload?.length) return null;
               const point = payload[0].payload;
               return (
-                <div 
-                  className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg"
-                  style={{
-                    transform: 'translate(-50%, -120%)',
-                  }}
-                >
+                <div className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
                   <p className="text-foreground text-sm">Sensitivity: {point.y.toFixed(3)}</p>
                   <p className="text-muted-foreground text-xs">Speed: {point.x.toFixed(1)} dpms</p>
                 </div>
@@ -189,16 +183,16 @@ export function CurveGraph({
             name="X-Axis"
             filter="url(#curveGlow)"
             dot={{
-              r: 5,
-              fill: '#B4B4B4',
-              stroke: 'rgba(255,255,255,0.25)',
-              strokeWidth: 1.5,
+              r: 4,
+              fill: '#9CA3AF',
+              stroke: 'none',
             }}
             activeDot={{
               r: 6,
               fill: '#FFD740',
-              stroke: 'rgba(0,0,0,0.4)',
+              stroke: '#FFD740',
               strokeWidth: 2,
+              strokeOpacity: 0.3,
             }}
           />
           {yAxisData && (
@@ -219,16 +213,16 @@ export function CurveGraph({
                 strokeDasharray="4 2"
                 name="Y-Axis"
                 dot={{
-                  r: 4.5,
-                  fill: '#B4B4B4',
-                  stroke: 'rgba(0,0,0,0.3)',
-                  strokeWidth: 1,
+                  r: 4,
+                  fill: '#9CA3AF',
+                  stroke: 'none',
                 }}
                 activeDot={{
-                  r: 5,
+                  r: 6,
                   fill: 'hsl(var(--accent))',
-                  stroke: 'rgba(0,0,0,0.4)',
+                  stroke: 'hsl(var(--accent))',
                   strokeWidth: 2,
+                  strokeOpacity: 0.3,
                 }}
               />
             </>

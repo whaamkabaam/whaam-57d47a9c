@@ -16,21 +16,21 @@ interface FeedbackSliderProps {
 function getZoneInfo(value: number): { label: string; color: string; bgColor: string } {
   if (value <= 3) {
     return { 
-      label: 'Wanted Faster', 
+      label: 'Faster', 
       color: 'text-red-400',
-      bgColor: 'bg-red-500'
+      bgColor: 'bg-red-500/90'
     };
   } else if (value <= 6) {
     return { 
       label: 'Perfect', 
       color: 'text-green-400',
-      bgColor: 'bg-green-500'
+      bgColor: 'bg-green-500/90'
     };
   } else {
     return { 
-      label: 'Wanted Slower', 
+      label: 'Slower', 
       color: 'text-blue-400',
-      bgColor: 'bg-blue-500'
+      bgColor: 'bg-blue-500/90'
     };
   }
 }
@@ -39,18 +39,18 @@ export function FeedbackSlider({ label, value, onChange, disabled }: FeedbackSli
   const zone = getZoneInfo(value);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-foreground">{label}</span>
+        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</span>
         <div className="flex items-center gap-2">
           <span className={cn(
-            "text-2xl font-mono font-bold tabular-nums",
+            "text-lg font-mono font-bold tabular-nums",
             zone.color
           )}>
             {value}
           </span>
           <span className={cn(
-            "text-xs px-2 py-0.5 rounded-full",
+            "text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wide",
             zone.bgColor,
             "text-white font-medium"
           )}>
@@ -72,14 +72,14 @@ export function FeedbackSlider({ label, value, onChange, disabled }: FeedbackSli
         />
         
         {/* Zone indicators below slider */}
-        <div className="flex justify-between mt-2 text-[10px] font-medium uppercase tracking-wider">
-          <span className="text-red-400/70">0</span>
-          <span className="text-red-400/70">Faster</span>
-          <span className="text-muted-foreground">|</span>
-          <span className="text-green-400/70">Perfect</span>
-          <span className="text-muted-foreground">|</span>
-          <span className="text-blue-400/70">Slower</span>
-          <span className="text-blue-400/70">10</span>
+        <div className="flex justify-between mt-2 text-[9px] font-medium uppercase tracking-wider text-muted-foreground/50">
+          <span className="text-red-400/60">0</span>
+          <span className="text-red-400/60">Faster</span>
+          <span className="text-muted-foreground/30">•</span>
+          <span className="text-green-400/60">Perfect</span>
+          <span className="text-muted-foreground/30">•</span>
+          <span className="text-blue-400/60">Slower</span>
+          <span className="text-blue-400/60">10</span>
         </div>
       </div>
     </div>

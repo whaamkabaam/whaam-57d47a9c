@@ -142,20 +142,12 @@ export function CurrentCurveCard({
               Upload #{curve.upload_number} • {format(new Date(curve.created_at), 'MMM d, yyyy')}
             </p>
           </div>
-          <div className="flex gap-2">
-            {curve.is_current && (
-              <Badge variant="default" className="bg-green-500/15 text-green-400 border-green-500/25 text-[10px] uppercase tracking-wide">
-                <Check className="h-3 w-3 mr-1" />
-                Current
-              </Badge>
-            )}
-            {curve.is_perfect && (
-              <Badge variant="default" className="bg-yellow-500/15 text-yellow-400 border-yellow-500/25 text-[10px] uppercase tracking-wide">
-                <Star className="h-3 w-3 mr-1 fill-current" />
-                Perfect
-              </Badge>
-            )}
-          </div>
+          {curve.is_perfect && (
+            <Badge variant="default" className="bg-yellow-500/15 text-yellow-400 border-yellow-500/25 text-[10px] uppercase tracking-wide">
+              <Star className="h-3 w-3 mr-1 fill-current" />
+              Perfect
+            </Badge>
+          )}
         </div>
       </div>
 
@@ -213,9 +205,9 @@ export function CurrentCurveCard({
                 </div>
               </>
             ) : (
-              <div className="text-sm text-muted-foreground/40 text-center py-8">
-                Initial Upload<br />
-                <span className="text-xs">No feedback data</span>
+              <div className="text-center py-8 px-4">
+                <p className="text-sm text-foreground/70 mb-2">🎮 Play a few games with this curve</p>
+                <p className="text-xs text-muted-foreground/50">Then come back and tell us how it felt</p>
               </div>
             )}
           </div>
@@ -226,8 +218,8 @@ export function CurrentCurveCard({
       {onSubmitFeedback && (
         <div className="px-6 py-6 md:px-8 md:py-8 border-t border-border/10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-            <h3 className="text-sm font-semibold text-foreground">How did this curve feel?</h3>
-            <DailyLimitIndicator 
+            <h3 className="text-sm font-semibold text-foreground">Rate how each range felt in-game</h3>
+            <DailyLimitIndicator
               used={dailyLimit?.used ?? 0} 
               limit={dailyLimit?.limit ?? 3} 
               isLoading={isLoadingDailyLimit}

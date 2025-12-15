@@ -97,9 +97,9 @@ export default function Feedback() {
       {/* Feedback Form */}
       <LiquidGlassCard variant="secondary" className="p-6 space-y-8">
         <div>
-          <h2 className="text-lg font-semibold mb-2">How did your curve feel?</h2>
+          <h2 className="text-lg font-semibold mb-2">Rate how each range felt in-game</h2>
           <p className="text-sm text-muted-foreground">
-            Rate each sensitivity range. Move left if it felt too slow, right if too fast.
+            Slide left if it felt too slow, right if too fast. Hit "Perfect" if it's dialed in.
           </p>
         </div>
 

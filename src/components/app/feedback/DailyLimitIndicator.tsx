@@ -36,19 +36,11 @@ export function DailyLimitIndicator({ used, limit, isLoading }: DailyLimitIndica
         "text-xs font-medium",
         isExhausted ? "text-destructive" : "text-muted-foreground/70"
       )}>
-        {remaining}/{limit} left
+        {isExhausted 
+          ? "No adjustments left today" 
+          : `${remaining} adjustment${remaining !== 1 ? 's' : ''} remaining today`
+        }
       </span>
-      
-      {/* Compact progress bar */}
-      <div className="w-12 h-1.5 bg-muted/20 rounded-full overflow-hidden">
-        <div 
-          className={cn(
-            "h-full rounded-full transition-all duration-300",
-            isExhausted ? "bg-destructive" : "bg-green-500/70"
-          )}
-          style={{ width: `${100 - percentage}%` }}
-        />
-      </div>
     </div>
   );
 }

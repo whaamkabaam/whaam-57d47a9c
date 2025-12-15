@@ -23,7 +23,7 @@ import { NavLink } from '@/components/NavLink';
 const navItems = [
   { title: 'Dashboard', url: '/app', icon: Home },
   { title: 'My Curves', url: '/app/curves', icon: Sliders },
-  { title: 'Feedback', url: '/app/feedback', icon: MessageSquare },
+  { title: 'Tune Curve', url: '/app/feedback', icon: MessageSquare },
   { title: 'Subscription', url: '/app/subscription', icon: CreditCard },
   { title: 'Settings', url: '/app/settings', icon: Settings },
 ];

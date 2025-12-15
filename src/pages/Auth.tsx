@@ -121,7 +121,7 @@ export default function Auth() {
       <div className="w-full max-w-md">
         <LiquidGlassCard className="w-full">
           {/* Header */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-6">
             <Link to="/" className="inline-block mb-6">
               <img 
                 src="/lovable-uploads/25252925-5ec6-4d83-aa0a-70a6e27f7b9e.png" 
@@ -141,13 +141,41 @@ export default function Auth() {
             </p>
           </div>
 
+          {/* Mode Switch - moved up for prominence */}
+          {mode !== 'forgot' && (
+            <div className="text-center mb-6 py-3 rounded-lg bg-muted/20 border border-border/30">
+              {mode === 'login' ? (
+                <p className="text-sm text-muted-foreground">
+                  New here?{' '}
+                  <button
+                    onClick={() => setMode('register')}
+                    className="text-primary hover:text-accent transition-colors font-medium"
+                  >
+                    Create an account
+                  </button>
+                </p>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  Already have an account?{' '}
+                  <button
+                    onClick={() => setMode('login')}
+                    className="text-primary hover:text-accent transition-colors font-medium"
+                  >
+                    Sign in
+                  </button>
+                </p>
+              )}
+            </div>
+          )}
+
           {/* OAuth Buttons (not shown for forgot password) */}
           {mode !== 'forgot' && (
             <>
               <div className="space-y-3 mb-6">
+                {/* Discord emphasized as primary for gaming audience */}
                 <LiquidGlassButton
                   type="button"
-                  variant="secondary"
+                  variant="primary"
                   className="w-full flex items-center justify-center gap-3"
                   onClick={() => handleOAuth('discord')}
                 >
@@ -177,7 +205,7 @@ export default function Auth() {
                   <div className="w-full border-t border-border" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-transparent px-2 text-muted-foreground">Or continue with email</span>
+                  <span className="bg-transparent px-2 text-muted-foreground">Or use email</span>
                 </div>
               </div>
             </>
@@ -185,23 +213,6 @@ export default function Auth() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            {mode === 'register' && (
-              <div className="space-y-2">
-                <Label htmlFor="displayName" className="glass-text">Display Name (optional)</Label>
-                <Input
-                  id="displayName"
-                  type="text"
-                  placeholder="Your display name"
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  className="bg-input border-border"
-                />
-                {errors.displayName && (
-                  <p className="text-sm text-destructive">{errors.displayName}</p>
-                )}
-              </div>
-            )}
-
             <div className="space-y-2">
               <Label htmlFor="email" className="glass-text">Email</Label>
               <Input
@@ -232,6 +243,26 @@ export default function Auth() {
                 />
                 {errors.password && (
                   <p className="text-sm text-destructive">{errors.password}</p>
+                )}
+              </div>
+            )}
+
+            {/* Display name moved after core fields, less prominent */}
+            {mode === 'register' && (
+              <div className="space-y-2">
+                <Label htmlFor="displayName" className="text-sm text-muted-foreground">
+                  Display name <span className="text-muted-foreground/50">(optional)</span>
+                </Label>
+                <Input
+                  id="displayName"
+                  type="text"
+                  placeholder="What should we call you?"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  className="bg-input border-border"
+                />
+                {errors.displayName && (
+                  <p className="text-sm text-destructive">{errors.displayName}</p>
                 )}
               </div>
             )}
@@ -269,40 +300,18 @@ export default function Auth() {
             </LiquidGlassButton>
           </form>
 
-          {/* Mode Switch */}
-          <div className="mt-6 text-center text-sm">
-            {mode === 'login' && (
-              <p className="text-muted-foreground">
-                Don't have an account?{' '}
-                <button
-                  onClick={() => setMode('register')}
-                  className="text-primary hover:text-accent transition-colors font-medium"
-                >
-                  Sign up
-                </button>
-              </p>
-            )}
-            {mode === 'register' && (
-              <p className="text-muted-foreground">
-                Already have an account?{' '}
-                <button
-                  onClick={() => setMode('login')}
-                  className="text-primary hover:text-accent transition-colors font-medium"
-                >
-                  Sign in
-                </button>
-              </p>
-            )}
-            {mode === 'forgot' && (
+          {/* Back link for forgot password only */}
+          {mode === 'forgot' && (
+            <div className="mt-6 text-center">
               <button
                 onClick={() => setMode('login')}
-                className="text-primary hover:text-accent transition-colors font-medium flex items-center gap-1 mx-auto"
+                className="text-primary hover:text-accent transition-colors font-medium flex items-center gap-1 mx-auto text-sm"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Back to sign in
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </LiquidGlassCard>
       </div>
     </div>

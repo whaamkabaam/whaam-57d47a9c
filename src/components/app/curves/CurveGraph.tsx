@@ -116,8 +116,8 @@ export function CurveGraph({
               if (e.height) chartHeight.current = e.height;
               
               // Smart vertical positioning: flip based on cursor position
-              const isUpperRegion = e.chartY < chartHeight.current * 0.35;
-              const yOffset = isUpperRegion ? 70 : -90;
+              const isUpperRegion = e.chartY < chartHeight.current * 0.3;
+              const yOffset = isUpperRegion ? 50 : -80;
               
               // Store tooltip data
               if (e.activePayload?.[0]?.payload) {

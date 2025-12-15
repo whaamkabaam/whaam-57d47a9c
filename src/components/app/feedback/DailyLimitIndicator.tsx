@@ -19,34 +19,32 @@ export function DailyLimitIndicator({ used, limit, isLoading }: DailyLimitIndica
 
   if (isLoading) {
     return (
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <div className="h-4 w-24 bg-muted/30 rounded animate-pulse" />
+      <div className="flex items-center gap-2">
+        <div className="h-3 w-20 bg-muted/20 rounded animate-pulse" />
       </div>
     );
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex items-center gap-1.5">
-        {isExhausted ? (
-          <AlertCircle className="h-4 w-4 text-destructive" />
-        ) : (
-          <CheckCircle2 className="h-4 w-4 text-green-400" />
-        )}
-        <span className={cn(
-          "text-sm font-medium",
-          isExhausted ? "text-destructive" : "text-muted-foreground"
-        )}>
-          {remaining}/{limit} adjustments left
-        </span>
-      </div>
+    <div className="flex items-center gap-2">
+      {isExhausted ? (
+        <AlertCircle className="h-3.5 w-3.5 text-destructive" />
+      ) : (
+        <CheckCircle2 className="h-3.5 w-3.5 text-green-400/80" />
+      )}
+      <span className={cn(
+        "text-xs font-medium",
+        isExhausted ? "text-destructive" : "text-muted-foreground/70"
+      )}>
+        {remaining}/{limit} left
+      </span>
       
-      {/* Progress bar */}
-      <div className="w-20 h-1.5 bg-muted/30 rounded-full overflow-hidden">
+      {/* Compact progress bar */}
+      <div className="w-12 h-1.5 bg-muted/20 rounded-full overflow-hidden">
         <div 
           className={cn(
             "h-full rounded-full transition-all duration-300",
-            isExhausted ? "bg-destructive" : "bg-green-500"
+            isExhausted ? "bg-destructive" : "bg-green-500/70"
           )}
           style={{ width: `${100 - percentage}%` }}
         />

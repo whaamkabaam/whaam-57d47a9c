@@ -10,7 +10,6 @@ import {
   ComposedChart,
   Tooltip,
 } from 'recharts';
-import { curveMonotoneX } from 'd3-shape';
 import { parseCcurveContent, curvesAreEqual } from '@/lib/curveParser';
 
 interface CurveGraphProps {
@@ -118,7 +117,7 @@ export function CurveGraph({
             }}
           />
           <YAxis
-            domain={[minY, maxY]}
+            domain={[0, maxY]}
             tickFormatter={(value) => value.toFixed(2)}
             tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
             axisLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
@@ -175,7 +174,7 @@ export function CurveGraph({
           )}
           {/* Gradient area fill under curve */}
           <Area
-            type={curveMonotoneX}
+            type="monotone"
             dataKey="y"
             stroke="none"
             fill="url(#curveGradient)"
@@ -183,7 +182,7 @@ export function CurveGraph({
           />
           {/* Smooth curve with native hover detection */}
           <Line
-            type={curveMonotoneX}
+            type="monotone"
             dataKey="y"
             stroke="#FFD740"
             strokeWidth={2.5}
@@ -205,14 +204,14 @@ export function CurveGraph({
           {yAxisData && (
             <>
               <Area
-                type={curveMonotoneX}
+                type="monotone"
                 data={yAxisData}
                 dataKey="y"
                 stroke="none"
                 fill="url(#yAxisGradient)"
               />
               <Line
-                type={curveMonotoneX}
+                type="monotone"
                 data={yAxisData}
                 dataKey="y"
                 stroke="hsl(var(--accent))"

@@ -15,7 +15,7 @@ import { parseCcurveContent, curvesAreEqual } from '@/lib/curveParser';
 interface CurveGraphProps {
   curveContent: string;
   className?: string;
-  height?: number;
+  height?: number | string;
   showControls?: boolean;
 }
 

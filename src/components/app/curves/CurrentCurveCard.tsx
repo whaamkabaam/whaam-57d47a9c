@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Download, History, Star, Check, Loader2, Maximize2, Send } from 'lucide-react';
 import { format } from 'date-fns';
 import { CurveGraph } from './CurveGraph';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { FeedbackSlider } from '@/components/app/feedback/FeedbackSlider';
 import { DailyLimitIndicator } from '@/components/app/feedback/DailyLimitIndicator';
 import { cn } from '@/lib/utils';
@@ -163,33 +164,35 @@ export function CurrentCurveCard({
       <div className="px-6 py-6 md:px-8 md:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
           {/* Left: Curve Graph (3 cols) */}
-          <div className="lg:col-span-3 rounded-xl relative group overflow-hidden min-h-[300px]"
+          <div className="lg:col-span-3 rounded-xl relative group overflow-hidden"
             style={{
               background: 'linear-gradient(180deg, hsl(var(--muted) / 0.15) 0%, hsl(var(--muted) / 0.05) 100%)',
               border: '1px solid hsl(var(--border) / 0.15)',
             }}
           >
-            {isLoadingContent ? (
-              <div className="h-full flex items-center justify-center">
-                <div className="animate-spin h-6 w-6 border-2 border-whaam-yellow border-t-transparent rounded-full" />
-              </div>
-            ) : curveContent ? (
-              <div className="p-4 h-full">
-                <CurveGraph curveContent={curveContent} height={260} showControls={true} />
-                {onViewGraph && (
-                  <button
-                    onClick={onViewGraph}
-                    className="absolute top-3 right-3 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 bg-background/60 hover:bg-background/80 backdrop-blur-sm border border-border/20"
-                  >
-                    <Maximize2 className="h-3.5 w-3.5 text-muted-foreground" />
-                  </button>
-                )}
-              </div>
-            ) : (
-              <div className="h-full flex items-center justify-center text-muted-foreground/50 text-sm">
-                No graph data available
-              </div>
-            )}
+            <AspectRatio ratio={4/3}>
+              {isLoadingContent ? (
+                <div className="h-full flex items-center justify-center">
+                  <div className="animate-spin h-6 w-6 border-2 border-whaam-yellow border-t-transparent rounded-full" />
+                </div>
+              ) : curveContent ? (
+                <div className="p-4 h-full">
+                  <CurveGraph curveContent={curveContent} height="100%" showControls={true} />
+                  {onViewGraph && (
+                    <button
+                      onClick={onViewGraph}
+                      className="absolute top-3 right-3 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 bg-background/60 hover:bg-background/80 backdrop-blur-sm border border-border/20"
+                    >
+                      <Maximize2 className="h-3.5 w-3.5 text-muted-foreground" />
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="h-full flex items-center justify-center text-muted-foreground/50 text-sm">
+                  No graph data available
+                </div>
+              )}
+            </AspectRatio>
           </div>
 
           {/* Right: Historic Feedback Values (2 cols) */}

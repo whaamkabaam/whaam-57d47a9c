@@ -18,6 +18,7 @@ import {
   useMarkCurvePerfect,
   useCurveContent,
 } from '@/hooks/api/useCurves';
+import { useDailyLimit, useSubmitFeedback } from '@/hooks/api/useFeedback';
 
 import { CurrentCurveCard } from '@/components/app/curves/CurrentCurveCard';
 import { CurveListItem } from '@/components/app/curves/CurveListItem';
@@ -34,6 +35,7 @@ export default function Curves() {
   // Data fetching
   const { data: currentCurve, isLoading: isLoadingCurrent } = useCurrentCurve();
   const { data: curvesData, isLoading: isLoadingCurves } = useCurves();
+  const { data: dailyLimit, isLoading: isLoadingDailyLimit } = useDailyLimit();
   
   // Fetch current curve content for inline graph
   const { data: currentCurveContent, isLoading: isLoadingContent } = useCurveContent(
@@ -50,6 +52,7 @@ export default function Curves() {
   const downloadMutation = useDownloadCurve();
   const revertMutation = useRevertCurve();
   const markPerfectMutation = useMarkCurvePerfect();
+  const submitFeedbackMutation = useSubmitFeedback();
 
   // Handlers
   const handleDownload = async (id: number) => {
@@ -96,6 +99,21 @@ export default function Curves() {
     }
   };
 
+  const handleSubmitFeedback = async (longRange: number, midRange: number, shortRange: number) => {
+    if (!currentCurve) return;
+    try {
+      await submitFeedbackMutation.mutateAsync({
+        curve_id: currentCurve.id,
+        long_range: longRange,
+        mid_range: midRange,
+        short_range: shortRange,
+      });
+      toast.success('Feedback submitted! Your new curve is being generated.');
+    } catch (error) {
+      toast.error('Failed to submit feedback');
+    }
+  };
+
   // Get non-current curves for the list
   const otherCurves = curvesData?.curves?.filter((c) => !c.is_current) ?? [];
   const hasCurves = curvesData?.curves && curvesData.curves.length > 0;
@@ -135,6 +153,10 @@ export default function Curves() {
           onViewGraph={() => handleViewGraph(currentCurve.id)}
           isDownloading={downloadingId === currentCurve.id}
           isMarkingPerfect={markPerfectMutation.isPending}
+          onSubmitFeedback={handleSubmitFeedback}
+          isSubmittingFeedback={submitFeedbackMutation.isPending}
+          dailyLimit={dailyLimit}
+          isLoadingDailyLimit={isLoadingDailyLimit}
         />
       ) : !isLoadingCurves && !hasCurves ? (
         // Empty state

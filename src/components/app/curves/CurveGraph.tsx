@@ -189,12 +189,7 @@ export function CurveGraph({
             strokeWidth={2.5}
             name="X-Axis"
             filter="url(#curveGlow)"
-            dot={{ 
-              fill: 'hsl(var(--muted-foreground))', 
-              r: 5,
-              stroke: 'hsl(var(--background))',
-              strokeWidth: 2,
-            }}
+            dot={false}
             activeDot={{ 
               r: 6, 
               fill: '#FFD740',
@@ -220,12 +215,7 @@ export function CurveGraph({
                 strokeWidth={2}
                 strokeDasharray="4 2"
                 name="Y-Axis"
-                dot={{ 
-                  fill: 'hsl(var(--muted-foreground))', 
-                  r: 4,
-                  stroke: 'hsl(var(--background))',
-                  strokeWidth: 2,
-                }}
+                dot={false}
                 activeDot={{ 
                   r: 5, 
                   fill: 'hsl(var(--accent))',

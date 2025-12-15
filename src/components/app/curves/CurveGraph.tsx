@@ -176,14 +176,14 @@ export function CurveGraph({
           />
           {/* Gradient area fill under curve */}
           <Area
-            type={curveCatmullRom.alpha(0.5)}
+            type={curveCatmullRom.alpha(1)}
             dataKey="y"
             stroke="none"
             fill="url(#curveGradient)"
             animationDuration={800}
           />
           <Line
-            type={curveCatmullRom.alpha(0.5)}
+            type={curveCatmullRom.alpha(1)}
             dataKey="y"
             stroke="#FFD740"
             strokeWidth={2.5}
@@ -206,14 +206,14 @@ export function CurveGraph({
           {yAxisData && (
             <>
               <Area
-                type={curveCatmullRom.alpha(0.5)}
+                type={curveCatmullRom.alpha(1)}
                 data={yAxisData}
                 dataKey="y"
                 stroke="none"
                 fill="url(#yAxisGradient)"
               />
               <Line
-                type={curveCatmullRom.alpha(0.5)}
+                type={curveCatmullRom.alpha(1)}
                 data={yAxisData}
                 dataKey="y"
                 stroke="hsl(var(--accent))"

@@ -107,3 +107,42 @@ export function generateReferenceLine(maxX: number): CurvePoint[] {
     { x: maxX, y: 1 },
   ];
 }
+
+/**
+ * Densify curve points by inserting linear intermediate points between each pair.
+ *
+ * This is intentionally linear (not spline math) to guarantee:
+ * - no overshoot
+ * - no artificial negative slope segments
+ * - the rendered line never leaves the piecewise-linear polyline
+ *
+ * Use with `type="monotoneX"` to keep the SVG path smooth-ish while staying faithful.
+ */
+export function densifyCurvePoints(points: CurvePoint[], multiplier: number = 6): CurvePoint[] {
+  if (!points || points.length <= 1) return points ?? [];
+
+  const sorted = [...points].sort((a, b) => a.x - b.x);
+  const out: CurvePoint[] = [];
+
+  for (let i = 0; i < sorted.length - 1; i++) {
+    const a = sorted[i];
+    const b = sorted[i + 1];
+
+    out.push(a);
+
+    const dx = b.x - a.x;
+    if (dx <= 0) continue;
+
+    const steps = Math.max(0, Math.floor(multiplier));
+    for (let s = 1; s < steps; s++) {
+      const t = s / steps;
+      out.push({
+        x: a.x + dx * t,
+        y: a.y + (b.y - a.y) * t,
+      });
+    }
+  }
+
+  out.push(sorted[sorted.length - 1]);
+  return out;
+}

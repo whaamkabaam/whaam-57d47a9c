@@ -11,8 +11,8 @@ import {
   Area,
   ComposedChart,
 } from 'recharts';
-import { curveCatmullRom } from 'd3-shape';
-import { parseCcurveContent, curvesAreEqual, CurvePoint } from '@/lib/curveParser';
+import { curveMonotoneX } from 'd3-shape';
+import { parseCcurveContent, curvesAreEqual, densifyCurvePoints } from '@/lib/curveParser';
 
 interface CurveGraphProps {
   curveContent: string;
@@ -30,28 +30,28 @@ export function CurveGraph({
   const { curveData, yAxisData, hasDifferentCurves, maxX, minY, maxY } = useMemo(() => {
     try {
       const parsed = parseCcurveContent(curveContent);
-      const xCurve = parsed.xAxisCurve;
-      const yCurve = parsed.yAxisCurve;
-      
-      const different = !curvesAreEqual(xCurve, yCurve);
+      const xCurve = densifyCurvePoints(parsed.xAxisCurve, 6);
+      const yCurve = densifyCurvePoints(parsed.yAxisCurve, 6);
+
+      const different = !curvesAreEqual(parsed.xAxisCurve, parsed.yAxisCurve);
       const allPoints = different ? [...xCurve, ...yCurve] : xCurve;
-      
-      const maxX = Math.max(...allPoints.map(p => p.x), 80);
-      
+
+      const maxX = Math.max(...allPoints.map((p) => p.x), 80);
+
       // Y-axis always starts at 0 like reference design
-      const actualMaxY = Math.max(...allPoints.map(p => p.y));
-      
+      const actualMaxY = Math.max(...allPoints.map((p) => p.y));
+
       // Add padding at top for readability
       const minY = 0;
       const maxY = Math.ceil(actualMaxY * 10) / 10 + 0.1; // Round up with small padding
-      
-      return { 
-        curveData: xCurve, 
+
+      return {
+        curveData: xCurve,
         yAxisData: different ? yCurve : null,
         hasDifferentCurves: different,
         maxX,
         minY,
-        maxY 
+        maxY,
       };
     } catch {
       return { curveData: [], yAxisData: null, hasDifferentCurves: false, maxX: 80, minY: 0, maxY: 2 };
@@ -176,14 +176,14 @@ export function CurveGraph({
           />
           {/* Gradient area fill under curve */}
           <Area
-            type={curveCatmullRom.alpha(1)}
+            type={curveMonotoneX}
             dataKey="y"
             stroke="none"
             fill="url(#curveGradient)"
             animationDuration={800}
           />
           <Line
-            type={curveCatmullRom.alpha(1)}
+            type={curveMonotoneX}
             dataKey="y"
             stroke="#FFD740"
             strokeWidth={2.5}
@@ -206,14 +206,14 @@ export function CurveGraph({
           {yAxisData && (
             <>
               <Area
-                type={curveCatmullRom.alpha(1)}
+                type={curveMonotoneX}
                 data={yAxisData}
                 dataKey="y"
                 stroke="none"
                 fill="url(#yAxisGradient)"
               />
               <Line
-                type={curveCatmullRom.alpha(1)}
+                type={curveMonotoneX}
                 data={yAxisData}
                 dataKey="y"
                 stroke="hsl(var(--accent))"

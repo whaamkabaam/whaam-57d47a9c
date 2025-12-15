@@ -114,8 +114,13 @@ export default function Curves() {
     }
   };
 
+  // Pagination state for curves list
+  const [visibleCurvesCount, setVisibleCurvesCount] = useState(10);
+
   // Get non-current curves for the list
   const otherCurves = curvesData?.curves?.filter((c) => !c.is_current) ?? [];
+  const visibleOtherCurves = otherCurves.slice(0, visibleCurvesCount);
+  const hasMoreCurves = otherCurves.length > visibleCurvesCount;
   const hasCurves = curvesData?.curves && curvesData.curves.length > 0;
 
   return (
@@ -213,7 +218,7 @@ export default function Curves() {
                   isReverting={revertingId === currentCurve.id}
                 />
               )}
-              {otherCurves.map((curve) => (
+              {visibleOtherCurves.map((curve) => (
                 <CurveListItem
                   key={curve.id}
                   curve={curve}
@@ -224,6 +229,15 @@ export default function Curves() {
                   isReverting={revertingId === curve.id}
                 />
               ))}
+              {hasMoreCurves && (
+                <Button
+                  variant="ghost"
+                  className="w-full text-muted-foreground"
+                  onClick={() => setVisibleCurvesCount(prev => prev + 10)}
+                >
+                  Show {Math.min(10, otherCurves.length - visibleCurvesCount)} more curves...
+                </Button>
+              )}
             </div>
           )}
         </div>

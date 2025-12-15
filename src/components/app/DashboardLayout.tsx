@@ -3,7 +3,7 @@
 // ============================================
 
 import { Outlet } from 'react-router-dom';
-import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { DashboardSidebar } from './DashboardSidebar';
 
 export function DashboardLayout() {
@@ -12,9 +12,9 @@ export function DashboardLayout() {
       <div className="min-h-screen flex w-full relative">
         <DashboardSidebar />
         <SidebarInset className="flex-1 relative z-10 bg-transparent">
-          <main className="flex-1 p-6 pt-8 bg-transparent">
+          <div className="flex-1 p-6 pt-8 bg-transparent">
             <Outlet />
-          </main>
+          </div>
         </SidebarInset>
       </div>
     </SidebarProvider>

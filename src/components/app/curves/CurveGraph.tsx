@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import {
   Line,
   XAxis,
@@ -59,7 +59,7 @@ export function CurveGraph({
 
   // Spring physics tooltip with smart positioning
   const chartHeight = useRef(300);
-  const tooltipData = useRef<{ x: number; y: number; sensitivity: number; speed: number } | null>(null);
+  const [tooltipData, setTooltipData] = useState<{ sensitivity: number; speed: number } | null>(null);
   
   const [springProps, api] = useSpring(() => ({
     x: 0,
@@ -98,10 +98,10 @@ export function CurveGraph({
           zIndex: 50,
         }}
       >
-        {tooltipData.current && (
+        {tooltipData && (
           <div className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
-            <p className="text-foreground text-sm">Sensitivity: {tooltipData.current.sensitivity.toFixed(3)}</p>
-            <p className="text-muted-foreground text-xs">Speed: {tooltipData.current.speed.toFixed(1)} dpms</p>
+            <p className="text-foreground text-sm">Sensitivity: {tooltipData.sensitivity.toFixed(3)}</p>
+            <p className="text-muted-foreground text-xs">Speed: {tooltipData.speed.toFixed(1)} dpms</p>
           </div>
         )}
       </animated.div>
@@ -115,24 +115,22 @@ export function CurveGraph({
               // Store chart height for smart positioning
               if (e.height) chartHeight.current = e.height;
               
-              // Smart vertical positioning: flip based on cursor position
-              const isUpperRegion = e.chartY < chartHeight.current * 0.3;
-              const yOffset = isUpperRegion ? 50 : -80;
+              // Always position above cursor, but cap at minimum Y (no flip down)
+              const rawY = e.chartY - 80;
+              const clampedY = Math.max(10, rawY); // Never go above 10px from chart top
               
-              // Store tooltip data
+              // Store tooltip data via state for proper re-rendering
               if (e.activePayload?.[0]?.payload) {
                 const point = e.activePayload[0].payload;
-                tooltipData.current = { 
-                  x: e.chartX, 
-                  y: e.chartY,
+                setTooltipData({ 
                   sensitivity: point.y,
                   speed: point.x
-                };
+                });
               }
               
               api.start({ 
                 x: e.chartX + 10,
-                y: e.chartY + yOffset,
+                y: clampedY,
                 opacity: 1,
                 scale: 1,
               });

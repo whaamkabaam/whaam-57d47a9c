@@ -1,5 +1,6 @@
 // ============================================
 // Dashboard Home - Main Curve Experience
+// With AI Processing flow for storytelling
 // ============================================
 
 import { useState } from 'react';
@@ -19,16 +20,20 @@ import { useDailyLimit, useSubmitFeedback } from '@/hooks/api/useFeedback';
 import { CurrentCurveCard } from '@/components/app/curves/CurrentCurveCard';
 import { CurveHistoryModal } from '@/components/app/curves/CurveHistoryModal';
 import { CurveDetailModal } from '@/components/app/curves/CurveDetailModal';
+import { AIProcessingModal } from '@/components/app/AIProcessingModal';
 
 export default function DashboardHome() {
   const [historyModalOpen, setHistoryModalOpen] = useState(false);
   const [graphModalOpen, setGraphModalOpen] = useState(false);
+  
+  // AI Processing modal state
+  const [processingModalOpen, setProcessingModalOpen] = useState(false);
+  const [processingComplete, setProcessingComplete] = useState(false);
 
   // Data fetching
   const { data: currentCurve, isLoading: isLoadingCurrent } = useCurrentCurve();
   const { data: dailyLimit, isLoading: isLoadingDailyLimit } = useDailyLimit();
   
-  // Fetch current curve content for inline graph
   const { data: currentCurveContent, isLoading: isLoadingContent } = useCurveContent(
     currentCurve?.id ?? null
   );
@@ -38,14 +43,18 @@ export default function DashboardHome() {
   const markPerfectMutation = useMarkCurvePerfect();
   const submitFeedbackMutation = useSubmitFeedback();
 
+  // Derive iteration number
+  const iterationMatch = currentCurve?.name.match(/v(\d+)/i);
+  const currentIteration = iterationMatch ? parseInt(iterationMatch[1], 10) : 1;
+
   // Handlers
   const handleDownload = async () => {
     if (!currentCurve) return;
     try {
       await downloadMutation.mutateAsync(currentCurve.id);
-      toast.success('Curve downloaded successfully');
+      toast.success('Curve downloaded');
     } catch (error) {
-      toast.error('Failed to download curve');
+      toast.error('Failed to download');
     }
   };
 
@@ -62,14 +71,19 @@ export default function DashboardHome() {
     if (!currentCurve) return;
     try {
       await markPerfectMutation.mutateAsync(currentCurve.id);
-      toast.success('Curve marked as perfect!');
+      toast.success('Saved as favorite');
     } catch (error) {
-      toast.error('Failed to mark curve as perfect');
+      toast.error('Failed to save');
     }
   };
 
   const handleSubmitFeedback = async (longRange: number, midRange: number, shortRange: number) => {
     if (!currentCurve) return;
+    
+    // Open processing modal immediately
+    setProcessingComplete(false);
+    setProcessingModalOpen(true);
+    
     try {
       await submitFeedbackMutation.mutateAsync({
         curve_id: currentCurve.id,
@@ -77,59 +91,56 @@ export default function DashboardHome() {
         mid_range: midRange,
         short_range: shortRange,
       });
-      toast.success('Feedback submitted! Your new curve is being generated.');
+      
+      // Minimum 4 second delay for "AI magic" feel
+      await new Promise(resolve => setTimeout(resolve, 4000));
+      
+      setProcessingComplete(true);
     } catch (error) {
-      toast.error('Failed to submit feedback');
+      setProcessingModalOpen(false);
+      toast.error('Failed to generate curve');
     }
   };
 
   // Loading state
   if (isLoadingCurrent) {
     return (
-      <div className="space-y-6">
-        <LiquidGlassCard variant="secondary" className="p-6">
-          <Skeleton className="h-4 w-24 mb-2" />
-          <Skeleton className="h-8 w-48 mb-4" />
-          <Skeleton className="h-[180px] w-full mb-6 rounded-lg" />
-          <div className="space-y-3 mb-6">
-            <Skeleton className="h-6 w-full" />
-            <Skeleton className="h-6 w-full" />
-            <Skeleton className="h-6 w-full" />
-          </div>
-          <div className="flex gap-3">
-            <Skeleton className="h-10 w-28" />
-            <Skeleton className="h-10 w-32" />
-          </div>
-        </LiquidGlassCard>
-      </div>
+      <LiquidGlassCard variant="secondary" className="p-4">
+        <div className="flex items-center gap-3 mb-4">
+          <Skeleton className="h-5 w-16 rounded-full" />
+          <Skeleton className="h-5 w-24" />
+        </div>
+        <Skeleton className="h-[200px] w-full rounded-lg mb-4" />
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+          <Skeleton className="h-8 w-full" />
+        </div>
+      </LiquidGlassCard>
     );
   }
 
-  // Empty state - no curve yet (friendly, clear message)
+  // Empty state
   if (!currentCurve) {
     return (
-      <div className="space-y-6">
-        <LiquidGlassCard variant="secondary" className="p-8 text-center">
-          <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
-            <Crosshair className="h-8 w-8 text-primary" />
-          </div>
-          <h2 className="text-xl font-semibold mb-2">Building your curve...</h2>
-          <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-            We're creating a custom sensitivity curve just for you. 
-            This usually takes a few minutes.
-          </p>
-          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-            <Sparkles className="h-4 w-4 animate-pulse text-primary" />
-            <span>Almost ready!</span>
-          </div>
-        </LiquidGlassCard>
-      </div>
+      <LiquidGlassCard variant="secondary" className="p-6 text-center">
+        <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-3">
+          <Crosshair className="h-6 w-6 text-primary" />
+        </div>
+        <h2 className="text-lg font-semibold mb-1">Building your curve...</h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Creating a custom sensitivity curve for you.
+        </p>
+        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+          <Sparkles className="h-3 w-3 animate-pulse text-primary" />
+          <span>Almost ready</span>
+        </div>
+      </LiquidGlassCard>
     );
   }
 
-  // Main curve experience
   return (
-    <div className="space-y-6">
+    <>
       <CurrentCurveCard
         curve={currentCurve}
         curveContent={currentCurveContent}
@@ -144,6 +155,19 @@ export default function DashboardHome() {
         isSubmittingFeedback={submitFeedbackMutation.isPending}
         dailyLimit={dailyLimit}
         isLoadingDailyLimit={isLoadingDailyLimit}
+      />
+
+      {/* AI Processing Modal */}
+      <AIProcessingModal
+        open={processingModalOpen}
+        onOpenChange={(open) => {
+          setProcessingModalOpen(open);
+          if (!open) setProcessingComplete(false);
+        }}
+        isComplete={processingComplete}
+        onDownload={handleDownload}
+        isDownloading={downloadMutation.isPending}
+        iterationNumber={currentIteration + 1}
       />
 
       {/* History Modal */}
@@ -163,6 +187,6 @@ export default function DashboardHome() {
         onDownload={handleDownload}
         isDownloading={downloadMutation.isPending}
       />
-    </div>
+    </>
   );
 }

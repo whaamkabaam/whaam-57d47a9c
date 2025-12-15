@@ -11,6 +11,7 @@ import {
   Area,
   ComposedChart,
 } from 'recharts';
+import { curveCatmullRom } from 'd3-shape';
 import { parseCcurveContent, curvesAreEqual, CurvePoint } from '@/lib/curveParser';
 
 interface CurveGraphProps {
@@ -175,14 +176,14 @@ export function CurveGraph({
           />
           {/* Gradient area fill under curve */}
           <Area
-            type="monotone"
+            type={curveCatmullRom.alpha(0.5)}
             dataKey="y"
             stroke="none"
             fill="url(#curveGradient)"
             animationDuration={800}
           />
           <Line
-            type="monotone"
+            type={curveCatmullRom.alpha(0.5)}
             dataKey="y"
             stroke="#FFD740"
             strokeWidth={2.5}
@@ -205,14 +206,14 @@ export function CurveGraph({
           {yAxisData && (
             <>
               <Area
-                type="monotone"
+                type={curveCatmullRom.alpha(0.5)}
                 data={yAxisData}
                 dataKey="y"
                 stroke="none"
                 fill="url(#yAxisGradient)"
               />
               <Line
-                type="monotone"
+                type={curveCatmullRom.alpha(0.5)}
                 data={yAxisData}
                 dataKey="y"
                 stroke="hsl(var(--accent))"

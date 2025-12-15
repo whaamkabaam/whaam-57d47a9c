@@ -35,11 +35,20 @@
 }
 
 /* Dashboard - Override shadcn backgrounds for glass transparency */
-[data-sidebar="sidebar"],
-[data-sidebar="sidebar"] ~ main,
-.peer\/sidebar-inset ~ main {
+/*
+  Desktop layout:
+  <div class="group peer ..." />  (Sidebar wrapper)
+  <main class="... bg-background" /> (SidebarInset)
+*/
+.peer ~ main {
   background: transparent !important;
 }
+
+/* Sidebar surface itself */
+[data-sidebar="sidebar"] {
+  background: transparent !important;
+}
+
 
 /* Reserve mobile bottom bar space */
 @media (max-width: 768px) {

@@ -119,11 +119,15 @@ function FeedbackValue({ label, value }: { label: string; value: number | null }
   
   const percentage = (value / 10) * 100;
   
-  // Color based on value: 0-3=red (wanted faster), 4-6=green (perfect), 7-10=blue (wanted slower)
+  // Intensity-based classification: Perfect is ONLY at exactly 5
   const getColorInfo = () => {
-    if (value < 4) return { bg: 'hsl(0, 84%, 60%)', label: 'wanted faster' };
-    if (value > 6) return { bg: 'hsl(217, 91%, 60%)', label: 'wanted slower' };
-    return { bg: 'hsl(142, 71%, 45%)', label: 'perfect' };
+    if (value <= 2) return { bg: 'hsl(0, 84%, 50%)', label: 'Much Faster' };
+    if (value <= 3.5) return { bg: 'hsl(15, 84%, 55%)', label: 'Faster' };
+    if (value < 5) return { bg: 'hsl(35, 84%, 55%)', label: 'Slightly Faster' };
+    if (value === 5) return { bg: 'hsl(142, 71%, 45%)', label: 'Perfect' };
+    if (value <= 6.4) return { bg: 'hsl(190, 70%, 55%)', label: 'Slightly Slower' };
+    if (value <= 7.9) return { bg: 'hsl(210, 80%, 55%)', label: 'Slower' };
+    return { bg: 'hsl(230, 85%, 50%)', label: 'Much Slower' };
   };
   const colorInfo = getColorInfo();
   

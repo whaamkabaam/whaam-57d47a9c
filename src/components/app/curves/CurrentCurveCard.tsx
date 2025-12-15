@@ -30,43 +30,62 @@ interface CurrentCurveCardProps {
   isLoadingDailyLimit?: boolean;
 }
 
-// Compact feedback value for horizontal 3-column grid
+// Compact feedback value for horizontal 3-column grid with intensity labels
 function FeedbackValue({ label, value }: { label: string; value: number | null }) {
   if (value === null) {
     return (
-      <div className="flex flex-col items-center text-center">
-        <span className="text-xs text-muted-foreground/70 font-medium mb-2">{label}</span>
-        <div className="text-sm text-muted-foreground/40">—</div>
+      <div className="flex flex-col items-center text-center p-4 rounded-xl bg-background/10 border border-border/5">
+        <span className="text-[11px] text-muted-foreground/60 uppercase tracking-widest font-medium mb-3">{label}</span>
+        <div className="text-sm text-muted-foreground/30">—</div>
       </div>
     );
   }
   
   const percentage = (value / 10) * 100;
   
-  // Color based on value: 0-3=red (wanted faster), 4-6=green (perfect), 7-10=blue (wanted slower)
+  // Match slider logic: Perfect only at exactly 5, intensity labels for others
   const getColorInfo = () => {
-    if (value < 4) return { bg: 'hsl(0, 84%, 60%)', label: 'Faster', textColor: 'text-red-400' };
-    if (value > 6) return { bg: 'hsl(217, 91%, 60%)', label: 'Slower', textColor: 'text-blue-400' };
-    return { bg: 'hsl(142, 71%, 45%)', label: 'Perfect', textColor: 'text-green-400' };
+    if (value === 5) {
+      return { bg: 'hsl(142, 71%, 45%)', label: 'Perfect', textColor: 'text-green-400' };
+    } else if (value < 5) {
+      if (value <= 2) {
+        return { bg: 'hsl(0, 84%, 60%)', label: 'Much Faster', textColor: 'text-red-400' };
+      } else if (value <= 3.5) {
+        return { bg: 'hsl(0, 84%, 55%)', label: 'Faster', textColor: 'text-red-400' };
+      } else {
+        return { bg: 'hsl(25, 95%, 53%)', label: 'Slightly Faster', textColor: 'text-orange-400' };
+      }
+    } else {
+      if (value >= 8) {
+        return { bg: 'hsl(217, 91%, 60%)', label: 'Much Slower', textColor: 'text-blue-400' };
+      } else if (value >= 6.5) {
+        return { bg: 'hsl(217, 91%, 55%)', label: 'Slower', textColor: 'text-blue-400' };
+      } else {
+        return { bg: 'hsl(199, 89%, 48%)', label: 'Slightly Slower', textColor: 'text-sky-400' };
+      }
+    }
   };
   const colorInfo = getColorInfo();
   
+  // Smart decimal display
+  const displayValue = Number.isInteger(value) ? value : value.toFixed(1);
+  
   return (
-    <div className="flex flex-col items-center text-center">
-      <span className="text-xs text-muted-foreground/70 font-medium mb-3">{label}</span>
-      <div className="w-full max-w-[100px] h-2 rounded-full bg-muted/20 overflow-hidden mb-2">
+    <div className="flex flex-col items-center text-center p-4 rounded-xl bg-background/15 border border-border/10">
+      <span className="text-[11px] text-muted-foreground/60 uppercase tracking-widest font-medium mb-3">{label}</span>
+      <div className="w-full h-2.5 rounded-full bg-muted/20 overflow-hidden mb-3">
         <div 
           className="h-full rounded-full transition-all duration-500"
           style={{ 
             width: `${percentage}%`,
             background: colorInfo.bg,
-            boxShadow: `0 0 8px ${colorInfo.bg}40`,
+            boxShadow: `0 0 12px ${colorInfo.bg}50`,
           }}
         />
       </div>
-      <div className="flex items-center gap-1.5">
-        <span className="text-lg font-bold font-mono tabular-nums">{value}</span>
-        <span className={cn("text-[10px] font-medium uppercase", colorInfo.textColor)}>
+      <div className="flex flex-col items-center gap-1">
+        <span className="text-2xl font-bold font-mono tabular-nums">{displayValue}</span>
+        <span className={cn("text-[10px] font-medium uppercase tracking-wide", colorInfo.textColor)}>
           {colorInfo.label}
         </span>
       </div>

@@ -11,7 +11,6 @@ import {
   Area,
   ComposedChart,
 } from 'recharts';
-import { curveMonotoneX } from 'd3-shape';
 import { parseCcurveContent, curvesAreEqual, densifyCurvePoints } from '@/lib/curveParser';
 
 interface CurveGraphProps {
@@ -176,14 +175,14 @@ export function CurveGraph({
           />
           {/* Gradient area fill under curve */}
           <Area
-            type={curveMonotoneX}
+            type="linear"
             dataKey="y"
             stroke="none"
             fill="url(#curveGradient)"
             animationDuration={800}
           />
           <Line
-            type={curveMonotoneX}
+            type="linear"
             dataKey="y"
             stroke="#FFD740"
             strokeWidth={2.5}
@@ -206,14 +205,14 @@ export function CurveGraph({
           {yAxisData && (
             <>
               <Area
-                type={curveMonotoneX}
+                type="linear"
                 data={yAxisData}
                 dataKey="y"
                 stroke="none"
                 fill="url(#yAxisGradient)"
               />
               <Line
-                type={curveMonotoneX}
+                type="linear"
                 data={yAxisData}
                 dataKey="y"
                 stroke="hsl(var(--accent))"

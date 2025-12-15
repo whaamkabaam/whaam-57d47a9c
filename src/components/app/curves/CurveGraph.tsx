@@ -1,11 +1,9 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import {
-  LineChart,
   Line,
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
   ReferenceLine,
   Area,
@@ -21,12 +19,22 @@ interface CurveGraphProps {
   showControls?: boolean;
 }
 
+interface HoveredPoint {
+  x: number;
+  y: number;
+  cx: number;
+  cy: number;
+  axis: 'x' | 'y';
+}
+
 export function CurveGraph({ 
   curveContent, 
   className = '', 
   height = 200,
   showControls = true,
 }: CurveGraphProps) {
+  const [hoveredPoint, setHoveredPoint] = useState<HoveredPoint | null>(null);
+
   const { curveData, yAxisData, hasDifferentCurves, maxX, minY, maxY } = useMemo(() => {
     try {
       const parsed = parseCcurveContent(curveContent);
@@ -58,6 +66,46 @@ export function CurveGraph({
     }
   }, [curveContent]);
 
+  // Custom dot component for X-axis curve
+  const CustomDotX = useCallback((props: any) => {
+    const { cx, cy, payload } = props;
+    const isHovered = hoveredPoint?.x === payload.x && hoveredPoint?.axis === 'x';
+    
+    return (
+      <circle
+        cx={cx}
+        cy={cy}
+        r={isHovered ? 6 : 4}
+        fill={isHovered ? '#FFD740' : 'rgba(180, 180, 180, 0.9)'}
+        stroke={isHovered ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.3)'}
+        strokeWidth={isHovered ? 2 : 1.5}
+        style={{ cursor: 'pointer' }}
+        onMouseEnter={() => setHoveredPoint({ x: payload.x, y: payload.y, cx, cy, axis: 'x' })}
+        onMouseLeave={() => setHoveredPoint(null)}
+      />
+    );
+  }, [hoveredPoint]);
+
+  // Custom dot component for Y-axis curve
+  const CustomDotY = useCallback((props: any) => {
+    const { cx, cy, payload } = props;
+    const isHovered = hoveredPoint?.x === payload.x && hoveredPoint?.axis === 'y';
+    
+    return (
+      <circle
+        cx={cx}
+        cy={cy}
+        r={isHovered ? 5 : 3.5}
+        fill={isHovered ? 'hsl(var(--accent))' : 'rgba(180, 180, 180, 0.9)'}
+        stroke={isHovered ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.3)'}
+        strokeWidth={isHovered ? 2 : 1}
+        style={{ cursor: 'pointer' }}
+        onMouseEnter={() => setHoveredPoint({ x: payload.x, y: payload.y, cx, cy, axis: 'y' })}
+        onMouseLeave={() => setHoveredPoint(null)}
+      />
+    );
+  }, [hoveredPoint]);
+
   if (curveData.length === 0) {
     return (
       <div 
@@ -70,7 +118,7 @@ export function CurveGraph({
   }
 
   return (
-    <div className={`${className}`}>
+    <div className={`${className} relative`}>
       <ResponsiveContainer width="100%" height={height}>
         <ComposedChart
           data={curveData}
@@ -148,30 +196,6 @@ export function CurveGraph({
               }}
             />
           )}
-          <Tooltip
-            cursor={false}
-            isAnimationActive={false}
-            content={({ active, payload, label }) => {
-              if (!active || !payload?.length) return null;
-              
-              const xValue = payload.find(p => p.name === 'X-Axis')?.value as number | undefined;
-              const yValue = payload.find(p => p.name === 'Y-Axis')?.value as number | undefined;
-              
-              return (
-                <div className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
-                  {yValue !== undefined && yValue !== xValue ? (
-                    <>
-                      <p className="text-foreground">X: {xValue?.toFixed(3)}</p>
-                      <p className="text-foreground">Y: {yValue?.toFixed(3)}</p>
-                    </>
-                  ) : (
-                    <p className="text-foreground">Sensitivity: {xValue?.toFixed(3)}</p>
-                  )}
-                  <p className="text-foreground">Speed: {Number(label).toFixed(1)} dpms</p>
-                </div>
-              );
-            }}
-          />
           {/* Gradient area fill under curve */}
           <Area
             type={curveMonotoneX}
@@ -180,7 +204,7 @@ export function CurveGraph({
             fill="url(#curveGradient)"
             animationDuration={800}
           />
-          {/* Smooth curve with original control point dots */}
+          {/* Smooth curve with custom hover dots */}
           <Line
             type={curveMonotoneX}
             dataKey="y"
@@ -188,18 +212,8 @@ export function CurveGraph({
             strokeWidth={2.5}
             name="X-Axis"
             filter="url(#curveGlow)"
-            dot={{ 
-              r: 4,
-              fill: 'rgba(180, 180, 180, 0.9)',
-              stroke: 'rgba(0,0,0,0.3)',
-              strokeWidth: 1.5,
-            }}
-            activeDot={{ 
-              r: 6,
-              fill: '#FFD740',
-              stroke: 'rgba(0,0,0,0.4)',
-              strokeWidth: 2,
-            }}
+            dot={<CustomDotX />}
+            activeDot={false}
           />
           {yAxisData && (
             <>
@@ -218,23 +232,36 @@ export function CurveGraph({
                 strokeWidth={2}
                 strokeDasharray="4 2"
                 name="Y-Axis"
-                dot={{ 
-                  r: 3.5,
-                  fill: 'rgba(180, 180, 180, 0.9)',
-                  stroke: 'rgba(0,0,0,0.3)',
-                  strokeWidth: 1,
-                }}
-                activeDot={{ 
-                  r: 5,
-                  fill: 'hsl(var(--accent))',
-                  stroke: 'rgba(0,0,0,0.4)',
-                  strokeWidth: 2,
-                }}
+                dot={<CustomDotY />}
+                activeDot={false}
               />
             </>
           )}
         </ComposedChart>
       </ResponsiveContainer>
+      
+      {/* Custom tooltip - only shows when hovering a specific point */}
+      {hoveredPoint && (
+        <div 
+          className="absolute pointer-events-none bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg z-10"
+          style={{
+            left: hoveredPoint.cx + 15,
+            top: hoveredPoint.cy - 20,
+            transform: 'translateY(-50%)',
+          }}
+        >
+          {hasDifferentCurves ? (
+            <>
+              <p className="text-foreground text-sm">
+                {hoveredPoint.axis === 'x' ? 'X' : 'Y'}: {hoveredPoint.y.toFixed(3)}
+              </p>
+            </>
+          ) : (
+            <p className="text-foreground text-sm">Sensitivity: {hoveredPoint.y.toFixed(3)}</p>
+          )}
+          <p className="text-muted-foreground text-xs">Speed: {hoveredPoint.x.toFixed(1)} dpms</p>
+        </div>
+      )}
     </div>
   );
 }

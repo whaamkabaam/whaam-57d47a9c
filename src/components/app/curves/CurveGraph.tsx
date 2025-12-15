@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import {
   Line,
   XAxis,
@@ -56,7 +56,30 @@ export function CurveGraph({
     }
   }, [curveContent]);
 
-  const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null);
+  // Smooth "gravity" tooltip positioning
+  const [smoothPos, setSmoothPos] = useState<{ x: number; y: number } | null>(null);
+  const targetPos = useRef<{ x: number; y: number } | null>(null);
+  const animationRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const animate = () => {
+      setSmoothPos(prev => {
+        if (!targetPos.current) return null;
+        if (!prev) return targetPos.current;
+        
+        const lerp = 0.15;
+        const newX = prev.x + (targetPos.current.x - prev.x) * lerp;
+        const newY = prev.y + (targetPos.current.y - prev.y) * lerp;
+        return { x: newX, y: newY };
+      });
+      animationRef.current = requestAnimationFrame(animate);
+    };
+    
+    animationRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, []);
 
   if (curveData.length === 0) {
     return (
@@ -77,10 +100,14 @@ export function CurveGraph({
           margin={{ top: 60, right: 30, left: 10, bottom: 25 }}
           onMouseMove={(e) => {
             if (e?.chartX !== undefined && e?.chartY !== undefined) {
-              setMousePos({ x: e.chartX, y: e.chartY });
+              targetPos.current = { x: e.chartX, y: e.chartY };
+              if (!smoothPos) setSmoothPos({ x: e.chartX, y: e.chartY });
             }
           }}
-          onMouseLeave={() => setMousePos(null)}
+          onMouseLeave={() => {
+            targetPos.current = null;
+            setSmoothPos(null);
+          }}
         >
           <defs>
             {/* Gradient for area fill under curve */}
@@ -143,11 +170,10 @@ export function CurveGraph({
             cursor={false}
             isAnimationActive={false}
             allowEscapeViewBox={{ x: true, y: true }}
-            position={mousePos ? { x: mousePos.x, y: mousePos.y - 70 } : undefined}
+            position={smoothPos ? { x: smoothPos.x, y: smoothPos.y - 100 } : undefined}
             wrapperStyle={{
               pointerEvents: 'none',
               zIndex: 50,
-              transition: 'none',
             }}
             content={({ active, payload }) => {
               if (!active || !payload?.length) return null;

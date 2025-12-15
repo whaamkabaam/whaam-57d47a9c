@@ -134,7 +134,6 @@ export function CurveGraph({
           <Tooltip
             cursor={false}
             isAnimationActive={false}
-            allowEscapeViewBox={{ x: true, y: true }}
             wrapperStyle={{
               transition: 'transform 100ms ease-out, opacity 100ms ease-out',
               pointerEvents: 'none',
@@ -189,10 +188,10 @@ export function CurveGraph({
             name="X-Axis"
             filter="url(#curveGlow)"
             dot={{
-              r: 5,
-              fill: '#B4B4B4',
-              stroke: 'rgba(255,255,255,0.25)',
-              strokeWidth: 1.5,
+              r: 5.5,
+              fill: '#A0A0A0',
+              stroke: 'rgba(0,0,0,0.5)',
+              strokeWidth: 2,
             }}
             activeDot={{
               r: 6,
@@ -219,10 +218,10 @@ export function CurveGraph({
                 strokeDasharray="4 2"
                 name="Y-Axis"
                 dot={{
-                  r: 4.5,
-                  fill: '#B4B4B4',
-                  stroke: 'rgba(0,0,0,0.3)',
-                  strokeWidth: 1,
+                  r: 5,
+                  fill: '#A0A0A0',
+                  stroke: 'rgba(0,0,0,0.5)',
+                  strokeWidth: 2,
                 }}
                 activeDot={{
                   r: 5,

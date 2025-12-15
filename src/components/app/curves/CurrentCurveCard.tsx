@@ -115,13 +115,15 @@ export function CurrentCurveCard({
         <div className="p-5 lg:border-r border-border/10">
           <div className="rounded-xl overflow-hidden bg-muted/10 border border-border/10">
             {isLoadingContent ? (
-              <div className="aspect-[4/3] flex items-center justify-center">
+              <div className="h-[300px] flex items-center justify-center">
                 <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
               </div>
             ) : curveContent ? (
-              <CurveGraph curveContent={curveContent} height={300} showControls={false} />
+              <div className="h-[300px] w-full">
+                <CurveGraph curveContent={curveContent} height={300} showControls={false} />
+              </div>
             ) : (
-              <div className="aspect-[4/3] flex items-center justify-center text-muted-foreground/40 text-sm">
+              <div className="h-[300px] flex items-center justify-center text-muted-foreground/40 text-sm">
                 No preview available
               </div>
             )}

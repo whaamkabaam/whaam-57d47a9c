@@ -5,6 +5,7 @@
 
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
+import { Turtle, Rabbit } from 'lucide-react';
 
 interface FeedbackSliderProps {
   label: string;
@@ -13,26 +14,27 @@ interface FeedbackSliderProps {
   disabled?: boolean;
 }
 
+// Simplified, consistent "how it felt" language (no "Wanted" prefix)
 function getZoneInfo(value: number): { label: string; color: string; bgColor: string } {
   if (value === 5) {
     return { label: 'Perfect', color: 'text-green-400', bgColor: 'bg-green-500/90' };
   } else if (value < 5) {
-    // Intensity levels for "wanted faster" (curve felt too slow)
+    // Felt too slow → they want it faster
     if (value <= 2) {
-      return { label: 'Wanted Much Faster', color: 'text-red-400', bgColor: 'bg-red-500/90' };
+      return { label: 'Much Too Slow', color: 'text-red-400', bgColor: 'bg-red-500/90' };
     } else if (value <= 3.5) {
-      return { label: 'Wanted Faster', color: 'text-red-400', bgColor: 'bg-red-500/80' };
+      return { label: 'Too Slow', color: 'text-red-400', bgColor: 'bg-red-500/80' };
     } else {
-      return { label: 'Wanted Slightly Faster', color: 'text-orange-400', bgColor: 'bg-orange-500/80' };
+      return { label: 'Slightly Slow', color: 'text-orange-400', bgColor: 'bg-orange-500/80' };
     }
   } else {
-    // Intensity levels for "wanted slower" (curve felt too fast)
+    // Felt too fast → they want it slower
     if (value >= 8) {
-      return { label: 'Wanted Much Slower', color: 'text-blue-400', bgColor: 'bg-blue-500/90' };
+      return { label: 'Much Too Fast', color: 'text-blue-400', bgColor: 'bg-blue-500/90' };
     } else if (value >= 6.5) {
-      return { label: 'Wanted Slower', color: 'text-blue-400', bgColor: 'bg-blue-500/80' };
+      return { label: 'Too Fast', color: 'text-blue-400', bgColor: 'bg-blue-500/80' };
     } else {
-      return { label: 'Wanted Slightly Slower', color: 'text-sky-400', bgColor: 'bg-sky-500/80' };
+      return { label: 'Slightly Fast', color: 'text-sky-400', bgColor: 'bg-sky-500/80' };
     }
   }
 }
@@ -43,7 +45,7 @@ export function FeedbackSlider({ label, value, onChange, disabled }: FeedbackSli
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</span>
+        <span className="text-sm font-medium text-foreground">{label}</span>
         <div className="flex items-center gap-2">
           <span className={cn(
             "text-lg font-mono font-bold tabular-nums",
@@ -73,15 +75,17 @@ export function FeedbackSlider({ label, value, onChange, disabled }: FeedbackSli
           className="w-full"
         />
         
-        {/* Zone indicators below slider */}
-        <div className="flex justify-between mt-2 text-[9px] font-medium uppercase tracking-wider text-muted-foreground/50">
-          <span className="text-red-400/60">0</span>
-          <span className="text-red-400/60">Too Slow</span>
-          <span className="text-muted-foreground/30">•</span>
-          <span className="text-green-400/60">Perfect</span>
-          <span className="text-muted-foreground/30">•</span>
-          <span className="text-blue-400/60">Too Fast</span>
-          <span className="text-blue-400/60">10</span>
+        {/* Clear visual anchors with icons */}
+        <div className="flex justify-between mt-2 text-[10px] font-medium text-muted-foreground/60">
+          <div className="flex items-center gap-1">
+            <Turtle className="h-3 w-3 text-red-400/70" />
+            <span>Felt slow</span>
+          </div>
+          <span className="text-green-400/70">Perfect</span>
+          <div className="flex items-center gap-1">
+            <span>Felt fast</span>
+            <Rabbit className="h-3 w-3 text-blue-400/70" />
+          </div>
         </div>
       </div>
     </div>

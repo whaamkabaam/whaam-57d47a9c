@@ -109,7 +109,7 @@ export function CurveGraph({
       <ResponsiveContainer width="100%" height={height}>
         <ComposedChart
           data={curveData}
-          margin={{ top: 60, right: 30, left: 10, bottom: 25 }}
+          margin={{ top: 20, right: 20, left: 10, bottom: 25 }}
           onMouseMove={(e: any) => {
             if (e?.chartX !== undefined && e?.chartY !== undefined) {
               // Store chart height for smart positioning

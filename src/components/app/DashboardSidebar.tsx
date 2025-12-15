@@ -1,9 +1,10 @@
 // ============================================
 // Dashboard Sidebar Component - Simplified Navigation
+// "Don't Make Me Think" redesign
 // ============================================
 
 import { Link, useLocation } from 'react-router-dom';
-import { Crosshair, History, User } from 'lucide-react';
+import { Home, Clock, User, HelpCircle } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -22,8 +23,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const navItems = [
-  { title: 'My Curve', url: '/app', icon: Crosshair },
-  { title: 'Curve History', url: '/app/history', icon: History },
+  { title: 'Home', url: '/app', icon: Home },
+  { title: 'History', url: '/app/history', icon: Clock },
 ];
 
 export function DashboardSidebar() {
@@ -88,6 +89,28 @@ export function DashboardSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Help link */}
+        <SidebarGroup className="mt-auto">
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  tooltip="How it works"
+                >
+                  <a 
+                    href="/#three-steps"
+                    className="flex items-center gap-3 py-2 rounded-lg transition-colors hover:bg-muted/50 text-muted-foreground"
+                  >
+                    <HelpCircle className="h-5 w-5" />
+                    {!collapsed && <span>How it works</span>}
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
 
       {/* Account section at bottom */}
@@ -118,7 +141,7 @@ export function DashboardSidebar() {
             {!collapsed && (
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">
-                  {user?.display_name || 'User'}
+                  {user?.display_name || 'Account'}
                 </p>
                 <p className="text-xs text-muted-foreground truncate">
                   {user?.email}

@@ -14,27 +14,25 @@ interface FeedbackSliderProps {
   disabled?: boolean;
 }
 
-// Simplified, consistent "how it felt" language (no "Wanted" prefix)
+// Human-friendly "how it felt" labels - simple 5-point mental model
 function getZoneInfo(value: number): { label: string; color: string; bgColor: string } {
   if (value === 5) {
     return { label: 'Perfect', color: 'text-green-400', bgColor: 'bg-green-500/90' };
   } else if (value < 5) {
-    // Felt too slow → they want it faster
     if (value <= 2) {
-      return { label: 'Much Too Slow', color: 'text-red-400', bgColor: 'bg-red-500/90' };
+      return { label: 'Way too slow', color: 'text-red-400', bgColor: 'bg-red-500/90' };
     } else if (value <= 3.5) {
-      return { label: 'Too Slow', color: 'text-red-400', bgColor: 'bg-red-500/80' };
+      return { label: 'Too slow', color: 'text-red-400', bgColor: 'bg-red-500/80' };
     } else {
-      return { label: 'Slightly Slow', color: 'text-orange-400', bgColor: 'bg-orange-500/80' };
+      return { label: 'Bit slow', color: 'text-orange-400', bgColor: 'bg-orange-500/80' };
     }
   } else {
-    // Felt too fast → they want it slower
     if (value >= 8) {
-      return { label: 'Much Too Fast', color: 'text-blue-400', bgColor: 'bg-blue-500/90' };
+      return { label: 'Way too fast', color: 'text-blue-400', bgColor: 'bg-blue-500/90' };
     } else if (value >= 6.5) {
-      return { label: 'Too Fast', color: 'text-blue-400', bgColor: 'bg-blue-500/80' };
+      return { label: 'Too fast', color: 'text-blue-400', bgColor: 'bg-blue-500/80' };
     } else {
-      return { label: 'Slightly Fast', color: 'text-sky-400', bgColor: 'bg-sky-500/80' };
+      return { label: 'Bit fast', color: 'text-sky-400', bgColor: 'bg-sky-500/80' };
     }
   }
 }

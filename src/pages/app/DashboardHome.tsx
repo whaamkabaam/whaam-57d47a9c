@@ -3,10 +3,9 @@
 // ============================================
 
 import { useState } from 'react';
-import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
+import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Crosshair, Sparkles } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
 import {
@@ -106,7 +105,7 @@ export default function DashboardHome() {
     );
   }
 
-  // Empty state - no curve yet
+  // Empty state - no curve yet (friendly, clear message)
   if (!currentCurve) {
     return (
       <div className="space-y-6">
@@ -114,14 +113,14 @@ export default function DashboardHome() {
           <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
             <Crosshair className="h-8 w-8 text-primary" />
           </div>
-          <h2 className="text-xl font-semibold mb-2">Your Curve is Being Built</h2>
+          <h2 className="text-xl font-semibold mb-2">Building your curve...</h2>
           <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-            We're creating your personalized sensitivity curve based on your profile. 
-            This usually takes just a few minutes.
+            We're creating a custom sensitivity curve just for you. 
+            This usually takes a few minutes.
           </p>
           <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <Sparkles className="h-4 w-4 animate-pulse text-primary" />
-            <span>Check back soon!</span>
+            <span>Almost ready!</span>
           </div>
         </LiquidGlassCard>
       </div>

@@ -1,12 +1,13 @@
 // ============================================
 // Current Curve Card Component
+// "Don't Make Me Think" redesign
 // ============================================
 
 import { useState } from 'react';
 import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
 import { Badge } from '@/components/ui/badge';
-import { Download, History, Star, Check, Loader2, Maximize2, Send } from 'lucide-react';
+import { Download, History, Star, Loader2, Maximize2, Send, HelpCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { CurveGraph } from './CurveGraph';
 import { FeedbackSlider } from '@/components/app/feedback/FeedbackSlider';
@@ -30,7 +31,7 @@ interface CurrentCurveCardProps {
   isLoadingDailyLimit?: boolean;
 }
 
-// Compact feedback value for horizontal 3-column grid with intensity labels
+// Compact feedback value display with human-friendly labels
 function FeedbackValue({ label, value }: { label: string; value: number | null }) {
   if (value === null) {
     return (
@@ -43,31 +44,30 @@ function FeedbackValue({ label, value }: { label: string; value: number | null }
   
   const percentage = (value / 10) * 100;
   
-  // Match slider logic: Perfect only at exactly 5, intensity labels for others
+  // Human-friendly interpretation
   const getColorInfo = () => {
     if (value === 5) {
       return { bg: 'hsl(142, 71%, 45%)', label: 'Perfect', textColor: 'text-green-400' };
     } else if (value < 5) {
       if (value <= 2) {
-        return { bg: 'hsl(0, 84%, 60%)', label: 'Much Faster', textColor: 'text-red-400' };
+        return { bg: 'hsl(0, 84%, 60%)', label: 'Way too slow', textColor: 'text-red-400' };
       } else if (value <= 3.5) {
-        return { bg: 'hsl(0, 84%, 55%)', label: 'Faster', textColor: 'text-red-400' };
+        return { bg: 'hsl(0, 84%, 55%)', label: 'Too slow', textColor: 'text-red-400' };
       } else {
-        return { bg: 'hsl(25, 95%, 53%)', label: 'Slightly Faster', textColor: 'text-orange-400' };
+        return { bg: 'hsl(25, 95%, 53%)', label: 'Bit slow', textColor: 'text-orange-400' };
       }
     } else {
       if (value >= 8) {
-        return { bg: 'hsl(217, 91%, 60%)', label: 'Much Slower', textColor: 'text-blue-400' };
+        return { bg: 'hsl(217, 91%, 60%)', label: 'Way too fast', textColor: 'text-blue-400' };
       } else if (value >= 6.5) {
-        return { bg: 'hsl(217, 91%, 55%)', label: 'Slower', textColor: 'text-blue-400' };
+        return { bg: 'hsl(217, 91%, 55%)', label: 'Too fast', textColor: 'text-blue-400' };
       } else {
-        return { bg: 'hsl(199, 89%, 48%)', label: 'Slightly Slower', textColor: 'text-sky-400' };
+        return { bg: 'hsl(199, 89%, 48%)', label: 'Bit fast', textColor: 'text-sky-400' };
       }
     }
   };
   const colorInfo = getColorInfo();
   
-  // Smart decimal display
   const displayValue = Number.isInteger(value) ? value : value.toFixed(1);
   
   return (
@@ -119,7 +119,6 @@ export function CurrentCurveCard({
   const handleSubmit = () => {
     if (onSubmitFeedback) {
       onSubmitFeedback(longRange, midRange, shortRange);
-      // Reset sliders to default "Perfect" value after submission
       setLongRange(5);
       setMidRange(5);
       setShortRange(5);
@@ -127,48 +126,45 @@ export function CurrentCurveCard({
   };
 
   return (
-    <LiquidGlassCard variant="secondary" className="p-0 overflow-hidden">
-      {/* Header Section */}
-      <div className="px-6 py-5 md:px-8 md:py-6 border-b border-border/10">
-        <div className="flex items-start justify-between">
-          <div>
-            <p className="text-[11px] text-muted-foreground/60 uppercase tracking-widest mb-1.5 font-medium">
-              Current Curve
-            </p>
-            <h2 className="text-xl md:text-2xl font-bold text-foreground">
-              {curve.name}
-            </h2>
-            <p className="text-xs text-muted-foreground/70 mt-1.5">
-              Upload #{curve.upload_number} • {format(new Date(curve.created_at), 'MMM d, yyyy')}
-            </p>
+    <div className="space-y-6">
+      {/* Section 1: Your Curve */}
+      <LiquidGlassCard variant="secondary" className="p-0 overflow-hidden">
+        {/* Simple Header */}
+        <div className="px-6 py-5 md:px-8 md:py-6 border-b border-border/10">
+          <div className="flex items-start justify-between">
+            <div>
+              <h2 className="text-xl md:text-2xl font-bold text-foreground">
+                Your Curve
+              </h2>
+              <p className="text-sm text-muted-foreground/70 mt-1">
+                {curve.name} • {format(new Date(curve.created_at), 'MMM d, yyyy')}
+              </p>
+            </div>
+            {curve.is_perfect && (
+              <Badge variant="default" className="bg-yellow-500/15 text-yellow-400 border-yellow-500/25 text-xs">
+                <Star className="h-3 w-3 mr-1 fill-current" />
+                Saved as favorite
+              </Badge>
+            )}
           </div>
-          {curve.is_perfect && (
-            <Badge variant="default" className="bg-yellow-500/15 text-yellow-400 border-yellow-500/25 text-[10px] uppercase tracking-wide">
-              <Star className="h-3 w-3 mr-1 fill-current" />
-              Perfect
-            </Badge>
-          )}
         </div>
-      </div>
 
-      {/* Main Content: Graph + Historic Feedback */}
-      <div className="px-6 py-6 md:px-8 md:py-8 overflow-visible">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
-          {/* Left: Curve Graph (3 cols) */}
-          <div className="lg:col-span-3 rounded-xl relative group overflow-visible min-h-[480px]"
+        {/* Graph */}
+        <div className="px-6 py-6 md:px-8 md:py-8 overflow-visible">
+          <div className="rounded-xl relative group overflow-visible min-h-[400px]"
             style={{
               background: 'linear-gradient(180deg, hsl(var(--muted) / 0.15) 0%, hsl(var(--muted) / 0.05) 100%)',
               border: '1px solid hsl(var(--border) / 0.15)',
             }}
           >
             {isLoadingContent ? (
-              <div className="h-full flex items-center justify-center">
+              <div className="h-full flex items-center justify-center min-h-[400px]">
                 <div className="animate-spin h-6 w-6 border-2 border-whaam-yellow border-t-transparent rounded-full" />
               </div>
             ) : curveContent ? (
               <div className="p-4 h-full flex items-center justify-center">
-              <div className="w-full max-w-[600px] relative">
-                  <CurveGraph curveContent={curveContent} height={450} showControls={true} />
+                <div className="w-full max-w-[600px] relative">
+                  <CurveGraph curveContent={curveContent} height={380} showControls={true} />
                   {onViewGraph && (
                     <button
                       onClick={onViewGraph}
@@ -180,130 +176,122 @@ export function CurrentCurveCard({
                 </div>
               </div>
             ) : (
-              <div className="h-full flex items-center justify-center text-muted-foreground/50 text-sm">
+              <div className="h-full flex items-center justify-center text-muted-foreground/50 text-sm min-h-[400px]">
                 No graph data available
               </div>
             )}
           </div>
-
-          {/* Right: Historic Feedback Values (2 cols) */}
-          <div className="lg:col-span-2 flex flex-col justify-center rounded-xl p-5"
-            style={{
-              background: 'linear-gradient(180deg, hsl(var(--muted) / 0.1) 0%, hsl(var(--muted) / 0.03) 100%)',
-              border: '1px solid hsl(var(--border) / 0.1)',
-            }}
-          >
-            {hasHistoricFeedback ? (
-              <>
-                <p className="text-[10px] text-muted-foreground/50 mb-5 uppercase tracking-widest font-medium text-center">
-                  Created from your feedback
-                </p>
-                <div className="grid grid-cols-3 gap-4">
-                  <FeedbackValue label="Long" value={curve.long_range_feedback} />
-                  <FeedbackValue label="Mid" value={curve.mid_range_feedback} />
-                  <FeedbackValue label="Short" value={curve.short_range_feedback} />
-                </div>
-              </>
-            ) : (
-              <div className="text-center py-8 px-4">
-                <p className="text-sm text-foreground/70 mb-2">🎮 Play a few games with this curve</p>
-                <p className="text-xs text-muted-foreground/50">Then come back and tell us how it felt</p>
-              </div>
-            )}
-          </div>
         </div>
-      </div>
 
-      {/* Feedback Submission Section */}
-      {onSubmitFeedback && (
-        <div className="px-6 py-6 md:px-8 md:py-8 border-t border-border/10">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-            <h3 className="text-sm font-semibold text-foreground">Rate how each range felt in-game</h3>
-            <DailyLimitIndicator
-              used={dailyLimit?.used ?? 0} 
-              limit={dailyLimit?.limit ?? 3} 
-              isLoading={isLoadingDailyLimit}
-            />
-          </div>
-          
-          <div className="space-y-5 mb-6">
-            <FeedbackSlider 
-              label="Long Range" 
-              value={longRange} 
-              onChange={setLongRange}
-              disabled={isSubmittingFeedback || !canSubmitFeedback}
-            />
-            <FeedbackSlider 
-              label="Mid Range" 
-              value={midRange} 
-              onChange={setMidRange}
-              disabled={isSubmittingFeedback || !canSubmitFeedback}
-            />
-            <FeedbackSlider 
-              label="Short Range" 
-              value={shortRange} 
-              onChange={setShortRange}
-              disabled={isSubmittingFeedback || !canSubmitFeedback}
-            />
-          </div>
-
-          <LiquidGlassButton
-            variant="accent"
-            onClick={handleSubmit}
-            disabled={isSubmittingFeedback || !canSubmitFeedback}
-            className="flex items-center gap-2"
-          >
-            {isSubmittingFeedback ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Send className="h-4 w-4" />
-            )}
-            Submit Feedback
-          </LiquidGlassButton>
-        </div>
-      )}
-
-      {/* Actions Footer */}
-      <div className="px-6 py-4 md:px-8 border-t border-border/10 bg-muted/5">
-        <div className="flex flex-wrap gap-2">
-          <LiquidGlassButton
-            variant="secondary"
-            onClick={onDownload}
-            disabled={isDownloading}
-            className="flex items-center gap-2 text-sm"
-          >
-            {isDownloading ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            ) : (
-              <Download className="h-3.5 w-3.5" />
-            )}
-            Download
-          </LiquidGlassButton>
-          <LiquidGlassButton
-            variant="secondary"
-            onClick={onViewHistory}
-            className="flex items-center gap-2 text-sm"
-          >
-            <History className="h-3.5 w-3.5" />
-            History
-          </LiquidGlassButton>
-          {!curve.is_perfect && (
+        {/* Simple Actions */}
+        <div className="px-6 py-4 md:px-8 border-t border-border/10 bg-muted/5">
+          <div className="flex flex-wrap gap-2">
             <LiquidGlassButton
               variant="accent"
-              onClick={onMarkPerfect}
-              disabled={isMarkingPerfect}
+              onClick={onDownload}
+              disabled={isDownloading}
               className="flex items-center gap-2 text-sm"
             >
-              {isMarkingPerfect ? (
+              {isDownloading ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <Star className="h-3.5 w-3.5" />
+                <Download className="h-3.5 w-3.5" />
               )}
-              Mark as Perfect
+              Download Curve
             </LiquidGlassButton>
-          )}
+            <LiquidGlassButton
+              variant="secondary"
+              onClick={onViewHistory}
+              className="flex items-center gap-2 text-sm"
+            >
+              <History className="h-3.5 w-3.5" />
+              View History
+            </LiquidGlassButton>
+          </div>
         </div>
-      </div>
-    </LiquidGlassCard>
+      </LiquidGlassCard>
+
+      {/* Section 2: How did it feel? */}
+      {onSubmitFeedback && (
+        <LiquidGlassCard variant="secondary" className="p-0 overflow-hidden">
+          <div className="px-6 py-5 md:px-8 md:py-6 border-b border-border/10">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-semibold text-foreground">How did it feel?</h2>
+                <p className="text-sm text-muted-foreground/70 mt-0.5">
+                  After a few games, tell us how each distance felt
+                </p>
+              </div>
+              <DailyLimitIndicator
+                used={dailyLimit?.used ?? 0} 
+                limit={dailyLimit?.limit ?? 3} 
+                isLoading={isLoadingDailyLimit}
+              />
+            </div>
+          </div>
+          
+          <div className="px-6 py-6 md:px-8 md:py-8">
+            {/* Previous feedback hint */}
+            {hasHistoricFeedback && (
+              <div className="mb-6 p-4 rounded-xl bg-muted/10 border border-border/10">
+                <p className="text-xs text-muted-foreground/60 mb-3 uppercase tracking-widest font-medium">
+                  Last tune-up
+                </p>
+                <div className="grid grid-cols-3 gap-3">
+                  <FeedbackValue label="Far" value={curve.long_range_feedback} />
+                  <FeedbackValue label="Medium" value={curve.mid_range_feedback} />
+                  <FeedbackValue label="Close" value={curve.short_range_feedback} />
+                </div>
+              </div>
+            )}
+
+            {/* Feedback Sliders */}
+            <div className="space-y-5 mb-6">
+              <FeedbackSlider 
+                label="Far targets" 
+                value={longRange} 
+                onChange={setLongRange}
+                disabled={isSubmittingFeedback || !canSubmitFeedback}
+              />
+              <FeedbackSlider 
+                label="Medium distance" 
+                value={midRange} 
+                onChange={setMidRange}
+                disabled={isSubmittingFeedback || !canSubmitFeedback}
+              />
+              <FeedbackSlider 
+                label="Close range" 
+                value={shortRange} 
+                onChange={setShortRange}
+                disabled={isSubmittingFeedback || !canSubmitFeedback}
+              />
+            </div>
+
+            {/* Clear primary action */}
+            <div className="flex items-center gap-3">
+              <LiquidGlassButton
+                variant="accent"
+                onClick={handleSubmit}
+                disabled={isSubmittingFeedback || !canSubmitFeedback}
+                className="flex items-center gap-2"
+              >
+                {isSubmittingFeedback ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
+                Update My Curve
+              </LiquidGlassButton>
+              
+              {!canSubmitFeedback && dailyLimit && dailyLimit.remaining <= 0 && (
+                <span className="text-xs text-muted-foreground/60">
+                  Come back tomorrow for more tune-ups
+                </span>
+              )}
+            </div>
+          </div>
+        </LiquidGlassCard>
+      )}
+    </div>
   );
 }

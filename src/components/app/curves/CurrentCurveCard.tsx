@@ -6,13 +6,11 @@
 import { useState } from 'react';
 import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
-import { Download, History, ChevronDown, ChevronUp, Loader2, Sparkles } from 'lucide-react';
+import { Download, History, ChevronDown, ChevronUp, Loader2, Sparkles, Lightbulb } from 'lucide-react';
 import { format } from 'date-fns';
 import { CurveGraph } from './CurveGraph';
-import { FeedbackSelector, feedbackToNumeric } from '@/components/app/feedback/FeedbackSelector';
+import { FeedbackSlider } from '@/components/app/feedback/FeedbackSlider';
 import { cn } from '@/lib/utils';
-
-type FeedbackOption = 'slower' | 'perfect' | 'faster';
 
 interface CurrentCurveCardProps {
   curve: Curve;
@@ -42,12 +40,11 @@ export function CurrentCurveCard({
   isDownloading,
 }: CurrentCurveCardProps) {
   const [showGraph, setShowGraph] = useState(false);
-  const [farFeedback, setFarFeedback] = useState<FeedbackOption>('perfect');
-  const [mediumFeedback, setMediumFeedback] = useState<FeedbackOption>('perfect');
-  const [closeFeedback, setCloseFeedback] = useState<FeedbackOption>('perfect');
+  const [farFeedback, setFarFeedback] = useState(5);
+  const [mediumFeedback, setMediumFeedback] = useState(5);
+  const [closeFeedback, setCloseFeedback] = useState(5);
 
   const canSubmitFeedback = onSubmitFeedback && dailyLimit && dailyLimit.remaining > 0;
-  const allPerfect = farFeedback === 'perfect' && mediumFeedback === 'perfect' && closeFeedback === 'perfect';
   
   // Extract version from curve name
   const versionMatch = curve.name.match(/v(\d+)/i);
@@ -55,15 +52,11 @@ export function CurrentCurveCard({
 
   const handleSubmit = () => {
     if (onSubmitFeedback) {
-      onSubmitFeedback(
-        feedbackToNumeric(farFeedback),
-        feedbackToNumeric(mediumFeedback),
-        feedbackToNumeric(closeFeedback)
-      );
+      onSubmitFeedback(farFeedback, mediumFeedback, closeFeedback);
       // Reset to perfect after submit
-      setFarFeedback('perfect');
-      setMediumFeedback('perfect');
-      setCloseFeedback('perfect');
+      setFarFeedback(5);
+      setMediumFeedback(5);
+      setCloseFeedback(5);
     }
   };
 
@@ -138,33 +131,45 @@ export function CurrentCurveCard({
             </p>
           </div>
 
-          <div className="space-y-3">
-            <FeedbackSelector
+          {/* Scale legend */}
+          <div className="flex items-center justify-center gap-3 text-[10px] text-muted-foreground/50">
+            <span>0 = Too Slow</span>
+            <span className="text-green-400/70">5 = Perfect</span>
+            <span>10 = Too Fast</span>
+          </div>
+
+          {/* Sliders with hints */}
+          <div className="space-y-4">
+            <FeedbackSlider
               label="Far"
+              hint="micro-adjustments · tracking distant heads"
               value={farFeedback}
               onChange={setFarFeedback}
               disabled={isSubmittingFeedback || !canSubmitFeedback}
             />
-            <FeedbackSelector
+            <FeedbackSlider
               label="Medium"
+              hint="flicks · switching between targets"
               value={mediumFeedback}
               onChange={setMediumFeedback}
               disabled={isSubmittingFeedback || !canSubmitFeedback}
             />
-            <FeedbackSelector
+            <FeedbackSlider
               label="Close"
+              hint="180s · snap reactions · close duels"
               value={closeFeedback}
               onChange={setCloseFeedback}
               disabled={isSubmittingFeedback || !canSubmitFeedback}
             />
           </div>
 
-          {/* Contextual hint */}
-          {allPerfect && (
-            <p className="text-xs text-muted-foreground/50 text-center">
-              All feeling good? You can still fine-tune if something's slightly off.
+          {/* Pro tip */}
+          <div className="flex items-start gap-2.5 p-3 rounded-lg bg-primary/5 border border-primary/10">
+            <Lightbulb className="h-4 w-4 text-primary/70 shrink-0 mt-0.5" />
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              <span className="text-foreground/80 font-medium">Pro tip:</span> If your aim feels jerky or unstable, that usually means it's too fast — try lowering the value.
             </p>
-          )}
+          </div>
 
           {/* Submit button */}
           <LiquidGlassButton

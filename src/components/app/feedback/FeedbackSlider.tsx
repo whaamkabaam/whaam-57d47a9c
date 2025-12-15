@@ -1,5 +1,5 @@
 // ============================================
-// Feedback Slider Component - Compact Version
+// Feedback Slider Component - With Educational Hints
 // ============================================
 
 import { Slider } from '@/components/ui/slider';
@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 
 interface FeedbackSliderProps {
   label: string;
+  hint?: string;
   value: number;
   onChange: (value: number) => void;
   disabled?: boolean;
@@ -26,38 +27,44 @@ function getZoneInfo(value: number): { label: string; color: string; bgColor: st
   }
 }
 
-export function FeedbackSlider({ label, value, onChange, disabled }: FeedbackSliderProps) {
+export function FeedbackSlider({ label, hint, value, onChange, disabled }: FeedbackSliderProps) {
   const zone = getZoneInfo(value);
 
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-xs font-medium text-muted-foreground w-14 shrink-0">{label}</span>
-      
-      <div className="flex-1">
-        <Slider
-          value={[value]}
-          onValueChange={([v]) => onChange(v)}
-          min={0}
-          max={10}
-          step={0.1}
-          disabled={disabled}
-          variant="glass"
-          className="w-full"
-        />
+    <div className="space-y-1.5">
+      {/* Label row with hint */}
+      <div className="flex items-baseline justify-between">
+        <div className="flex items-baseline gap-2">
+          <span className="text-sm font-medium text-foreground">{label}</span>
+          {hint && (
+            <span className="text-[11px] text-muted-foreground/50">{hint}</span>
+          )}
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className={cn("text-sm font-mono font-bold tabular-nums", zone.color)}>
+            {Number.isInteger(value) ? value : value.toFixed(1)}
+          </span>
+          <span className={cn(
+            "text-[9px] px-1.5 py-0.5 rounded-full uppercase tracking-wide",
+            zone.bgColor,
+            "text-white font-medium whitespace-nowrap"
+          )}>
+            {zone.label}
+          </span>
+        </div>
       </div>
       
-      <div className="flex items-center gap-1.5 w-28 justify-end shrink-0">
-        <span className={cn("text-sm font-mono font-bold tabular-nums", zone.color)}>
-          {Number.isInteger(value) ? value : value.toFixed(1)}
-        </span>
-        <span className={cn(
-          "text-[9px] px-1.5 py-0.5 rounded-full uppercase tracking-wide",
-          zone.bgColor,
-          "text-white font-medium whitespace-nowrap"
-        )}>
-          {zone.label}
-        </span>
-      </div>
+      {/* Slider */}
+      <Slider
+        value={[value]}
+        onValueChange={([v]) => onChange(v)}
+        min={0}
+        max={10}
+        step={0.1}
+        disabled={disabled}
+        variant="glass"
+        className="w-full"
+      />
     </div>
   );
 }

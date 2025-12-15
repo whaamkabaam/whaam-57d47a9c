@@ -51,8 +51,8 @@ export function DashboardSidebar() {
   };
 
   return (
-    <Sidebar className="border-r border-border/40 bg-background/60 backdrop-blur-xl">
-      <SidebarHeader className="p-4 border-b border-border/40">
+    <Sidebar className="border-r border-border/40 bg-background/30 backdrop-blur-xl">
+      <SidebarHeader className="px-3 py-4 border-b border-border/40">
         <Link to="/" className="flex items-center gap-2">
           <img 
             src="/lovable-uploads/25252925-5ec6-4d83-aa0a-70a6e27f7b9e.png" 
@@ -76,7 +76,7 @@ export function DashboardSidebar() {
                     <NavLink 
                       to={item.url} 
                       end={item.url === '/app'}
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors hover:bg-muted/50"
+                      className="flex items-center gap-3 py-2 rounded-lg transition-colors hover:bg-muted/50"
                       activeClassName="bg-primary/10 text-primary"
                     >
                       <item.icon className="h-5 w-5" />
@@ -91,9 +91,9 @@ export function DashboardSidebar() {
       </SidebarContent>
 
       {/* Account section at bottom */}
-      <SidebarFooter className="border-t border-border/40 p-3">
+      <SidebarFooter className="border-t border-border/40 px-3 py-3">
         {isLoading ? (
-          <div className="flex items-center gap-3 px-2 py-2">
+          <div className="flex items-center gap-3 py-2">
             <Skeleton className="h-9 w-9 rounded-full" />
             {!collapsed && (
               <div className="flex-1 space-y-1.5">
@@ -105,7 +105,7 @@ export function DashboardSidebar() {
         ) : (
           <Link
             to="/app/account"
-            className={`flex items-center gap-3 px-2 py-2 rounded-lg transition-colors hover:bg-muted/50 ${
+            className={`flex items-center gap-3 py-2 rounded-lg transition-colors hover:bg-muted/50 ${
               isActive('/app/account') ? 'bg-primary/10 text-primary' : ''
             }`}
           >

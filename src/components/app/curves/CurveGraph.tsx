@@ -81,7 +81,7 @@ export function CurveGraph({
   }
 
   return (
-    <div className={`${className} relative overflow-visible`}>
+    <div className={`${className} relative overflow-visible h-full w-full`}>
       {/* Animated tooltip rendered outside chart for spring physics */}
       <animated.div
         style={{

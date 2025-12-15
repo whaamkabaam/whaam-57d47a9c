@@ -175,17 +175,17 @@ export function CurrentCurveCard({
               </div>
             ) : curveContent ? (
               <div className="p-4 h-full flex items-center justify-center">
-                <div className="w-full max-w-[373px]">
-                  <CurveGraph curveContent={curveContent} height={280} showControls={true} />
+                <div className="w-full max-w-[485px] relative">
+                  <CurveGraph curveContent={curveContent} height={364} showControls={true} />
+                  {onViewGraph && (
+                    <button
+                      onClick={onViewGraph}
+                      className="absolute top-2 right-2 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 bg-background/60 hover:bg-background/80 backdrop-blur-sm border border-border/20"
+                    >
+                      <Maximize2 className="h-3.5 w-3.5 text-muted-foreground" />
+                    </button>
+                  )}
                 </div>
-                {onViewGraph && (
-                  <button
-                    onClick={onViewGraph}
-                    className="absolute top-3 right-3 p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 bg-background/60 hover:bg-background/80 backdrop-blur-sm border border-border/20"
-                  >
-                    <Maximize2 className="h-3.5 w-3.5 text-muted-foreground" />
-                  </button>
-                )}
               </div>
             ) : (
               <div className="h-full flex items-center justify-center text-muted-foreground/50 text-sm">

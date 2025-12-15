@@ -12,7 +12,7 @@ import {
   ComposedChart,
 } from 'recharts';
 import { curveMonotoneX } from 'd3-shape';
-import { parseCcurveContent, curvesAreEqual, densifyCurvePoints } from '@/lib/curveParser';
+import { parseCcurveContent, curvesAreEqual } from '@/lib/curveParser';
 
 interface CurveGraphProps {
   curveContent: string;
@@ -30,8 +30,8 @@ export function CurveGraph({
   const { curveData, yAxisData, hasDifferentCurves, maxX, minY, maxY } = useMemo(() => {
     try {
       const parsed = parseCcurveContent(curveContent);
-      const xCurve = densifyCurvePoints(parsed.xAxisCurve, 6);
-      const yCurve = densifyCurvePoints(parsed.yAxisCurve, 6);
+      const xCurve = parsed.xAxisCurve;
+      const yCurve = parsed.yAxisCurve;
 
       const different = !curvesAreEqual(parsed.xAxisCurve, parsed.yAxisCurve);
       const allPoints = different ? [...xCurve, ...yCurve] : xCurve;

@@ -16,10 +16,8 @@ import Auth from "./pages/Auth";
 import AuthVerify from "./pages/AuthVerify";
 import AuthResetPassword from "./pages/AuthResetPassword";
 import DashboardHome from "./pages/app/DashboardHome";
-import Curves from "./pages/app/Curves";
-import Feedback from "./pages/app/Feedback";
-import Subscription from "./pages/app/Subscription";
-import Settings from "./pages/app/Settings";
+import CurveHistory from "./pages/app/CurveHistory";
+import Account from "./pages/app/Account";
 import NotFound from "./pages/NotFound";
 import InteractiveBackground from "./components/InteractiveBackground";
 
@@ -52,10 +50,8 @@ const App = () => (
               </ProtectedRoute>
             }>
               <Route index element={<DashboardHome />} />
-              <Route path="curves" element={<Curves />} />
-              <Route path="feedback" element={<Feedback />} />
-              <Route path="subscription" element={<Subscription />} />
-              <Route path="settings" element={<Settings />} />
+              <Route path="history" element={<CurveHistory />} />
+              <Route path="account" element={<Account />} />
             </Route>
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

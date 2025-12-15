@@ -11,7 +11,8 @@ import {
   Area,
   ComposedChart,
 } from 'recharts';
-import { parseCcurveContent, curvesAreEqual, densifyCurvePoints } from '@/lib/curveParser';
+import { curveMonotoneX } from 'd3-shape';
+import { parseCcurveContent, curvesAreEqual } from '@/lib/curveParser';
 
 interface CurveGraphProps {
   curveContent: string;
@@ -26,40 +27,34 @@ export function CurveGraph({
   height = 200,
   showControls = true,
 }: CurveGraphProps) {
-  const { curveData, originalPoints, yAxisData, originalYPoints, hasDifferentCurves, maxX, minY, maxY } = useMemo(() => {
+  const { curveData, yAxisData, hasDifferentCurves, maxX, minY, maxY } = useMemo(() => {
     try {
       const parsed = parseCcurveContent(curveContent);
-      // Keep original points for dots
-      const originalX = parsed.xAxisCurve;
-      const originalY = parsed.yAxisCurve;
-      // Densify for smooth line appearance
-      const xCurve = densifyCurvePoints(originalX, 4);
-      const yCurve = densifyCurvePoints(originalY, 4);
+      const xCurve = parsed.xAxisCurve;
+      const yCurve = parsed.yAxisCurve;
 
       const different = !curvesAreEqual(parsed.xAxisCurve, parsed.yAxisCurve);
-      const allPoints = different ? [...originalX, ...originalY] : originalX;
+      const allPoints = different ? [...xCurve, ...yCurve] : xCurve;
 
       const maxX = Math.max(...allPoints.map((p) => p.x), 80);
 
-      // Y-axis always starts at 0 like reference design
-      const actualMaxY = Math.max(...allPoints.map((p) => p.y));
-
-      // Add padding at top for readability
-      const minY = 0;
-      const maxY = Math.ceil(actualMaxY * 10) / 10 + 0.1; // Round up with small padding
+      const allY = allPoints.map((p) => p.y);
+      const actualMinY = Math.min(...allY);
+      const actualMaxY = Math.max(...allY);
+      const padding = Math.max((actualMaxY - actualMinY) * 0.1, 0.05);
+      const minY = Math.max(0, actualMinY - padding);
+      const maxY = actualMaxY + padding;
 
       return {
         curveData: xCurve,
-        originalPoints: originalX,
         yAxisData: different ? yCurve : null,
-        originalYPoints: different ? originalY : null,
         hasDifferentCurves: different,
         maxX,
         minY,
         maxY,
       };
     } catch {
-      return { curveData: [], originalPoints: [], yAxisData: null, originalYPoints: null, hasDifferentCurves: false, maxX: 80, minY: 0, maxY: 2 };
+      return { curveData: [], yAxisData: null, hasDifferentCurves: false, maxX: 80, minY: 0, maxY: 2 };
     }
   }, [curveContent]);
 
@@ -181,36 +176,20 @@ export function CurveGraph({
           />
           {/* Gradient area fill under curve */}
           <Area
-            type="linear"
+            type={curveMonotoneX}
             dataKey="y"
             stroke="none"
             fill="url(#curveGradient)"
             animationDuration={800}
           />
-          {/* Smooth densified line */}
+          {/* Smooth curve with original control point dots */}
           <Line
-            type="linear"
+            type={curveMonotoneX}
             dataKey="y"
             stroke="#FFD740"
             strokeWidth={2.5}
             name="X-Axis"
             filter="url(#curveGlow)"
-            dot={false}
-            activeDot={{ 
-              r: 6, 
-              fill: '#FFD740',
-              stroke: 'hsl(var(--background))',
-              strokeWidth: 2,
-              filter: 'url(#curveGlow)',
-            }}
-          />
-          {/* Original control point dots */}
-          <Line
-            type="linear"
-            data={originalPoints}
-            dataKey="y"
-            stroke="transparent"
-            strokeWidth={0}
             dot={{ 
               r: 4,
               fill: '#FFD740',
@@ -218,40 +197,24 @@ export function CurveGraph({
               strokeWidth: 1.5,
             }}
             activeDot={false}
-            isAnimationActive={false}
           />
           {yAxisData && (
             <>
               <Area
-                type="linear"
+                type={curveMonotoneX}
                 data={yAxisData}
                 dataKey="y"
                 stroke="none"
                 fill="url(#yAxisGradient)"
               />
               <Line
-                type="linear"
+                type={curveMonotoneX}
                 data={yAxisData}
                 dataKey="y"
                 stroke="hsl(var(--accent))"
                 strokeWidth={2}
                 strokeDasharray="4 2"
                 name="Y-Axis"
-                dot={false}
-                activeDot={{ 
-                  r: 5, 
-                  fill: 'hsl(var(--accent))',
-                  stroke: 'hsl(var(--background))',
-                  strokeWidth: 2,
-                }}
-              />
-              {/* Original Y-axis control point dots */}
-              <Line
-                type="linear"
-                data={originalYPoints}
-                dataKey="y"
-                stroke="transparent"
-                strokeWidth={0}
                 dot={{ 
                   r: 3.5,
                   fill: 'hsl(var(--accent))',
@@ -259,7 +222,6 @@ export function CurveGraph({
                   strokeWidth: 1,
                 }}
                 activeDot={false}
-                isAnimationActive={false}
               />
             </>
           )}

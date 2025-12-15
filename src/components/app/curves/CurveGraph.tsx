@@ -149,10 +149,8 @@ export function CurveGraph({
             />
           )}
           <Tooltip
-            wrapperStyle={{
-              transition: 'transform 0.15s ease-out, opacity 0.15s ease-out',
-              willChange: 'transform',
-            }}
+            cursor={false}
+            isAnimationActive={false}
             content={({ active, payload, label }) => {
               if (!active || !payload?.length) return null;
               
@@ -192,11 +190,16 @@ export function CurveGraph({
             filter="url(#curveGlow)"
             dot={{ 
               r: 4,
-              fill: '#FFD740',
-              stroke: 'rgba(0,0,0,0.4)',
+              fill: 'rgba(180, 180, 180, 0.9)',
+              stroke: 'rgba(0,0,0,0.3)',
               strokeWidth: 1.5,
             }}
-            activeDot={false}
+            activeDot={{ 
+              r: 6,
+              fill: '#FFD740',
+              stroke: 'rgba(0,0,0,0.4)',
+              strokeWidth: 2,
+            }}
           />
           {yAxisData && (
             <>
@@ -217,11 +220,16 @@ export function CurveGraph({
                 name="Y-Axis"
                 dot={{ 
                   r: 3.5,
-                  fill: 'hsl(var(--accent))',
+                  fill: 'rgba(180, 180, 180, 0.9)',
                   stroke: 'rgba(0,0,0,0.3)',
                   strokeWidth: 1,
                 }}
-                activeDot={false}
+                activeDot={{ 
+                  r: 5,
+                  fill: 'hsl(var(--accent))',
+                  stroke: 'rgba(0,0,0,0.4)',
+                  strokeWidth: 2,
+                }}
               />
             </>
           )}

@@ -174,8 +174,10 @@ export function CurrentCurveCard({
                 <div className="animate-spin h-6 w-6 border-2 border-whaam-yellow border-t-transparent rounded-full" />
               </div>
             ) : curveContent ? (
-              <div className="p-4 h-full">
-                <CurveGraph curveContent={curveContent} height={280} showControls={true} />
+              <div className="p-4 h-full flex items-center justify-center">
+                <div className="w-full max-w-[373px]">
+                  <CurveGraph curveContent={curveContent} height={280} showControls={true} />
+                </div>
                 {onViewGraph && (
                   <button
                     onClick={onViewGraph}

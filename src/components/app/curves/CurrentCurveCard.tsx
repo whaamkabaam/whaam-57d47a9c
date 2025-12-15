@@ -119,8 +119,10 @@ export function CurrentCurveCard({
                 <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
               </div>
             ) : curveContent ? (
-              <div className="aspect-[4/3]">
-                <CurveGraph curveContent={curveContent} height="100%" showControls={false} />
+              <div className="aspect-[4/3] relative">
+                <div className="absolute inset-0">
+                  <CurveGraph curveContent={curveContent} height="100%" showControls={false} />
+                </div>
               </div>
             ) : (
               <div className="aspect-[4/3] flex items-center justify-center text-muted-foreground/40 text-sm">

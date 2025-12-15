@@ -11,8 +11,7 @@ import {
   Area,
   ComposedChart,
 } from 'recharts';
-import { curveMonotoneX } from 'd3-shape';
-import { parseCcurveContent, curvesAreEqual } from '@/lib/curveParser';
+import { parseCcurveContent, curvesAreEqual, densifyCurvePoints } from '@/lib/curveParser';
 
 interface CurveGraphProps {
   curveContent: string;
@@ -27,14 +26,18 @@ export function CurveGraph({
   height = 200,
   showControls = true,
 }: CurveGraphProps) {
-  const { curveData, yAxisData, hasDifferentCurves, maxX, minY, maxY } = useMemo(() => {
+  const { curveData, originalPoints, yAxisData, originalYPoints, hasDifferentCurves, maxX, minY, maxY } = useMemo(() => {
     try {
       const parsed = parseCcurveContent(curveContent);
-      const xCurve = parsed.xAxisCurve;
-      const yCurve = parsed.yAxisCurve;
+      // Keep original points for dots
+      const originalX = parsed.xAxisCurve;
+      const originalY = parsed.yAxisCurve;
+      // Densify for smooth line appearance
+      const xCurve = densifyCurvePoints(originalX, 4);
+      const yCurve = densifyCurvePoints(originalY, 4);
 
       const different = !curvesAreEqual(parsed.xAxisCurve, parsed.yAxisCurve);
-      const allPoints = different ? [...xCurve, ...yCurve] : xCurve;
+      const allPoints = different ? [...originalX, ...originalY] : originalX;
 
       const maxX = Math.max(...allPoints.map((p) => p.x), 80);
 
@@ -47,14 +50,16 @@ export function CurveGraph({
 
       return {
         curveData: xCurve,
+        originalPoints: originalX,
         yAxisData: different ? yCurve : null,
+        originalYPoints: different ? originalY : null,
         hasDifferentCurves: different,
         maxX,
         minY,
         maxY,
       };
     } catch {
-      return { curveData: [], yAxisData: null, hasDifferentCurves: false, maxX: 80, minY: 0, maxY: 2 };
+      return { curveData: [], originalPoints: [], yAxisData: null, originalYPoints: null, hasDifferentCurves: false, maxX: 80, minY: 0, maxY: 2 };
     }
   }, [curveContent]);
 
@@ -176,14 +181,15 @@ export function CurveGraph({
           />
           {/* Gradient area fill under curve */}
           <Area
-            type={curveMonotoneX}
+            type="linear"
             dataKey="y"
             stroke="none"
             fill="url(#curveGradient)"
             animationDuration={800}
           />
+          {/* Smooth densified line */}
           <Line
-            type={curveMonotoneX}
+            type="linear"
             dataKey="y"
             stroke="#FFD740"
             strokeWidth={2.5}
@@ -198,17 +204,33 @@ export function CurveGraph({
               filter: 'url(#curveGlow)',
             }}
           />
+          {/* Original control point dots */}
+          <Line
+            type="linear"
+            data={originalPoints}
+            dataKey="y"
+            stroke="transparent"
+            strokeWidth={0}
+            dot={{ 
+              r: 4,
+              fill: '#FFD740',
+              stroke: 'rgba(0,0,0,0.4)',
+              strokeWidth: 1.5,
+            }}
+            activeDot={false}
+            isAnimationActive={false}
+          />
           {yAxisData && (
             <>
               <Area
-                type={curveMonotoneX}
+                type="linear"
                 data={yAxisData}
                 dataKey="y"
                 stroke="none"
                 fill="url(#yAxisGradient)"
               />
               <Line
-                type={curveMonotoneX}
+                type="linear"
                 data={yAxisData}
                 dataKey="y"
                 stroke="hsl(var(--accent))"
@@ -222,6 +244,22 @@ export function CurveGraph({
                   stroke: 'hsl(var(--background))',
                   strokeWidth: 2,
                 }}
+              />
+              {/* Original Y-axis control point dots */}
+              <Line
+                type="linear"
+                data={originalYPoints}
+                dataKey="y"
+                stroke="transparent"
+                strokeWidth={0}
+                dot={{ 
+                  r: 3.5,
+                  fill: 'hsl(var(--accent))',
+                  stroke: 'rgba(0,0,0,0.3)',
+                  strokeWidth: 1,
+                }}
+                activeDot={false}
+                isAnimationActive={false}
               />
             </>
           )}

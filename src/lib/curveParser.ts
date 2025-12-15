@@ -118,7 +118,7 @@ export function generateReferenceLine(maxX: number): CurvePoint[] {
  *
  * Use with `type="monotoneX"` to keep the SVG path smooth-ish while staying faithful.
  */
-export function densifyCurvePoints(points: CurvePoint[], multiplier: number = 12): CurvePoint[] {
+export function densifyCurvePoints(points: CurvePoint[], multiplier: number = 6): CurvePoint[] {
   if (!points || points.length <= 1) return points ?? [];
 
   const sorted = [...points].sort((a, b) => a.x - b.x);

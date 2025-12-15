@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import {
+  LineChart,
   Line,
   XAxis,
   YAxis,
@@ -7,8 +8,10 @@ import {
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
+  Area,
   ComposedChart,
 } from 'recharts';
+import { curveMonotoneX } from 'd3-shape';
 import { parseCcurveContent, curvesAreEqual, densifyCurvePoints } from '@/lib/curveParser';
 
 interface CurveGraphProps {
@@ -74,6 +77,12 @@ export function CurveGraph({
           margin={{ top: 10, right: 30, left: 10, bottom: 25 }}
         >
           <defs>
+            {/* Gradient for area fill under curve */}
+            <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#FFD740" stopOpacity={0.4} />
+              <stop offset="50%" stopColor="#FFD740" stopOpacity={0.15} />
+              <stop offset="100%" stopColor="#FFD740" stopOpacity={0} />
+            </linearGradient>
             {/* Glow filter for the curve line */}
             <filter id="curveGlow" x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="2" result="blur" />
@@ -82,6 +91,11 @@ export function CurveGraph({
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
+            {/* Y-axis curve gradient */}
+            <linearGradient id="yAxisGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity={0.3} />
+              <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity={0} />
+            </linearGradient>
           </defs>
           <CartesianGrid 
             strokeDasharray="3 3" 
@@ -160,39 +174,66 @@ export function CurveGraph({
               );
             }}
           />
-          <Line
-            type="linear"
+          {/* Gradient area fill under curve */}
+          <Area
+            type={curveMonotoneX}
             dataKey="y"
-            stroke="hsl(var(--primary))"
+            stroke="none"
+            fill="url(#curveGradient)"
+            animationDuration={800}
+          />
+          <Line
+            type={curveMonotoneX}
+            dataKey="y"
+            stroke="#FFD740"
             strokeWidth={2.5}
             name="X-Axis"
             filter="url(#curveGlow)"
-            dot={false}
-            activeDot={{
-              r: 6,
-              fill: 'hsl(var(--primary))',
+            dot={{ 
+              fill: 'hsl(var(--muted-foreground))', 
+              r: 5,
+              stroke: 'hsl(var(--background))',
+              strokeWidth: 2,
+            }}
+            activeDot={{ 
+              r: 6, 
+              fill: '#FFD740',
               stroke: 'hsl(var(--background))',
               strokeWidth: 2,
               filter: 'url(#curveGlow)',
             }}
           />
           {yAxisData && (
-            <Line
-              type="linear"
-              data={yAxisData}
-              dataKey="y"
-              stroke="hsl(var(--accent))"
-              strokeWidth={2}
-              strokeDasharray="4 2"
-              name="Y-Axis"
-              dot={false}
-              activeDot={{
-                r: 5,
-                fill: 'hsl(var(--accent))',
-                stroke: 'hsl(var(--background))',
-                strokeWidth: 2,
-              }}
-            />
+            <>
+              <Area
+                type={curveMonotoneX}
+                data={yAxisData}
+                dataKey="y"
+                stroke="none"
+                fill="url(#yAxisGradient)"
+              />
+              <Line
+                type={curveMonotoneX}
+                data={yAxisData}
+                dataKey="y"
+                stroke="hsl(var(--accent))"
+                strokeWidth={2}
+                strokeDasharray="4 2"
+                name="Y-Axis"
+                dot={{ 
+                  fill: 'hsl(var(--muted-foreground))', 
+                  r: 4,
+                  stroke: 'hsl(var(--background))',
+                  strokeWidth: 2,
+                }}
+                activeDot={{ 
+                  r: 5, 
+                  fill: 'hsl(var(--accent))',
+                  stroke: 'hsl(var(--background))',
+                  strokeWidth: 2,
+                }}
+              />
+            </>
           )}
         </ComposedChart>
       </ResponsiveContainer>

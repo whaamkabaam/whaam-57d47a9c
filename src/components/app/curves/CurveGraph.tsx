@@ -72,7 +72,7 @@ export function CurveGraph({
       <ResponsiveContainer width="100%" height={height}>
         <ComposedChart
           data={curveData}
-          margin={{ top: 40, right: 30, left: 10, bottom: 25 }}
+          margin={{ top: 60, right: 30, left: 10, bottom: 25 }}
         >
           <defs>
             {/* Gradient for area fill under curve */}
@@ -134,22 +134,17 @@ export function CurveGraph({
           <Tooltip
             cursor={false}
             isAnimationActive={false}
-            allowEscapeViewBox={{ x: false, y: true }}
+            allowEscapeViewBox={{ x: true, y: true }}
+            offset={20}
             wrapperStyle={{
-              transition: 'transform 100ms ease-out, opacity 100ms ease-out',
               pointerEvents: 'none',
-              zIndex: 10,
+              zIndex: 50,
             }}
-            content={({ active, payload, coordinate }) => {
-              if (!active || !payload?.length || !coordinate) return null;
+            content={({ active, payload }) => {
+              if (!active || !payload?.length) return null;
               const point = payload[0].payload;
               return (
-                <div 
-                  className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg"
-                  style={{
-                    transform: 'translate(-50%, -120%)',
-                  }}
-                >
+                <div className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
                   <p className="text-foreground text-sm">Sensitivity: {point.y.toFixed(3)}</p>
                   <p className="text-muted-foreground text-xs">Speed: {point.x.toFixed(1)} dpms</p>
                 </div>

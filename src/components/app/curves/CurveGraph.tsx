@@ -101,7 +101,7 @@ export function CurveGraph({
         {tooltipData && (
           <div className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
             <p className="text-foreground text-sm">Sensitivity: {tooltipData.sensitivity.toFixed(3)}</p>
-            <p className="text-muted-foreground text-xs">Speed: {tooltipData.speed.toFixed(1)} dps</p>
+            <p className="text-muted-foreground text-xs">Speed: {tooltipData.speed.toFixed(1)} dpms</p>
           </div>
         )}
       </animated.div>
@@ -178,7 +178,7 @@ export function CurveGraph({
             axisLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
             tickLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
             label={{
-              value: 'Mouse Speed (dps)',
+              value: 'Mouse Speed (dpms)',
               position: 'bottom',
               offset: 0,
               fill: 'hsl(var(--muted-foreground))',

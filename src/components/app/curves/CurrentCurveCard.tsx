@@ -3,10 +3,10 @@
 // Story-driven design: Play → Rate → AI improves
 // ============================================
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
-import { Download, History, ChevronDown, ChevronUp, Loader2, Sparkles, Lightbulb } from 'lucide-react';
+import { Download, History, Loader2, Sparkles, Lightbulb } from 'lucide-react';
 import { format } from 'date-fns';
 import { CurveGraph } from './CurveGraph';
 import { FeedbackSlider } from '@/components/app/feedback/FeedbackSlider';
@@ -28,6 +28,16 @@ interface CurrentCurveCardProps {
   isLoadingDailyLimit?: boolean;
 }
 
+const PRO_TIPS = [
+  "If your aim feels jerky or unstable, that usually means it's too fast — try lowering the value.",
+  "Struggling to stay on heads at range? Try increasing Far Range sensitivity.",
+  "Missing flicks? You might need to increase Mid Range. Overshooting? Lower it.",
+  "If 180° turns feel sluggish, increase Close Range. If you spin too far, lower it.",
+  "Small adjustments (±1-2) often feel better than big jumps.",
+  "Play 3-5 games before rating — your muscle memory needs time to adapt.",
+  "Focus on one range at a time if you're unsure what to change.",
+];
+
 export function CurrentCurveCard({
   curve,
   curveContent,
@@ -39,7 +49,6 @@ export function CurrentCurveCard({
   dailyLimit,
   isDownloading,
 }: CurrentCurveCardProps) {
-  const [showGraph, setShowGraph] = useState(false);
   const [farFeedback, setFarFeedback] = useState(5);
   const [mediumFeedback, setMediumFeedback] = useState(5);
   const [closeFeedback, setCloseFeedback] = useState(5);
@@ -49,6 +58,9 @@ export function CurrentCurveCard({
   // Extract version from curve name
   const versionMatch = curve.name.match(/v(\d+)/i);
   const version = versionMatch ? `v${versionMatch[1]}` : 'v1';
+
+  // Random pro tip (stable per render cycle)
+  const proTip = useMemo(() => PRO_TIPS[Math.floor(Math.random() * PRO_TIPS.length)], []);
 
   const handleSubmit = () => {
     if (onSubmitFeedback) {
@@ -65,7 +77,7 @@ export function CurrentCurveCard({
       {/* Header - Clean and minimal */}
       <div className="px-5 py-4 border-b border-border/10 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-foreground">Your Curve</h2>
+          <h2 className="text-xl font-bold text-foreground tracking-tight">Your Curve</h2>
           <p className="text-xs text-muted-foreground/60">
             {version} • {format(new Date(curve.created_at), 'MMM d, yyyy')}
           </p>
@@ -90,35 +102,23 @@ export function CurrentCurveCard({
         </div>
       </div>
 
-      {/* Collapsible Graph Section */}
-      <div className="border-b border-border/10">
-        <button
-          onClick={() => setShowGraph(!showGraph)}
-          className="w-full px-5 py-3 flex items-center justify-between text-sm text-muted-foreground hover:text-foreground hover:bg-muted/10 transition-colors"
-        >
-          <span>{showGraph ? 'Hide curve preview' : 'Show curve preview'}</span>
-          {showGraph ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-        </button>
-        
-        {showGraph && (
-          <div className="px-5 pb-4">
-            <div className="rounded-lg overflow-hidden bg-muted/10 border border-border/10">
-              {isLoadingContent ? (
-                <div className="h-[140px] flex items-center justify-center">
-                  <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                </div>
-              ) : curveContent ? (
-                <div className="p-3">
-                  <CurveGraph curveContent={curveContent} height={140} showControls={false} />
-                </div>
-              ) : (
-                <div className="h-[140px] flex items-center justify-center text-muted-foreground/40 text-sm">
-                  No preview available
-                </div>
-              )}
+      {/* Always-visible Graph Section with 4:3 aspect ratio */}
+      <div className="px-5 py-4 border-b border-border/10">
+        <div className="rounded-xl overflow-hidden bg-muted/10 border border-border/10">
+          {isLoadingContent ? (
+            <div className="aspect-[4/3] flex items-center justify-center">
+              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
             </div>
-          </div>
-        )}
+          ) : curveContent ? (
+            <div className="aspect-[4/3] p-3">
+              <CurveGraph curveContent={curveContent} height={220} showControls={false} />
+            </div>
+          ) : (
+            <div className="aspect-[4/3] flex items-center justify-center text-muted-foreground/40 text-sm">
+              No preview available
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Feedback Section */}
@@ -133,30 +133,30 @@ export function CurrentCurveCard({
 
           {/* Scale legend */}
           <div className="flex items-center justify-center gap-3 text-[10px] text-muted-foreground/50">
-            <span>0 = Too Slow</span>
+            <span>0 = Too slow</span>
             <span className="text-green-400/70">5 = Perfect</span>
-            <span>10 = Too Fast</span>
+            <span>10 = Too fast</span>
           </div>
 
           {/* Sliders with hints */}
           <div className="space-y-4">
             <FeedbackSlider
-              label="Far"
-              hint="Micro-adjustments · Tracking distant heads"
+              label="Far Range"
+              hint="Micro-adjustments · tracking distant heads"
               value={farFeedback}
               onChange={setFarFeedback}
               disabled={isSubmittingFeedback || !canSubmitFeedback}
             />
             <FeedbackSlider
-              label="Medium"
-              hint="Flicks · Switching between targets"
+              label="Mid Range"
+              hint="Flicks · switching between targets"
               value={mediumFeedback}
               onChange={setMediumFeedback}
               disabled={isSubmittingFeedback || !canSubmitFeedback}
             />
             <FeedbackSlider
-              label="Close"
-              hint="180s · Snap reactions · Close duels"
+              label="Close Range"
+              hint="180s · snap reactions · close duels"
               value={closeFeedback}
               onChange={setCloseFeedback}
               disabled={isSubmittingFeedback || !canSubmitFeedback}
@@ -167,7 +167,7 @@ export function CurrentCurveCard({
           <div className="flex items-start gap-2.5 p-3 rounded-lg bg-primary/5 border border-primary/10">
             <Lightbulb className="h-4 w-4 text-primary/70 shrink-0 mt-0.5" />
             <p className="text-xs text-muted-foreground leading-relaxed">
-              <span className="text-foreground/80 font-medium">Pro tip:</span> If your aim feels jerky or unstable, that usually means it's too fast — try lowering the value.
+              <span className="text-foreground/80 font-medium">Pro tip:</span> {proTip}
             </p>
           </div>
 

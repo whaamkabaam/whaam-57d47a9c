@@ -104,15 +104,15 @@ export function CurrentCurveCard({
           <div className="px-5 pb-4">
             <div className="rounded-lg overflow-hidden bg-muted/10 border border-border/10">
               {isLoadingContent ? (
-                <div className="h-[180px] flex items-center justify-center">
+                <div className="h-[140px] flex items-center justify-center">
                   <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
                 </div>
               ) : curveContent ? (
                 <div className="p-3">
-                  <CurveGraph curveContent={curveContent} height={180} showControls={false} />
+                  <CurveGraph curveContent={curveContent} height={140} showControls={false} />
                 </div>
               ) : (
-                <div className="h-[180px] flex items-center justify-center text-muted-foreground/40 text-sm">
+                <div className="h-[140px] flex items-center justify-center text-muted-foreground/40 text-sm">
                   No preview available
                 </div>
               )}
@@ -142,21 +142,21 @@ export function CurrentCurveCard({
           <div className="space-y-4">
             <FeedbackSlider
               label="Far"
-              hint="micro-adjustments · tracking distant heads"
+              hint="Micro-adjustments · Tracking distant heads"
               value={farFeedback}
               onChange={setFarFeedback}
               disabled={isSubmittingFeedback || !canSubmitFeedback}
             />
             <FeedbackSlider
               label="Medium"
-              hint="flicks · switching between targets"
+              hint="Flicks · Switching between targets"
               value={mediumFeedback}
               onChange={setMediumFeedback}
               disabled={isSubmittingFeedback || !canSubmitFeedback}
             />
             <FeedbackSlider
               label="Close"
-              hint="180s · snap reactions · close duels"
+              hint="180s · Snap reactions · Close duels"
               value={closeFeedback}
               onChange={setCloseFeedback}
               disabled={isSubmittingFeedback || !canSubmitFeedback}

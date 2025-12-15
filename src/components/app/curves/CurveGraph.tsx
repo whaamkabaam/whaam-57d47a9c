@@ -178,7 +178,7 @@ export function CurveGraph({
             dataKey="y"
             stroke="none"
             fill="url(#curveGradient)"
-            animationDuration={800}
+            isAnimationActive={false}
           />
           {/* Smooth curve with native hover detection */}
           <Line
@@ -188,6 +188,7 @@ export function CurveGraph({
             strokeWidth={2.5}
             name="X-Axis"
             filter="url(#curveGlow)"
+            isAnimationActive={false}
             dot={{
               r: 5.5,
               fill: '#A0A0A0',

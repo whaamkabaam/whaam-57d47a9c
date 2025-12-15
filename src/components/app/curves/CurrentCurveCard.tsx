@@ -7,7 +7,7 @@ import { useState, useMemo } from 'react';
 import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
 import { Download, History, Loader2, Sparkles, Lightbulb } from 'lucide-react';
-
+import { format } from 'date-fns';
 import { CurveGraph } from './CurveGraph';
 import { FeedbackSlider } from '@/components/app/feedback/FeedbackSlider';
 import { cn } from '@/lib/utils';
@@ -74,47 +74,58 @@ export function CurrentCurveCard({
 
   return (
     <LiquidGlassCard variant="secondary" className="p-0 overflow-hidden">
+      {/* Header - Prominent curve name */}
+      <div className="px-6 py-5 border-b border-border/10 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <h2 className="text-2xl font-bold text-foreground tracking-tight">
+            Your Curve
+          </h2>
+          <span className="px-2.5 py-1 rounded-full bg-primary/20 text-primary text-sm font-semibold">
+            v{version}
+          </span>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-muted-foreground/60">
+            {format(new Date(curve.created_at), 'MMM d, yyyy')}
+          </span>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={onDownload}
+              disabled={isDownloading}
+              className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
+              title="Download curve file"
+            >
+              {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+            </button>
+            <button
+              onClick={onViewHistory}
+              className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
+              title="View curve history"
+            >
+              <History className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Two-column layout: Graph + Feedback */}
       <div className="grid grid-cols-1 lg:grid-cols-2">
-        {/* Left: Curve Graph with inline actions */}
+        {/* Left: Curve Graph - Always visible */}
         <div className="p-5 lg:border-r border-border/10">
-          <div className="rounded-xl overflow-hidden bg-muted/10 border border-border/10 relative">
-            {/* Inline action buttons */}
-            <div className="absolute top-2 right-2 z-10 flex items-center gap-1">
-              <button
-                onClick={onDownload}
-                disabled={isDownloading}
-                className="p-1.5 rounded-lg bg-background/50 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:bg-background/70 transition-colors"
-                title="Download curve file"
-              >
-                {isDownloading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
-              </button>
-              <button
-                onClick={onViewHistory}
-                className="p-1.5 rounded-lg bg-background/50 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:bg-background/70 transition-colors"
-                title="View curve history"
-              >
-                <History className="h-3.5 w-3.5" />
-              </button>
-            </div>
-            
-            {/* Version badge */}
-            <div className="absolute top-2 left-2 z-10">
-              <span className="px-2 py-0.5 rounded-full bg-primary/20 text-primary text-xs font-semibold backdrop-blur-sm">
-                v{version}
-              </span>
-            </div>
-
+          <div className="rounded-xl overflow-hidden bg-muted/10 border border-border/10">
             {isLoadingContent ? (
-              <div className="h-[280px] flex items-center justify-center">
+              <div className="aspect-[4/3] flex items-center justify-center">
                 <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
               </div>
             ) : curveContent ? (
-              <div className="h-[280px]">
-                <CurveGraph curveContent={curveContent} height={280} showControls={false} />
+              <div className="aspect-[4/3] relative">
+                <div className="absolute inset-0">
+                  <CurveGraph curveContent={curveContent} height="100%" showControls={false} />
+                </div>
               </div>
             ) : (
-              <div className="h-[280px] flex items-center justify-center text-muted-foreground/40 text-sm">
+              <div className="aspect-[4/3] flex items-center justify-center text-muted-foreground/40 text-sm">
                 No preview available
               </div>
             )}

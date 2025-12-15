@@ -160,7 +160,7 @@ export function CurrentCurveCard({
       </div>
 
       {/* Main Content: Graph + Historic Feedback */}
-      <div className="px-6 py-6 md:px-8 md:py-8">
+      <div className="px-6 py-6 md:px-8 md:py-8 overflow-visible">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
           {/* Left: Curve Graph (3 cols) */}
           <div className="lg:col-span-3 rounded-xl relative group overflow-visible min-h-[480px]"

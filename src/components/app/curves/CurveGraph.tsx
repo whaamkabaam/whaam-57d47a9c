@@ -109,7 +109,7 @@ export function CurveGraph({
       <ResponsiveContainer width="100%" height={height}>
         <ComposedChart
           data={curveData}
-          margin={{ top: 20, right: 20, left: 10, bottom: 25 }}
+          margin={{ top: 20, right: 50, left: 10, bottom: 25 }}
           onMouseMove={(e: any) => {
             if (e?.chartX !== undefined && e?.chartY !== undefined) {
               // Store chart height for smart positioning
@@ -146,8 +146,8 @@ export function CurveGraph({
           <defs>
             {/* Gradient for area fill under curve */}
             <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#FFD740" stopOpacity={0.4} />
-              <stop offset="50%" stopColor="#FFD740" stopOpacity={0.15} />
+              <stop offset="0%" stopColor="#FFD740" stopOpacity={0.15} />
+              <stop offset="50%" stopColor="#FFD740" stopOpacity={0.05} />
               <stop offset="100%" stopColor="#FFD740" stopOpacity={0} />
             </linearGradient>
             {/* Glow filter for the curve line */}

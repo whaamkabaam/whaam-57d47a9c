@@ -113,7 +113,7 @@ export function CurrentCurveCard({
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {/* Left: Curve Graph - Always visible */}
         <div className="p-5 lg:border-r border-border/10">
-          <div className="rounded-xl overflow-hidden bg-muted/10 border border-border/10 aspect-[4/3] relative">
+          <div className="rounded-xl overflow-visible bg-muted/10 border border-border/10 aspect-[4/3] relative">
             {isLoadingContent ? (
               <div className="absolute inset-0 flex items-center justify-center">
                 <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />

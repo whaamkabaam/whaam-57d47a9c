@@ -57,7 +57,7 @@ const Slider = React.forwardRef<
       className={cn(
         "block rounded-full focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
         variant === "glass"
-          ? "h-4 w-4 bg-white border-2 border-white/60 shadow-[0_0_10px_rgba(255,255,255,0.5)] cursor-grab active:cursor-grabbing hover:scale-125 hover:shadow-[0_0_16px_rgba(255,255,255,0.7)] transition-all duration-200"
+          ? "h-5 w-5 bg-white border-2 border-white/60 shadow-[0_0_10px_rgba(255,255,255,0.5)] cursor-grab active:cursor-grabbing hover:scale-125 hover:shadow-[0_0_16px_rgba(255,255,255,0.7)] transition-all duration-200"
           : "h-5 w-5 border-2 border-primary bg-background ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors"
       )}
     />

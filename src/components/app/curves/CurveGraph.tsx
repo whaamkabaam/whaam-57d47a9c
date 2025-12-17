@@ -185,7 +185,7 @@ export function CurveGraph({
             dataKey="x"
             type="number"
             domain={[0, Math.ceil(maxX / 10) * 10]}
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
+            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
             axisLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
             tickLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
             label={{
@@ -193,13 +193,13 @@ export function CurveGraph({
               position: 'bottom',
               offset: 0,
               fill: 'hsl(var(--muted-foreground))',
-              fontSize: 10,
+              fontSize: 12,
             }}
           />
           <YAxis
             domain={[0, maxY]}
             tickFormatter={(value) => value.toFixed(2)}
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
+            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
             axisLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
             tickLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
             label={{
@@ -207,7 +207,7 @@ export function CurveGraph({
               angle: -90,
               position: 'insideLeft',
               fill: 'hsl(var(--muted-foreground))',
-              fontSize: 10,
+              fontSize: 12,
             }}
           />
           {/* Native Recharts tooltip hidden - we use custom animated one */}

@@ -68,6 +68,16 @@ export const api = {
     return handleResponse<T>(response);
   },
 
+  // For multipart/form-data uploads (no Content-Type header - browser sets it)
+  postForm: async <T>(endpoint: string, formData: FormData): Promise<T> => {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
+    });
+    return handleResponse<T>(response);
+  },
+
   patch: async <T>(endpoint: string, body: unknown): Promise<T> => {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'PATCH',

@@ -6,7 +6,6 @@
 import { useState } from 'react';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Crosshair, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 import {
@@ -22,6 +21,7 @@ import { useDailyLimit, useSubmitFeedback } from '@/hooks/api/useFeedback';
 import { CurrentCurveCard } from '@/components/app/curves/CurrentCurveCard';
 import { CurveDetailModal } from '@/components/app/curves/CurveDetailModal';
 import { AIProcessingModal } from '@/components/app/AIProcessingModal';
+import { CurveUploadCard } from '@/components/app/curves/CurveUploadCard';
 
 export default function DashboardHome() {
   const [graphModalOpen, setGraphModalOpen] = useState(false);
@@ -139,23 +139,9 @@ export default function DashboardHome() {
     );
   }
 
-  // Empty state
+  // Empty state - show upload card
   if (!currentCurve) {
-    return (
-      <LiquidGlassCard variant="secondary" className="p-6 text-center">
-        <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-3">
-          <Crosshair className="h-6 w-6 text-primary" />
-        </div>
-        <h2 className="text-lg font-semibold mb-1">Building your curve...</h2>
-        <p className="text-sm text-muted-foreground mb-4">
-          Creating a custom sensitivity curve for you.
-        </p>
-        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-          <Sparkles className="h-3 w-3 animate-pulse text-primary" />
-          <span>Almost ready</span>
-        </div>
-      </LiquidGlassCard>
-    );
+    return <CurveUploadCard />;
   }
 
   return (

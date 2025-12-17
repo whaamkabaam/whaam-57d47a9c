@@ -103,6 +103,12 @@ export const curvesApi = {
 
   markPerfect: (id: number) => 
     api.post<MessageResponse & { success: boolean }>(`/curves/${id}/perfect`),
+
+  upload: (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.postForm<Curve>('/curves/upload', formData);
+  },
 };
 
 // ============================================

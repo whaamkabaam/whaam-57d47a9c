@@ -96,23 +96,23 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
 
                 {/* Curve info */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-medium truncate">{curve.name}</span>
-                    {curve.is_current && (
-                      <Badge variant="default" className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
-                        Current
-                      </Badge>
-                    )}
-                    {curve.is_perfect && (
-                      <Badge variant="default" className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30 text-xs">
-                        <Star className="h-2.5 w-2.5 mr-0.5 fill-current" />
-                        Perfect
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {format(new Date(curve.created_at), 'MMM d, yyyy h:mm a')}
-                  </p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-medium truncate">{curve.name}</span>
+                      {curve.is_current && (
+                        <Badge variant="default" className="bg-green-500/20 text-green-400 border-green-500/30 text-xs px-2 py-0.5">
+                          Current
+                        </Badge>
+                      )}
+                      {curve.is_perfect && (
+                        <Badge variant="default" className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30 text-xs px-2 py-0.5">
+                          <Star className="h-3 w-3 mr-1 fill-current" />
+                          Perfect
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground/80">
+                      {format(new Date(curve.created_at), 'MMM d, yyyy h:mm a')}
+                    </p>
                 </div>
 
                 {/* Revert button */}

@@ -75,7 +75,7 @@ export function CurrentCurveCard({
   return (
     <LiquidGlassCard variant="secondary" className="p-0 overflow-hidden">
       {/* Header - Prominent curve name */}
-      <div className="px-6 py-5 border-b border-border/10 flex items-center justify-between">
+      <div className="px-6 py-4 border-b border-border/10 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <h2 className="text-2xl font-bold text-foreground tracking-tight">
             Your Curve
@@ -85,25 +85,25 @@ export function CurrentCurveCard({
           </span>
         </div>
         
-        <div className="flex items-center gap-3">
-          <span className="text-xs text-muted-foreground/60">
+        <div className="flex items-center gap-4">
+          <span className="text-xs text-muted-foreground/80">
             {format(new Date(curve.created_at), 'MMM d, yyyy')}
           </span>
           <div className="flex items-center gap-1">
             <button
               onClick={onDownload}
               disabled={isDownloading}
-              className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
+              className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
               title="Download curve file"
             >
-              {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+              {isDownloading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
             </button>
             <button
               onClick={onViewHistory}
-              className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
+              className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
               title="View curve history"
             >
-              <History className="h-4 w-4" />
+              <History className="h-5 w-5" />
             </button>
           </div>
         </div>
@@ -112,7 +112,7 @@ export function CurrentCurveCard({
       {/* Two-column layout: Graph + Feedback */}
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {/* Left: Curve Graph - Always visible */}
-        <div className="p-5 lg:border-r border-border/10 overflow-visible">
+        <div className="p-6 lg:border-r border-border/10 overflow-visible">
           <div className="rounded-xl bg-muted/10 border border-border/10 aspect-[4/3] relative" style={{ overflow: 'visible' }}>
             {isLoadingContent ? (
               <div className="absolute inset-0 flex items-center justify-center">
@@ -132,18 +132,18 @@ export function CurrentCurveCard({
 
         {/* Right: Feedback Section */}
         {onSubmitFeedback && (
-          <div className="p-5 space-y-5">
+          <div className="p-6 space-y-6">
             <div>
               <h3 className="text-base font-medium text-foreground mb-1">How did it feel?</h3>
-              <p className="text-xs text-muted-foreground/60">
+              <p className="text-sm text-muted-foreground/70">
                 Play a few games, then rate each distance range
               </p>
             </div>
 
             {/* Scale legend */}
-            <div className="flex items-center justify-center gap-3 text-[10px] text-muted-foreground/50">
+            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60">
               <span>0 = Too slow</span>
-              <span className="text-green-400/70">5 = Perfect</span>
+              <span className="text-green-400/80 font-medium">5 = Perfect</span>
               <span>10 = Too fast</span>
             </div>
 
@@ -173,10 +173,10 @@ export function CurrentCurveCard({
             </div>
 
             {/* Pro tip */}
-            <div className="flex items-start gap-2.5 p-3 rounded-lg bg-primary/5 border border-primary/10">
+            <div className="flex items-start gap-3 p-4 rounded-lg bg-primary/5 border border-primary/10">
               <Lightbulb className="h-4 w-4 text-primary/70 shrink-0 mt-0.5" />
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                <span className="text-foreground/80 font-medium">Pro tip:</span> {proTip}
+              <p className="text-sm text-muted-foreground/80 leading-relaxed">
+                <span className="text-foreground/90 font-medium">Pro tip:</span> {proTip}
               </p>
             </div>
 

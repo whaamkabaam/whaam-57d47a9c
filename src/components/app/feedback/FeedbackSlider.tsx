@@ -38,17 +38,17 @@ export function FeedbackSlider({ label, hint, value, onChange, disabled }: Feedb
         <div className="flex items-baseline gap-2">
           <span className="text-sm font-semibold text-foreground">{label}</span>
           {hint && (
-            <span className="text-[11px] text-muted-foreground/60">{hint}</span>
+            <span className="text-xs text-muted-foreground/70">{hint}</span>
           )}
         </div>
         <div className="flex items-center gap-2">
-          <span className={cn("text-sm font-mono font-bold tabular-nums", zone.color)}>
+          <span className={cn("text-base font-mono font-bold tabular-nums", zone.color)}>
             {Number.isInteger(value) ? value : value.toFixed(1)}
           </span>
           {/* Only show badge when NOT perfect - reduces visual noise */}
           {!isPerfect && (
             <span className={cn(
-              "text-[9px] px-1.5 py-0.5 rounded-full uppercase tracking-wide",
+              "text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wide",
               zone.bgColor,
               "text-white font-medium whitespace-nowrap"
             )}>
@@ -71,10 +71,10 @@ export function FeedbackSlider({ label, hint, value, onChange, disabled }: Feedb
           className="w-full"
         />
         {/* Tick marks at 0, 5, 10 */}
-        <div className="absolute top-full mt-1 w-full flex justify-between px-[6px] pointer-events-none">
-          <span className="text-[9px] text-muted-foreground/40">0</span>
-          <span className="text-[9px] text-green-400/60">5</span>
-          <span className="text-[9px] text-muted-foreground/40">10</span>
+        <div className="absolute top-full mt-1.5 w-full flex justify-between px-[6px] pointer-events-none">
+          <span className="text-[10px] text-muted-foreground/60">0</span>
+          <span className="text-[10px] text-green-400/70">5</span>
+          <span className="text-[10px] text-muted-foreground/60">10</span>
         </div>
       </div>
     </div>

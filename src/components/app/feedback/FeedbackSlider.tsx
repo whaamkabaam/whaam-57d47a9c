@@ -36,9 +36,9 @@ export function FeedbackSlider({ label, hint, value, onChange, disabled }: Feedb
       {/* Label row with hint */}
       <div className="flex items-baseline justify-between">
         <div className="flex items-baseline gap-2">
-          <span className="text-sm font-semibold text-foreground">{label}</span>
+          <span className="text-base font-semibold text-foreground">{label}</span>
           {hint && (
-            <span className="text-xs text-muted-foreground/70">{hint}</span>
+            <span className="text-xs text-muted-foreground/80">{hint}</span>
           )}
         </div>
         <div className="flex items-center gap-2">
@@ -48,9 +48,9 @@ export function FeedbackSlider({ label, hint, value, onChange, disabled }: Feedb
           {/* Only show badge when NOT perfect - reduces visual noise */}
           {!isPerfect && (
             <span className={cn(
-              "text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wide",
+              "text-xs px-2.5 py-1 rounded-full uppercase tracking-wide",
               zone.bgColor,
-              "text-white font-medium whitespace-nowrap"
+              "text-white font-semibold whitespace-nowrap"
             )}>
               {zone.label}
             </span>
@@ -71,10 +71,10 @@ export function FeedbackSlider({ label, hint, value, onChange, disabled }: Feedb
           className="w-full"
         />
         {/* Tick marks at 0, 5, 10 */}
-        <div className="absolute top-full mt-1.5 w-full flex justify-between px-[6px] pointer-events-none">
-          <span className="text-[10px] text-muted-foreground/60">0</span>
-          <span className="text-[10px] text-green-400/70">5</span>
-          <span className="text-[10px] text-muted-foreground/60">10</span>
+        <div className="absolute top-full mt-2 w-full flex justify-between px-[6px] pointer-events-none">
+          <span className="text-xs text-muted-foreground/70">0</span>
+          <span className="text-xs text-green-400/80 font-medium">5</span>
+          <span className="text-xs text-muted-foreground/70">10</span>
         </div>
       </div>
     </div>

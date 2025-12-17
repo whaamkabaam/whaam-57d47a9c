@@ -134,17 +134,17 @@ export function CurrentCurveCard({
         {onSubmitFeedback && (
           <div className="p-6 space-y-6">
             <div>
-              <h3 className="text-base font-medium text-foreground mb-1">How did it feel?</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-1">How did it feel?</h3>
               <p className="text-sm text-muted-foreground/70">
                 Play a few games, then rate each distance range
               </p>
             </div>
 
             {/* Scale legend */}
-            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground/60">
-              <span>0 = Too slow</span>
-              <span className="text-green-400/80 font-medium">5 = Perfect</span>
-              <span>10 = Too fast</span>
+            <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground/70 py-2 px-4 rounded-lg bg-muted/10 border border-border/20">
+              <span className="font-medium">0 = Too slow</span>
+              <span className="text-green-400 font-semibold">5 = Perfect</span>
+              <span className="font-medium">10 = Too fast</span>
             </div>
 
             {/* Sliders with hints */}

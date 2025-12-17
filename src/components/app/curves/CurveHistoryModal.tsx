@@ -65,7 +65,7 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
           {isLoading ? (
             <>
               {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-center gap-4 p-4 rounded-xl glass-secondary">
+                <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] backdrop-blur-md border border-white/[0.08]">
                   <Skeleton className="h-10 w-10 rounded-full" />
                   <div className="flex-1 space-y-2">
                     <Skeleton className="h-4 w-32" />
@@ -79,14 +79,14 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
             {visibleHistory.map((curve: Curve) => (
               <div
                 key={curve.id}
-                className="flex items-center gap-4 p-4 rounded-xl glass-secondary"
+                className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] backdrop-blur-md border border-white/[0.08]"
               >
                 {/* Version badge */}
                 <div className={`
                   h-10 w-10 rounded-full flex items-center justify-center flex-shrink-0 font-semibold text-sm
                   ${curve.is_current 
-                    ? 'bg-white/10 text-foreground border border-white/20' 
-                    : 'bg-white/5 text-muted-foreground border border-white/10'}
+                    ? 'bg-white/[0.12] text-foreground border border-white/25' 
+                    : 'bg-white/[0.06] text-muted-foreground border border-white/15'}
                 `}>
                   v{curve.upload_number}
                 </div>
@@ -117,7 +117,7 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-9 w-9 rounded-full hover:bg-white/10"
+                    className="h-9 w-9 rounded-full hover:bg-white/10 focus-visible:ring-white/20 focus-visible:ring-1 focus-visible:ring-offset-0"
                     onClick={() => handleRevert(curve.id)}
                     disabled={revertMutation.isPending}
                   >

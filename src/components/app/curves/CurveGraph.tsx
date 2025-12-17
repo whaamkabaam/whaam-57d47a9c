@@ -98,12 +98,10 @@ export function CurveGraph({
           zIndex: 50,
         }}
       >
-        {tooltipData && (
-          <div className="bg-card/95 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
-            <p className="text-foreground text-sm">Sensitivity: {tooltipData.sensitivity.toFixed(3)}</p>
-            <p className="text-muted-foreground text-xs">Speed: {tooltipData.speed.toFixed(1)} dpms</p>
-          </div>
-        )}
+        <div className="bg-background/90 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
+          <p className="text-foreground text-sm">Sensitivity: {tooltipData?.sensitivity?.toFixed(3) ?? '0.000'}</p>
+          <p className="text-muted-foreground text-xs">Speed: {tooltipData?.speed?.toFixed(1) ?? '0.0'} dpms</p>
+        </div>
       </animated.div>
 
       <ResponsiveContainer width="100%" height={height}>

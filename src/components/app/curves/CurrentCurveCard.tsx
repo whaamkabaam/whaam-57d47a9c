@@ -112,14 +112,14 @@ export function CurrentCurveCard({
       {/* Two-column layout: Graph + Feedback */}
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {/* Left: Curve Graph - Always visible */}
-        <div className="p-5 lg:border-r border-border/10">
-          <div className="rounded-xl overflow-visible bg-muted/10 border border-border/10 aspect-[4/3] relative">
+        <div className="p-5 lg:border-r border-border/10 overflow-visible">
+          <div className="rounded-xl bg-muted/10 border border-border/10 aspect-[4/3] relative" style={{ overflow: 'visible' }}>
             {isLoadingContent ? (
               <div className="absolute inset-0 flex items-center justify-center">
                 <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
               </div>
             ) : curveContent ? (
-              <div className="absolute inset-0">
+              <div className="absolute inset-0 overflow-visible">
                 <CurveGraph curveContent={curveContent} height="100%" showControls={false} />
               </div>
             ) : (

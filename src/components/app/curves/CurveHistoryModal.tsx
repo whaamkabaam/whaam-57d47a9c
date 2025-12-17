@@ -50,7 +50,7 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg bg-background/95 backdrop-blur-xl border-border/50">
+      <DialogContent className="sm:max-w-lg glass-primary rounded-2xl border-border/20">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <GitBranch className="h-5 w-5 text-primary" />
@@ -65,7 +65,7 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
           {isLoading ? (
             <>
               {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-center gap-3 p-3 rounded-lg border border-border/30">
+                <div key={i} className="flex items-center gap-4 p-4 rounded-xl glass-secondary">
                   <Skeleton className="h-10 w-10 rounded-full" />
                   <div className="flex-1 space-y-2">
                     <Skeleton className="h-4 w-32" />
@@ -76,22 +76,19 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
             </>
           ) : history && Array.isArray(history) && history.length > 0 ? (
             <>
-            {visibleHistory.map((curve: Curve, index: number) => (
+            {visibleHistory.map((curve: Curve) => (
               <div
                 key={curve.id}
-                className="relative flex items-center gap-3 p-3 rounded-lg border border-border/30 bg-muted/20"
+                className="flex items-center gap-4 p-4 rounded-xl glass-secondary"
               >
-                {/* Timeline connector */}
-                {index < visibleHistory.length - 1 && (
-                  <div className="absolute left-6 top-full h-3 w-px bg-border/50" />
-                )}
-
-                {/* Timeline dot */}
+                {/* Version badge */}
                 <div className={`
-                  h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0 font-bold
-                  ${curve.is_current ? 'bg-primary/30 text-primary border-2 border-primary/50' : 'bg-muted/50 text-foreground/70 border border-border/30'}
+                  h-10 w-10 rounded-full flex items-center justify-center flex-shrink-0 font-semibold text-sm
+                  ${curve.is_current 
+                    ? 'bg-white/10 text-foreground border border-white/20' 
+                    : 'bg-white/5 text-muted-foreground border border-white/10'}
                 `}>
-                  <span className="text-sm font-bold">v{curve.upload_number}</span>
+                  v{curve.upload_number}
                 </div>
 
                 {/* Curve info */}
@@ -99,12 +96,12 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="font-semibold text-foreground truncate">{curve.name}</span>
                       {curve.is_current && (
-                        <Badge variant="default" className="bg-green-500/30 text-green-300 border-green-500/50 text-xs px-2.5 py-1 font-semibold">
+                        <Badge variant="default" className="bg-green-400/15 text-green-400/90 border-green-400/25 text-xs px-2 py-0.5 font-medium">
                           Current
                         </Badge>
                       )}
                       {curve.is_perfect && (
-                        <Badge variant="default" className="bg-yellow-500/30 text-yellow-300 border-yellow-500/50 text-xs px-2.5 py-1 font-semibold">
+                        <Badge variant="default" className="bg-yellow-400/15 text-yellow-400/90 border-yellow-400/25 text-xs px-2 py-0.5 font-medium">
                           <Star className="h-3 w-3 mr-1 fill-current" />
                           Perfect
                         </Badge>
@@ -119,7 +116,8 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
                 {!curve.is_current && (
                   <Button
                     variant="ghost"
-                    size="sm"
+                    size="icon"
+                    className="h-9 w-9 rounded-full hover:bg-white/10"
                     onClick={() => handleRevert(curve.id)}
                     disabled={revertMutation.isPending}
                   >
@@ -136,7 +134,7 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
               <Button
                 variant="ghost"
                 size="sm"
-                className="w-full text-muted-foreground"
+                className="w-full text-muted-foreground hover:bg-white/5"
                 onClick={() => setVisibleCount(prev => prev + 10)}
               >
                 <ChevronDown className="h-4 w-4 mr-2" />

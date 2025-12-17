@@ -75,73 +75,83 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
               ))}
             </>
           ) : history && Array.isArray(history) && history.length > 0 ? (
-            <>
-            {visibleHistory.map((curve: Curve) => (
-              <div
-                key={curve.id}
-                className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] backdrop-blur-md border border-white/[0.08]"
-              >
-                {/* Version badge */}
-                <div className={`
-                  h-10 w-10 rounded-full flex items-center justify-center flex-shrink-0 font-semibold text-sm
-                  ${curve.is_current 
-                    ? 'bg-white/[0.12] text-foreground border border-white/25' 
-                    : 'bg-white/[0.06] text-muted-foreground border border-white/15'}
-                `}>
-                  v{curve.upload_number}
-                </div>
+            (() => {
+              const currentCurve = history.find(c => c.is_current);
+              const previousCurve = currentCurve 
+                ? history.find(c => c.upload_number === currentCurve.upload_number - 1)
+                : null;
+              
+              return (
+                <>
+                  {visibleHistory.map((curve: Curve) => (
+                    <div
+                      key={curve.id}
+                      className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] backdrop-blur-md border border-white/[0.08]"
+                    >
+                      {/* Version badge */}
+                      <div className={`
+                        h-10 w-10 rounded-full flex items-center justify-center flex-shrink-0 font-semibold text-sm
+                        ${curve.is_current 
+                          ? 'bg-white/[0.12] text-foreground border border-white/25' 
+                          : 'bg-white/[0.06] text-muted-foreground border border-white/15'}
+                      `}>
+                        v{curve.upload_number}
+                      </div>
 
-                {/* Curve info */}
-                <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-semibold text-foreground truncate">{curve.name}</span>
-                      {curve.is_current && (
-                        <Badge variant="default" className="bg-green-400/15 text-green-400/90 border-green-400/25 text-xs px-2 py-0.5 font-medium">
-                          Current
-                        </Badge>
-                      )}
-                      {curve.is_perfect && (
-                        <Badge variant="default" className="bg-yellow-400/15 text-yellow-400/90 border-yellow-400/25 text-xs px-2 py-0.5 font-medium">
-                          <Star className="h-3 w-3 mr-1 fill-current" />
-                          Perfect
-                        </Badge>
+                      {/* Curve info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-semibold text-foreground truncate">{curve.name}</span>
+                          {curve.is_current && (
+                            <Badge variant="default" className="bg-green-400/15 text-green-400/90 border-green-400/25 text-xs px-2 py-0.5 font-medium">
+                              Current
+                            </Badge>
+                          )}
+                          {curve.is_perfect && (
+                            <Badge variant="default" className="bg-yellow-400/15 text-yellow-400/90 border-yellow-400/25 text-xs px-2 py-0.5 font-medium">
+                              <Star className="h-3 w-3 mr-1 fill-current" />
+                              Perfect
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground/80">
+                          {format(new Date(curve.created_at), 'MMM d, yyyy h:mm a')}
+                        </p>
+                      </div>
+
+                      {/* Revert button - show for current curve (reverts to previous) or non-current curves */}
+                      {(!curve.is_current || (curve.is_current && previousCurve)) && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-9 w-9 rounded-full hover:bg-white/10 focus-visible:ring-white/20 focus-visible:ring-1 focus-visible:ring-offset-0"
+                          onClick={() => handleRevert(curve.is_current ? previousCurve!.id : curve.id)}
+                          disabled={revertMutation.isPending}
+                          title={curve.is_current ? "Revert to previous version" : "Set as current"}
+                        >
+                          {revertMutation.isPending ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <RotateCcw className="h-4 w-4" />
+                          )}
+                        </Button>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground/80">
-                      {format(new Date(curve.created_at), 'MMM d, yyyy h:mm a')}
-                    </p>
-                </div>
-
-                {/* Revert button */}
-                {!curve.is_current && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-9 w-9 rounded-full hover:bg-white/10 focus-visible:ring-white/20 focus-visible:ring-1 focus-visible:ring-offset-0"
-                    onClick={() => handleRevert(curve.id)}
-                    disabled={revertMutation.isPending}
-                  >
-                    {revertMutation.isPending ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <RotateCcw className="h-4 w-4" />
-                    )}
-                  </Button>
-                )}
-              </div>
-            ))}
-            {hasMore && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full text-muted-foreground hover:bg-white/5"
-                onClick={() => setVisibleCount(prev => prev + 10)}
-              >
-                <ChevronDown className="h-4 w-4 mr-2" />
-                Show {Math.min(10, history.length - visibleCount)} more
-              </Button>
-            )}
-            </>
+                  ))}
+                  {hasMore && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full text-muted-foreground hover:bg-white/5"
+                      onClick={() => setVisibleCount(prev => prev + 10)}
+                    >
+                      <ChevronDown className="h-4 w-4 mr-2" />
+                      Show {Math.min(10, history.length - visibleCount)} more
+                    </Button>
+                  )}
+                </>
+              );
+            })()
           ) : (
             <p className="text-center text-muted-foreground py-8">
               No history available for this curve

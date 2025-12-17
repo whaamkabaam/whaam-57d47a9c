@@ -117,17 +117,24 @@ export default function CurveHistory() {
         </LiquidGlassCard>
       ) : (
         <div className="space-y-3">
-          {visibleCurves.map((curve) => (
-            <CurveListItem
-              key={curve.id}
-              curve={curve}
-              onDownload={handleDownload}
-              onViewHistory={handleViewHistory}
-              onRevert={handleRevert}
-              isDownloading={downloadingId === curve.id}
-              isReverting={revertingId === curve.id}
-            />
-          ))}
+          {visibleCurves.map((curve) => {
+            const previousCurve = curve.is_current 
+              ? curves.find(c => c.upload_number === curve.upload_number - 1)
+              : null;
+            
+            return (
+              <CurveListItem
+                key={curve.id}
+                curve={curve}
+                previousCurveId={previousCurve?.id ?? null}
+                onDownload={handleDownload}
+                onViewHistory={handleViewHistory}
+                onRevert={handleRevert}
+                isDownloading={downloadingId === curve.id}
+                isReverting={revertingId === curve.id}
+              />
+            );
+          })}
           {hasMoreCurves && (
             <Button
               variant="ghost"

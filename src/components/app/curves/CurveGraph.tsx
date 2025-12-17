@@ -64,9 +64,9 @@ export function CurveGraph({
   const [springProps, api] = useSpring(() => ({
     x: 0,
     y: 0,
-    opacity: 0,
+    opacity: 0.001, // Near-invisible but keeps backdrop-blur composited
     scale: 0.95,
-    config: { mass: 0.8, tension: 320, friction: 28 }, // Snappy spring with slight overshoot
+    config: { mass: 0.8, tension: 320, friction: 28 },
   }));
 
   if (curveData.length === 0) {
@@ -98,7 +98,7 @@ export function CurveGraph({
           zIndex: 50,
         }}
       >
-        <div className="bg-background/90 border border-border/50 rounded-xl px-4 py-3 backdrop-blur-xl shadow-lg">
+        <div className="bg-black/40 border border-white/20 rounded-xl px-4 py-3 backdrop-blur-2xl shadow-2xl ring-1 ring-white/10">
           <p className="text-foreground text-sm">Sensitivity: {tooltipData?.sensitivity?.toFixed(3) ?? '0.000'}</p>
           <p className="text-muted-foreground text-xs">Speed: {tooltipData?.speed?.toFixed(1) ?? '0.0'} dpms</p>
         </div>
@@ -136,7 +136,7 @@ export function CurveGraph({
           }}
           onMouseLeave={() => {
             api.start({ 
-              opacity: 0,
+              opacity: 0.001, // Never go to true 0 to keep backdrop-blur composited
               scale: 0.95,
             });
           }}

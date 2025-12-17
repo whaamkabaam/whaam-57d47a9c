@@ -62,6 +62,13 @@ function randomInRange(min: number, max: number): number {
   return Math.random() * (max - min) + min;
 }
 
+// Progress phases with timing (total ~3.5s)
+const PROGRESS_PHASES = [
+  { duration: 1200, startProgress: 0, endProgress: 35 },   // Analyzing
+  { duration: 1200, startProgress: 35, endProgress: 65 },  // Calculating
+  { duration: 1100, startProgress: 65, endProgress: 92 },  // Generating (slows down at end)
+];
+
 export function AIProcessingModal({
   open,
   onOpenChange,
@@ -72,6 +79,7 @@ export function AIProcessingModal({
 }: AIProcessingModalProps) {
   const [messageIndex, setMessageIndex] = useState(0);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [progress, setProgress] = useState(0);
   
   // Generate randomized messages on each open
   const messages = useMemo(() => {
@@ -85,12 +93,68 @@ export function AIProcessingModal({
     holdAt: randomInRange(88, 94),
   });
 
-  // Spring animation for progress bar
+  // Phased progress animation
+  useEffect(() => {
+    if (!open || isComplete) return;
+    
+    // Reset progress when opening
+    setProgress(0);
+    
+    const startTime = Date.now();
+    const totalDuration = PROGRESS_PHASES.reduce((sum, phase) => sum + phase.duration, 0);
+    const finalHoldAt = timingRef.current.holdAt;
+    
+    const animationFrame = () => {
+      const elapsed = Date.now() - startTime;
+      
+      if (elapsed >= totalDuration) {
+        // Hold at the final position (88-94%)
+        setProgress(finalHoldAt);
+        return;
+      }
+      
+      // Find current phase
+      let accumulatedTime = 0;
+      for (const phase of PROGRESS_PHASES) {
+        if (elapsed < accumulatedTime + phase.duration) {
+          // Calculate progress within this phase
+          const phaseElapsed = elapsed - accumulatedTime;
+          const phaseProgress = phaseElapsed / phase.duration;
+          
+          // Use easeOutCubic for smooth deceleration within each phase
+          const eased = 1 - Math.pow(1 - phaseProgress, 3);
+          
+          // For the last phase, adjust endpoint to finalHoldAt
+          const endProgress = phase.endProgress === 92 ? finalHoldAt : phase.endProgress;
+          const currentProgress = phase.startProgress + (endProgress - phase.startProgress) * eased;
+          
+          setProgress(currentProgress);
+          break;
+        }
+        accumulatedTime += phase.duration;
+      }
+    };
+    
+    // Run animation at 60fps
+    const interval = setInterval(animationFrame, 16);
+    animationFrame(); // Run immediately
+    
+    return () => clearInterval(interval);
+  }, [open, isComplete]);
+
+  // Snap to 100% on completion
+  useEffect(() => {
+    if (isComplete) {
+      setProgress(100);
+    }
+  }, [isComplete]);
+
+  // Spring animation for progress bar (follows the state-driven progress)
   const progressSpring = useSpring({
-    progress: isComplete ? 100 : (showSuccess ? 100 : timingRef.current.holdAt),
+    progress: progress,
     config: isComplete 
       ? { tension: 200, friction: 20 } // Quick snap to 100%
-      : { tension: 30, friction: 26 }, // Slow, organic fill
+      : { tension: 180, friction: 24 }, // Smooth following
   });
 
   // Spring animation for icon scale
@@ -115,7 +179,7 @@ export function AIProcessingModal({
     delay: showSuccess ? 200 : 0,
   });
 
-  // Cycle through messages
+  // Cycle through messages based on progress phase
   useEffect(() => {
     if (!open || isComplete) return;
     
@@ -144,6 +208,7 @@ export function AIProcessingModal({
     if (!open) {
       setMessageIndex(0);
       setShowSuccess(false);
+      setProgress(0);
       timingRef.current = {
         messageInterval: randomInRange(800, 1200),
         holdAt: randomInRange(88, 94),
@@ -154,14 +219,17 @@ export function AIProcessingModal({
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
-        {/* Glassy frosted overlay */}
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md" />
+        {/* Proper Radix Overlay - critical for positioning */}
+        <DialogPrimitive.Overlay 
+          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" 
+        />
         
         {/* Modal content with liquid glass styling */}
         <DialogPrimitive.Content
           className={cn(
             "liquid-glass",
-            "fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%]",
+            "fixed z-50",
+            "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
             "w-full sm:max-w-md rounded-[24px]",
             "border border-white/[0.12]",
             "shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)]",

@@ -98,7 +98,7 @@ export function CurveGraph({
           zIndex: 50,
         }}
       >
-        <div className="bg-black/40 border border-white/20 rounded-xl px-4 py-3 backdrop-blur-2xl shadow-2xl ring-1 ring-white/10">
+        <div className="bg-white/[0.08] border border-white/[0.12] rounded-xl px-4 py-3 backdrop-blur-md shadow-lg ring-1 ring-inset ring-white/[0.05]">
           <p className="text-foreground text-sm">Sensitivity: {tooltipData?.sensitivity?.toFixed(3) ?? '0.000'}</p>
           <p className="text-muted-foreground text-xs">Speed: {tooltipData?.speed?.toFixed(1) ?? '0.0'} dpms</p>
         </div>

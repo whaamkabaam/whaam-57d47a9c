@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 
 interface CurveListItemProps {
   curve: Curve;
+  previousCurveId?: number | null;
   onDownload: (id: number) => void;
   onViewHistory: (id: number) => void;
   onRevert: (id: number) => void;
@@ -20,6 +21,7 @@ interface CurveListItemProps {
 
 export function CurveListItem({
   curve,
+  previousCurveId,
   onDownload,
   onViewHistory,
   onRevert,
@@ -75,13 +77,13 @@ export function CurveListItem({
           >
             <History className="h-4 w-4" />
           </Button>
-          {!curve.is_current && (
+          {(!curve.is_current || previousCurveId) && (
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => onRevert(curve.id)}
+              onClick={() => onRevert(curve.is_current ? previousCurveId! : curve.id)}
               disabled={isReverting}
-              title="Set as current"
+              title={curve.is_current ? "Revert to previous version" : "Set as current"}
             >
               {isReverting ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

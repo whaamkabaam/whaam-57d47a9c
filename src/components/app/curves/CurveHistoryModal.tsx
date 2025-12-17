@@ -88,23 +88,23 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
 
                 {/* Timeline dot */}
                 <div className={`
-                  h-10 w-10 rounded-full flex items-center justify-center flex-shrink-0
-                  ${curve.is_current ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'}
+                  h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0 font-bold
+                  ${curve.is_current ? 'bg-primary/30 text-primary border-2 border-primary/50' : 'bg-muted/50 text-foreground/70 border border-border/30'}
                 `}>
-                  <span className="text-sm font-semibold">v{curve.upload_number}</span>
+                  <span className="text-sm font-bold">v{curve.upload_number}</span>
                 </div>
 
                 {/* Curve info */}
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-medium truncate">{curve.name}</span>
+                      <span className="font-semibold text-foreground truncate">{curve.name}</span>
                       {curve.is_current && (
-                        <Badge variant="default" className="bg-green-500/20 text-green-400 border-green-500/30 text-xs px-2 py-0.5">
+                        <Badge variant="default" className="bg-green-500/30 text-green-300 border-green-500/50 text-xs px-2.5 py-1 font-semibold">
                           Current
                         </Badge>
                       )}
                       {curve.is_perfect && (
-                        <Badge variant="default" className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30 text-xs px-2 py-0.5">
+                        <Badge variant="default" className="bg-yellow-500/30 text-yellow-300 border-yellow-500/50 text-xs px-2.5 py-1 font-semibold">
                           <Star className="h-3 w-3 mr-1 fill-current" />
                           Perfect
                         </Badge>

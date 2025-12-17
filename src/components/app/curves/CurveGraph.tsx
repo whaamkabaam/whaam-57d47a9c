@@ -96,9 +96,11 @@ export function CurveGraph({
           scale: springProps.scale,
           pointerEvents: 'none',
           zIndex: 50,
+          willChange: 'transform, opacity',
+          backfaceVisibility: 'hidden',
         }}
       >
-        <div className="bg-white/[0.08] border border-white/[0.12] rounded-xl px-4 py-3 backdrop-blur-md shadow-lg ring-1 ring-inset ring-white/[0.05]">
+        <div className="bg-gray-900/70 border border-white/15 rounded-xl px-4 py-3 backdrop-blur-2xl backdrop-saturate-150 shadow-xl ring-1 ring-inset ring-white/10">
           <p className="text-foreground text-sm">Sensitivity: {tooltipData?.sensitivity?.toFixed(3) ?? '0.000'}</p>
           <p className="text-muted-foreground text-xs">Speed: {tooltipData?.speed?.toFixed(1) ?? '0.0'} dpms</p>
         </div>

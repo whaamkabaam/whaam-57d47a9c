@@ -3,7 +3,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+// Redirect legacy /dashboard routes to /app
+const LegacyRedirect = () => <Navigate to="/app" replace />;
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/app/ProtectedRoute";
 import { DashboardLayout } from "@/components/app/DashboardLayout";
@@ -53,6 +56,10 @@ const App = () => (
               <Route path="history" element={<CurveHistory />} />
               <Route path="account" element={<Account />} />
             </Route>
+            
+            {/* Legacy redirect: /dashboard -> /app */}
+            <Route path="/dashboard" element={<LegacyRedirect />} />
+            <Route path="/dashboard/*" element={<LegacyRedirect />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

@@ -148,7 +148,7 @@ export function CurrentCurveCard({
             </div>
 
             {/* Sliders with hints */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               <FeedbackSlider
                 label="Far Range"
                 hint="Micro-adjustments · tracking distant heads"

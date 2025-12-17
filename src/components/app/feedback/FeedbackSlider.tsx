@@ -32,7 +32,7 @@ export function FeedbackSlider({ label, hint, value, onChange, disabled }: Feedb
   const isPerfect = value === 5;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-1.5">
       {/* Label row with hint */}
       <div className="flex items-baseline justify-between">
         <div className="flex items-baseline gap-2">
@@ -58,25 +58,17 @@ export function FeedbackSlider({ label, hint, value, onChange, disabled }: Feedb
         </div>
       </div>
       
-      {/* Slider with tick marks */}
-      <div className="relative">
-        <Slider
-          value={[value]}
-          onValueChange={([v]) => onChange(v)}
-          min={0}
-          max={10}
-          step={0.1}
-          disabled={disabled}
-          variant="glass"
-          className="w-full"
-        />
-        {/* Tick marks at 0, 5, 10 */}
-        <div className="absolute top-full mt-2 w-full flex justify-between px-[6px] pointer-events-none">
-          <span className="text-xs text-muted-foreground/70">0</span>
-          <span className="text-xs text-green-400/80 font-medium">5</span>
-          <span className="text-xs text-muted-foreground/70">10</span>
-        </div>
-      </div>
+      {/* Slider */}
+      <Slider
+        value={[value]}
+        onValueChange={([v]) => onChange(v)}
+        min={0}
+        max={10}
+        step={0.1}
+        disabled={disabled}
+        variant="glass"
+        className="w-full"
+      />
     </div>
   );
 }

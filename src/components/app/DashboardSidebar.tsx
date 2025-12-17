@@ -48,19 +48,19 @@ export function DashboardSidebar() {
   return (
     <Sidebar className="sidebar-glass border-r-0">
       {/* Logo Header */}
-      <SidebarHeader className="px-4 py-5 border-b border-border/10">
-        <Link to="/" className="flex items-center gap-2">
+      <SidebarHeader className="px-5 py-6 border-b border-white/[0.06]">
+        <Link to="/" className="flex items-center gap-2 group">
           <img 
             src="/lovable-uploads/25252925-5ec6-4d83-aa0a-70a6e27f7b9e.png" 
             alt="WhaamKabaam" 
-            className="h-7"
+            className="h-8 drop-shadow-[0_2px_8px_rgba(255,215,64,0.15)] transition-all duration-300 group-hover:drop-shadow-[0_2px_12px_rgba(255,215,64,0.25)]"
           />
         </Link>
       </SidebarHeader>
 
       {/* Main Navigation */}
-      <SidebarContent className="px-3 py-4">
-        <nav className="space-y-1.5">
+      <SidebarContent className="px-3 py-5 flex-1">
+        <nav className="space-y-2">
           {navItems.map((item) => {
             const active = isActive(item.url);
             return (
@@ -68,14 +68,14 @@ export function DashboardSidebar() {
                 key={item.title}
                 to={item.url}
                 className={cn(
-                  'sidebar-nav-item flex items-center gap-3 px-3 py-3 text-sm font-medium',
+                  'sidebar-nav-item flex items-center gap-3 px-4 py-3.5 text-sm font-medium',
                   active 
-                    ? 'sidebar-nav-item-active text-secondary' 
+                    ? 'sidebar-nav-item-active text-white' 
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
                 <item.icon className={cn(
-                  'h-5 w-5 flex-shrink-0',
+                  'h-5 w-5 flex-shrink-0 transition-colors',
                   active ? 'text-secondary' : ''
                 )} />
                 {!collapsed && <span>{item.title}</span>}
@@ -86,15 +86,15 @@ export function DashboardSidebar() {
       </SidebarContent>
 
       {/* Account Footer */}
-      <SidebarFooter className="px-3 py-4 mt-auto">
+      <SidebarFooter className="px-3 py-5 border-t border-white/[0.06]">
         {isLoading ? (
-          <div className="sidebar-account-glass p-3">
+          <div className="sidebar-account-glass p-4">
             <div className="flex items-center gap-3">
-              <Skeleton className="h-10 w-10 rounded-full" />
+              <Skeleton className="h-11 w-11 rounded-full" />
               {!collapsed && (
-                <div className="flex-1 space-y-1.5">
-                  <Skeleton className="h-3.5 w-20" />
-                  <Skeleton className="h-3 w-28" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-3 w-32" />
                 </div>
               )}
             </div>
@@ -103,30 +103,30 @@ export function DashboardSidebar() {
           <Link
             to="/app/account"
             className={cn(
-              'sidebar-account-glass flex items-center gap-3 p-3 transition-all',
+              'sidebar-account-glass flex items-center gap-3 p-4',
               isActive('/app/account') 
-                ? 'ring-1 ring-secondary/30' 
-                : 'hover:bg-muted/20'
+                ? 'ring-1 ring-secondary/40 bg-white/[0.08]' 
+                : ''
             )}
           >
-            <Avatar className="h-10 w-10 border border-border/20">
+            <Avatar className="h-11 w-11 border border-white/10 shadow-lg">
               <AvatarImage src={user?.avatar_url || undefined} alt={user?.display_name || 'User'} />
-              <AvatarFallback className="bg-secondary/20 text-secondary text-sm font-medium">
+              <AvatarFallback className="bg-secondary/20 text-secondary text-sm font-semibold">
                 {getInitials()}
               </AvatarFallback>
             </Avatar>
             {!collapsed && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate text-foreground">
+                <p className="text-sm font-semibold truncate text-foreground">
                   {user?.display_name || 'Account'}
                 </p>
-                <p className="text-xs text-muted-foreground truncate">
+                <p className="text-xs text-muted-foreground truncate max-w-[140px]">
                   {user?.email}
                 </p>
               </div>
             )}
             {!collapsed && (
-              <Settings className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+              <Settings className="h-4 w-4 text-muted-foreground/70 flex-shrink-0 transition-colors group-hover:text-foreground" />
             )}
           </Link>
         )}

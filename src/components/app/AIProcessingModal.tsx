@@ -6,7 +6,7 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useSpring, animated, config } from 'react-spring';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { LiquidGlassButton } from '@/components/LiquidGlassEffects';
 import { Sparkles, Download, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -152,119 +152,139 @@ export function AIProcessingModal({
   }, [open]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md border-white/[0.08] bg-background/80 backdrop-blur-2xl shadow-2xl">
-        <div className="flex flex-col items-center text-center py-8 relative">
-          
-          {/* Animated Icon Container */}
-          <div className="relative w-20 h-20 mb-6">
-            {/* Processing sparkles */}
-            <animated.div
-              style={{
-                scale: sparklesSpring.scale,
-                opacity: sparklesSpring.opacity,
-                position: 'absolute',
-                inset: 0,
-              }}
-              className="flex items-center justify-center"
-            >
-              <div className="w-full h-full rounded-full bg-white/[0.06] backdrop-blur-sm border border-white/[0.1] flex items-center justify-center">
-                <Sparkles className="h-9 w-9 text-whaam-yellow animate-pulse" />
-              </div>
-            </animated.div>
-
-            {/* Success checkmark */}
-            <animated.div
-              style={{
-                scale: iconSpring.scale,
-                opacity: iconSpring.opacity,
-                position: 'absolute',
-                inset: 0,
-              }}
-              className="flex items-center justify-center"
-            >
-              <div className="w-full h-full rounded-full bg-whaam-yellow/20 backdrop-blur-sm border border-whaam-yellow/30 flex items-center justify-center">
-                <Check className="h-9 w-9 text-whaam-yellow" strokeWidth={2.5} />
-              </div>
-            </animated.div>
-          </div>
-
-          {/* Title */}
-          <h3 className={cn(
-            "font-bold mb-2 transition-colors duration-300",
-            showSuccess ? "text-2xl text-whaam-yellow" : "text-xl text-foreground"
-          )}>
-            {showSuccess 
-              ? `Curve v${iterationNumber} is ready!` 
-              : `Generating v${iterationNumber}...`
-            }
-          </h3>
-
-          {/* Cycling message or success message */}
-          <p className="text-sm text-muted-foreground mb-6 h-5 transition-opacity duration-200">
-            {showSuccess 
-              ? "Your improved curve is waiting"
-              : messages[messageIndex] || "Processing..."
-            }
-          </p>
-
-          {/* Progress bar with spring physics */}
-          <div className="w-full max-w-xs mb-6">
-            <div className="h-2 rounded-full bg-white/[0.06] border border-white/[0.08] overflow-hidden">
-              <animated.div 
-                className="h-full rounded-full"
+    <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
+      <DialogPrimitive.Portal>
+        {/* Glassy frosted overlay */}
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md" />
+        
+        {/* Modal content with liquid glass styling */}
+        <DialogPrimitive.Content
+          className={cn(
+            "liquid-glass",
+            "fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%]",
+            "w-full sm:max-w-md rounded-[24px]",
+            "border border-white/[0.12]",
+            "shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)]",
+            "focus:outline-none",
+            "data-[state=open]:animate-in data-[state=closed]:animate-out",
+            "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+            "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+            "data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]",
+            "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]"
+          )}
+        >
+          <div className="flex flex-col items-center text-center py-10 px-6 relative">
+            
+            {/* Animated Icon Container */}
+            <div className="relative w-20 h-20 mb-6">
+              {/* Processing sparkles */}
+              <animated.div
                 style={{
-                  width: progressSpring.progress.to(p => `${p}%`),
-                  background: showSuccess 
-                    ? 'linear-gradient(90deg, hsl(var(--whaam-yellow)), hsl(var(--whaam-yellow) / 0.8))'
-                    : 'linear-gradient(90deg, hsl(var(--primary)), hsl(var(--whaam-yellow)))',
-                  boxShadow: showSuccess
-                    ? '0 0 20px hsl(var(--whaam-yellow) / 0.5)'
-                    : '0 0 12px hsl(var(--primary) / 0.4)',
+                  scale: sparklesSpring.scale,
+                  opacity: sparklesSpring.opacity,
+                  position: 'absolute',
+                  inset: 0,
+                }}
+                className="flex items-center justify-center"
+              >
+                <div className="w-full h-full rounded-full bg-white/[0.06] backdrop-blur-sm border border-white/[0.1] flex items-center justify-center">
+                  <Sparkles className="h-9 w-9 text-whaam-yellow animate-pulse" />
+                </div>
+              </animated.div>
+
+              {/* Success checkmark */}
+              <animated.div
+                style={{
+                  scale: iconSpring.scale,
+                  opacity: iconSpring.opacity,
+                  position: 'absolute',
+                  inset: 0,
+                }}
+                className="flex items-center justify-center"
+              >
+                <div className="w-full h-full rounded-full bg-whaam-yellow/20 backdrop-blur-sm border border-whaam-yellow/30 flex items-center justify-center">
+                  <Check className="h-9 w-9 text-whaam-yellow" strokeWidth={2.5} />
+                </div>
+              </animated.div>
+            </div>
+
+            {/* Title */}
+            <h3 className={cn(
+              "font-bold mb-2 transition-colors duration-300",
+              showSuccess ? "text-2xl text-whaam-yellow" : "text-xl text-foreground"
+            )}>
+              {showSuccess 
+                ? `Curve v${iterationNumber} is ready!` 
+                : `Generating v${iterationNumber}...`
+              }
+            </h3>
+
+            {/* Cycling message or success message */}
+            <p className="text-sm text-muted-foreground mb-6 h-5 transition-opacity duration-200">
+              {showSuccess 
+                ? "Your improved curve is waiting"
+                : messages[messageIndex] || "Processing..."
+              }
+            </p>
+
+            {/* Progress bar with spring physics */}
+            <div className="w-full max-w-xs mb-6">
+              <div className="h-3 rounded-full bg-white/[0.08] border border-white/[0.1] overflow-hidden">
+                <animated.div 
+                  className="h-full rounded-full"
+                  style={{
+                    width: progressSpring.progress.to(p => `${p}%`),
+                    background: showSuccess 
+                      ? 'linear-gradient(90deg, #FFD740, #FFEB99)'
+                      : 'linear-gradient(90deg, #FF6B35, #FFD740)',
+                    boxShadow: showSuccess
+                      ? '0 0 20px rgba(255, 215, 64, 0.6), inset 0 1px 0 rgba(255,255,255,0.3)'
+                      : '0 0 16px rgba(255, 107, 53, 0.5), inset 0 1px 0 rgba(255,255,255,0.2)',
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Success Actions */}
+            <animated.div 
+              style={{
+                opacity: contentSpring.opacity,
+                transform: contentSpring.y.to(y => `translateY(${y}px)`),
+              }}
+              className={cn(
+                "flex flex-col gap-3 w-full max-w-xs",
+                !showSuccess && "pointer-events-none"
+              )}
+            >
+              <LiquidGlassButton
+                variant="accent"
+                onClick={onDownload}
+                disabled={isDownloading || !showSuccess}
+                className="flex items-center justify-center gap-2 py-3 text-base font-semibold"
+              >
+                <Download className="h-5 w-5" />
+                Download Your Curve
+              </LiquidGlassButton>
+              <button
+                onClick={() => onOpenChange(false)}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+              >
+                Close
+              </button>
+            </animated.div>
+
+            {/* Subtle ambient glow when complete */}
+            {showSuccess && (
+              <div 
+                className="absolute inset-0 -z-10 rounded-[24px] opacity-40 pointer-events-none"
+                style={{
+                  background: 'radial-gradient(circle at 50% 30%, rgba(255, 215, 64, 0.2), transparent 60%)',
                 }}
               />
-            </div>
-          </div>
-
-          {/* Success Actions */}
-          <animated.div 
-            style={{
-              opacity: contentSpring.opacity,
-              transform: contentSpring.y.to(y => `translateY(${y}px)`),
-            }}
-            className={cn(
-              "flex flex-col gap-3 w-full max-w-xs",
-              !showSuccess && "pointer-events-none"
             )}
-          >
-            <LiquidGlassButton
-              variant="accent"
-              onClick={onDownload}
-              disabled={isDownloading || !showSuccess}
-              className="flex items-center justify-center gap-2 py-3 text-base font-semibold"
-            >
-              <Download className="h-5 w-5" />
-              Download Your Curve
-            </LiquidGlassButton>
-            <button
-              onClick={() => onOpenChange(false)}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
-            >
-              Close
-            </button>
-          </animated.div>
-
-          {/* Subtle ambient glow when complete */}
-          {showSuccess && (
-            <div 
-              className="absolute inset-0 -z-10 rounded-xl opacity-30 pointer-events-none"
-              style={{
-                background: 'radial-gradient(circle at 50% 30%, hsl(var(--whaam-yellow) / 0.15), transparent 60%)',
-              }}
-            />
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
+          </div>
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 }

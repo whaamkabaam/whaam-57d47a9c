@@ -21,6 +21,7 @@ interface CurrentCurveCardProps {
   onMarkPerfect: () => void;
   onViewGraph?: () => void;
   isDownloading?: boolean;
+  isRevertingPrevious?: boolean;
   isMarkingPerfect?: boolean;
   onSubmitFeedback?: (longRange: number, midRange: number, shortRange: number) => void;
   isSubmittingFeedback?: boolean;
@@ -48,6 +49,7 @@ export function CurrentCurveCard({
   isSubmittingFeedback,
   dailyLimit,
   isDownloading,
+  isRevertingPrevious,
 }: CurrentCurveCardProps) {
   const [farFeedback, setFarFeedback] = useState(5);
   const [mediumFeedback, setMediumFeedback] = useState(5);
@@ -100,10 +102,16 @@ export function CurrentCurveCard({
             </button>
             <button
               onClick={onViewHistory}
-              className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
-              title="View curve history"
+              disabled={isRevertingPrevious}
+              className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors disabled:opacity-50"
+              title="Revert to previous version"
+              aria-label="Revert to previous version"
             >
-              <History className="h-5 w-5" />
+              {isRevertingPrevious ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <History className="h-5 w-5" />
+              )}
             </button>
           </div>
         </div>

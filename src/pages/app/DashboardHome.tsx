@@ -11,19 +11,19 @@ import { toast } from 'sonner';
 
 import {
   useCurrentCurve,
+  useCurveHistory,
   useDownloadCurve,
   useMarkCurvePerfect,
+  useRevertCurve,
   useCurveContent,
 } from '@/hooks/api/useCurves';
 import { useDailyLimit, useSubmitFeedback } from '@/hooks/api/useFeedback';
 
 import { CurrentCurveCard } from '@/components/app/curves/CurrentCurveCard';
-import { CurveHistoryModal } from '@/components/app/curves/CurveHistoryModal';
 import { CurveDetailModal } from '@/components/app/curves/CurveDetailModal';
 import { AIProcessingModal } from '@/components/app/AIProcessingModal';
 
 export default function DashboardHome() {
-  const [historyModalOpen, setHistoryModalOpen] = useState(false);
   const [graphModalOpen, setGraphModalOpen] = useState(false);
   
   // AI Processing modal state
@@ -34,6 +34,8 @@ export default function DashboardHome() {
   const { data: currentCurve, isLoading: isLoadingCurrent } = useCurrentCurve();
   const { data: dailyLimit, isLoading: isLoadingDailyLimit } = useDailyLimit();
   
+  const { data: curveHistory } = useCurveHistory(currentCurve?.id ?? 0);
+  
   const { data: currentCurveContent, isLoading: isLoadingContent } = useCurveContent(
     currentCurve?.id ?? null
   );
@@ -41,6 +43,7 @@ export default function DashboardHome() {
   // Mutations
   const downloadMutation = useDownloadCurve();
   const markPerfectMutation = useMarkCurvePerfect();
+  const revertMutation = useRevertCurve();
   const submitFeedbackMutation = useSubmitFeedback();
 
   // Derive iteration number
@@ -58,9 +61,25 @@ export default function DashboardHome() {
     }
   };
 
-  const handleViewHistory = () => {
+  const handleViewHistory = async () => {
     if (!currentCurve) return;
-    setHistoryModalOpen(true);
+
+    const current = curveHistory?.find((c) => c.is_current);
+    const previous = current
+      ? curveHistory?.find((c) => c.upload_number === current.upload_number - 1)
+      : null;
+
+    if (!previous) {
+      toast.error('No previous version to revert to');
+      return;
+    }
+
+    try {
+      await revertMutation.mutateAsync(previous.id);
+      toast.success('Reverted to previous version');
+    } catch (error) {
+      toast.error('Failed to revert');
+    }
   };
 
   const handleViewGraph = () => {
@@ -150,6 +169,7 @@ export default function DashboardHome() {
         onMarkPerfect={handleMarkPerfect}
         onViewGraph={handleViewGraph}
         isDownloading={downloadMutation.isPending}
+        isRevertingPrevious={revertMutation.isPending}
         isMarkingPerfect={markPerfectMutation.isPending}
         onSubmitFeedback={handleSubmitFeedback}
         isSubmittingFeedback={submitFeedbackMutation.isPending}
@@ -168,13 +188,6 @@ export default function DashboardHome() {
         onDownload={handleDownload}
         isDownloading={downloadMutation.isPending}
         iterationNumber={currentIteration + 1}
-      />
-
-      {/* History Modal */}
-      <CurveHistoryModal
-        curveId={currentCurve.id}
-        open={historyModalOpen}
-        onOpenChange={setHistoryModalOpen}
       />
 
       {/* Graph Detail Modal */}

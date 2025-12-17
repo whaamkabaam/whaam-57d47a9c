@@ -20,17 +20,24 @@ export function useDailyLimit() {
 }
 
 // Submit feedback and get adjusted curve
+// NOTE: Does NOT auto-invalidate - caller must handle query invalidation
+// This allows the AI Processing Modal to complete its animation before
+// the background updates with the new curve data
 export function useSubmitFeedback() {
-  const queryClient = useQueryClient();
-  
   return useMutation({
     mutationFn: (data: FeedbackRequest) => feedbackApi.submit(data),
-    onSuccess: () => {
-      // Invalidate curves and daily limit after feedback submission
-      queryClient.invalidateQueries({ queryKey: curveKeys.all });
-      queryClient.invalidateQueries({ queryKey: feedbackKeys.dailyLimit });
-    },
+    // Intentionally NO onSuccess - DashboardHome controls when to invalidate
   });
+}
+
+// Hook to manually invalidate curve queries after modal animation completes
+export function useInvalidateCurveQueries() {
+  const queryClient = useQueryClient();
+  
+  return () => {
+    queryClient.invalidateQueries({ queryKey: curveKeys.all });
+    queryClient.invalidateQueries({ queryKey: feedbackKeys.dailyLimit });
+  };
 }
 
 // Download adjusted curve (alternative to curves download)

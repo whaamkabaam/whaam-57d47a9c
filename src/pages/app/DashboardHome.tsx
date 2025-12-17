@@ -3,7 +3,7 @@
 // With AI Processing flow for storytelling
 // ============================================
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
@@ -16,7 +16,7 @@ import {
   useRevertCurve,
   useCurveContent,
 } from '@/hooks/api/useCurves';
-import { useDailyLimit, useSubmitFeedback } from '@/hooks/api/useFeedback';
+import { useDailyLimit, useSubmitFeedback, useInvalidateCurveQueries } from '@/hooks/api/useFeedback';
 
 import { CurrentCurveCard } from '@/components/app/curves/CurrentCurveCard';
 import { CurveDetailModal } from '@/components/app/curves/CurveDetailModal';
@@ -29,6 +29,9 @@ export default function DashboardHome() {
   // AI Processing modal state
   const [processingModalOpen, setProcessingModalOpen] = useState(false);
   const [processingComplete, setProcessingComplete] = useState(false);
+  
+  // Store the iteration number BEFORE mutation so it doesn't change mid-animation
+  const capturedIterationRef = useRef<number>(2);
 
   // Data fetching
   const { data: currentCurve, isLoading: isLoadingCurrent } = useCurrentCurve();
@@ -45,8 +48,9 @@ export default function DashboardHome() {
   const markPerfectMutation = useMarkCurvePerfect();
   const revertMutation = useRevertCurve();
   const submitFeedbackMutation = useSubmitFeedback();
+  const invalidateCurveQueries = useInvalidateCurveQueries();
 
-  // Derive iteration number
+  // Derive iteration number from current curve
   const iterationMatch = currentCurve?.name.match(/v(\d+)/i);
   const currentIteration = iterationMatch ? parseInt(iterationMatch[1], 10) : 1;
 
@@ -99,11 +103,16 @@ export default function DashboardHome() {
   const handleSubmitFeedback = async (longRange: number, midRange: number, shortRange: number) => {
     if (!currentCurve) return;
     
+    // IMPORTANT: Capture iteration number BEFORE mutation
+    // This prevents the modal from showing wrong version when data updates
+    capturedIterationRef.current = currentIteration + 1;
+    
     // Open processing modal immediately
     setProcessingComplete(false);
     setProcessingModalOpen(true);
     
     try {
+      // Submit feedback - mutation does NOT auto-invalidate queries
       await submitFeedbackMutation.mutateAsync({
         curve_id: currentCurve.id,
         long_range: longRange,
@@ -111,13 +120,29 @@ export default function DashboardHome() {
         short_range: shortRange,
       });
       
-      // Minimum 4 second delay for "AI magic" feel
-      await new Promise(resolve => setTimeout(resolve, 4000));
+      // Wait for "AI magic" feel - animation needs time to complete
+      await new Promise(resolve => setTimeout(resolve, 3500));
       
+      // Mark as complete - this triggers the success animation
       setProcessingComplete(true);
+      
+      // Wait for success animation to play before updating background
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      // NOW invalidate queries - background updates AFTER modal shows success
+      invalidateCurveQueries();
+      
     } catch (error) {
       setProcessingModalOpen(false);
       toast.error('Failed to generate curve');
+    }
+  };
+
+  // Handle modal close - reset state
+  const handleProcessingModalClose = (open: boolean) => {
+    setProcessingModalOpen(open);
+    if (!open) {
+      setProcessingComplete(false);
     }
   };
 
@@ -166,14 +191,11 @@ export default function DashboardHome() {
       {/* AI Processing Modal */}
       <AIProcessingModal
         open={processingModalOpen}
-        onOpenChange={(open) => {
-          setProcessingModalOpen(open);
-          if (!open) setProcessingComplete(false);
-        }}
+        onOpenChange={handleProcessingModalClose}
         isComplete={processingComplete}
         onDownload={handleDownload}
         isDownloading={downloadMutation.isPending}
-        iterationNumber={currentIteration + 1}
+        iterationNumber={capturedIterationRef.current}
       />
 
       {/* Graph Detail Modal */}

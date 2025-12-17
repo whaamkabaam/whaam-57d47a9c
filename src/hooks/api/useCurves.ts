@@ -104,3 +104,16 @@ export function useMarkCurvePerfect() {
     },
   });
 }
+
+// Upload a new curve file
+export function useUploadCurve() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (file: File) => curvesApi.upload(file),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: curveKeys.current() });
+      queryClient.invalidateQueries({ queryKey: curveKeys.all });
+    },
+  });
+}

@@ -34,6 +34,7 @@ export {
   useDownloadCurve, 
   useRevertCurve, 
   useMarkCurvePerfect,
+  useUploadCurve,
   curveKeys,
 } from './useCurves';
 

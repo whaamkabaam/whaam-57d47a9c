@@ -75,8 +75,10 @@ export function DashboardSidebar() {
                 )}
               >
                 <item.icon className={cn(
-                  'h-5 w-5 flex-shrink-0 transition-colors',
-                  active ? 'text-secondary' : ''
+                  'h-5 w-5 flex-shrink-0 transition-all',
+                  active 
+                    ? 'text-secondary drop-shadow-[0_0_6px_rgba(255,215,64,0.5)]' 
+                    : ''
                 )} />
                 {!collapsed && <span>{item.title}</span>}
               </Link>

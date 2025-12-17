@@ -3,7 +3,7 @@
 // ============================================
 
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Clock, Settings } from 'lucide-react';
+import { Home, Clock, Upload } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -15,6 +15,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import { CurveUploadDialog } from './curves/CurveUploadDialog';
+import { Settings } from 'lucide-react';
 
 const navItems = [
   { title: 'My Curve', url: '/app', icon: Home },
@@ -85,6 +87,26 @@ export function DashboardSidebar() {
             );
           })}
         </nav>
+
+        {/* Upload Section */}
+        <div className="mt-6 pt-6 border-t border-white/[0.06]">
+          <CurveUploadDialog>
+            <button
+              className={cn(
+                'sidebar-nav-item flex items-center gap-3 px-4 py-3.5 w-full text-sm font-medium',
+                'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              <Upload className="h-5 w-5 flex-shrink-0" />
+              {!collapsed && <span>Upload Curve</span>}
+            </button>
+          </CurveUploadDialog>
+          {!collapsed && (
+            <p className="text-xs text-muted-foreground/70 px-4 mt-1">
+              Replace your current curve
+            </p>
+          )}
+        </div>
       </SidebarContent>
 
       {/* Account Footer */}

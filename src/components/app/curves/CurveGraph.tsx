@@ -245,11 +245,47 @@ export function CurveGraph({
             name="X-Axis"
             filter="url(#curveGlow)"
             isAnimationActive={false}
-            dot={{
-              r: 5.5,
-              fill: '#A0A0A0',
-              stroke: 'rgba(0,0,0,0.5)',
-              strokeWidth: 2,
+            dot={(props: any) => {
+              const { cx, cy, index } = props;
+              const isLastPoint = index === curveData.length - 1;
+              
+              if (!isLastPoint || curveData.length < 2) {
+                // Regular grey dot for all points except last
+                return (
+                  <circle
+                    key={`dot-${index}`}
+                    cx={cx}
+                    cy={cy}
+                    r={5.5}
+                    fill="#A0A0A0"
+                    stroke="rgba(0,0,0,0.5)"
+                    strokeWidth={2}
+                  />
+                );
+              }
+              
+              // Calculate arrow direction from second-to-last → last point
+              const lastPoint = curveData[curveData.length - 1];
+              const prevPoint = curveData[curveData.length - 2];
+              
+              // Need to convert data coordinates to pixel coordinates for angle
+              // The angle is based on visual direction, so we need chart scale info
+              // Since we don't have direct access, use the delta in data space
+              // and account for inverted Y axis in SVG (higher Y = lower on screen)
+              const dx = lastPoint.x - prevPoint.x;
+              const dy = -(lastPoint.y - prevPoint.y); // Invert Y for SVG coordinate system
+              const angleDeg = Math.atan2(dy, dx) * (180 / Math.PI);
+              
+              return (
+                <g key={`arrow-${index}`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
+                  <path
+                    d="M -10 -6 L 0 0 L -10 6 L -7 0 Z"
+                    fill="#FFD740"
+                    stroke="rgba(0,0,0,0.4)"
+                    strokeWidth={1}
+                  />
+                </g>
+              );
             }}
             activeDot={{
               r: 6,
@@ -275,11 +311,40 @@ export function CurveGraph({
                 strokeWidth={2}
                 strokeDasharray="4 2"
                 name="Y-Axis"
-                dot={{
-                  r: 5,
-                  fill: '#A0A0A0',
-                  stroke: 'rgba(0,0,0,0.5)',
-                  strokeWidth: 2,
+                dot={(props: any) => {
+                  const { cx, cy, index } = props;
+                  const isLastPoint = yAxisData && index === yAxisData.length - 1;
+                  
+                  if (!isLastPoint || !yAxisData || yAxisData.length < 2) {
+                    return (
+                      <circle
+                        key={`ydot-${index}`}
+                        cx={cx}
+                        cy={cy}
+                        r={5}
+                        fill="#A0A0A0"
+                        stroke="rgba(0,0,0,0.5)"
+                        strokeWidth={2}
+                      />
+                    );
+                  }
+                  
+                  const lastPoint = yAxisData[yAxisData.length - 1];
+                  const prevPoint = yAxisData[yAxisData.length - 2];
+                  const dx = lastPoint.x - prevPoint.x;
+                  const dy = -(lastPoint.y - prevPoint.y);
+                  const angleDeg = Math.atan2(dy, dx) * (180 / Math.PI);
+                  
+                  return (
+                    <g key={`yarrow-${index}`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
+                      <path
+                        d="M -10 -6 L 0 0 L -10 6 L -7 0 Z"
+                        fill="hsl(var(--accent))"
+                        stroke="rgba(0,0,0,0.4)"
+                        strokeWidth={1}
+                      />
+                    </g>
+                  );
                 }}
                 activeDot={{
                   r: 5,

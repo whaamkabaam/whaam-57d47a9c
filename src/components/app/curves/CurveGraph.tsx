@@ -96,11 +96,22 @@ export function CurveGraph({
           scale: springProps.scale,
           pointerEvents: 'none',
           zIndex: 50,
-          willChange: 'transform, opacity',
+          willChange: 'transform, opacity, backdrop-filter',
           backfaceVisibility: 'hidden',
+          isolation: 'isolate',
         }}
       >
-        <div className="bg-gray-900/70 border border-white/15 rounded-xl px-4 py-3 backdrop-blur-2xl backdrop-saturate-150 shadow-xl ring-1 ring-inset ring-white/10">
+        <div 
+          style={{
+            background: 'rgba(24, 24, 27, 0.92)',
+            backdropFilter: 'blur(24px) saturate(1.5)',
+            WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            borderRadius: '12px',
+            padding: '12px 16px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.05)',
+          }}
+        >
           <p className="text-foreground text-sm">Sensitivity: {tooltipData?.sensitivity?.toFixed(3) ?? '0.000'}</p>
           <p className="text-muted-foreground text-xs">Speed: {tooltipData?.speed?.toFixed(1) ?? '0.0'} dpms</p>
         </div>

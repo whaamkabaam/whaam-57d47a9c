@@ -281,26 +281,25 @@ export function CurveGraph({
               const angleRad = Math.atan2(pixelDy, pixelDx);
               const angleDeg = angleRad * (180 / Math.PI);
               
-              // Offset the arrow forward in the direction it's pointing
-              const offsetDistance = 10;
-              const offsetX = Math.cos(angleRad) * offsetDistance;
-              const offsetY = Math.sin(angleRad) * offsetDistance;
-              
               return (
-                <g key={`arrow-${index}`} transform={`translate(${cx + offsetX}, ${cy + offsetY}) rotate(${angleDeg})`}>
-                  {/* Glow layer */}
-                  <path
-                    d="M 0 0 L -16 -9 L -16 9 Z"
+                <g key={`arrow-${index}`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
+                  {/* Small tip dot */}
+                  <circle
+                    cx={6}
+                    cy={0}
+                    r={3}
                     fill="#FFD740"
-                    filter="url(#curveGlow)"
-                    opacity={0.5}
+                    stroke="rgba(0,0,0,0.3)"
+                    strokeWidth={1}
                   />
-                  {/* Main arrow - clean triangle */}
+                  {/* Chevron shape > */}
                   <path
-                    d="M 0 0 L -16 -9 L -16 9 Z"
-                    fill="#FFD740"
-                    stroke="rgba(0,0,0,0.4)"
-                    strokeWidth={1.5}
+                    d="M 0 -5 L 5 0 L 0 5"
+                    fill="none"
+                    stroke="#FFD740"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </g>
               );
@@ -362,23 +361,25 @@ export function CurveGraph({
                   const angleRad = Math.atan2(pixelDy, pixelDx);
                   const angleDeg = angleRad * (180 / Math.PI);
                   
-                  const offsetDistance = 10;
-                  const offsetX = Math.cos(angleRad) * offsetDistance;
-                  const offsetY = Math.sin(angleRad) * offsetDistance;
-                  
                   return (
-                    <g key={`yarrow-${index}`} transform={`translate(${cx + offsetX}, ${cy + offsetY}) rotate(${angleDeg})`}>
-                      <path
-                        d="M 0 0 L -14 -8 L -14 8 Z"
+                    <g key={`yarrow-${index}`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
+                      {/* Small tip dot */}
+                      <circle
+                        cx={6}
+                        cy={0}
+                        r={3}
                         fill="hsl(var(--accent))"
-                        filter="url(#curveGlow)"
-                        opacity={0.5}
+                        stroke="rgba(0,0,0,0.3)"
+                        strokeWidth={1}
                       />
+                      {/* Chevron shape > */}
                       <path
-                        d="M 0 0 L -14 -8 L -14 8 Z"
-                        fill="hsl(var(--accent))"
-                        stroke="rgba(0,0,0,0.4)"
-                        strokeWidth={1.5}
+                        d="M 0 -5 L 5 0 L 0 5"
+                        fill="none"
+                        stroke="hsl(var(--accent))"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </g>
                   );

@@ -189,15 +189,20 @@ export function CurrentCurveCard({
               />
             </div>
 
-            {/* Tip / Message area - fixed height to prevent layout shift */}
-            <div className="relative min-h-[72px]">
+            {/* Tip / Message area - animated height */}
+            <motion.div 
+              layout
+              className="relative overflow-hidden"
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+            >
               <AnimatePresence mode="wait">
                 {allPerfect ? (
                   <motion.div
                     key="perfect-message"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
                     className="text-center py-3 px-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20"
                   >
@@ -209,9 +214,10 @@ export function CurrentCurveCard({
                 ) : (
                   <motion.div
                     key="pro-tip"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
                     className="flex items-start gap-3 p-4 rounded-lg bg-primary/5 border border-primary/10"
                   >
@@ -222,7 +228,7 @@ export function CurrentCurveCard({
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
 
             {/* Submit / Mark Perfect button */}
             <LiquidGlassButton

@@ -424,6 +424,11 @@
 }
 
 .glass-button {
+  /* Flex centering for icon + text alignment */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   /* Fallback */
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.3);

@@ -12,7 +12,7 @@ import { format } from 'date-fns';
 interface CurveListItemProps {
   curve: Curve;
   previousCurveId?: number | null;
-  onDownload: (id: number) => void;
+  onDownload: () => void;
   onViewHistory: (id: number) => void;
   onRevert: (id: number) => void;
   isDownloading?: boolean;
@@ -59,7 +59,7 @@ export function CurveListItem({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => onDownload(curve.id)}
+            onClick={onDownload}
             disabled={isDownloading}
             title="Download curve"
           >

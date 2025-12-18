@@ -50,15 +50,14 @@ export default function DashboardHome() {
   const submitFeedbackMutation = useSubmitFeedback();
   const invalidateCurveQueries = useInvalidateCurveQueries();
 
-  // Derive iteration number from current curve
-  const iterationMatch = currentCurve?.name.match(/v(\d+)/i);
-  const currentIteration = iterationMatch ? parseInt(iterationMatch[1], 10) : 1;
+  // Use upload_number directly for iteration display
+  const currentIteration = currentCurve?.upload_number ?? 1;
 
   // Handlers
   const handleDownload = async () => {
     if (!currentCurve) return;
     try {
-      await downloadMutation.mutateAsync(currentCurve.id);
+      await downloadMutation.mutateAsync({ id: currentCurve.id, name: currentCurve.name });
       toast.success('Curve downloaded');
     } catch (error) {
       toast.error('Failed to download');

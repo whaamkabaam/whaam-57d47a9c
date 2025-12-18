@@ -60,19 +60,19 @@ export function useCurveContent(id: number | null) {
   });
 }
 
-// Download curve file
+// Download curve file - uses backend-provided name for filename
 export function useDownloadCurve() {
   return useMutation({
-    mutationFn: async (id: number) => {
+    mutationFn: async ({ id, name }: { id: number; name: string }) => {
       const blob = await curvesApi.download(id);
-      return { blob, id };
+      return { blob, name };
     },
-    onSuccess: ({ blob }, id) => {
-      // Trigger file download
+    onSuccess: ({ blob, name }) => {
+      // Trigger file download with proper filename from backend
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `curve-${id}.ccurve`;
+      a.download = name;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

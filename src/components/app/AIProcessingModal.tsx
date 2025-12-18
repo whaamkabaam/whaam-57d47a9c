@@ -228,8 +228,7 @@ export function AIProcessingModal({
         <DialogPrimitive.Content
           className={cn(
             "liquid-glass",
-            "fixed z-50",
-            "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
+            "z-50",
             "w-full sm:max-w-md rounded-[24px]",
             "border border-white/[0.12]",
             "shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)]",
@@ -240,6 +239,12 @@ export function AIProcessingModal({
             "data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]",
             "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]"
           )}
+          style={{
+            position: 'fixed',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
         >
           <div className="flex flex-col items-center text-center py-10 px-6 relative">
             

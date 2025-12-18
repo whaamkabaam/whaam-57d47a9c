@@ -37,7 +37,7 @@ export default function DashboardHome() {
   const { data: currentCurve, isLoading: isLoadingCurrent } = useCurrentCurve();
   const { data: dailyLimit, isLoading: isLoadingDailyLimit } = useDailyLimit();
   
-  const { data: curveHistory } = useCurveHistory(currentCurve?.id ?? 0);
+  const { data: curveHistory, isLoading: isLoadingHistory } = useCurveHistory(currentCurve?.id ?? 0);
   
   const { data: currentCurveContent, isLoading: isLoadingContent } = useCurveContent(
     currentCurve?.id ?? null
@@ -68,13 +68,25 @@ export default function DashboardHome() {
   const handleViewHistory = async () => {
     if (!currentCurve) return;
 
+    // Check if history is still loading
+    if (isLoadingHistory) {
+      toast.info('Loading history...');
+      return;
+    }
+
+    // Check if this is v1 (no previous version)
+    if (currentIteration <= 1) {
+      toast.info('This is your first curve version');
+      return;
+    }
+
     const current = curveHistory?.find((c) => c.is_current);
     const previous = current
       ? curveHistory?.find((c) => c.upload_number === current.upload_number - 1)
       : null;
 
     if (!previous) {
-      toast.error('No previous version to revert to');
+      toast.info('No previous version found');
       return;
     }
 
@@ -92,11 +104,19 @@ export default function DashboardHome() {
 
   const handleMarkPerfect = async () => {
     if (!currentCurve) return;
+    
+    // Already marked perfect - show info instead of API call
+    if (currentCurve.is_perfect) {
+      toast.info('This curve is already in your favorites! ⭐');
+      return;
+    }
+    
     try {
       await markPerfectMutation.mutateAsync(currentCurve.id);
-      toast.success('Saved as favorite');
-    } catch (error) {
-      toast.error('Failed to save');
+      toast.success('Saved to favorites ⭐');
+    } catch (error: any) {
+      const message = error?.response?.data?.message || error?.message || 'Failed to save';
+      toast.error(message);
     }
   };
 

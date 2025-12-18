@@ -60,7 +60,10 @@ export function CurrentCurveCard({
   // Detect "all perfect" state - means user wants to mark curve as favorite
   const allPerfect = farFeedback === 5 && mediumFeedback === 5 && closeFeedback === 5;
   
-  const canSubmitFeedback = onSubmitFeedback && dailyLimit && dailyLimit.remaining > 0 && !allPerfect;
+  // Sliders should only be disabled during submission or when daily limit is exhausted
+  const slidersDisabled = isSubmittingFeedback || !dailyLimit || dailyLimit.remaining === 0;
+  
+  const canSubmitFeedback = onSubmitFeedback && dailyLimit && dailyLimit.remaining > 0;
   
   // Extract version from curve name
   const versionMatch = curve.name.match(/v(\d+)/i);
@@ -167,21 +170,21 @@ export function CurrentCurveCard({
                 hint="Micro-adjustments · tracking distant heads"
                 value={farFeedback}
                 onChange={setFarFeedback}
-                disabled={isSubmittingFeedback || !canSubmitFeedback}
+                disabled={slidersDisabled}
               />
               <FeedbackSlider
                 label="Mid Range"
                 hint="Flicks · switching between targets"
                 value={mediumFeedback}
                 onChange={setMediumFeedback}
-                disabled={isSubmittingFeedback || !canSubmitFeedback}
+                disabled={slidersDisabled}
               />
               <FeedbackSlider
                 label="Close Range"
                 hint="180s · snap reactions · close duels"
                 value={closeFeedback}
                 onChange={setCloseFeedback}
-                disabled={isSubmittingFeedback || !canSubmitFeedback}
+                disabled={slidersDisabled}
               />
             </div>
 

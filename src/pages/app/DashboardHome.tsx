@@ -12,7 +12,7 @@ import {
   useCurrentCurve,
   useCurveHistory,
   useDownloadCurve,
-  useMarkCurvePerfect,
+  useMarkCurveFavorite,
   useRevertCurve,
   useCurveContent,
 } from '@/hooks/api/useCurves';
@@ -45,7 +45,7 @@ export default function DashboardHome() {
 
   // Mutations
   const downloadMutation = useDownloadCurve();
-  const markPerfectMutation = useMarkCurvePerfect();
+  const markFavoriteMutation = useMarkCurveFavorite();
   const revertMutation = useRevertCurve();
   const submitFeedbackMutation = useSubmitFeedback();
   const invalidateCurveQueries = useInvalidateCurveQueries();
@@ -74,24 +74,14 @@ export default function DashboardHome() {
       return;
     }
 
-    // Check if this is v1 (no previous version)
-    if (currentIteration <= 1) {
-      toast.info('This is your first curve version');
-      return;
-    }
-
-    const current = curveHistory?.find((c) => c.is_current);
-    const previous = current
-      ? curveHistory?.find((c) => c.upload_number === current.upload_number - 1)
-      : null;
-
-    if (!previous) {
-      toast.info('No previous version found');
+    // Use parent_curve_id to find previous version (handles gaps correctly)
+    if (!currentCurve.parent_curve_id) {
+      toast.info('This is the original upload');
       return;
     }
 
     try {
-      await revertMutation.mutateAsync(previous.id);
+      await revertMutation.mutateAsync(currentCurve.parent_curve_id);
       toast.success('Reverted to previous version');
     } catch (error) {
       toast.error('Failed to revert');
@@ -102,17 +92,17 @@ export default function DashboardHome() {
     setGraphModalOpen(true);
   };
 
-  const handleMarkPerfect = async () => {
+  const handleMarkFavorite = async () => {
     if (!currentCurve) return;
     
-    // Already marked perfect - show info instead of API call
-    if (currentCurve.is_perfect) {
+    // Already marked favorite - show info instead of API call
+    if (currentCurve.is_favorite) {
       toast.info('This curve is already in your favorites! ⭐');
       return;
     }
     
     try {
-      await markPerfectMutation.mutateAsync(currentCurve.id);
+      await markFavoriteMutation.mutateAsync(currentCurve.id);
       toast.success('Saved to favorites ⭐');
     } catch (error: any) {
       const message = error?.response?.data?.message || error?.message || 'Failed to save';
@@ -197,11 +187,11 @@ export default function DashboardHome() {
         isLoadingContent={isLoadingContent}
         onDownload={handleDownload}
         onViewHistory={handleViewHistory}
-        onMarkPerfect={handleMarkPerfect}
+        onMarkFavorite={handleMarkFavorite}
         onViewGraph={handleViewGraph}
         isDownloading={downloadMutation.isPending}
         isRevertingPrevious={revertMutation.isPending}
-        isMarkingPerfect={markPerfectMutation.isPending}
+        isMarkingFavorite={markFavoriteMutation.isPending}
         onSubmitFeedback={handleSubmitFeedback}
         isSubmittingFeedback={submitFeedbackMutation.isPending}
         dailyLimit={dailyLimit}

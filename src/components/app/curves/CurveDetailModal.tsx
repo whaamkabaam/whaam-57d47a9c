@@ -32,7 +32,7 @@ export function CurveDetailModal({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <span>{curve.name}</span>
-            {curve.is_perfect && (
+            {curve.is_favorite && (
               <Star className="h-5 w-5 fill-whaam-yellow text-whaam-yellow" />
             )}
           </DialogTitle>

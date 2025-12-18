@@ -19,11 +19,11 @@ interface CurrentCurveCardProps {
   isLoadingContent?: boolean;
   onDownload: () => void;
   onViewHistory: () => void;
-  onMarkPerfect: () => void;
+  onMarkFavorite: () => void;
   onViewGraph?: () => void;
   isDownloading?: boolean;
   isRevertingPrevious?: boolean;
-  isMarkingPerfect?: boolean;
+  isMarkingFavorite?: boolean;
   onSubmitFeedback?: (longRange: number, midRange: number, shortRange: number) => void;
   isSubmittingFeedback?: boolean;
   dailyLimit?: { used: number; limit: number; remaining: number };
@@ -46,13 +46,13 @@ export function CurrentCurveCard({
   isLoadingContent,
   onDownload,
   onViewHistory,
-  onMarkPerfect,
+  onMarkFavorite,
   onSubmitFeedback,
   isSubmittingFeedback,
   dailyLimit,
   isDownloading,
   isRevertingPrevious,
-  isMarkingPerfect,
+  isMarkingFavorite,
 }: CurrentCurveCardProps) {
   const [farFeedback, setFarFeedback] = useState(5);
   const [mediumFeedback, setMediumFeedback] = useState(5);
@@ -243,18 +243,18 @@ export function CurrentCurveCard({
               </AnimatePresence>
             </motion.div>
 
-            {/* Submit / Mark Perfect button */}
+            {/* Submit / Mark Favorite button */}
             <LiquidGlassButton
               variant="accent"
-              onClick={allPerfect ? onMarkPerfect : handleSubmit}
-              disabled={isSubmittingFeedback || isMarkingPerfect || (!allPerfect && !canSubmitFeedback)}
+              onClick={allPerfect ? onMarkFavorite : handleSubmit}
+              disabled={isSubmittingFeedback || isMarkingFavorite || (!allPerfect && !canSubmitFeedback)}
               className={cn(
                 "w-full flex items-center justify-center gap-2 py-3 transition-colors duration-200",
                 allPerfect && "bg-yellow-500/20 hover:bg-yellow-500/30 border-yellow-500/30"
               )}
             >
               <AnimatePresence mode="wait">
-                {isSubmittingFeedback || isMarkingPerfect ? (
+                {isSubmittingFeedback || isMarkingFavorite ? (
                   <motion.span 
                     key="loading" 
                     initial={{ opacity: 0 }} 
@@ -266,7 +266,7 @@ export function CurrentCurveCard({
                   </motion.span>
                 ) : allPerfect ? (
                   <motion.span 
-                    key="perfect" 
+                    key="favorite" 
                     initial={{ opacity: 0 }} 
                     animate={{ opacity: 1 }} 
                     exit={{ opacity: 0 }}
@@ -274,7 +274,7 @@ export function CurrentCurveCard({
                     className="flex items-center gap-2"
                   >
                     <Star className="h-4 w-4 fill-current text-yellow-400" />
-                    Mark as Perfect
+                    Save to Favorites
                   </motion.span>
                 ) : (
                   <motion.span 

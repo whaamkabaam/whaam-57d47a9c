@@ -33,9 +33,10 @@ export interface Curve {
   name: string;
   upload_number: number | null;
   is_current: boolean;
-  is_perfect: boolean;
+  is_favorite: boolean;
   created_at: string;
   parent_curve_id: number | null;
+  activated_at: string | null;
   // Feedback that created this curve (0-10 scale, 5=perfect)
   // null for initial uploads (V1), populated for iterated curves (V2+)
   long_range_feedback: number | null;
@@ -64,7 +65,7 @@ export interface FeedbackResponse {
     name: string;
     upload_number: number;
   };
-  is_perfect?: boolean;
+  is_favorite?: boolean;
   daily_limit_reached?: boolean;
 }
 

@@ -4,6 +4,7 @@
 // ============================================
 
 import { useState, useMemo } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
 import { Download, History, Loader2, Sparkles, Lightbulb, Star } from 'lucide-react';
@@ -188,25 +189,40 @@ export function CurrentCurveCard({
               />
             </div>
 
-            {/* Pro tip - only show when not all perfect */}
-            {!allPerfect && (
-              <div className="flex items-start gap-3 p-4 rounded-lg bg-primary/5 border border-primary/10">
-                <Lightbulb className="h-4 w-4 text-primary/70 shrink-0 mt-0.5" />
-                <p className="text-sm text-muted-foreground/80 leading-relaxed">
-                  <span className="text-foreground/90 font-medium">Pro tip:</span> {proTip}
-                </p>
-              </div>
-            )}
-
-            {/* All perfect message */}
-            {allPerfect && (
-              <div className="text-center py-3 px-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-                <Star className="h-4 w-4 inline-block text-yellow-400 mr-2" />
-                <span className="text-sm text-yellow-200/90">
-                  Curve feeling perfect? Save it to your favorites!
-                </span>
-              </div>
-            )}
+            {/* Tip / Message area - fixed height to prevent layout shift */}
+            <div className="relative min-h-[72px]">
+              <AnimatePresence mode="wait">
+                {allPerfect ? (
+                  <motion.div
+                    key="perfect-message"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="text-center py-3 px-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20"
+                  >
+                    <Star className="h-4 w-4 inline-block text-yellow-400 mr-2" />
+                    <span className="text-sm text-yellow-200/90">
+                      Curve feeling perfect? Save it to your favorites!
+                    </span>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="pro-tip"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="flex items-start gap-3 p-4 rounded-lg bg-primary/5 border border-primary/10"
+                  >
+                    <Lightbulb className="h-4 w-4 text-primary/70 shrink-0 mt-0.5" />
+                    <p className="text-sm text-muted-foreground/80 leading-relaxed">
+                      <span className="text-foreground/90 font-medium">Pro tip:</span> {proTip}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Submit / Mark Perfect button */}
             <LiquidGlassButton
@@ -214,34 +230,66 @@ export function CurrentCurveCard({
               onClick={allPerfect ? onMarkPerfect : handleSubmit}
               disabled={isSubmittingFeedback || isMarkingPerfect || (!allPerfect && !canSubmitFeedback)}
               className={cn(
-                "w-full flex items-center justify-center gap-2 py-3",
+                "w-full flex items-center justify-center gap-2 py-3 transition-colors duration-200",
                 allPerfect && "bg-yellow-500/20 hover:bg-yellow-500/30 border-yellow-500/30"
               )}
             >
-              {isSubmittingFeedback || isMarkingPerfect ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : allPerfect ? (
-                <>
-                  <Star className="h-4 w-4 fill-current text-yellow-400" />
-                  Mark as Perfect
-                </>
-              ) : (
-                <>
-                  <Sparkles className="h-4 w-4" />
-                  Generate Improved Curve
-                </>
-              )}
+              <AnimatePresence mode="wait">
+                {isSubmittingFeedback || isMarkingPerfect ? (
+                  <motion.span 
+                    key="loading" 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  </motion.span>
+                ) : allPerfect ? (
+                  <motion.span 
+                    key="perfect" 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center gap-2"
+                  >
+                    <Star className="h-4 w-4 fill-current text-yellow-400" />
+                    Mark as Perfect
+                  </motion.span>
+                ) : (
+                  <motion.span 
+                    key="generate" 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center gap-2"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    Generate Improved Curve
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </LiquidGlassButton>
 
-            {/* Daily limit - only show when low and not all perfect */}
-            {!allPerfect && dailyLimit && dailyLimit.remaining <= 1 && (
-              <p className="text-xs text-muted-foreground/50 text-center">
-                {dailyLimit.remaining === 0 
-                  ? "Daily limit reached — resets tomorrow"
-                  : `${dailyLimit.remaining} adjustment left today`
-                }
-              </p>
-            )}
+            {/* Daily limit - animates in/out */}
+            <AnimatePresence>
+              {!allPerfect && dailyLimit && dailyLimit.remaining <= 1 && (
+                <motion.p
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-xs text-muted-foreground/50 text-center overflow-hidden"
+                >
+                  {dailyLimit.remaining === 0 
+                    ? "Daily limit reached — resets tomorrow"
+                    : `${dailyLimit.remaining} adjustment left today`
+                  }
+                </motion.p>
+              )}
+            </AnimatePresence>
           </div>
         )}
       </div>

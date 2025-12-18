@@ -6,7 +6,7 @@
 import { useState, useMemo } from 'react';
 import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
-import { Download, History, Loader2, Sparkles, Lightbulb } from 'lucide-react';
+import { Download, History, Loader2, Sparkles, Lightbulb, Star } from 'lucide-react';
 import { format } from 'date-fns';
 import { CurveGraph } from './CurveGraph';
 import { FeedbackSlider } from '@/components/app/feedback/FeedbackSlider';
@@ -45,17 +45,22 @@ export function CurrentCurveCard({
   isLoadingContent,
   onDownload,
   onViewHistory,
+  onMarkPerfect,
   onSubmitFeedback,
   isSubmittingFeedback,
   dailyLimit,
   isDownloading,
   isRevertingPrevious,
+  isMarkingPerfect,
 }: CurrentCurveCardProps) {
   const [farFeedback, setFarFeedback] = useState(5);
   const [mediumFeedback, setMediumFeedback] = useState(5);
   const [closeFeedback, setCloseFeedback] = useState(5);
 
-  const canSubmitFeedback = onSubmitFeedback && dailyLimit && dailyLimit.remaining > 0;
+  // Detect "all perfect" state - means user wants to mark curve as favorite
+  const allPerfect = farFeedback === 5 && mediumFeedback === 5 && closeFeedback === 5;
+  
+  const canSubmitFeedback = onSubmitFeedback && dailyLimit && dailyLimit.remaining > 0 && !allPerfect;
   
   // Extract version from curve name
   const versionMatch = curve.name.match(/v(\d+)/i);
@@ -180,34 +185,53 @@ export function CurrentCurveCard({
               />
             </div>
 
-            {/* Pro tip */}
-            <div className="flex items-start gap-3 p-4 rounded-lg bg-primary/5 border border-primary/10">
-              <Lightbulb className="h-4 w-4 text-primary/70 shrink-0 mt-0.5" />
-              <p className="text-sm text-muted-foreground/80 leading-relaxed">
-                <span className="text-foreground/90 font-medium">Pro tip:</span> {proTip}
-              </p>
-            </div>
+            {/* Pro tip - only show when not all perfect */}
+            {!allPerfect && (
+              <div className="flex items-start gap-3 p-4 rounded-lg bg-primary/5 border border-primary/10">
+                <Lightbulb className="h-4 w-4 text-primary/70 shrink-0 mt-0.5" />
+                <p className="text-sm text-muted-foreground/80 leading-relaxed">
+                  <span className="text-foreground/90 font-medium">Pro tip:</span> {proTip}
+                </p>
+              </div>
+            )}
 
-            {/* Submit button */}
+            {/* All perfect message */}
+            {allPerfect && (
+              <div className="text-center py-3 px-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+                <Star className="h-4 w-4 inline-block text-yellow-400 mr-2" />
+                <span className="text-sm text-yellow-200/90">
+                  Curve feeling perfect? Save it to your favorites!
+                </span>
+              </div>
+            )}
+
+            {/* Submit / Mark Perfect button */}
             <LiquidGlassButton
               variant="accent"
-              onClick={handleSubmit}
-              disabled={isSubmittingFeedback || !canSubmitFeedback}
+              onClick={allPerfect ? onMarkPerfect : handleSubmit}
+              disabled={isSubmittingFeedback || isMarkingPerfect || (!allPerfect && !canSubmitFeedback)}
               className={cn(
                 "w-full flex items-center justify-center gap-2 py-3",
-                !canSubmitFeedback && "opacity-50"
+                allPerfect && "bg-yellow-500/20 hover:bg-yellow-500/30 border-yellow-500/30"
               )}
             >
-              {isSubmittingFeedback ? (
+              {isSubmittingFeedback || isMarkingPerfect ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
+              ) : allPerfect ? (
+                <>
+                  <Star className="h-4 w-4 fill-current text-yellow-400" />
+                  Mark as Perfect
+                </>
               ) : (
-                <Sparkles className="h-4 w-4" />
+                <>
+                  <Sparkles className="h-4 w-4" />
+                  Generate Improved Curve
+                </>
               )}
-              Generate Improved Curve
             </LiquidGlassButton>
 
-            {/* Daily limit - only show when low */}
-            {dailyLimit && dailyLimit.remaining <= 1 && (
+            {/* Daily limit - only show when low and not all perfect */}
+            {!allPerfect && dailyLimit && dailyLimit.remaining <= 1 && (
               <p className="text-xs text-muted-foreground/50 text-center">
                 {dailyLimit.remaining === 0 
                   ? "Daily limit reached — resets tomorrow"

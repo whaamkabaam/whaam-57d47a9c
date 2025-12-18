@@ -94,6 +94,12 @@ export function CurrentCurveCard({
           <span className="px-2.5 py-1 rounded-full bg-primary/20 text-primary text-sm font-semibold">
             v{version}
           </span>
+          {curve.is_favorite && (
+            <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 text-sm font-medium">
+              <Star className="h-3.5 w-3.5 fill-current" />
+              Favorite
+            </span>
+          )}
         </div>
         
         <div className="flex items-center gap-4">

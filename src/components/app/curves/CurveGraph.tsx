@@ -268,21 +268,39 @@ export function CurveGraph({
               const lastPoint = curveData[curveData.length - 1];
               const prevPoint = curveData[curveData.length - 2];
               
-              // Need to convert data coordinates to pixel coordinates for angle
-              // The angle is based on visual direction, so we need chart scale info
-              // Since we don't have direct access, use the delta in data space
-              // and account for inverted Y axis in SVG (higher Y = lower on screen)
-              const dx = lastPoint.x - prevPoint.x;
-              const dy = -(lastPoint.y - prevPoint.y); // Invert Y for SVG coordinate system
-              const angleDeg = Math.atan2(dy, dx) * (180 / Math.PI);
+              // Convert data deltas to approximate pixel deltas for correct visual angle
+              // Chart has roughly 500px width for X range and 250px height for Y range
+              const xDataRange = Math.ceil(maxX / 10) * 10;
+              const yDataRange = maxY - 0;
+              const pixelWidth = 500;
+              const pixelHeight = 250;
+              
+              const pixelDx = (lastPoint.x - prevPoint.x) * (pixelWidth / xDataRange);
+              const pixelDy = -(lastPoint.y - prevPoint.y) * (pixelHeight / yDataRange); // Invert Y for SVG
+              
+              const angleRad = Math.atan2(pixelDy, pixelDx);
+              const angleDeg = angleRad * (180 / Math.PI);
+              
+              // Offset the arrow forward in the direction it's pointing
+              const offsetDistance = 10;
+              const offsetX = Math.cos(angleRad) * offsetDistance;
+              const offsetY = Math.sin(angleRad) * offsetDistance;
               
               return (
-                <g key={`arrow-${index}`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
+                <g key={`arrow-${index}`} transform={`translate(${cx + offsetX}, ${cy + offsetY}) rotate(${angleDeg})`}>
+                  {/* Glow layer */}
                   <path
-                    d="M -10 -6 L 0 0 L -10 6 L -7 0 Z"
+                    d="M 0 0 L -16 -9 L -16 9 Z"
+                    fill="#FFD740"
+                    filter="url(#curveGlow)"
+                    opacity={0.5}
+                  />
+                  {/* Main arrow - clean triangle */}
+                  <path
+                    d="M 0 0 L -16 -9 L -16 9 Z"
                     fill="#FFD740"
                     stroke="rgba(0,0,0,0.4)"
-                    strokeWidth={1}
+                    strokeWidth={1.5}
                   />
                 </g>
               );
@@ -331,17 +349,36 @@ export function CurveGraph({
                   
                   const lastPoint = yAxisData[yAxisData.length - 1];
                   const prevPoint = yAxisData[yAxisData.length - 2];
-                  const dx = lastPoint.x - prevPoint.x;
-                  const dy = -(lastPoint.y - prevPoint.y);
-                  const angleDeg = Math.atan2(dy, dx) * (180 / Math.PI);
+                  
+                  // Convert data deltas to approximate pixel deltas
+                  const xDataRange = Math.ceil(maxX / 10) * 10;
+                  const yDataRange = maxY - 0;
+                  const pixelWidth = 500;
+                  const pixelHeight = 250;
+                  
+                  const pixelDx = (lastPoint.x - prevPoint.x) * (pixelWidth / xDataRange);
+                  const pixelDy = -(lastPoint.y - prevPoint.y) * (pixelHeight / yDataRange);
+                  
+                  const angleRad = Math.atan2(pixelDy, pixelDx);
+                  const angleDeg = angleRad * (180 / Math.PI);
+                  
+                  const offsetDistance = 10;
+                  const offsetX = Math.cos(angleRad) * offsetDistance;
+                  const offsetY = Math.sin(angleRad) * offsetDistance;
                   
                   return (
-                    <g key={`yarrow-${index}`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
+                    <g key={`yarrow-${index}`} transform={`translate(${cx + offsetX}, ${cy + offsetY}) rotate(${angleDeg})`}>
                       <path
-                        d="M -10 -6 L 0 0 L -10 6 L -7 0 Z"
+                        d="M 0 0 L -14 -8 L -14 8 Z"
+                        fill="hsl(var(--accent))"
+                        filter="url(#curveGlow)"
+                        opacity={0.5}
+                      />
+                      <path
+                        d="M 0 0 L -14 -8 L -14 8 Z"
                         fill="hsl(var(--accent))"
                         stroke="rgba(0,0,0,0.4)"
-                        strokeWidth={1}
+                        strokeWidth={1.5}
                       />
                     </g>
                   );

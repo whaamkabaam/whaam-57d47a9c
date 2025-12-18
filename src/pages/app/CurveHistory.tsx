@@ -26,7 +26,7 @@ export default function CurveHistory() {
   const [selectedCurveId, setSelectedCurveId] = useState<number | null>(null);
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [revertingId, setRevertingId] = useState<number | null>(null);
-  const [filter, setFilter] = useState<'all' | 'perfect'>('all');
+  const [filter, setFilter] = useState<'all' | 'favorite'>('all');
 
   // Data fetching
   const { data: curvesData, isLoading: isLoadingCurves } = useCurves();
@@ -76,8 +76,8 @@ export default function CurveHistory() {
   };
 
   const curves = curvesData?.curves ?? [];
-  const perfectCount = curves.filter(c => c.is_perfect).length;
-  const filteredCurves = filter === 'perfect' ? curves.filter(c => c.is_perfect) : curves;
+  const favoriteCount = curves.filter(c => c.is_favorite).length;
+  const filteredCurves = filter === 'favorite' ? curves.filter(c => c.is_favorite) : curves;
   const visibleCurves = filteredCurves.slice(0, visibleCurvesCount);
   const hasMoreCurves = filteredCurves.length > visibleCurvesCount;
 
@@ -100,13 +100,13 @@ export default function CurveHistory() {
             All Curves ({curves.length})
           </Button>
           <Button 
-            variant={filter === 'perfect' ? 'default' : 'ghost'}
+            variant={filter === 'favorite' ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => { setFilter('perfect'); setVisibleCurvesCount(10); }}
-            className={filter === 'perfect' ? 'bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300' : ''}
+            onClick={() => { setFilter('favorite'); setVisibleCurvesCount(10); }}
+            className={filter === 'favorite' ? 'bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300' : ''}
           >
             <Star className="h-3 w-3 mr-1 fill-current text-yellow-400" />
-            Perfect ({perfectCount})
+            Favorites ({favoriteCount})
           </Button>
         </div>
       </div>
@@ -129,12 +129,12 @@ export default function CurveHistory() {
             </LiquidGlassCard>
           ))}
         </div>
-      ) : filteredCurves.length === 0 && filter === 'perfect' ? (
+      ) : filteredCurves.length === 0 && filter === 'favorite' ? (
         <LiquidGlassCard variant="secondary" className="p-8 text-center">
           <Star className="h-12 w-12 text-yellow-400/30 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold mb-2">No Perfect Curves Yet</h2>
+          <h2 className="text-xl font-semibold mb-2">No Favorite Curves Yet</h2>
           <p className="text-muted-foreground max-w-md mx-auto">
-            When a curve feels just right, set all sliders to 5 and mark it as perfect. 
+            When a curve feels just right, set all sliders to 5 and save it to your favorites. 
             It'll appear here for easy access.
           </p>
         </LiquidGlassCard>
@@ -149,8 +149,9 @@ export default function CurveHistory() {
       ) : (
         <div className="space-y-3">
           {visibleCurves.map((curve) => {
-            const previousCurve = curve.is_current 
-              ? curves.find(c => c.upload_number === curve.upload_number - 1)
+            // Use parent_curve_id to find previous version (handles gaps correctly)
+            const previousCurve = curve.is_current && curve.parent_curve_id
+              ? curves.find(c => c.id === curve.parent_curve_id)
               : null;
             
             return (

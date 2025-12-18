@@ -33,7 +33,7 @@ export {
   useCurveHistory, 
   useDownloadCurve, 
   useRevertCurve, 
-  useMarkCurvePerfect,
+  useMarkCurveFavorite,
   useUploadCurve,
   curveKeys,
 } from './useCurves';

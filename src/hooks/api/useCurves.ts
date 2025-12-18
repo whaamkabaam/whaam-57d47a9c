@@ -93,12 +93,12 @@ export function useRevertCurve() {
   });
 }
 
-// Mark curve as perfect
-export function useMarkCurvePerfect() {
+// Mark curve as favorite
+export function useMarkCurveFavorite() {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (id: number) => curvesApi.markPerfect(id),
+    mutationFn: (id: number) => curvesApi.markFavorite(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: curveKeys.all });
     },

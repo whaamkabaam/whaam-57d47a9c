@@ -101,8 +101,8 @@ export const curvesApi = {
   revert: (id: number) => 
     api.post<Curve>(`/curves/${id}/revert`),
 
-  markPerfect: (id: number) => 
-    api.post<MessageResponse & { success: boolean }>(`/curves/${id}/perfect`),
+  markFavorite: (id: number) => 
+    api.post<MessageResponse & { success: boolean }>(`/curves/${id}/favorite`),
 
   upload: (file: File) => {
     const formData = new FormData();

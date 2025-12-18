@@ -77,8 +77,9 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
           ) : history && Array.isArray(history) && history.length > 0 ? (
             (() => {
               const currentCurve = history.find(c => c.is_current);
-              const previousCurve = currentCurve 
-                ? history.find(c => c.upload_number === currentCurve.upload_number - 1)
+              // Use parent_curve_id to find previous version (handles gaps correctly)
+              const previousCurve = currentCurve?.parent_curve_id 
+                ? history.find(c => c.id === currentCurve.parent_curve_id)
                 : null;
               
               return (
@@ -107,10 +108,10 @@ export function CurveHistoryModal({ curveId, open, onOpenChange }: CurveHistoryM
                               Current
                             </Badge>
                           )}
-                          {curve.is_perfect && (
+                          {curve.is_favorite && (
                             <Badge variant="default" className="bg-yellow-400/15 text-yellow-400/90 border-yellow-400/25 text-xs px-2 py-0.5 font-medium">
                               <Star className="h-3 w-3 mr-1 fill-current" />
-                              Perfect
+                              Favorite
                             </Badge>
                           )}
                         </div>

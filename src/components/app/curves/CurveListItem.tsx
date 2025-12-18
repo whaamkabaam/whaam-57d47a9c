@@ -41,10 +41,10 @@ export function CurveListItem({
                   Current
                 </Badge>
               )}
-              {curve.is_perfect && (
+              {curve.is_favorite && (
                 <Badge variant="default" className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30">
                   <Star className="h-3 w-3 mr-1 fill-current" />
-                  Perfect
+                  Favorite
                 </Badge>
               )}
             </div>

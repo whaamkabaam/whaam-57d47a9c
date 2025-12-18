@@ -318,33 +318,35 @@ export function AIProcessingModal({
               </div>
             </div>
 
-            {/* Success Actions */}
-            <animated.div 
-              style={{
-                opacity: contentSpring.opacity,
-                transform: contentSpring.y.to(y => `translateY(${y}px)`),
-              }}
-              className={cn(
-                "flex flex-col gap-3 w-full max-w-xs",
-                !showSuccess && "pointer-events-none"
-              )}
-            >
-              <LiquidGlassButton
-                variant="accent"
-                onClick={onDownload}
-                disabled={isDownloading || !showSuccess}
-                className="flex items-center justify-center gap-2 py-3 text-base font-semibold"
+            {/* Actions - consistent height */}
+            {showSuccess ? (
+              <animated.div 
+                style={{
+                  opacity: contentSpring.opacity,
+                  transform: contentSpring.y.to(y => `translateY(${y}px)`),
+                }}
+                className="flex flex-col gap-3 w-full max-w-xs"
               >
-                <Download className="h-5 w-5" />
-                Download Your Curve
-              </LiquidGlassButton>
-              <button
-                onClick={() => onOpenChange(false)}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
-              >
-                Close
-              </button>
-            </animated.div>
+                <LiquidGlassButton
+                  variant="accent"
+                  onClick={onDownload}
+                  disabled={isDownloading}
+                  className="flex items-center justify-center gap-2 py-3 text-base font-semibold"
+                >
+                  <Download className="h-5 w-5" />
+                  Download Your Curve
+                </LiquidGlassButton>
+                <button
+                  onClick={() => onOpenChange(false)}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors py-2"
+                >
+                  Close
+                </button>
+              </animated.div>
+            ) : (
+              // Reserve same vertical space during processing
+              <div className="h-[88px]" />
+            )}
 
             {/* Subtle ambient glow when complete */}
             {showSuccess && (

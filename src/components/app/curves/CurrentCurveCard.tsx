@@ -66,9 +66,8 @@ export function CurrentCurveCard({
   
   const canSubmitFeedback = onSubmitFeedback && dailyLimit && dailyLimit.remaining > 0;
   
-  // Extract version from curve name
-  const versionMatch = curve.name.match(/v(\d+)/i);
-  const version = versionMatch ? parseInt(versionMatch[1]) : 1;
+  // Use upload_number directly for version display (per backend recommendation)
+  const version = curve.upload_number;
 
   // Random pro tip (stable per render cycle)
   const proTip = useMemo(() => PRO_TIPS[Math.floor(Math.random() * PRO_TIPS.length)], []);

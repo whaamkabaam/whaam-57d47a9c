@@ -15,6 +15,7 @@ import {
   useRevertCurve,
   useCurveContent,
 } from '@/hooks/api/useCurves';
+import { Curve } from '@/lib/api/types';
 
 import { CurveListItem } from '@/components/app/curves/CurveListItem';
 import { CurveHistoryModal } from '@/components/app/curves/CurveHistoryModal';
@@ -45,10 +46,10 @@ export default function CurveHistory() {
   const [visibleCurvesCount, setVisibleCurvesCount] = useState(10);
 
   // Handlers
-  const handleDownload = async (id: number) => {
-    setDownloadingId(id);
+  const handleDownload = async (curve: Curve) => {
+    setDownloadingId(curve.id);
     try {
-      await downloadMutation.mutateAsync(id);
+      await downloadMutation.mutateAsync({ id: curve.id, name: curve.name });
       toast.success('Curve downloaded successfully');
     } catch (error) {
       toast.error('Failed to download curve');
@@ -159,7 +160,7 @@ export default function CurveHistory() {
                 key={curve.id}
                 curve={curve}
                 previousCurveId={previousCurve?.id ?? null}
-                onDownload={handleDownload}
+                onDownload={() => handleDownload(curve)}
                 onViewHistory={handleViewHistory}
                 onRevert={handleRevert}
                 isDownloading={downloadingId === curve.id}
@@ -193,8 +194,8 @@ export default function CurveHistory() {
         curve={selectedCurve ?? null}
         curveContent={selectedCurveContent ?? null}
         isLoading={isLoadingSelectedContent}
-        onDownload={() => selectedCurveId && handleDownload(selectedCurveId)}
-        isDownloading={downloadingId === selectedCurveId}
+        onDownload={() => selectedCurve && handleDownload(selectedCurve)}
+        isDownloading={downloadingId === selectedCurve?.id}
       />
     </div>
   );

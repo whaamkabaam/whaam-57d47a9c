@@ -189,21 +189,31 @@ export function CurrentCurveCard({
               />
             </div>
 
-            {/* Tip / Message area - animated height */}
+            {/* Tip / Message area - animated height with spring physics */}
             <motion.div 
               layout
               className="relative overflow-hidden"
-              transition={{ duration: 0.25, ease: "easeInOut" }}
+              transition={{ 
+                layout: { 
+                  type: "spring", 
+                  stiffness: 300, 
+                  damping: 30,
+                  mass: 0.8
+                }
+              }}
             >
               <AnimatePresence mode="wait">
                 {allPerfect ? (
                   <motion.div
                     key="perfect-message"
                     layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ 
+                      opacity: { duration: 0.15 },
+                      scale: { duration: 0.15 }
+                    }}
                     className="text-center py-3 px-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20"
                   >
                     <Star className="h-4 w-4 inline-block text-yellow-400 mr-2" />
@@ -215,10 +225,13 @@ export function CurrentCurveCard({
                   <motion.div
                     key="pro-tip"
                     layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ 
+                      opacity: { duration: 0.15 },
+                      scale: { duration: 0.15 }
+                    }}
                     className="flex items-start gap-3 p-4 rounded-lg bg-primary/5 border border-primary/10"
                   >
                     <Lightbulb className="h-4 w-4 text-primary/70 shrink-0 mt-0.5" />

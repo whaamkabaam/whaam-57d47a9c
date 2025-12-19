@@ -173,3 +173,8 @@ export interface ResetPasswordRequest {
   token: string;
   new_password: string;
 }
+
+// Curve Request Types
+export interface RenameCurveRequest {
+  name: string; // Must end with .ccurve
+}

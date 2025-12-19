@@ -33,6 +33,8 @@ export {
   useCurveHistory, 
   useDownloadCurve, 
   useRevertCurve, 
+  useRenameCurve,
+  useSetCurveCurrent,
   useMarkCurveFavorite,
   useUploadCurve,
   curveKeys,

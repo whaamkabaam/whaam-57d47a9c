@@ -2,12 +2,11 @@
 // Curve List Item Component
 // ============================================
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Download, History, Star, RotateCcw, Loader2, Check, Pencil, X } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -38,14 +37,25 @@ export function CurveListItem({
   // Store only the base name (without .ccurve extension)
   const getBaseName = (name: string) => name.replace(/\.ccurve$/, '');
   const [editName, setEditName] = useState(getBaseName(curve.name));
+  
+  // Optimistic name update - show new name instantly before API confirms
+  const [optimisticName, setOptimisticName] = useState<string | null>(null);
+  const displayName = optimisticName ?? curve.name;
+  
+  // Clear optimistic name when actual curve.name updates from API
+  useEffect(() => {
+    if (optimisticName && curve.name === optimisticName) {
+      setOptimisticName(null);
+    }
+  }, [curve.name, optimisticName]);
 
   const handleStartEdit = () => {
-    setEditName(getBaseName(curve.name));
+    setEditName(getBaseName(displayName));
     setIsEditing(true);
   };
 
   const handleCancelEdit = () => {
-    setEditName(getBaseName(curve.name));
+    setEditName(getBaseName(displayName));
     setIsEditing(false);
   };
 
@@ -60,6 +70,7 @@ export function CurveListItem({
     
     if (finalName !== curve.name) {
       console.log('[Rename Debug] Calling rename with:', { curveId: curve.id, newName: finalName });
+      setOptimisticName(finalName); // Instant UI update
       onRename(curve.id, finalName);
     }
     setIsEditing(false);
@@ -81,44 +92,41 @@ export function CurveListItem({
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               {isEditing ? (
-                <div className="flex items-center gap-1.5">
-                  <Input
+                <div className="flex items-center">
+                  <input
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="h-6 w-32 text-sm bg-background/50 border-border/50 focus:border-primary/50 px-2"
+                    className="bg-transparent border-0 border-b border-primary/50 outline-none text-sm font-semibold text-foreground min-w-[40px] max-w-[160px] focus:border-primary transition-colors"
+                    style={{ width: `${Math.max(editName.length * 7, 40)}px` }}
                     autoFocus
                   />
-                  <span className="text-sm text-muted-foreground">.ccurve</span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
+                  <span className="text-sm font-semibold text-muted-foreground/60">.ccurve</span>
+                  <button
                     onClick={handleSaveEdit}
-                    className="h-6 w-6 p-0 hover:bg-green-500/10"
+                    className="p-1 ml-1.5 rounded hover:bg-green-500/10 transition-colors"
+                    title="Save"
                   >
-                    <Check className="h-3 w-3 text-green-400" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
+                    <Check className="h-3.5 w-3.5 text-green-400" />
+                  </button>
+                  <button
                     onClick={handleCancelEdit}
-                    className="h-6 w-6 p-0 hover:bg-destructive/10"
+                    className="p-1 rounded hover:bg-muted/30 transition-colors"
+                    title="Cancel"
                   >
-                    <X className="h-3 w-3 text-muted-foreground" />
-                  </Button>
+                    <X className="h-3.5 w-3.5 text-muted-foreground/50" />
+                  </button>
                 </div>
               ) : (
                 <>
-                  <span className="font-semibold truncate">{curve.name}</span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
+                  <span className="font-semibold truncate">{displayName}</span>
+                  <button
                     onClick={handleStartEdit}
-                    className="h-6 w-6 p-0 opacity-50 hover:opacity-100"
+                    className="p-1 rounded opacity-40 hover:opacity-100 hover:bg-muted/30 transition-all"
                     title="Rename curve"
                   >
                     <Pencil className="h-3 w-3" />
-                  </Button>
+                  </button>
                 </>
               )}
               {curve.is_current && (

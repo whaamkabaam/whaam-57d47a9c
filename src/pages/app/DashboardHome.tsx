@@ -73,14 +73,15 @@ export default function DashboardHome() {
       return;
     }
 
-    // Use parent_curve_id to find previous version (handles gaps correctly)
+    // Check if this is the original upload (no parent to revert to)
     if (!currentCurve.parent_curve_id) {
       toast.info('This is the original upload');
       return;
     }
 
     try {
-      await revertMutation.mutateAsync(currentCurve.parent_curve_id);
+      // Pass the current curve ID - backend looks up parent_curve_id internally
+      await revertMutation.mutateAsync(currentCurve.id);
       toast.success('Reverted to previous version');
     } catch (error) {
       toast.error('Failed to revert');

@@ -88,14 +88,9 @@ export function CurrentCurveCard({
       <div className="px-6 py-4 border-b border-border/10 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex flex-col">
-            <span className="text-xs text-muted-foreground/70 uppercase tracking-wider">Your Curve</span>
-            <h2 className="text-xl font-bold text-foreground tracking-tight">
-              {curve.name}
-            </h2>
+            <h2 className="text-xl font-bold text-foreground tracking-tight">Your Curve</h2>
+            <span className="text-sm text-muted-foreground">{curve.name}</span>
           </div>
-          <span className="px-2.5 py-1 rounded-full bg-primary/20 text-primary text-sm font-semibold">
-            v{version}
-          </span>
           {curve.is_favorite && (
             <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 text-sm font-medium">
               <Star className="h-3.5 w-3.5 fill-current" />

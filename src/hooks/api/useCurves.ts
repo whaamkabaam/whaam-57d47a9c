@@ -93,6 +93,31 @@ export function useRevertCurve() {
   });
 }
 
+// Rename a curve
+export function useRenameCurve() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: ({ id, name }: { id: number; name: string }) => 
+      curvesApi.rename(id, name),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: curveKeys.all });
+    },
+  });
+}
+
+// Set any curve as current (jump directly to any version)
+export function useSetCurveCurrent() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (id: number) => curvesApi.setCurrent(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: curveKeys.all });
+    },
+  });
+}
+
 // Mark curve as favorite
 export function useMarkCurveFavorite() {
   const queryClient = useQueryClient();

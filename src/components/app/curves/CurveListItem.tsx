@@ -2,11 +2,13 @@
 // Curve List Item Component
 // ============================================
 
+import { useState } from 'react';
 import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Download, History, Star, RotateCcw, Loader2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Download, History, Star, RotateCcw, Loader2, Check, Pencil, X } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface CurveListItemProps {
@@ -15,6 +17,8 @@ interface CurveListItemProps {
   onDownload: () => void;
   onViewHistory: (id: number) => void;
   onRevert: (id: number) => void;
+  onSetCurrent: (id: number) => void;
+  onRename: (id: number, newName: string) => void;
   isDownloading?: boolean;
   isReverting?: boolean;
 }
@@ -25,17 +29,97 @@ export function CurveListItem({
   onDownload,
   onViewHistory,
   onRevert,
+  onSetCurrent,
+  onRename,
   isDownloading,
   isReverting,
 }: CurveListItemProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState(curve.name);
+
+  const handleStartEdit = () => {
+    setEditName(curve.name);
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setEditName(curve.name);
+    setIsEditing(false);
+  };
+
+  const handleSaveEdit = () => {
+    const trimmedName = editName.trim();
+    if (!trimmedName) {
+      handleCancelEdit();
+      return;
+    }
+    // Ensure .ccurve extension
+    const finalName = trimmedName.endsWith('.ccurve') 
+      ? trimmedName 
+      : `${trimmedName}.ccurve`;
+    
+    if (finalName !== curve.name) {
+      onRename(curve.id, finalName);
+    }
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSaveEdit();
+    } else if (e.key === 'Escape') {
+      handleCancelEdit();
+    }
+  };
+
   return (
     <LiquidGlassCard variant="secondary" className="p-4">
       <div className="flex items-center justify-between gap-4">
         {/* Curve Info */}
         <div className="flex items-center gap-3 min-w-0 flex-1">
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-semibold truncate">{curve.name}</span>
+              {isEditing ? (
+                <div className="flex items-center gap-1 flex-1 max-w-xs">
+                  <Input
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    onBlur={handleSaveEdit}
+                    className="h-7 text-sm"
+                    autoFocus
+                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleSaveEdit}
+                    className="h-7 w-7 p-0"
+                  >
+                    <Check className="h-3.5 w-3.5 text-green-400" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleCancelEdit}
+                    className="h-7 w-7 p-0"
+                  >
+                    <X className="h-3.5 w-3.5 text-muted-foreground" />
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <span className="font-semibold truncate">{curve.name}</span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleStartEdit}
+                    className="h-6 w-6 p-0 opacity-50 hover:opacity-100"
+                    title="Rename curve"
+                  >
+                    <Pencil className="h-3 w-3" />
+                  </Button>
+                </>
+              )}
               {curve.is_current && (
                 <Badge variant="default" className="bg-green-500/20 text-green-400 border-green-500/30">
                   Current
@@ -77,13 +161,32 @@ export function CurveListItem({
           >
             <History className="h-4 w-4" />
           </Button>
-          {(!curve.is_current || previousCurveId) && (
+          
+          {/* Set as Current - for non-current curves */}
+          {!curve.is_current && (
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => onRevert(curve.is_current ? previousCurveId! : curve.id)}
+              onClick={() => onSetCurrent(curve.id)}
               disabled={isReverting}
-              title={curve.is_current ? "Revert to previous version" : "Set as current"}
+              title="Set as current"
+            >
+              {isReverting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Check className="h-4 w-4" />
+              )}
+            </Button>
+          )}
+          
+          {/* Revert to Parent - only for current curve with a parent */}
+          {curve.is_current && previousCurveId && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onRevert(previousCurveId)}
+              disabled={isReverting}
+              title="Revert to previous version"
             >
               {isReverting ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

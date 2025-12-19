@@ -101,6 +101,12 @@ export const curvesApi = {
   revert: (id: number) => 
     api.post<Curve>(`/curves/${id}/revert`),
 
+  rename: (id: number, name: string) => 
+    api.patch<Curve>(`/curves/${id}/rename`, { name }),
+
+  setCurrent: (id: number) => 
+    api.post<Curve>(`/curves/${id}/set-current`),
+
   markFavorite: (id: number) => 
     api.post<MessageResponse & { success: boolean }>(`/curves/${id}/favorite`),
 

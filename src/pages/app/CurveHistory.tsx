@@ -13,6 +13,8 @@ import {
   useCurves,
   useDownloadCurve,
   useRevertCurve,
+  useSetCurveCurrent,
+  useRenameCurve,
   useCurveContent,
 } from '@/hooks/api/useCurves';
 import { Curve } from '@/lib/api/types';
@@ -41,6 +43,8 @@ export default function CurveHistory() {
   // Mutations
   const downloadMutation = useDownloadCurve();
   const revertMutation = useRevertCurve();
+  const setCurrentMutation = useSetCurveCurrent();
+  const renameMutation = useRenameCurve();
 
   // Pagination state
   const [visibleCurvesCount, setVisibleCurvesCount] = useState(10);
@@ -68,11 +72,32 @@ export default function CurveHistory() {
     setRevertingId(id);
     try {
       await revertMutation.mutateAsync(id);
+      toast.success('Reverted to previous curve');
+    } catch (error) {
+      toast.error('Failed to revert curve');
+    } finally {
+      setRevertingId(null);
+    }
+  };
+
+  const handleSetCurrent = async (id: number) => {
+    setRevertingId(id);
+    try {
+      await setCurrentMutation.mutateAsync(id);
       toast.success('Curve set as current');
     } catch (error) {
       toast.error('Failed to set curve as current');
     } finally {
       setRevertingId(null);
+    }
+  };
+
+  const handleRename = async (id: number, newName: string) => {
+    try {
+      await renameMutation.mutateAsync({ id, name: newName });
+      toast.success('Curve renamed');
+    } catch (error) {
+      toast.error('Failed to rename curve');
     }
   };
 
@@ -163,6 +188,8 @@ export default function CurveHistory() {
                 onDownload={() => handleDownload(curve)}
                 onViewHistory={handleViewHistory}
                 onRevert={handleRevert}
+                onSetCurrent={handleSetCurrent}
+                onRename={handleRename}
                 isDownloading={downloadingId === curve.id}
                 isReverting={revertingId === curve.id}
               />

@@ -283,22 +283,12 @@ export function CurveGraph({
               
               return (
                 <g key={`arrow-${index}`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
-                  {/* Small tip dot */}
-                  <circle
-                    cx={6}
-                    cy={0}
-                    r={3}
+                  {/* Filled triangular arrowhead */}
+                  <polygon
+                    points="-4,-5 8,0 -4,5"
                     fill="#FFD740"
                     stroke="rgba(0,0,0,0.3)"
                     strokeWidth={1}
-                  />
-                  {/* Chevron shape > */}
-                  <path
-                    d="M 0 -5 L 5 0 L 0 5"
-                    fill="none"
-                    stroke="#FFD740"
-                    strokeWidth={2}
-                    strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                 </g>
@@ -363,22 +353,12 @@ export function CurveGraph({
                   
                   return (
                     <g key={`yarrow-${index}`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
-                      {/* Small tip dot */}
-                      <circle
-                        cx={6}
-                        cy={0}
-                        r={3}
+                      {/* Filled triangular arrowhead */}
+                      <polygon
+                        points="-4,-5 8,0 -4,5"
                         fill="hsl(var(--accent))"
                         stroke="rgba(0,0,0,0.3)"
                         strokeWidth={1}
-                      />
-                      {/* Chevron shape > */}
-                      <path
-                        d="M 0 -5 L 5 0 L 0 5"
-                        fill="none"
-                        stroke="hsl(var(--accent))"
-                        strokeWidth={2}
-                        strokeLinecap="round"
                         strokeLinejoin="round"
                       />
                     </g>

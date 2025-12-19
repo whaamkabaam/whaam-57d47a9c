@@ -7,7 +7,7 @@ import { useState, useMemo } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
-import { Download, History, Loader2, Sparkles, Lightbulb, Star } from 'lucide-react';
+import { Download, History, Loader2, Sparkles, Lightbulb, Star, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import { CurveGraph } from './CurveGraph';
 import { FeedbackSlider } from '@/components/app/feedback/FeedbackSlider';
@@ -87,9 +87,14 @@ export function CurrentCurveCard({
       {/* Header - Prominent curve name */}
       <div className="px-6 py-4 border-b border-border/10 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex flex-col">
-            <h2 className="text-xl font-bold text-foreground tracking-tight">Your Curve</h2>
-            <span className="text-sm text-muted-foreground">{curve.name}</span>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[11px] uppercase tracking-wider text-muted-foreground/50 font-medium">
+              Your Curve
+            </span>
+            <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <FileText className="h-4 w-4 text-muted-foreground/60" />
+              {curve.name}
+            </h2>
           </div>
           {curve.is_favorite && (
             <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 text-sm font-medium">

@@ -87,9 +87,12 @@ export function CurrentCurveCard({
       {/* Header - Prominent curve name */}
       <div className="px-6 py-4 border-b border-border/10 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h2 className="text-2xl font-bold text-foreground tracking-tight">
-            Your Curve
-          </h2>
+          <div className="flex flex-col">
+            <span className="text-xs text-muted-foreground/70 uppercase tracking-wider">Your Curve</span>
+            <h2 className="text-xl font-bold text-foreground tracking-tight">
+              {curve.name}
+            </h2>
+          </div>
           <span className="px-2.5 py-1 rounded-full bg-primary/20 text-primary text-sm font-semibold">
             v{version}
           </span>

@@ -35,15 +35,17 @@ export function CurveListItem({
   isReverting,
 }: CurveListItemProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const [editName, setEditName] = useState(curve.name);
+  // Store only the base name (without .ccurve extension)
+  const getBaseName = (name: string) => name.replace(/\.ccurve$/, '');
+  const [editName, setEditName] = useState(getBaseName(curve.name));
 
   const handleStartEdit = () => {
-    setEditName(curve.name);
+    setEditName(getBaseName(curve.name));
     setIsEditing(true);
   };
 
   const handleCancelEdit = () => {
-    setEditName(curve.name);
+    setEditName(getBaseName(curve.name));
     setIsEditing(false);
   };
 
@@ -53,12 +55,11 @@ export function CurveListItem({
       handleCancelEdit();
       return;
     }
-    // Ensure .ccurve extension
-    const finalName = trimmedName.endsWith('.ccurve') 
-      ? trimmedName 
-      : `${trimmedName}.ccurve`;
+    // Always append .ccurve extension
+    const finalName = `${trimmedName}.ccurve`;
     
     if (finalName !== curve.name) {
+      console.log('[Rename Debug] Calling rename with:', { curveId: curve.id, newName: finalName });
       onRename(curve.id, finalName);
     }
     setIsEditing(false);
@@ -80,30 +81,30 @@ export function CurveListItem({
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               {isEditing ? (
-                <div className="flex items-center gap-1 flex-1 max-w-xs">
+                <div className="flex items-center gap-1.5">
                   <Input
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    onBlur={handleSaveEdit}
-                    className="h-7 text-sm"
+                    className="h-6 w-32 text-sm bg-background/50 border-border/50 focus:border-primary/50 px-2"
                     autoFocus
                   />
+                  <span className="text-sm text-muted-foreground">.ccurve</span>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={handleSaveEdit}
-                    className="h-7 w-7 p-0"
+                    className="h-6 w-6 p-0 hover:bg-green-500/10"
                   >
-                    <Check className="h-3.5 w-3.5 text-green-400" />
+                    <Check className="h-3 w-3 text-green-400" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={handleCancelEdit}
-                    className="h-7 w-7 p-0"
+                    className="h-6 w-6 p-0 hover:bg-destructive/10"
                   >
-                    <X className="h-3.5 w-3.5 text-muted-foreground" />
+                    <X className="h-3 w-3 text-muted-foreground" />
                   </Button>
                 </div>
               ) : (

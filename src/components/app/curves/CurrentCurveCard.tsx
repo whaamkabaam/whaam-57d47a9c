@@ -7,7 +7,7 @@ import { useState, useMemo } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
-import { Download, History, Loader2, Sparkles, Lightbulb, Star, FileText } from 'lucide-react';
+import { Download, History, Loader2, Sparkles, Lightbulb, Star, FileText, Info } from 'lucide-react';
 import { format } from 'date-fns';
 import { CurveGraph } from './CurveGraph';
 import { FeedbackSlider } from '@/components/app/feedback/FeedbackSlider';
@@ -229,6 +229,16 @@ export function CurrentCurveCard({
                     <span className="text-sm text-yellow-200/90">
                       Curve feeling great? Save it to your favorites!
                     </span>
+                    <TooltipProvider delayDuration={0}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Info className="h-3.5 w-3.5 inline-block text-yellow-400/60 hover:text-yellow-400 ml-1.5 cursor-help transition-colors" />
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="max-w-[250px] text-center">
+                          You can always come back and adjust this curve later, even after saving!
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </motion.div>
                 ) : (
                   <motion.div
@@ -253,64 +263,53 @@ export function CurrentCurveCard({
             </motion.div>
 
             {/* Submit / Mark Favorite button */}
-            <TooltipProvider delayDuration={0}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <LiquidGlassButton
-                    variant="accent"
-                    onClick={allPerfect ? onMarkFavorite : handleSubmit}
-                    disabled={isSubmittingFeedback || isMarkingFavorite || (!allPerfect && !canSubmitFeedback)}
-                    className={cn(
-                      "w-full flex items-center justify-center gap-2 py-3 transition-colors duration-200",
-                      allPerfect && "bg-yellow-500/20 hover:bg-yellow-500/30 border-yellow-500/30"
-                    )}
+            <LiquidGlassButton
+              variant="accent"
+              onClick={allPerfect ? onMarkFavorite : handleSubmit}
+              disabled={isSubmittingFeedback || isMarkingFavorite || (!allPerfect && !canSubmitFeedback)}
+              className={cn(
+                "w-full flex items-center justify-center gap-2 py-3 transition-colors duration-200",
+                allPerfect && "bg-yellow-500/20 hover:bg-yellow-500/30 border-yellow-500/30"
+              )}
+            >
+              <AnimatePresence mode="wait">
+                {isSubmittingFeedback || isMarkingFavorite ? (
+                  <motion.span 
+                    key="loading" 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
                   >
-                    <AnimatePresence mode="wait">
-                      {isSubmittingFeedback || isMarkingFavorite ? (
-                        <motion.span 
-                          key="loading" 
-                          initial={{ opacity: 0 }} 
-                          animate={{ opacity: 1 }} 
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.15 }}
-                        >
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        </motion.span>
-                      ) : allPerfect ? (
-                        <motion.span 
-                          key="favorite" 
-                          initial={{ opacity: 0 }} 
-                          animate={{ opacity: 1 }} 
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.15 }}
-                          className="flex items-center gap-2"
-                        >
-                          <Star className="h-4 w-4 fill-current text-yellow-400" />
-                          Save to Favorites
-                        </motion.span>
-                      ) : (
-                        <motion.span 
-                          key="generate" 
-                          initial={{ opacity: 0 }} 
-                          animate={{ opacity: 1 }} 
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.15 }}
-                          className="flex items-center gap-2"
-                        >
-                          <Sparkles className="h-4 w-4" />
-                          Generate Improved Curve
-                        </motion.span>
-                      )}
-                    </AnimatePresence>
-                  </LiquidGlassButton>
-                </TooltipTrigger>
-                {allPerfect && (
-                  <TooltipContent side="top" className="max-w-[250px] text-center">
-                    You can always come back and adjust this curve later, even after saving!
-                  </TooltipContent>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  </motion.span>
+                ) : allPerfect ? (
+                  <motion.span 
+                    key="favorite" 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center gap-2"
+                  >
+                    <Star className="h-4 w-4 fill-current text-yellow-400" />
+                    Save to Favorites
+                  </motion.span>
+                ) : (
+                  <motion.span 
+                    key="generate" 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center gap-2"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    Generate Improved Curve
+                  </motion.span>
                 )}
-              </Tooltip>
-            </TooltipProvider>
+              </AnimatePresence>
+            </LiquidGlassButton>
 
             {/* Daily limit - animates in/out */}
             <AnimatePresence>

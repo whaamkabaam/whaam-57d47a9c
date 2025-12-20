@@ -12,6 +12,7 @@ import { format } from 'date-fns';
 import { CurveGraph } from './CurveGraph';
 import { FeedbackSlider } from '@/components/app/feedback/FeedbackSlider';
 import { cn } from '@/lib/utils';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 
 interface CurrentCurveCardProps {
   curve: Curve;
@@ -226,7 +227,7 @@ export function CurrentCurveCard({
                   >
                     <Star className="h-4 w-4 inline-block text-yellow-400 mr-2" />
                     <span className="text-sm text-yellow-200/90">
-                      Curve feeling perfect? Save it to your favorites!
+                      Curve feeling great? Save it to your favorites!
                     </span>
                   </motion.div>
                 ) : (
@@ -252,53 +253,64 @@ export function CurrentCurveCard({
             </motion.div>
 
             {/* Submit / Mark Favorite button */}
-            <LiquidGlassButton
-              variant="accent"
-              onClick={allPerfect ? onMarkFavorite : handleSubmit}
-              disabled={isSubmittingFeedback || isMarkingFavorite || (!allPerfect && !canSubmitFeedback)}
-              className={cn(
-                "w-full flex items-center justify-center gap-2 py-3 transition-colors duration-200",
-                allPerfect && "bg-yellow-500/20 hover:bg-yellow-500/30 border-yellow-500/30"
-              )}
-            >
-              <AnimatePresence mode="wait">
-                {isSubmittingFeedback || isMarkingFavorite ? (
-                  <motion.span 
-                    key="loading" 
-                    initial={{ opacity: 0 }} 
-                    animate={{ opacity: 1 }} 
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15 }}
+            <TooltipProvider delayDuration={0}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <LiquidGlassButton
+                    variant="accent"
+                    onClick={allPerfect ? onMarkFavorite : handleSubmit}
+                    disabled={isSubmittingFeedback || isMarkingFavorite || (!allPerfect && !canSubmitFeedback)}
+                    className={cn(
+                      "w-full flex items-center justify-center gap-2 py-3 transition-colors duration-200",
+                      allPerfect && "bg-yellow-500/20 hover:bg-yellow-500/30 border-yellow-500/30"
+                    )}
                   >
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  </motion.span>
-                ) : allPerfect ? (
-                  <motion.span 
-                    key="favorite" 
-                    initial={{ opacity: 0 }} 
-                    animate={{ opacity: 1 }} 
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15 }}
-                    className="flex items-center gap-2"
-                  >
-                    <Star className="h-4 w-4 fill-current text-yellow-400" />
-                    Save to Favorites
-                  </motion.span>
-                ) : (
-                  <motion.span 
-                    key="generate" 
-                    initial={{ opacity: 0 }} 
-                    animate={{ opacity: 1 }} 
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15 }}
-                    className="flex items-center gap-2"
-                  >
-                    <Sparkles className="h-4 w-4" />
-                    Generate Improved Curve
-                  </motion.span>
+                    <AnimatePresence mode="wait">
+                      {isSubmittingFeedback || isMarkingFavorite ? (
+                        <motion.span 
+                          key="loading" 
+                          initial={{ opacity: 0 }} 
+                          animate={{ opacity: 1 }} 
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.15 }}
+                        >
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        </motion.span>
+                      ) : allPerfect ? (
+                        <motion.span 
+                          key="favorite" 
+                          initial={{ opacity: 0 }} 
+                          animate={{ opacity: 1 }} 
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.15 }}
+                          className="flex items-center gap-2"
+                        >
+                          <Star className="h-4 w-4 fill-current text-yellow-400" />
+                          Save to Favorites
+                        </motion.span>
+                      ) : (
+                        <motion.span 
+                          key="generate" 
+                          initial={{ opacity: 0 }} 
+                          animate={{ opacity: 1 }} 
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.15 }}
+                          className="flex items-center gap-2"
+                        >
+                          <Sparkles className="h-4 w-4" />
+                          Generate Improved Curve
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </LiquidGlassButton>
+                </TooltipTrigger>
+                {allPerfect && (
+                  <TooltipContent side="top" className="max-w-[250px] text-center">
+                    You can always come back and adjust this curve later, even after saving!
+                  </TooltipContent>
                 )}
-              </AnimatePresence>
-            </LiquidGlassButton>
+              </Tooltip>
+            </TooltipProvider>
 
             {/* Daily limit - animates in/out */}
             <AnimatePresence>

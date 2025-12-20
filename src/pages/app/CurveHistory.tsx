@@ -253,14 +253,15 @@ export default function CurveHistory() {
             );
           })}
           
-          {/* Load More Button - prominent styling */}
+          {/* Load More Button - subtle glass styling */}
           {hasMoreCurves && (
             <Button
-              variant="outline"
+              variant="ghost"
               size="lg"
-              className="w-full border-primary/30 bg-card/50 hover:bg-primary/10 
-                         hover:border-primary/50 text-foreground font-medium py-6
-                         transition-all duration-200"
+              className="w-full bg-card/30 backdrop-blur-sm border border-white/5 
+                         hover:bg-card/50 hover:border-white/10 text-muted-foreground 
+                         hover:text-foreground font-medium py-6 transition-all duration-200
+                         rounded-xl"
               onClick={handleLoadMore}
               disabled={isFetching}
             >

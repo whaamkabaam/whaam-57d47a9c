@@ -36,6 +36,7 @@ export default function CurveHistory() {
   // Pagination state - true server-side pagination
   const [page, setPage] = useState(0);
   const [allCurves, setAllCurves] = useState<Curve[]>([]);
+  const [newCurveIds, setNewCurveIds] = useState<Set<number>>(new Set());
 
   // Data fetching - only fetch current page
   const { data: curvesData, isLoading: isLoadingCurves, isFetching } = useCurves(
@@ -48,13 +49,21 @@ export default function CurveHistory() {
     if (curvesData?.curves) {
       if (page === 0) {
         setAllCurves(curvesData.curves);
+        setNewCurveIds(new Set());
       } else {
         setAllCurves(prev => {
           // Avoid duplicates by checking IDs
           const existingIds = new Set(prev.map(c => c.id));
           const newCurves = curvesData.curves.filter(c => !existingIds.has(c.id));
+          
+          // Mark new curves for animation
+          setNewCurveIds(new Set(newCurves.map(c => c.id)));
+          
           return [...prev, ...newCurves];
         });
+        
+        // Clear animation markers after animation completes
+        setTimeout(() => setNewCurveIds(new Set()), 400);
       }
     }
   }, [curvesData, page]);
@@ -225,18 +234,22 @@ export default function CurveHistory() {
               : null;
             
             return (
-              <CurveListItem
+              <div 
                 key={curve.id}
-                curve={curve}
-                previousCurveId={previousCurve?.id ?? null}
-                onDownload={() => handleDownload(curve)}
-                onViewHistory={handleViewHistory}
-                onRevert={handleRevert}
-                onSetCurrent={handleSetCurrent}
-                onRename={handleRename}
-                isDownloading={downloadingId === curve.id}
-                isReverting={revertingId === curve.id}
-              />
+                className={newCurveIds.has(curve.id) ? 'animate-fade-in' : ''}
+              >
+                <CurveListItem
+                  curve={curve}
+                  previousCurveId={previousCurve?.id ?? null}
+                  onDownload={() => handleDownload(curve)}
+                  onViewHistory={handleViewHistory}
+                  onRevert={handleRevert}
+                  onSetCurrent={handleSetCurrent}
+                  onRename={handleRename}
+                  isDownloading={downloadingId === curve.id}
+                  isReverting={revertingId === curve.id}
+                />
+              </div>
             );
           })}
           

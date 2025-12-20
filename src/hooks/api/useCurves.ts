@@ -19,7 +19,8 @@ export function useCurves(limit = 10, offset = 0) {
   return useQuery({
     queryKey: curveKeys.list(limit, offset),
     queryFn: () => curvesApi.list(limit, offset),
-    staleTime: 30000, // Prevent refetching on every mount
+    staleTime: 30000,
+    placeholderData: (previousData) => previousData, // Keep previous data while fetching to prevent scroll reset
   });
 }
 

@@ -15,10 +15,11 @@ export const curveKeys = {
 };
 
 // List all curves with pagination
-export function useCurves(limit = 50, offset = 0) {
+export function useCurves(limit = 10, offset = 0) {
   return useQuery({
     queryKey: curveKeys.list(limit, offset),
     queryFn: () => curvesApi.list(limit, offset),
+    staleTime: 30000, // Prevent refetching on every mount
   });
 }
 

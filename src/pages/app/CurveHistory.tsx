@@ -2,11 +2,11 @@
 // Curve Library Page - All Curves with Filtering
 // ============================================
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Library, Star } from 'lucide-react';
+import { Library, Star, ChevronDown, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 import {
@@ -23,6 +23,8 @@ import { CurveListItem } from '@/components/app/curves/CurveListItem';
 import { CurveHistoryModal } from '@/components/app/curves/CurveHistoryModal';
 import { CurveDetailModal } from '@/components/app/curves/CurveDetailModal';
 
+const ITEMS_PER_PAGE = 10;
+
 export default function CurveHistory() {
   const [historyModalOpen, setHistoryModalOpen] = useState(false);
   const [graphModalOpen, setGraphModalOpen] = useState(false);
@@ -31,11 +33,34 @@ export default function CurveHistory() {
   const [revertingId, setRevertingId] = useState<number | null>(null);
   const [filter, setFilter] = useState<'all' | 'favorite'>('all');
 
-  // Data fetching
-  const { data: curvesData, isLoading: isLoadingCurves } = useCurves();
-  
+  // Pagination state - true server-side pagination
+  const [page, setPage] = useState(0);
+  const [allCurves, setAllCurves] = useState<Curve[]>([]);
+
+  // Data fetching - only fetch current page
+  const { data: curvesData, isLoading: isLoadingCurves, isFetching } = useCurves(
+    ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE
+  );
+
+  // Accumulate curves when new data arrives
+  useEffect(() => {
+    if (curvesData?.curves) {
+      if (page === 0) {
+        setAllCurves(curvesData.curves);
+      } else {
+        setAllCurves(prev => {
+          // Avoid duplicates by checking IDs
+          const existingIds = new Set(prev.map(c => c.id));
+          const newCurves = curvesData.curves.filter(c => !existingIds.has(c.id));
+          return [...prev, ...newCurves];
+        });
+      }
+    }
+  }, [curvesData, page]);
+
   // Fetch selected curve content for modal
-  const selectedCurve = curvesData?.curves?.find(c => c.id === selectedCurveId);
+  const selectedCurve = allCurves.find(c => c.id === selectedCurveId);
   const { data: selectedCurveContent, isLoading: isLoadingSelectedContent } = useCurveContent(
     graphModalOpen ? selectedCurveId : null
   );
@@ -45,9 +70,6 @@ export default function CurveHistory() {
   const revertMutation = useRevertCurve();
   const setCurrentMutation = useSetCurveCurrent();
   const renameMutation = useRenameCurve();
-
-  // Pagination state
-  const [visibleCurvesCount, setVisibleCurvesCount] = useState(10);
 
   // Handlers
   const handleDownload = async (curve: Curve) => {
@@ -101,11 +123,33 @@ export default function CurveHistory() {
     }
   };
 
-  const curves = curvesData?.curves ?? [];
-  const favoriteCount = curves.filter(c => c.is_favorite).length;
-  const filteredCurves = filter === 'favorite' ? curves.filter(c => c.is_favorite) : curves;
-  const visibleCurves = filteredCurves.slice(0, visibleCurvesCount);
-  const hasMoreCurves = filteredCurves.length > visibleCurvesCount;
+  // Use accumulated curves for display
+  const totalCurves = curvesData?.total ?? 0;
+  const favoriteCount = allCurves.filter(c => c.is_favorite).length;
+  
+  // Filter for favorites (client-side since we need all favorites count anyway)
+  const filteredCurves = useMemo(() => 
+    filter === 'favorite' ? allCurves.filter(c => c.is_favorite) : allCurves,
+    [allCurves, filter]
+  );
+  
+  // Check if there are more curves to load from server
+  const hasMoreCurves = filter === 'all' 
+    ? allCurves.length < totalCurves 
+    : false; // For favorites, we can't easily paginate server-side
+  
+  const handleLoadMore = () => {
+    setPage(prev => prev + 1);
+  };
+  
+  const handleFilterChange = (newFilter: 'all' | 'favorite') => {
+    setFilter(newFilter);
+    // Reset pagination when switching filters
+    if (newFilter === 'all') {
+      setPage(0);
+      setAllCurves([]);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -121,14 +165,14 @@ export default function CurveHistory() {
           <Button 
             variant={filter === 'all' ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => { setFilter('all'); setVisibleCurvesCount(10); }}
+            onClick={() => handleFilterChange('all')}
           >
-            All Curves ({curves.length})
+            All Curves {totalCurves > 0 && `(${totalCurves})`}
           </Button>
           <Button 
             variant={filter === 'favorite' ? 'default' : 'ghost'}
             size="sm"
-            onClick={() => { setFilter('favorite'); setVisibleCurvesCount(10); }}
+            onClick={() => handleFilterChange('favorite')}
             className={filter === 'favorite' ? 'bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300' : ''}
           >
             <Star className="h-3 w-3 mr-1 fill-current text-yellow-400" />
@@ -164,7 +208,7 @@ export default function CurveHistory() {
             It'll appear here for easy access.
           </p>
         </LiquidGlassCard>
-      ) : curves.length === 0 ? (
+      ) : allCurves.length === 0 && !isLoadingCurves ? (
         <LiquidGlassCard variant="secondary" className="p-8 text-center">
           <Library className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <h2 className="text-xl font-semibold mb-2">No Curves Yet</h2>
@@ -174,10 +218,10 @@ export default function CurveHistory() {
         </LiquidGlassCard>
       ) : (
         <div className="space-y-3">
-          {visibleCurves.map((curve) => {
+          {filteredCurves.map((curve) => {
             // Use parent_curve_id to find previous version (handles gaps correctly)
             const previousCurve = curve.is_current && curve.parent_curve_id
-              ? curves.find(c => c.id === curve.parent_curve_id)
+              ? allCurves.find(c => c.id === curve.parent_curve_id)
               : null;
             
             return (
@@ -195,13 +239,29 @@ export default function CurveHistory() {
               />
             );
           })}
+          
+          {/* Load More Button - prominent styling */}
           {hasMoreCurves && (
             <Button
-              variant="ghost"
-              className="w-full text-muted-foreground"
-              onClick={() => setVisibleCurvesCount(prev => prev + 10)}
+              variant="outline"
+              size="lg"
+              className="w-full border-primary/30 bg-card/50 hover:bg-primary/10 
+                         hover:border-primary/50 text-foreground font-medium py-6
+                         transition-all duration-200"
+              onClick={handleLoadMore}
+              disabled={isFetching}
             >
-              Show {Math.min(10, filteredCurves.length - visibleCurvesCount)} more curves...
+              {isFetching ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                <>
+                  <ChevronDown className="h-4 w-4 mr-2" />
+                  Load {Math.min(ITEMS_PER_PAGE, totalCurves - allCurves.length)} more curves
+                </>
+              )}
             </Button>
           )}
         </div>

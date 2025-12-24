@@ -144,8 +144,8 @@ export function CurrentCurveCard({
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="bg-transparent border-0 border-b border-primary/50 outline-none text-lg font-semibold text-foreground min-w-[40px] focus:border-primary transition-colors"
-                    style={{ width: `${Math.max(editName.length * 9, 40)}px` }}
+                    className="bg-transparent border-0 border-b border-primary/50 outline-none text-lg font-semibold text-foreground focus:border-primary transition-colors"
+                    style={{ width: `${Math.max(editName.length + 1, 4)}ch` }}
                     autoFocus
                     disabled={isRenaming}
                   />

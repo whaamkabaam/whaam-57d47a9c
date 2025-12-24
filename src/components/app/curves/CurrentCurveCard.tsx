@@ -137,49 +137,56 @@ export function CurrentCurveCard({
               Your Curve
             </span>
             <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <FileText className="h-4 w-4 text-muted-foreground/60" />
-              {isEditing ? (
-                <div className="flex items-center">
+              <FileText className="h-4 w-4 text-muted-foreground/60 flex-shrink-0" />
+              {/* Stable name container - always same structure */}
+              <div className="flex items-center min-w-0">
+                {isEditing ? (
                   <input
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="bg-transparent border-0 border-b border-primary/50 outline-none text-lg font-semibold text-foreground focus:border-primary transition-colors"
-                    style={{ width: `${Math.max(editName.length + 1, 4)}ch` }}
+                    className="bg-transparent border-0 border-b border-primary/50 outline-none text-lg font-semibold text-foreground focus:border-primary transition-colors min-w-[8ch]"
+                    style={{ width: `${Math.max(editName.length + 2, 8)}ch` }}
                     autoFocus
                     disabled={isRenaming}
                   />
-                  <span className="text-lg font-semibold text-muted-foreground/60">.ccurve</span>
-                  <button 
-                    onClick={handleSaveEdit} 
-                    disabled={isRenaming}
-                    className="p-1 ml-1.5 rounded hover:bg-green-500/10 transition-colors disabled:opacity-50"
-                  >
-                    {isRenaming ? (
-                      <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                    ) : (
-                      <Check className="h-4 w-4 text-green-400" />
-                    )}
-                  </button>
-                  <button 
-                    onClick={handleCancelEdit} 
-                    disabled={isRenaming}
-                    className="p-1 rounded hover:bg-muted/30 transition-colors disabled:opacity-50"
-                  >
-                    <X className="h-4 w-4 text-muted-foreground/50" />
-                  </button>
-                </div>
-              ) : (
-                <>
-                  {displayName}
+                ) : (
+                  <span className="truncate">{getBaseName(displayName)}</span>
+                )}
+                <span className="text-lg font-semibold text-muted-foreground/60 flex-shrink-0">.ccurve</span>
+              </div>
+              {/* Action buttons - always in same position relative to name */}
+              <div className="flex items-center flex-shrink-0">
+                {isEditing ? (
+                  <>
+                    <button 
+                      onClick={handleSaveEdit} 
+                      disabled={isRenaming}
+                      className="p-1 rounded hover:bg-green-500/10 transition-colors disabled:opacity-50"
+                    >
+                      {isRenaming ? (
+                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                      ) : (
+                        <Check className="h-4 w-4 text-green-400" />
+                      )}
+                    </button>
+                    <button 
+                      onClick={handleCancelEdit} 
+                      disabled={isRenaming}
+                      className="p-1 rounded hover:bg-muted/30 transition-colors disabled:opacity-50"
+                    >
+                      <X className="h-4 w-4 text-muted-foreground/50" />
+                    </button>
+                  </>
+                ) : (
                   <button 
                     onClick={handleStartEdit} 
                     className="p-1 rounded opacity-40 hover:opacity-100 hover:bg-muted/30 transition-all"
                   >
                     <Pencil className="h-4 w-4" />
                   </button>
-                </>
-              )}
+                )}
+              </div>
             </h2>
           </div>
           {curve.is_favorite && (

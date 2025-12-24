@@ -21,9 +21,7 @@ export default function StickyCTA({
     aria-label="Quick actions"
   >
     <LiquidGlassCard variant="secondary" className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 p-2.5 sm:p-3">
-      <LiquidGlassButton variant="primary" className="px-4 py-2 font-bold" onClick={() => document.getElementById("products")?.scrollIntoView({
-      behavior: "smooth"
-    })}>Book 1:1 Live Session</LiquidGlassButton>
+      <LiquidGlassButton variant="primary" className="px-4 py-2 font-bold" onClick={() => window.open(CONFIG.checkout.live149, "_blank")}>Book 1:1 Live Session</LiquidGlassButton>
       <LiquidGlassButton variant="secondary" className="px-4 py-2 font-bold" onClick={() => rightIsPlans ? document.getElementById("products")?.scrollIntoView({
       behavior: "smooth"
     }) : window.open(CONFIG.discord.invite, "_blank")}>

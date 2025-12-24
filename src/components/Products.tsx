@@ -2,12 +2,19 @@ import { useState } from "react";
 import { Check, X, ArrowRight, Shield, Zap, Trophy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
+import { CONFIG } from "@/config";
 
 const Products = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleGetCurve = (planName: string, price: string, planId: string) => {
+    // Redirect to CopeCart for live-149 plan
+    if (planId === "live-149") {
+      window.open(CONFIG.checkout.live149, "_blank");
+      return;
+    }
+    
     setSelectedPlan(planId);
     toast({
       title: `${planName} Selected!`,

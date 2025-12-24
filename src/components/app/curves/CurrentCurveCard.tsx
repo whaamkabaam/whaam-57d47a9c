@@ -7,7 +7,7 @@ import { useState, useMemo } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
-import { Download, History, Loader2, Sparkles, Lightbulb, Star, FileText, Info } from 'lucide-react';
+import { Download, History, Loader2, Sparkles, Lightbulb, Star, FileText, Info, Pencil, Check, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { CurveGraph } from './CurveGraph';
 import { FeedbackSlider } from '@/components/app/feedback/FeedbackSlider';
@@ -29,6 +29,8 @@ interface CurrentCurveCardProps {
   isSubmittingFeedback?: boolean;
   dailyLimit?: { used: number; limit: number; remaining: number };
   isLoadingDailyLimit?: boolean;
+  onRename: (newName: string) => void;
+  isRenaming?: boolean;
 }
 
 const PRO_TIPS = [
@@ -54,10 +56,52 @@ export function CurrentCurveCard({
   isDownloading,
   isRevertingPrevious,
   isMarkingFavorite,
+  onRename,
+  isRenaming,
 }: CurrentCurveCardProps) {
   const [farFeedback, setFarFeedback] = useState(5);
   const [mediumFeedback, setMediumFeedback] = useState(5);
   const [closeFeedback, setCloseFeedback] = useState(5);
+
+  // Rename state
+  const getBaseName = (name: string) => name.replace(/\.ccurve$/, '');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState(getBaseName(curve.name));
+  const [optimisticName, setOptimisticName] = useState<string | null>(null);
+  const displayName = optimisticName ?? curve.name;
+
+  const handleStartEdit = () => {
+    setEditName(getBaseName(displayName));
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setEditName(getBaseName(displayName));
+    setIsEditing(false);
+  };
+
+  const handleSaveEdit = () => {
+    const trimmedName = editName.trim();
+    if (!trimmedName) {
+      handleCancelEdit();
+      return;
+    }
+    const finalName = `${trimmedName}.ccurve`;
+    if (finalName !== curve.name) {
+      setOptimisticName(finalName);
+      onRename(finalName);
+    }
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSaveEdit();
+    } else if (e.key === 'Escape') {
+      handleCancelEdit();
+    }
+  };
 
   // Detect "all perfect" state - means user wants to mark curve as favorite
   const allPerfect = farFeedback === 5 && mediumFeedback === 5 && closeFeedback === 5;
@@ -94,7 +138,48 @@ export function CurrentCurveCard({
             </span>
             <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
               <FileText className="h-4 w-4 text-muted-foreground/60" />
-              {curve.name}
+              {isEditing ? (
+                <div className="flex items-center">
+                  <input
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    className="bg-transparent border-0 border-b border-primary/50 outline-none text-lg font-semibold text-foreground min-w-[40px] focus:border-primary transition-colors"
+                    style={{ width: `${Math.max(editName.length * 9, 40)}px` }}
+                    autoFocus
+                    disabled={isRenaming}
+                  />
+                  <span className="text-lg font-semibold text-muted-foreground/60">.ccurve</span>
+                  <button 
+                    onClick={handleSaveEdit} 
+                    disabled={isRenaming}
+                    className="p-1 ml-1.5 rounded hover:bg-green-500/10 transition-colors disabled:opacity-50"
+                  >
+                    {isRenaming ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                    ) : (
+                      <Check className="h-4 w-4 text-green-400" />
+                    )}
+                  </button>
+                  <button 
+                    onClick={handleCancelEdit} 
+                    disabled={isRenaming}
+                    className="p-1 rounded hover:bg-muted/30 transition-colors disabled:opacity-50"
+                  >
+                    <X className="h-4 w-4 text-muted-foreground/50" />
+                  </button>
+                </div>
+              ) : (
+                <>
+                  {displayName}
+                  <button 
+                    onClick={handleStartEdit} 
+                    className="p-1 rounded opacity-40 hover:opacity-100 hover:bg-muted/30 transition-all"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </button>
+                </>
+              )}
             </h2>
           </div>
           {curve.is_favorite && (

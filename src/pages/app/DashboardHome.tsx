@@ -15,6 +15,7 @@ import {
   useMarkCurveFavorite,
   useRevertCurve,
   useCurveContent,
+  useRenameCurve,
 } from '@/hooks/api/useCurves';
 import { useDailyLimit, useSubmitFeedback, useInvalidateCurveQueries } from '@/hooks/api/useFeedback';
 
@@ -48,6 +49,7 @@ export default function DashboardHome() {
   const markFavoriteMutation = useMarkCurveFavorite();
   const revertMutation = useRevertCurve();
   const submitFeedbackMutation = useSubmitFeedback();
+  const renameMutation = useRenameCurve();
   const invalidateCurveQueries = useInvalidateCurveQueries();
 
   // Use upload_number directly for iteration display
@@ -107,6 +109,16 @@ export default function DashboardHome() {
     } catch (error: any) {
       const message = error?.response?.data?.message || error?.message || 'Failed to save';
       toast.error(message);
+    }
+  };
+
+  const handleRename = async (newName: string) => {
+    if (!currentCurve) return;
+    try {
+      await renameMutation.mutateAsync({ id: currentCurve.id, name: newName });
+      toast.success('Curve renamed');
+    } catch (error) {
+      toast.error('Failed to rename');
     }
   };
 
@@ -196,6 +208,8 @@ export default function DashboardHome() {
         isSubmittingFeedback={submitFeedbackMutation.isPending}
         dailyLimit={dailyLimit}
         isLoadingDailyLimit={isLoadingDailyLimit}
+        onRename={handleRename}
+        isRenaming={renameMutation.isPending}
       />
 
       {/* AI Processing Modal */}

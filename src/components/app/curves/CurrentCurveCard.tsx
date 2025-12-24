@@ -3,7 +3,7 @@
 // Story-driven design: Play → Rate → AI improves
 // ============================================
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useLayoutEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
@@ -69,6 +69,17 @@ export function CurrentCurveCard({
   const [editName, setEditName] = useState(getBaseName(curve.name));
   const [optimisticName, setOptimisticName] = useState<string | null>(null);
   const displayName = optimisticName ?? curve.name;
+
+  // Measure input width precisely using a hidden span
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const [inputWidth, setInputWidth] = useState<number>(0);
+
+  useLayoutEffect(() => {
+    if (measureRef.current && isEditing) {
+      // Add small buffer (4px) for cursor and padding
+      setInputWidth(measureRef.current.offsetWidth + 4);
+    }
+  }, [editName, isEditing]);
 
   const handleStartEdit = () => {
     setEditName(getBaseName(displayName));
@@ -140,13 +151,21 @@ export function CurrentCurveCard({
               <FileText className="h-4 w-4 text-muted-foreground/60 flex-shrink-0" />
               {/* Stable name container - always same structure */}
               <div className="flex items-center min-w-0">
+                {/* Hidden measuring span - mirrors input text styling exactly */}
+                <span
+                  ref={measureRef}
+                  className="absolute invisible whitespace-pre text-lg font-semibold"
+                  aria-hidden="true"
+                >
+                  {editName || ' '}
+                </span>
                 {isEditing ? (
                   <input
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="bg-transparent border-0 border-b border-primary/50 outline-none text-lg font-semibold text-foreground focus:border-primary transition-colors min-w-[8ch]"
-                    style={{ width: `${Math.max(editName.length + 2, 8)}ch` }}
+                    className="bg-transparent border-0 border-b border-primary/50 outline-none text-lg font-semibold text-foreground focus:border-primary transition-colors"
+                    style={{ width: Math.max(inputWidth, 48) }}
                     autoFocus
                     disabled={isRenaming}
                   />

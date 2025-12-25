@@ -37,7 +37,7 @@ export default function Auth() {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      const from = (location.state as any)?.from?.pathname || '/app';
+      const from = (location.state as any)?.from?.pathname || '/studio';
       navigate(from, { replace: true });
     }
   }, [isAuthenticated, navigate, location]);

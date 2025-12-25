@@ -72,9 +72,9 @@ export default function Navigation({ activeSection }: NavigationProps) {
                   <LiquidGlassButton 
                     variant="primary"
                     className="px-6 py-2 font-bold"
-                    onClick={() => navigate("/app")}
+                    onClick={() => navigate("/studio")}
                   >
-                    Dashboard
+                    Studio
                   </LiquidGlassButton>
                 ) : (
                   <>
@@ -134,11 +134,11 @@ export default function Navigation({ activeSection }: NavigationProps) {
                     variant="primary"
                     className="w-full mt-4 py-3 font-bold"
                     onClick={() => {
-                      navigate("/app");
+                      navigate("/studio");
                       setIsMenuOpen(false);
                     }}
                   >
-                    Dashboard
+                    Studio
                   </LiquidGlassButton>
                 ) : (
                   <>

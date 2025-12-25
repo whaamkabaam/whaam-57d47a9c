@@ -5,6 +5,7 @@
 import { Outlet } from 'react-router-dom';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { DashboardSidebar } from './DashboardSidebar';
+import { ProblemReportButton } from './ProblemReportButton';
 
 export function DashboardLayout() {
   return (
@@ -18,6 +19,7 @@ export function DashboardLayout() {
             </div>
           </div>
         </SidebarInset>
+        <ProblemReportButton />
       </div>
     </SidebarProvider>
   );

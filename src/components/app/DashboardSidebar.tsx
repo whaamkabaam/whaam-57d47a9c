@@ -19,8 +19,8 @@ import { CurveUploadDialog } from './curves/CurveUploadDialog';
 import { Settings } from 'lucide-react';
 
 const navItems = [
-  { title: 'My Curve', url: '/app', icon: Home },
-  { title: 'My Library', url: '/app/history', icon: Library },
+  { title: 'My Curve', url: '/studio', icon: Home },
+  { title: 'My Library', url: '/studio/history', icon: Library },
 ];
 
 export function DashboardSidebar() {
@@ -30,8 +30,8 @@ export function DashboardSidebar() {
   const collapsed = state === 'collapsed';
 
   const isActive = (url: string) => {
-    if (url === '/app') {
-      return location.pathname === '/app';
+    if (url === '/studio') {
+      return location.pathname === '/studio';
     }
     return location.pathname.startsWith(url);
   };
@@ -125,10 +125,10 @@ export function DashboardSidebar() {
           </div>
         ) : (
           <Link
-            to="/app/account"
+            to="/studio/account"
             className={cn(
               'sidebar-account-glass flex items-center gap-3 p-4',
-              isActive('/app/account') 
+              isActive('/studio/account') 
                 ? 'ring-1 ring-secondary/40 bg-white/[0.08]' 
                 : ''
             )}

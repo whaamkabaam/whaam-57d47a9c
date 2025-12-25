@@ -105,6 +105,6 @@ export const api = {
 // Export base URL for OAuth redirects
 // Pass redirect_to param so backend knows where to send user after OAuth
 export const getOAuthUrl = (provider: 'discord' | 'google') => {
-  const redirectTo = `${window.location.origin}/app`;
+  const redirectTo = `${window.location.origin}/studio`;
   return `${API_BASE_URL}/auth/oauth/${provider}?redirect_to=${encodeURIComponent(redirectTo)}`;
 };

@@ -178,3 +178,17 @@ export interface ResetPasswordRequest {
 export interface RenameCurveRequest {
   name: string; // Must end with .ccurve
 }
+
+// Problem Report Types
+export type ProblemCategory = 'bug' | 'ui_issue' | 'performance' | 'other';
+
+export interface ProblemReportRequest {
+  category: ProblemCategory;
+  description: string; // 10-2000 chars
+  page_url?: string;   // Auto-captured, max 500 chars
+}
+
+export interface ProblemReportResponse {
+  success: boolean;
+  message: string;
+}

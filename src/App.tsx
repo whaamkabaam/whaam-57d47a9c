@@ -5,8 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-// Redirect legacy /dashboard routes to /app
-const LegacyRedirect = () => <Navigate to="/app" replace />;
+// Redirect legacy routes to /studio
+const LegacyRedirect = () => <Navigate to="/studio" replace />;
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/app/ProtectedRoute";
 import { DashboardLayout } from "@/components/app/DashboardLayout";
@@ -46,8 +46,8 @@ const App = () => (
             <Route path="/auth/verify" element={<AuthVerify />} />
             <Route path="/auth/reset-password" element={<AuthResetPassword />} />
             
-            {/* Protected App Routes */}
-            <Route path="/app" element={
+            {/* Protected Studio Routes */}
+            <Route path="/studio" element={
               <ProtectedRoute>
                 <DashboardLayout />
               </ProtectedRoute>
@@ -57,9 +57,11 @@ const App = () => (
               <Route path="account" element={<Account />} />
             </Route>
             
-            {/* Legacy redirect: /dashboard -> /app */}
+            {/* Legacy redirects: /dashboard, /app -> /studio */}
             <Route path="/dashboard" element={<LegacyRedirect />} />
             <Route path="/dashboard/*" element={<LegacyRedirect />} />
+            <Route path="/app" element={<LegacyRedirect />} />
+            <Route path="/app/*" element={<LegacyRedirect />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

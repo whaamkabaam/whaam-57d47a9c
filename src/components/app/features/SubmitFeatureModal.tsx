@@ -117,14 +117,14 @@ export function SubmitFeatureModal({ open, onOpenChange }: SubmitFeatureModalPro
 
       setShowSuccess(true);
       
-      // Auto-close after 4s
+      // Auto-close after confetti finishes falling
       setTimeout(() => {
         onOpenChange(false);
         setTimeout(() => {
           resetForm();
           setShowSuccess(false);
         }, 200);
-      }, 4000);
+      }, 6500);
     } catch (err) {
       toast.error('Failed to submit. Please try again.');
     }

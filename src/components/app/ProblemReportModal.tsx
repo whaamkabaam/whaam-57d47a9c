@@ -2,7 +2,7 @@
 // Problem Report Modal - Liquid Glass Design
 // ============================================
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { Label } from '@/components/ui/label';
@@ -11,9 +11,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { LiquidGlassButton } from '@/components/LiquidGlassEffects';
 import { useSubmitProblemReport } from '@/hooks/api/useProblemReport';
 import { toast } from 'sonner';
-import { Loader2, CheckCircle2, X } from 'lucide-react';
+import { Loader2, CheckCircle2, X, ImagePlus, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ProblemCategory } from '@/lib/api/types';
+
+// Screenshot upload constraints
+const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
+const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 
 const CATEGORY_OPTIONS: { value: ProblemCategory; label: string }[] = [
   { value: 'bug', label: 'Bug or Error' },
@@ -30,24 +34,89 @@ interface ProblemReportModalProps {
 export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalProps) {
   const location = useLocation();
   const submitMutation = useSubmitProblemReport();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [category, setCategory] = useState<ProblemCategory | ''>('');
   const [description, setDescription] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  const [screenshot, setScreenshot] = useState<File | null>(null);
+  const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null);
+  const [screenshotError, setScreenshotError] = useState<string | null>(null);
 
   const descriptionLength = description.trim().length;
   const isValid = category !== '' && descriptionLength >= 10 && descriptionLength <= 2000;
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setScreenshotError(null);
+    
+    if (!file) {
+      setScreenshot(null);
+      setScreenshotPreview(null);
+      return;
+    }
+
+    // Validate file type
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setScreenshotError('Invalid file type. Allowed: PNG, JPEG, WebP');
+      e.target.value = '';
+      return;
+    }
+
+    // Validate file size
+    if (file.size > MAX_SIZE_BYTES) {
+      setScreenshotError('File too large. Maximum size: 5MB');
+      e.target.value = '';
+      return;
+    }
+
+    setScreenshot(file);
+    // Create preview URL
+    const previewUrl = URL.createObjectURL(file);
+    setScreenshotPreview(previewUrl);
+  };
+
+  const handleRemoveScreenshot = () => {
+    setScreenshot(null);
+    if (screenshotPreview) {
+      URL.revokeObjectURL(screenshotPreview);
+      setScreenshotPreview(null);
+    }
+    setScreenshotError(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const resetForm = () => {
+    setCategory('');
+    setDescription('');
+    setScreenshot(null);
+    if (screenshotPreview) {
+      URL.revokeObjectURL(screenshotPreview);
+      setScreenshotPreview(null);
+    }
+    setScreenshotError(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isValid || !category) return;
 
     try {
-      await submitMutation.mutateAsync({
-        category,
-        description: description.trim(),
-        page_url: location.pathname,
-      });
+      const formData = new FormData();
+      formData.append('category', category);
+      formData.append('description', description.trim());
+      formData.append('page_url', location.pathname);
+      
+      if (screenshot) {
+        formData.append('screenshot', screenshot);
+      }
+
+      await submitMutation.mutateAsync(formData);
 
       setShowSuccess(true);
       
@@ -56,8 +125,7 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
         onOpenChange(false);
         // Reset form after close animation
         setTimeout(() => {
-          setCategory('');
-          setDescription('');
+          resetForm();
           setShowSuccess(false);
         }, 200);
       }, 2500);
@@ -68,9 +136,7 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
 
   const handleClose = (newOpen: boolean) => {
     if (!newOpen && !showSuccess) {
-      // Reset form when manually closing
-      setCategory('');
-      setDescription('');
+      resetForm();
     }
     onOpenChange(newOpen);
   };
@@ -167,12 +233,77 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
                   placeholder="Describe what went wrong..."
                   rows={4}
                   maxLength={2000}
-                  className="resize-none rounded-xl border-white/[0.12] bg-white/[0.06] text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-white/10"
+                  className="resize-y min-h-[100px] max-h-[200px] rounded-xl border-white/[0.12] bg-white/[0.06] text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-white/10"
                 />
                 {descriptionLength > 0 && descriptionLength < 10 && (
                   <p className="text-sm text-destructive">
                     Please provide at least 10 characters
                   </p>
+                )}
+              </div>
+
+              {/* Screenshot Upload */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-foreground">
+                  Screenshot <span className="text-xs font-normal text-muted-foreground">(optional)</span>
+                </Label>
+                
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                  id="screenshot-upload"
+                />
+
+                {!screenshot ? (
+                  <label
+                    htmlFor="screenshot-upload"
+                    className={cn(
+                      "flex items-center justify-center gap-2 py-3 px-4 rounded-xl cursor-pointer transition-colors",
+                      "border border-dashed border-white/[0.15] bg-white/[0.03]",
+                      "hover:bg-white/[0.06] hover:border-white/20",
+                      "text-sm text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    <ImagePlus className="h-4 w-4" />
+                    <span>Add screenshot</span>
+                  </label>
+                ) : (
+                  <div className="flex items-center gap-3 p-3 rounded-xl border border-white/[0.12] bg-white/[0.06]">
+                    {/* Preview thumbnail */}
+                    {screenshotPreview && (
+                      <div className="h-12 w-12 rounded-lg overflow-hidden flex-shrink-0 bg-black/20">
+                        <img 
+                          src={screenshotPreview} 
+                          alt="Screenshot preview" 
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                    )}
+                    
+                    {/* Filename */}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-foreground truncate">{screenshot.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {(screenshot.size / 1024).toFixed(1)} KB
+                      </p>
+                    </div>
+                    
+                    {/* Remove button */}
+                    <button
+                      type="button"
+                      onClick={handleRemoveScreenshot}
+                      className="p-1.5 rounded-full text-muted-foreground hover:text-destructive hover:bg-white/10 transition-colors"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                )}
+
+                {screenshotError && (
+                  <p className="text-sm text-destructive">{screenshotError}</p>
                 )}
               </div>
 

@@ -96,6 +96,7 @@ export function SubmitFeatureModal({ open, onOpenChange }: SubmitFeatureModalPro
   const [description, setDescription] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [titleTouched, setTitleTouched] = useState(false);
 
   const titleLength = title.trim().length;
   const descriptionLength = description.trim().length;
@@ -108,6 +109,7 @@ export function SubmitFeatureModal({ open, onOpenChange }: SubmitFeatureModalPro
     setTitle('');
     setDescription('');
     setIsAnonymous(false);
+    setTitleTouched(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -202,15 +204,26 @@ export function SubmitFeatureModal({ open, onOpenChange }: SubmitFeatureModalPro
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
+                  onBlur={() => setTitleTouched(true)}
                   placeholder="A short, descriptive title"
                   maxLength={200}
                   className="h-11 rounded-xl border-white/[0.12] bg-white/[0.06] text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-white/10"
                 />
-                {titleLength > 0 && titleLength < 5 && (
-                  <p className="text-sm text-destructive">
-                    At least 5 characters required
-                  </p>
-                )}
+                {/* Smooth animated validation message */}
+                <div 
+                  className={cn(
+                    "grid transition-[grid-template-rows] duration-200 ease-out",
+                    (titleTouched || titleLength > 0) && !isTitleValid
+                      ? "grid-rows-[1fr]" 
+                      : "grid-rows-[0fr]"
+                  )}
+                >
+                  <div className="overflow-hidden">
+                    <p className="text-sm text-destructive pt-1">
+                      {titleLength === 0 ? "Title is required" : "At least 5 characters required"}
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Description Textarea */}
@@ -230,11 +243,21 @@ export function SubmitFeatureModal({ open, onOpenChange }: SubmitFeatureModalPro
                   maxLength={2000}
                   className="resize-y min-h-[100px] max-h-[200px] rounded-xl border-white/[0.12] bg-white/[0.06] text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-white/10"
                 />
-                {descriptionLength > 0 && descriptionLength < 20 && (
-                  <p className="text-sm text-destructive">
-                    Please provide at least 20 characters
-                  </p>
-                )}
+                {/* Smooth animated validation message */}
+                <div 
+                  className={cn(
+                    "grid transition-[grid-template-rows] duration-200 ease-out",
+                    descriptionLength > 0 && descriptionLength < 20 
+                      ? "grid-rows-[1fr]" 
+                      : "grid-rows-[0fr]"
+                  )}
+                >
+                  <div className="overflow-hidden">
+                    <p className="text-sm text-destructive pt-1">
+                      Please provide at least 20 characters
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Anonymous Checkbox */}

@@ -351,11 +351,21 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
                   maxLength={2000}
                   className="resize-y min-h-[100px] max-h-[200px] rounded-xl border-white/[0.12] bg-white/[0.06] text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-white/10"
                 />
-                {descriptionLength > 0 && descriptionLength < 10 && (
-                  <p className="text-sm text-destructive">
-                    Please provide at least 10 characters
-                  </p>
-                )}
+                {/* Smooth animated validation message */}
+                <div 
+                  className={cn(
+                    "grid transition-[grid-template-rows] duration-200 ease-out",
+                    descriptionLength > 0 && descriptionLength < 10 
+                      ? "grid-rows-[1fr]" 
+                      : "grid-rows-[0fr]"
+                  )}
+                >
+                  <div className="overflow-hidden">
+                    <p className="text-sm text-destructive pt-1">
+                      Please provide at least 10 characters
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Screenshot Upload */}

@@ -6,6 +6,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useSpring, animated, config } from 'react-spring';
+import confetti from 'canvas-confetti';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -29,6 +30,19 @@ const CATEGORY_OPTIONS: { value: ProblemCategory; label: string }[] = [
 
 // Animated success state component
 function SuccessState() {
+  // Fire confetti on mount
+  useEffect(() => {
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.35 },
+      colors: ['#FFD740', '#FF6B35', '#FFEB99', '#ffffff'],
+      gravity: 0.8,
+      ticks: 200,
+      scalar: 1.1,
+    });
+  }, []);
+
   const iconSpring = useSpring({
     from: { scale: 0, opacity: 0 },
     to: { scale: 1, opacity: 1 },
@@ -230,7 +244,7 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
 
       setShowSuccess(true);
       
-      // Auto-close after 2.5s
+      // Auto-close after 4s to let the celebration breathe
       setTimeout(() => {
         onOpenChange(false);
         // Reset form after close animation
@@ -238,7 +252,7 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
           resetForm();
           setShowSuccess(false);
         }, 200);
-      }, 2500);
+      }, 4000);
     } catch (err) {
       toast.error('Failed to submit report. Please try again.');
     }
@@ -428,10 +442,11 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
                 >
                   Cancel
                 </LiquidGlassButton>
-                <LiquidGlassButton
+              <LiquidGlassButton
                   type="submit"
                   variant="primary"
                   disabled={!isValid || submitMutation.isPending}
+                  className="min-w-[100px] h-11"
                 >
                   {submitMutation.isPending ? (
                     <Loader2 className="h-4 w-4 animate-spin" />

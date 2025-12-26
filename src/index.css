@@ -434,7 +434,13 @@
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 1rem;
   padding: 0.75rem 1.5rem;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Specific transitions to avoid jitter from 'all' */
+  transition: 
+    background 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform, opacity;
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
@@ -448,10 +454,8 @@
       inset 0 1px 1px rgba(255, 255, 255, 0.4);
   }
   
-  .glass-button:hover {
+  .glass-button:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.25);
-    -webkit-backdrop-filter: blur(15px) saturate(160%);
-    backdrop-filter: blur(15px) saturate(160%);
     transform: translateY(-2px);
     box-shadow: 
       0 8px 25px rgba(0, 0, 0, 0.15),

@@ -19,7 +19,8 @@ import type { ProblemCategory } from '@/lib/api/types';
 
 // Screenshot upload constraints
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
-const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB per file
+const MAX_SCREENSHOTS = 5;
 
 const CATEGORY_OPTIONS: { value: ProblemCategory; label: string }[] = [
   { value: 'bug', label: 'Bug or Error' },
@@ -102,33 +103,51 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
   const [category, setCategory] = useState<ProblemCategory | ''>('');
   const [description, setDescription] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
-  const [screenshot, setScreenshot] = useState<File | null>(null);
-  const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null);
+  const [screenshots, setScreenshots] = useState<File[]>([]);
+  const [screenshotPreviews, setScreenshotPreviews] = useState<string[]>([]);
   const [screenshotError, setScreenshotError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Shared validation function for click, drop, and paste
-  const validateAndSetFile = useCallback((file: File) => {
+  // Validate and add multiple files
+  const validateAndAddFiles = useCallback((files: File[]) => {
     setScreenshotError(null);
     
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      setScreenshotError('Invalid file type. Allowed: PNG, JPEG, WebP');
+    const currentCount = screenshots.length;
+    const availableSlots = MAX_SCREENSHOTS - currentCount;
+    
+    if (availableSlots <= 0) {
+      setScreenshotError(`Maximum ${MAX_SCREENSHOTS} screenshots allowed`);
       return;
     }
     
-    if (file.size > MAX_SIZE_BYTES) {
-      setScreenshotError('File too large. Maximum size: 5MB');
-      return;
+    const validFiles: File[] = [];
+    const newPreviews: string[] = [];
+    
+    for (const file of files) {
+      if (validFiles.length >= availableSlots) {
+        setScreenshotError(`Only ${availableSlots} more screenshot(s) allowed`);
+        break;
+      }
+      
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        setScreenshotError('Invalid file type. Allowed: PNG, JPEG, WebP');
+        continue;
+      }
+      
+      if (file.size > MAX_SIZE_BYTES) {
+        setScreenshotError('One or more files too large. Maximum size: 5MB each');
+        continue;
+      }
+      
+      validFiles.push(file);
+      newPreviews.push(URL.createObjectURL(file));
     }
     
-    // Revoke previous preview URL if exists
-    if (screenshotPreview) {
-      URL.revokeObjectURL(screenshotPreview);
+    if (validFiles.length > 0) {
+      setScreenshots(prev => [...prev, ...validFiles]);
+      setScreenshotPreviews(prev => [...prev, ...newPreviews]);
     }
-    
-    setScreenshot(file);
-    setScreenshotPreview(URL.createObjectURL(file));
-  }, [screenshotPreview]);
+  }, [screenshots.length]);
 
   // Clipboard paste listener
   useEffect(() => {
@@ -138,20 +157,21 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
       const items = e.clipboardData?.items;
       if (!items) return;
       
+      const imageFiles: File[] = [];
       for (const item of items) {
         if (item.type.startsWith('image/')) {
           const file = item.getAsFile();
-          if (file) {
-            validateAndSetFile(file);
-            break;
-          }
+          if (file) imageFiles.push(file);
         }
+      }
+      if (imageFiles.length > 0) {
+        validateAndAddFiles(imageFiles);
       }
     };
     
     document.addEventListener('paste', handlePaste);
     return () => document.removeEventListener('paste', handlePaste);
-  }, [open, validateAndSetFile]);
+  }, [open, validateAndAddFiles]);
 
   // Drag & drop handlers
   const handleDragOver = (e: React.DragEvent) => {
@@ -171,20 +191,17 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
     e.stopPropagation();
     setIsDragging(false);
     
-    const file = e.dataTransfer.files[0];
-    if (file) validateAndSetFile(file);
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length > 0) validateAndAddFiles(files);
   };
 
   const descriptionLength = description.trim().length;
   const isValid = category !== '' && descriptionLength >= 10 && descriptionLength <= 2000;
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      validateAndSetFile(file);
-    } else {
-      setScreenshot(null);
-      setScreenshotPreview(null);
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      validateAndAddFiles(files);
     }
     // Reset input so same file can be selected again
     if (fileInputRef.current) {
@@ -192,26 +209,20 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
     }
   };
 
-  const handleRemoveScreenshot = () => {
-    setScreenshot(null);
-    if (screenshotPreview) {
-      URL.revokeObjectURL(screenshotPreview);
-      setScreenshotPreview(null);
-    }
+  const handleRemoveScreenshot = (index: number) => {
+    URL.revokeObjectURL(screenshotPreviews[index]);
+    setScreenshots(prev => prev.filter((_, i) => i !== index));
+    setScreenshotPreviews(prev => prev.filter((_, i) => i !== index));
     setScreenshotError(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
   };
 
   const resetForm = () => {
     setCategory('');
     setDescription('');
-    setScreenshot(null);
-    if (screenshotPreview) {
-      URL.revokeObjectURL(screenshotPreview);
-      setScreenshotPreview(null);
-    }
+    // Revoke all preview URLs
+    screenshotPreviews.forEach(url => URL.revokeObjectURL(url));
+    setScreenshots([]);
+    setScreenshotPreviews([]);
     setScreenshotError(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -228,9 +239,10 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
       formData.append('description', description.trim());
       formData.append('page_url', location.pathname);
       
-      if (screenshot) {
-        formData.append('screenshot', screenshot);
-      }
+      // Append each screenshot with the plural key
+      screenshots.forEach(file => {
+        formData.append('screenshots', file);
+      });
 
       await submitMutation.mutateAsync(formData);
 
@@ -281,21 +293,23 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
             transform: 'translate(-50%, -50%)',
           }}
         >
-          {/* Close button */}
-          <DialogPrimitive.Close className="absolute right-4 top-4 rounded-full p-1.5 text-white/60 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20">
+          {/* Close button - above glass effects */}
+          <DialogPrimitive.Close className="absolute right-4 top-4 z-20 rounded-full p-1.5 text-white/60 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20">
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
 
-          {/* Header */}
-          <div className="mb-6">
-            <DialogPrimitive.Title className="text-xl font-semibold text-foreground">
-              Report a Problem
-            </DialogPrimitive.Title>
-            <DialogPrimitive.Description className="mt-1.5 text-sm text-muted-foreground">
-              Help us improve by reporting issues you encounter.
-            </DialogPrimitive.Description>
-          </div>
+          {/* Content wrapper - ensures content is above liquid-glass pseudo-elements */}
+          <div className="relative z-10">
+            {/* Header */}
+            <div className="mb-6">
+              <DialogPrimitive.Title className="text-xl font-semibold text-foreground">
+                Report a Problem
+              </DialogPrimitive.Title>
+              <DialogPrimitive.Description className="mt-1.5 text-sm text-muted-foreground">
+                Help us improve by reporting issues you encounter.
+              </DialogPrimitive.Description>
+            </div>
 
           {showSuccess ? (
             <SuccessState />
@@ -363,19 +377,53 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
               {/* Screenshot Upload */}
               <div className="space-y-2">
                 <Label className="text-sm font-medium text-foreground">
-                  Screenshot <span className="text-xs font-normal text-muted-foreground">(optional)</span>
+                  Screenshots <span className="text-xs font-normal text-muted-foreground">({screenshots.length}/{MAX_SCREENSHOTS}, optional)</span>
                 </Label>
                 
                 <input
                   ref={fileInputRef}
                   type="file"
                   accept="image/png,image/jpeg,image/webp"
+                  multiple
                   onChange={handleFileSelect}
                   className="hidden"
                   id="screenshot-upload"
                 />
 
-                {!screenshot ? (
+                {/* Thumbnail gallery */}
+                {screenshots.length > 0 && (
+                  <div className="grid grid-cols-5 gap-2">
+                    {screenshots.map((file, index) => (
+                      <div 
+                        key={index} 
+                        className="relative group aspect-square rounded-lg overflow-hidden border border-white/[0.12] bg-black/20"
+                      >
+                        <img 
+                          src={screenshotPreviews[index]} 
+                          alt={`Screenshot ${index + 1}`} 
+                          className="h-full w-full object-cover"
+                        />
+                        {/* Hover overlay with remove button */}
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveScreenshot(index)}
+                            className="p-1.5 rounded-full bg-destructive/80 text-white hover:bg-destructive transition-colors"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                        {/* File size badge */}
+                        <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-[10px] text-white/80 px-1 py-0.5 text-center truncate">
+                          {(file.size / 1024).toFixed(0)}KB
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Upload zone - show only if under limit */}
+                {screenshots.length < MAX_SCREENSHOTS && (
                   <label
                     htmlFor="screenshot-upload"
                     onDragOver={handleDragOver}
@@ -392,42 +440,16 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
                   >
                     <div className="flex items-center gap-2">
                       <ImagePlus className="h-4 w-4" />
-                      <span>Drop, paste, or click to add screenshot</span>
+                      <span>
+                        {screenshots.length === 0 
+                          ? 'Drop, paste, or click to add screenshots' 
+                          : 'Add more screenshots'}
+                      </span>
                     </div>
                     <span className="text-xs text-muted-foreground/70">
                       Pro tip: Press Ctrl+V to paste from clipboard
                     </span>
                   </label>
-                ) : (
-                  <div className="flex items-center gap-3 p-3 rounded-xl border border-white/[0.12] bg-white/[0.06]">
-                    {/* Preview thumbnail */}
-                    {screenshotPreview && (
-                      <div className="h-12 w-12 rounded-lg overflow-hidden flex-shrink-0 bg-black/20">
-                        <img 
-                          src={screenshotPreview} 
-                          alt="Screenshot preview" 
-                          className="h-full w-full object-cover"
-                        />
-                      </div>
-                    )}
-                    
-                    {/* Filename */}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-foreground truncate">{screenshot.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {(screenshot.size / 1024).toFixed(1)} KB
-                      </p>
-                    </div>
-                    
-                    {/* Remove button */}
-                    <button
-                      type="button"
-                      onClick={handleRemoveScreenshot}
-                      className="p-1.5 rounded-full text-muted-foreground hover:text-destructive hover:bg-white/10 transition-colors"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
                 )}
 
                 {screenshotError && (
@@ -460,6 +482,7 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
               </div>
             </form>
           )}
+          </div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>

@@ -160,14 +160,18 @@ export const subscriptionsApi = {
 // Feature Requests Endpoints
 // ============================================
 export const featureRequestsApi = {
-  list: (limit = 50, offset = 0) =>
-    api.get<FeatureRequestsListResponse>(`/feature-requests?limit=${limit}&offset=${offset}`),
+  list: (limit = 50, offset = 0, sort: 'votes' | 'recent' = 'votes') =>
+    api.get<FeatureRequestsListResponse>(
+      `/feature-requests?limit=${limit}&offset=${offset}&sort=${sort}`
+    ),
 
   getById: (id: number) =>
     api.get<FeatureRequest>(`/feature-requests/${id}`),
 
-  getMy: (limit = 50, offset = 0) =>
-    api.get<FeatureRequestsListResponse>(`/feature-requests/my?limit=${limit}&offset=${offset}`),
+  getMy: (limit = 50, offset = 0, sort: 'votes' | 'recent' = 'votes') =>
+    api.get<FeatureRequestsListResponse>(
+      `/feature-requests/my?limit=${limit}&offset=${offset}&sort=${sort}`
+    ),
 
   create: (data: CreateFeatureRequestInput) =>
     api.post<FeatureRequest>('/feature-requests', data),

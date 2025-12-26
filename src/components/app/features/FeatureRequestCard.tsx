@@ -2,7 +2,7 @@
 // Feature Request Card - Voting Card Component
 // ============================================
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { ChevronUp, ChevronDown, User, Calendar, Circle, Loader2, CheckCircle, XCircle } from 'lucide-react';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Badge } from '@/components/ui/badge';
@@ -15,6 +15,7 @@ interface FeatureRequestCardProps {
   onVote: (id: number, hasVoted: boolean) => void;
   isVoting?: boolean;
   isAuthenticated: boolean;
+  isNew?: boolean;
 }
 
 // Status badge configuration
@@ -50,25 +51,31 @@ const STATUS_CONFIG: Record<FeatureRequestStatus, {
   },
 };
 
+// Collapsed height for 2 lines of text (~2.8rem)
+const COLLAPSED_HEIGHT = 44;
+
 export function FeatureRequestCard({ 
   request, 
   onVote, 
   isVoting = false,
   isAuthenticated,
+  isNew = false,
 }: FeatureRequestCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [contentHeight, setContentHeight] = useState<number>(COLLAPSED_HEIGHT);
   const [isTextTruncated, setIsTextTruncated] = useState(false);
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   
   const statusConfig = STATUS_CONFIG[request.status];
   const StatusIcon = statusConfig.icon;
   
-  // Detect if description is truncated
-  useEffect(() => {
-    const el = descriptionRef.current;
+  // Measure content height and detect truncation
+  useLayoutEffect(() => {
+    const el = contentRef.current;
     if (el) {
-      // Compare scrollHeight vs clientHeight to detect truncation
-      setIsTextTruncated(el.scrollHeight > el.clientHeight + 1);
+      const fullHeight = el.scrollHeight;
+      setContentHeight(fullHeight);
+      setIsTextTruncated(fullHeight > COLLAPSED_HEIGHT + 4);
     }
   }, [request.description]);
   
@@ -81,7 +88,10 @@ export function FeatureRequestCard({
 
   return (
     <LiquidGlassCard 
-      className="p-5 rounded-2xl"
+      className={cn(
+        "p-5 rounded-2xl transition-all duration-300",
+        isNew && "animate-fade-in ring-1 ring-whaam-yellow/30"
+      )}
       glassVariant="default"
     >
       <div className="flex gap-4">
@@ -135,22 +145,18 @@ export function FeatureRequestCard({
             </Badge>
           </div>
 
-          {/* Description with expand animation */}
+          {/* Description with smooth max-height animation */}
           <div 
-            className={cn(
-              "grid transition-[grid-template-rows] duration-300 ease-out",
-              isExpanded ? "grid-rows-[1fr]" : "grid-rows-[1fr]"
-            )}
+            className="overflow-hidden transition-[max-height] duration-300 ease-out"
+            style={{ 
+              maxHeight: isExpanded ? `${contentHeight}px` : `${COLLAPSED_HEIGHT}px`
+            }}
           >
-            <p 
-              ref={descriptionRef}
-              className={cn(
-                "text-sm text-muted-foreground overflow-hidden transition-all duration-300",
-                !isExpanded && "line-clamp-2"
-              )}
-            >
-              {request.description}
-            </p>
+            <div ref={contentRef}>
+              <p className="text-sm text-muted-foreground">
+                {request.description}
+              </p>
+            </div>
           </div>
 
           {/* Read more / Show less toggle */}

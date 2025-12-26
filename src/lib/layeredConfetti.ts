@@ -22,18 +22,40 @@ export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
   const foregroundParticles = Math.round(totalParticles * foregroundRatio);
   const backgroundParticles = totalParticles - foregroundParticles;
 
-  // Background confetti (default canvas, behind modal at z-index ~100)
-  confetti({
-    particleCount: backgroundParticles,
+  // Shared confetti settings - high ticks + gravity so they fall off screen
+  const confettiSettings = {
     spread: 70,
     origin,
     colors,
-    gravity: 0.8,
-    ticks: 200,
+    gravity: 1.2,       // Faster fall
+    ticks: 500,         // Longer lifespan (fall off screen, don't fade)
     scalar: 1.1,
+    decay: 0.94,        // Slight slowdown feels natural
+  };
+
+  // ============ BACKGROUND LAYER (z-index: 1, BEHIND modal) ============
+  const backgroundCanvas = document.createElement('canvas');
+  backgroundCanvas.style.cssText = `
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  `;
+  document.body.appendChild(backgroundCanvas);
+
+  const backgroundConfetti = confetti.create(backgroundCanvas, {
+    resize: true,
+    useWorker: true,
   });
 
-  // Foreground confetti - create custom canvas above modal (z-index 9999)
+  backgroundConfetti({
+    ...confettiSettings,
+    particleCount: backgroundParticles,
+  });
+
+  // ============ FOREGROUND LAYER (z-index: 9999, IN FRONT of modal) ============
   const foregroundCanvas = document.createElement('canvas');
   foregroundCanvas.style.cssText = `
     position: fixed;
@@ -51,17 +73,13 @@ export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
   });
 
   foregroundConfetti({
+    ...confettiSettings,
     particleCount: foregroundParticles,
-    spread: 70,
-    origin,
-    colors,
-    gravity: 0.8,
-    ticks: 200,
-    scalar: 1.1,
   });
 
-  // Clean up foreground canvas after animation completes
+  // Clean up both canvases after animation completes
   setTimeout(() => {
+    backgroundCanvas.remove();
     foregroundCanvas.remove();
-  }, 4000);
+  }, 6000); // Extended cleanup time for longer fall
 }

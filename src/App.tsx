@@ -21,6 +21,7 @@ import AuthResetPassword from "./pages/AuthResetPassword";
 import DashboardHome from "./pages/app/DashboardHome";
 import CurveHistory from "./pages/app/CurveHistory";
 import Account from "./pages/app/Account";
+import FeatureRequests from "./pages/app/FeatureRequests";
 import NotFound from "./pages/NotFound";
 import InteractiveBackground from "./components/InteractiveBackground";
 
@@ -54,6 +55,7 @@ const App = () => (
             }>
               <Route index element={<DashboardHome />} />
               <Route path="history" element={<CurveHistory />} />
+              <Route path="features" element={<FeatureRequests />} />
               <Route path="account" element={<Account />} />
             </Route>
             

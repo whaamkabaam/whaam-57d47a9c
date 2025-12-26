@@ -3,7 +3,7 @@
 // ============================================
 
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Library, Upload } from 'lucide-react';
+import { Home, Library, Upload, Lightbulb } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -21,6 +21,7 @@ import { Settings } from 'lucide-react';
 const navItems = [
   { title: 'My Curve', url: '/studio', icon: Home },
   { title: 'My Library', url: '/studio/history', icon: Library },
+  { title: 'Feature Ideas', url: '/studio/features', icon: Lightbulb },
 ];
 
 export function DashboardSidebar() {

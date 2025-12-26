@@ -192,3 +192,37 @@ export interface ProblemReportResponse {
   success: boolean;
   message: string;
 }
+
+// ============================================
+// Feature Request Types
+// ============================================
+export type FeatureRequestStatus = 'open' | 'planned' | 'in_progress' | 'completed' | 'declined';
+
+export interface FeatureRequest {
+  id: number;
+  title: string;
+  description: string;
+  status: FeatureRequestStatus;
+  author_name: string | null;
+  is_anonymous: boolean;
+  vote_count: number;
+  user_has_voted: boolean;
+  is_own: boolean;
+  created_at: string;
+}
+
+export interface FeatureRequestsListResponse {
+  items: FeatureRequest[];
+  total: number;
+}
+
+export interface CreateFeatureRequestInput {
+  title: string;        // 5-200 chars
+  description: string;  // 20-2000 chars
+  is_anonymous?: boolean;
+}
+
+export interface VoteResponse {
+  message: string;
+  success: boolean;
+}

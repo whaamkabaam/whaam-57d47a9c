@@ -57,3 +57,12 @@ export {
   useCancelSubscription,
   subscriptionKeys,
 } from './useSubscription';
+
+// Feature Request hooks
+export {
+  useFeatureRequests,
+  useMyFeatureRequests,
+  useCreateFeatureRequest,
+  useVoteFeatureRequest,
+  featureRequestKeys,
+} from './useFeatureRequests';

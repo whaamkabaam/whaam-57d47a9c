@@ -314,7 +314,7 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
           {showSuccess ? (
             <SuccessState />
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="relative z-10 space-y-5">
               {/* Category Select */}
               <div className="space-y-2">
                 <Label htmlFor="category" className="text-sm font-medium text-foreground">
@@ -404,7 +404,7 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
                           className="h-full w-full object-cover"
                         />
                         {/* Hover overlay with remove button */}
-                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity flex items-center justify-center">
                           <button
                             type="button"
                             onClick={() => handleRemoveScreenshot(index)}
@@ -458,20 +458,20 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
               </div>
 
               {/* Actions */}
-              <div className="flex justify-end gap-3 pt-2">
+              <div className="flex justify-end gap-3 pt-2 relative z-20">
                 <LiquidGlassButton
                   type="button"
                   variant="secondary"
                   onClick={() => handleClose(false)}
-                  className="min-w-[100px] h-11"
+                  className="min-w-[100px] h-11 pointer-events-auto"
                 >
                   Cancel
                 </LiquidGlassButton>
-              <LiquidGlassButton
+                <LiquidGlassButton
                   type="submit"
                   variant="primary"
                   disabled={!isValid || submitMutation.isPending}
-                  className="min-w-[100px] h-11"
+                  className="min-w-[100px] h-11 pointer-events-auto"
                 >
                   {submitMutation.isPending ? (
                     <Loader2 className="h-4 w-4 animate-spin" />

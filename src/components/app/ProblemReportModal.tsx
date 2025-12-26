@@ -6,7 +6,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useSpring, animated, config } from 'react-spring';
-import confetti from 'canvas-confetti';
+import { fireLayeredConfetti } from '@/lib/layeredConfetti';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -32,15 +32,7 @@ const CATEGORY_OPTIONS: { value: ProblemCategory; label: string }[] = [
 function SuccessState() {
   // Fire confetti on mount
   useEffect(() => {
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.35 },
-      colors: ['#FFD740', '#FF6B35', '#FFEB99', '#ffffff'],
-      gravity: 0.8,
-      ticks: 200,
-      scalar: 1.1,
-    });
+    fireLayeredConfetti({ foregroundRatio: 0.15 });
   }, []);
 
   const iconSpring = useSpring({

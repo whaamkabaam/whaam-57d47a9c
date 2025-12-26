@@ -27,6 +27,10 @@ import type {
   CheckoutResponse,
   PortalResponse,
   CancelRequest,
+  FeatureRequest,
+  FeatureRequestsListResponse,
+  CreateFeatureRequestInput,
+  VoteResponse,
 } from './types';
 
 // ============================================
@@ -150,4 +154,27 @@ export const subscriptionsApi = {
 
   cancel: (data?: CancelRequest) => 
     api.post<MessageResponse & { success: boolean }>('/subscriptions/cancel', data),
+};
+
+// ============================================
+// Feature Requests Endpoints
+// ============================================
+export const featureRequestsApi = {
+  list: (limit = 50, offset = 0) =>
+    api.get<FeatureRequestsListResponse>(`/feature-requests?limit=${limit}&offset=${offset}`),
+
+  getById: (id: number) =>
+    api.get<FeatureRequest>(`/feature-requests/${id}`),
+
+  getMy: (limit = 50, offset = 0) =>
+    api.get<FeatureRequestsListResponse>(`/feature-requests/my?limit=${limit}&offset=${offset}`),
+
+  create: (data: CreateFeatureRequestInput) =>
+    api.post<FeatureRequest>('/feature-requests', data),
+
+  vote: (id: number) =>
+    api.post<VoteResponse>(`/feature-requests/${id}/vote`),
+
+  unvote: (id: number) =>
+    api.delete<VoteResponse>(`/feature-requests/${id}/vote`),
 };

@@ -2,7 +2,8 @@
 // Feature Request Card - Voting Card Component
 // ============================================
 
-import { ChevronUp, User, Calendar, Circle, Loader2, CheckCircle, XCircle } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { ChevronUp, ChevronDown, User, Calendar, Circle, Loader2, CheckCircle, XCircle } from 'lucide-react';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -55,8 +56,21 @@ export function FeatureRequestCard({
   isVoting = false,
   isAuthenticated,
 }: FeatureRequestCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isTextTruncated, setIsTextTruncated] = useState(false);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  
   const statusConfig = STATUS_CONFIG[request.status];
   const StatusIcon = statusConfig.icon;
+  
+  // Detect if description is truncated
+  useEffect(() => {
+    const el = descriptionRef.current;
+    if (el) {
+      // Compare scrollHeight vs clientHeight to detect truncation
+      setIsTextTruncated(el.scrollHeight > el.clientHeight + 1);
+    }
+  }, [request.description]);
   
   const handleVoteClick = () => {
     if (!isAuthenticated || isVoting) return;
@@ -121,10 +135,43 @@ export function FeatureRequestCard({
             </Badge>
           </div>
 
-          {/* Description */}
-          <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-            {request.description}
-          </p>
+          {/* Description with expand animation */}
+          <div 
+            className={cn(
+              "grid transition-[grid-template-rows] duration-300 ease-out",
+              isExpanded ? "grid-rows-[1fr]" : "grid-rows-[1fr]"
+            )}
+          >
+            <p 
+              ref={descriptionRef}
+              className={cn(
+                "text-sm text-muted-foreground overflow-hidden transition-all duration-300",
+                !isExpanded && "line-clamp-2"
+              )}
+            >
+              {request.description}
+            </p>
+          </div>
+
+          {/* Read more / Show less toggle */}
+          {(isTextTruncated || isExpanded) && (
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="text-xs text-whaam-yellow/80 hover:text-whaam-yellow transition-colors mt-2 mb-3 flex items-center gap-1 group"
+            >
+              {isExpanded ? (
+                <>
+                  Show less 
+                  <ChevronUp className="h-3 w-3 transition-transform group-hover:-translate-y-0.5" />
+                </>
+              ) : (
+                <>
+                  Read more 
+                  <ChevronDown className="h-3 w-3 transition-transform group-hover:translate-y-0.5" />
+                </>
+              )}
+            </button>
+          )}
 
           {/* Footer: Author & Time */}
           <div className="flex items-center gap-3 text-xs text-muted-foreground/70">

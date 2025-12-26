@@ -39,9 +39,9 @@ export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
     colors,
     gravity: 1.8,
     startVelocity: 45,
-    ticks: 2000,
+    ticks: 3500,
     scalar: 1.15,
-    decay: 0.97,
+    decay: 0.96,
     drift: 0,
   };
 
@@ -99,6 +99,6 @@ export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
     setTimeout(() => {
       backgroundCanvas.remove();
       foregroundCanvas.remove();
-    }, 7000);
+    }, 10000);
   });
 }

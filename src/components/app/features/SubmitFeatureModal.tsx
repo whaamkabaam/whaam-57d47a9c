@@ -140,15 +140,15 @@ export function SubmitFeatureModal({ open, onOpenChange }: SubmitFeatureModalPro
   return (
     <DialogPrimitive.Root open={open} onOpenChange={handleClose}>
       <DialogPrimitive.Portal>
-        {/* Frosted overlay */}
+        {/* Frosted overlay - z-1000 */}
         <DialogPrimitive.Overlay 
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" 
+          className="fixed inset-0 z-[1000] bg-black/60 backdrop-blur-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" 
         />
         
-        {/* Liquid glass content */}
+        {/* Liquid glass content - z-1100 (between confetti layers) */}
         <DialogPrimitive.Content
           className={cn(
-            "z-50 w-full max-w-md",
+            "z-[1100] w-full max-w-md",
             "liquid-glass rounded-2xl p-6",
             "data-[state=open]:animate-in data-[state=closed]:animate-out",
             "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",

@@ -1,6 +1,12 @@
 /**
  * Layered Confetti Utility
- * Creates a depth effect with confetti behind and in front of modals
+ * Creates a true 3D depth effect with confetti behind AND in front of modals
+ * 
+ * Z-index stack (standardized):
+ *   1000 - Modal overlay/backdrop
+ *   1050 - Background confetti (behind card)
+ *   1100 - Modal content card
+ *   1200 - Foreground confetti (in front of card)
  */
 
 import confetti from 'canvas-confetti';
@@ -9,31 +15,37 @@ interface LayeredConfettiOptions {
   foregroundRatio?: number; // 0-1, default 0.15 (15% in front)
   colors?: string[];
   origin?: { x?: number; y?: number };
+  behindModalZIndex?: number;
+  inFrontOfModalZIndex?: number;
 }
 
 export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
   const {
     foregroundRatio = 0.15,
     colors = ['#FFD740', '#FF6B35', '#FFEB99', '#ffffff'],
-    origin = { y: 0.35 },
+    origin = { y: 0.4 },
+    behindModalZIndex = 1050,
+    inFrontOfModalZIndex = 1200,
   } = options;
 
-  const totalParticles = 80;
+  const totalParticles = 100;
   const foregroundParticles = Math.round(totalParticles * foregroundRatio);
   const backgroundParticles = totalParticles - foregroundParticles;
 
-  // Shared confetti settings - high ticks + gravity so they fall off screen
+  // Physics tuned so confetti falls off-screen before fading
   const confettiSettings = {
-    spread: 70,
+    spread: 80,
     origin,
     colors,
-    gravity: 1.2,       // Faster fall
-    ticks: 500,         // Longer lifespan (fall off screen, don't fade)
-    scalar: 1.1,
-    decay: 0.94,        // Slight slowdown feels natural
+    gravity: 2.2,         // Fast fall - exits viewport quickly
+    startVelocity: 45,    // Strong initial burst
+    ticks: 1200,          // Long lifespan - won't fade mid-air
+    scalar: 1.15,
+    decay: 0.97,          // Slight slowdown, natural feel
+    drift: 0,             // No horizontal drift
   };
 
-  // ============ BACKGROUND LAYER (z-index: 1, BEHIND modal) ============
+  // ============ BACKGROUND LAYER (behind modal card) ============
   const backgroundCanvas = document.createElement('canvas');
   backgroundCanvas.style.cssText = `
     position: fixed;
@@ -41,7 +53,7 @@ export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 1;
+    z-index: ${behindModalZIndex};
   `;
   document.body.appendChild(backgroundCanvas);
 
@@ -55,7 +67,7 @@ export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
     particleCount: backgroundParticles,
   });
 
-  // ============ FOREGROUND LAYER (z-index: 9999, IN FRONT of modal) ============
+  // ============ FOREGROUND LAYER (in front of modal card) ============
   const foregroundCanvas = document.createElement('canvas');
   foregroundCanvas.style.cssText = `
     position: fixed;
@@ -63,7 +75,7 @@ export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 9999;
+    z-index: ${inFrontOfModalZIndex};
   `;
   document.body.appendChild(foregroundCanvas);
 
@@ -77,9 +89,9 @@ export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
     particleCount: foregroundParticles,
   });
 
-  // Clean up both canvases after animation completes
+  // Clean up canvases after animation completes (particles exit viewport)
   setTimeout(() => {
     backgroundCanvas.remove();
     foregroundCanvas.remove();
-  }, 6000); // Extended cleanup time for longer fall
+  }, 8000);
 }

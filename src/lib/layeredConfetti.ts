@@ -21,14 +21,14 @@ interface LayeredConfettiOptions {
 
 export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
   const {
-    foregroundRatio = 0.20,
+    foregroundRatio = 0.30,
     colors = ['#FFD740', '#FF6B35', '#FFEB99', '#ffffff'],
     origin = { x: 0.5, y: 0.38 },
     behindModalZIndex = 1050,
     inFrontOfModalZIndex = 1200,
   } = options;
 
-  const totalParticles = 80;
+  const totalParticles = 140;
   const foregroundParticles = Math.round(totalParticles * foregroundRatio);
   const backgroundParticles = totalParticles - foregroundParticles;
 

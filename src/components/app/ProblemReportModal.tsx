@@ -33,7 +33,7 @@ const CATEGORY_OPTIONS: { value: ProblemCategory; label: string }[] = [
 function SuccessState() {
   // Fire confetti on mount
   useEffect(() => {
-    fireLayeredConfetti({ foregroundRatio: 0.15 });
+    fireLayeredConfetti();
   }, []);
 
   const iconSpring = useSpring({

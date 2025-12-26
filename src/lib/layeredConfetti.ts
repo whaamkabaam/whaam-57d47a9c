@@ -21,7 +21,7 @@ interface LayeredConfettiOptions {
 
 export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
   const {
-    foregroundRatio = 0.30,
+    foregroundRatio = 0.45,
     colors = ['#FFD740', '#FF6B35', '#FFEB99', '#ffffff'],
     origin = { x: 0.5, y: 0.38 },
     behindModalZIndex = 1050,
@@ -37,9 +37,9 @@ export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
     spread: 45,
     origin,
     colors,
-    gravity: 2.2,
+    gravity: 1.8,
     startVelocity: 45,
-    ticks: 1200,
+    ticks: 2000,
     scalar: 1.15,
     decay: 0.97,
     drift: 0,

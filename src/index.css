@@ -424,6 +424,9 @@
 }
 
 .glass-button {
+  /* Ensure button content is clickable above any pseudo-elements */
+  position: relative;
+  z-index: 1;
   /* Flex centering for icon + text alignment */
   display: flex;
   align-items: center;

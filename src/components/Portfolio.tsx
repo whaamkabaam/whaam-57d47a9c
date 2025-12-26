@@ -52,7 +52,7 @@ const Portfolio = () => {
       improvement: "+3 Rank Tiers",
       beforeAfter: "From Diamond 2 to Immortal 2 in 2 weeks",
       accuracyBoost: "+35% Accuracy",
-      color: "from-blue-500 to-purple-600"
+      color: "from-blue-500 to-whaam-yellow"
     },
     {
       name: "Sarah Chen",
@@ -100,7 +100,7 @@ const Portfolio = () => {
       improvement: "+4 Faceit Levels",
       beforeAfter: "From Level 6 to Level 10",
       accuracyBoost: "+45% Headshot Rate",
-      color: "from-purple-500 to-blue-600"
+      color: "from-whaam-yellow to-blue-600"
     },
     {
       name: "Emma Thompson",
@@ -120,7 +120,7 @@ const Portfolio = () => {
     { icon: Trophy, end: 500, suffix: "+", label: "Satisfied Gamers", color: "text-yellow-500" },
     { icon: Target, end: 35, suffix: "%", label: "Avg. Accuracy Boost", color: "text-green-500" },
     { icon: Zap, value: "Minutes", label: "Fast Delivery", color: "text-blue-500" },
-    { icon: Star, end: 4.9, decimals: 1, suffix: "/5", label: "Average Rating", color: "text-purple-500" }
+    { icon: Star, end: 4.9, decimals: 1, suffix: "/5", label: "Average Rating", color: "text-whaam-yellow" }
   ];
 
   return (

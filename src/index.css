@@ -121,9 +121,9 @@
     --muted: 220 40% 20% / 0.2;
     --muted-foreground: 0 0% 75%;
 
-    --accent: 320 100% 70%;        /* Pink flame accent */
-    --accent-foreground: 0 0% 100%;
-    --accent-glow: 320 100% 80%;   /* Lighter pink */
+    --accent: 45 100% 60%;         /* WHAAM gold accent */
+    --accent-foreground: 220 100% 3%;
+    --accent-glow: 45 100% 75%;    /* Lighter gold */
 
     /* Glass Feedback */
     --destructive: 0 100% 65%;
@@ -132,7 +132,7 @@
     /* Glass Borders & Inputs */
     --border: 220 100% 80% / 0.15;
     --input: 220 60% 10% / 0.3;
-    --ring: 280 100% 70% / 0.4;
+    --ring: 45 100% 60% / 0.4;
 
     /* Fluid Border Radius */
     --radius: 1.5rem;
@@ -181,14 +181,14 @@
     --secondary-glow: 45 100% 75%;
     --muted: 220 40% 20% / 0.2;
     --muted-foreground: 0 0% 75%;
-    --accent: 320 100% 70%;
-    --accent-foreground: 0 0% 100%;
-    --accent-glow: 320 100% 80%;
+    --accent: 45 100% 60%;
+    --accent-foreground: 220 100% 3%;
+    --accent-glow: 45 100% 75%;
     --destructive: 0 100% 65%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 100% 80% / 0.15;
     --input: 220 60% 10% / 0.3;
-    --ring: 280 100% 70% / 0.4;
+    --ring: 45 100% 60% / 0.4;
     --whaam-secondary-text: 0 0% 75%;
     --sidebar-background: 220 70% 8% / 0;
     --sidebar-foreground: 0 0% 98%;

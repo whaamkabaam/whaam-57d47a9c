@@ -2,7 +2,7 @@
 // Problem Report Modal - Liquid Glass Design
 // ============================================
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { Label } from '@/components/ui/label';
@@ -42,38 +42,91 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
   const [screenshot, setScreenshot] = useState<File | null>(null);
   const [screenshotPreview, setScreenshotPreview] = useState<string | null>(null);
   const [screenshotError, setScreenshotError] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Shared validation function for click, drop, and paste
+  const validateAndSetFile = useCallback((file: File) => {
+    setScreenshotError(null);
+    
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setScreenshotError('Invalid file type. Allowed: PNG, JPEG, WebP');
+      return;
+    }
+    
+    if (file.size > MAX_SIZE_BYTES) {
+      setScreenshotError('File too large. Maximum size: 5MB');
+      return;
+    }
+    
+    // Revoke previous preview URL if exists
+    if (screenshotPreview) {
+      URL.revokeObjectURL(screenshotPreview);
+    }
+    
+    setScreenshot(file);
+    setScreenshotPreview(URL.createObjectURL(file));
+  }, [screenshotPreview]);
+
+  // Clipboard paste listener
+  useEffect(() => {
+    if (!open) return;
+    
+    const handlePaste = (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      
+      for (const item of items) {
+        if (item.type.startsWith('image/')) {
+          const file = item.getAsFile();
+          if (file) {
+            validateAndSetFile(file);
+            break;
+          }
+        }
+      }
+    };
+    
+    document.addEventListener('paste', handlePaste);
+    return () => document.removeEventListener('paste', handlePaste);
+  }, [open, validateAndSetFile]);
+
+  // Drag & drop handlers
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    
+    const file = e.dataTransfer.files[0];
+    if (file) validateAndSetFile(file);
+  };
 
   const descriptionLength = description.trim().length;
   const isValid = category !== '' && descriptionLength >= 10 && descriptionLength <= 2000;
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    setScreenshotError(null);
-    
-    if (!file) {
+    if (file) {
+      validateAndSetFile(file);
+    } else {
       setScreenshot(null);
       setScreenshotPreview(null);
-      return;
     }
-
-    // Validate file type
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      setScreenshotError('Invalid file type. Allowed: PNG, JPEG, WebP');
-      e.target.value = '';
-      return;
+    // Reset input so same file can be selected again
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
-
-    // Validate file size
-    if (file.size > MAX_SIZE_BYTES) {
-      setScreenshotError('File too large. Maximum size: 5MB');
-      e.target.value = '';
-      return;
-    }
-
-    setScreenshot(file);
-    // Create preview URL
-    const previewUrl = URL.createObjectURL(file);
-    setScreenshotPreview(previewUrl);
   };
 
   const handleRemoveScreenshot = () => {
@@ -260,15 +313,25 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
                 {!screenshot ? (
                   <label
                     htmlFor="screenshot-upload"
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
                     className={cn(
-                      "flex items-center justify-center gap-2 py-3 px-4 rounded-xl cursor-pointer transition-colors",
-                      "border border-dashed border-white/[0.15] bg-white/[0.03]",
-                      "hover:bg-white/[0.06] hover:border-white/20",
-                      "text-sm text-muted-foreground hover:text-foreground"
+                      "flex flex-col items-center justify-center gap-1.5 py-4 px-4 rounded-xl cursor-pointer transition-all",
+                      "border border-dashed bg-white/[0.03]",
+                      "text-sm text-muted-foreground",
+                      isDragging 
+                        ? "border-primary/50 bg-primary/10 ring-2 ring-primary/30 text-foreground" 
+                        : "border-white/[0.15] hover:bg-white/[0.06] hover:border-white/20 hover:text-foreground"
                     )}
                   >
-                    <ImagePlus className="h-4 w-4" />
-                    <span>Add screenshot</span>
+                    <div className="flex items-center gap-2">
+                      <ImagePlus className="h-4 w-4" />
+                      <span>Drop, paste, or click to add screenshot</span>
+                    </div>
+                    <span className="text-xs text-muted-foreground/70">
+                      Pro tip: Press Ctrl+V to paste from clipboard
+                    </span>
                   </label>
                 ) : (
                   <div className="flex items-center gap-3 p-3 rounded-xl border border-white/[0.12] bg-white/[0.06]">

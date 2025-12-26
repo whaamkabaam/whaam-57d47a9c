@@ -5,13 +5,14 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { useSpring, animated, config } from 'react-spring';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { LiquidGlassButton } from '@/components/LiquidGlassEffects';
 import { useSubmitProblemReport } from '@/hooks/api/useProblemReport';
 import { toast } from 'sonner';
-import { Loader2, CheckCircle2, X, ImagePlus, Trash2 } from 'lucide-react';
+import { Loader2, Check, X, ImagePlus, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ProblemCategory } from '@/lib/api/types';
 
@@ -25,6 +26,62 @@ const CATEGORY_OPTIONS: { value: ProblemCategory; label: string }[] = [
   { value: 'performance', label: 'Slow Performance' },
   { value: 'other', label: 'Something Else' },
 ];
+
+// Animated success state component
+function SuccessState() {
+  const iconSpring = useSpring({
+    from: { scale: 0, opacity: 0 },
+    to: { scale: 1, opacity: 1 },
+    config: { mass: 0.8, tension: 300, friction: 18 },
+  });
+
+  const contentSpring = useSpring({
+    from: { opacity: 0, y: 12 },
+    to: { opacity: 1, y: 0 },
+    config: config.gentle,
+    delay: 150,
+  });
+
+  return (
+    <div className="flex flex-col items-center justify-center py-10 text-center relative">
+      {/* Ambient glow */}
+      <div 
+        className="absolute inset-0 -z-10 opacity-50 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 50% 35%, hsl(var(--whaam-yellow) / 0.25), transparent 65%)',
+        }}
+      />
+      
+      {/* Animated icon */}
+      <animated.div
+        style={{
+          scale: iconSpring.scale,
+          opacity: iconSpring.opacity,
+        }}
+        className="mb-5"
+      >
+        <div className="w-16 h-16 rounded-full bg-whaam-yellow/20 backdrop-blur-sm border border-whaam-yellow/30 flex items-center justify-center">
+          <Check className="h-8 w-8 text-whaam-yellow" strokeWidth={2.5} />
+        </div>
+      </animated.div>
+      
+      {/* Animated content */}
+      <animated.div
+        style={{
+          opacity: contentSpring.opacity,
+          transform: contentSpring.y.to(y => `translateY(${y}px)`),
+        }}
+      >
+        <p className="text-xl font-semibold text-whaam-yellow">
+          Thanks for letting us know!
+        </p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          We'll look into this shortly.
+        </p>
+      </animated.div>
+    </div>
+  );
+}
 
 interface ProblemReportModalProps {
   open: boolean;
@@ -235,15 +292,7 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
           </div>
 
           {showSuccess ? (
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <div className="mb-4 rounded-full bg-green-500/20 p-3">
-                <CheckCircle2 className="h-8 w-8 text-green-400" />
-              </div>
-              <p className="text-lg font-medium text-foreground">Thank you!</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Your report has been submitted.
-              </p>
-            </div>
+            <SuccessState />
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Category Select */}

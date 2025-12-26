@@ -21,7 +21,6 @@ import { Settings } from 'lucide-react';
 const navItems = [
   { title: 'My Curve', url: '/studio', icon: Home },
   { title: 'My Library', url: '/studio/history', icon: Library },
-  { title: 'Feature Ideas', url: '/studio/features', icon: Lightbulb },
 ];
 
 export function DashboardSidebar() {
@@ -105,6 +104,32 @@ export function DashboardSidebar() {
           {!collapsed && (
             <p className="text-xs text-muted-foreground/70 px-4 mt-1">
               Replace your current curve
+            </p>
+          )}
+        </div>
+
+        {/* Feature Requests Section */}
+        <div className="mt-6 pt-6 border-t border-white/[0.06]">
+          <Link
+            to="/studio/features"
+            className={cn(
+              'sidebar-nav-item flex items-center gap-3 px-4 py-3.5 text-sm font-medium',
+              isActive('/studio/features')
+                ? 'sidebar-nav-item-active text-white'
+                : 'text-muted-foreground hover:text-foreground'
+            )}
+          >
+            <Lightbulb className={cn(
+              'h-5 w-5 flex-shrink-0 transition-all',
+              isActive('/studio/features')
+                ? 'text-secondary drop-shadow-[0_0_6px_rgba(255,215,64,0.5)]'
+                : ''
+            )} />
+            {!collapsed && <span>Feature Requests</span>}
+          </Link>
+          {!collapsed && (
+            <p className="text-xs text-muted-foreground/70 px-4 mt-1">
+              Vote on features you want
             </p>
           )}
         </div>

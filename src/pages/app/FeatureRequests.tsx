@@ -62,7 +62,7 @@ export default function FeatureRequests() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Lightbulb className="h-6 w-6 text-whaam-yellow" />
-            <h1 className="text-2xl font-semibold text-foreground">Feature Ideas</h1>
+            <h1 className="text-2xl font-semibold text-foreground">Feature Requests</h1>
           </div>
           <p className="text-sm text-muted-foreground">
             Vote on features you want to see built

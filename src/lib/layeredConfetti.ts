@@ -21,77 +21,84 @@ interface LayeredConfettiOptions {
 
 export function fireLayeredConfetti(options: LayeredConfettiOptions = {}) {
   const {
-    foregroundRatio = 0.15,
+    foregroundRatio = 0.20,
     colors = ['#FFD740', '#FF6B35', '#FFEB99', '#ffffff'],
-    origin = { y: 0.4 },
+    origin = { x: 0.5, y: 0.38 },
     behindModalZIndex = 1050,
     inFrontOfModalZIndex = 1200,
   } = options;
 
-  const totalParticles = 100;
+  const totalParticles = 80;
   const foregroundParticles = Math.round(totalParticles * foregroundRatio);
   const backgroundParticles = totalParticles - foregroundParticles;
 
-  // Physics tuned so confetti falls off-screen before fading
-  const confettiSettings = {
-    spread: 80,
+  // Base physics tuned so confetti falls off-screen before fading
+  const baseSettings = {
+    spread: 45,
     origin,
     colors,
-    gravity: 2.2,         // Fast fall - exits viewport quickly
-    startVelocity: 45,    // Strong initial burst
-    ticks: 1200,          // Long lifespan - won't fade mid-air
+    gravity: 2.2,
+    startVelocity: 45,
+    ticks: 1200,
     scalar: 1.15,
-    decay: 0.97,          // Slight slowdown, natural feel
-    drift: 0,             // No horizontal drift
+    decay: 0.97,
+    drift: 0,
   };
 
-  // ============ BACKGROUND LAYER (behind modal card) ============
-  const backgroundCanvas = document.createElement('canvas');
-  backgroundCanvas.style.cssText = `
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: ${behindModalZIndex};
-  `;
-  document.body.appendChild(backgroundCanvas);
+  // Use rAF to batch canvas creation for better performance
+  requestAnimationFrame(() => {
+    // ============ BACKGROUND LAYER (behind modal card) ============
+    const backgroundCanvas = document.createElement('canvas');
+    backgroundCanvas.style.cssText = `
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: ${behindModalZIndex};
+    `;
+    document.body.appendChild(backgroundCanvas);
 
-  const backgroundConfetti = confetti.create(backgroundCanvas, {
-    resize: true,
-    useWorker: true,
+    const backgroundConfetti = confetti.create(backgroundCanvas, {
+      resize: true,
+      useWorker: true,
+    });
+
+    backgroundConfetti({
+      ...baseSettings,
+      particleCount: backgroundParticles,
+    });
+
+    // ============ FOREGROUND LAYER (in front of modal card) ============
+    const foregroundCanvas = document.createElement('canvas');
+    foregroundCanvas.style.cssText = `
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: ${inFrontOfModalZIndex};
+    `;
+    document.body.appendChild(foregroundCanvas);
+
+    const foregroundConfetti = confetti.create(foregroundCanvas, {
+      resize: true,
+      useWorker: true,
+    });
+
+    // Foreground gets bigger, faster particles for visibility
+    foregroundConfetti({
+      ...baseSettings,
+      particleCount: foregroundParticles,
+      scalar: 1.4,
+      startVelocity: 55,
+      spread: 35,
+    });
+
+    // Clean up canvases after animation completes
+    setTimeout(() => {
+      backgroundCanvas.remove();
+      foregroundCanvas.remove();
+    }, 7000);
   });
-
-  backgroundConfetti({
-    ...confettiSettings,
-    particleCount: backgroundParticles,
-  });
-
-  // ============ FOREGROUND LAYER (in front of modal card) ============
-  const foregroundCanvas = document.createElement('canvas');
-  foregroundCanvas.style.cssText = `
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: ${inFrontOfModalZIndex};
-  `;
-  document.body.appendChild(foregroundCanvas);
-
-  const foregroundConfetti = confetti.create(foregroundCanvas, {
-    resize: true,
-    useWorker: true,
-  });
-
-  foregroundConfetti({
-    ...confettiSettings,
-    particleCount: foregroundParticles,
-  });
-
-  // Clean up canvases after animation completes (particles exit viewport)
-  setTimeout(() => {
-    backgroundCanvas.remove();
-    foregroundCanvas.remove();
-  }, 8000);
 }

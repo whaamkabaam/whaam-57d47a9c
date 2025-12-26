@@ -236,7 +236,7 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
 
       setShowSuccess(true);
       
-      // Auto-close after 4s to let the celebration breathe
+      // Auto-close after confetti finishes falling
       setTimeout(() => {
         onOpenChange(false);
         // Reset form after close animation
@@ -244,7 +244,7 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
           resetForm();
           setShowSuccess(false);
         }, 200);
-      }, 4000);
+      }, 6500);
     } catch (err) {
       toast.error('Failed to submit report. Please try again.');
     }

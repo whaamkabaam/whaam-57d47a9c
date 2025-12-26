@@ -439,6 +439,7 @@ export function ProblemReportModal({ open, onOpenChange }: ProblemReportModalPro
                   type="button"
                   variant="secondary"
                   onMouseDown={() => handleClose(false)}
+                  className="min-w-[100px] h-11"
                 >
                   Cancel
                 </LiquidGlassButton>

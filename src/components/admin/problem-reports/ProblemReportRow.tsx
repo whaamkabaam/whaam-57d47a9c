@@ -1,6 +1,6 @@
 // ============================================
 // Problem Report Row Component
-// Table row with inline editing and actions
+// Table row with checkbox, inline editing and actions
 // ============================================
 
 import { useState } from 'react';
@@ -9,6 +9,7 @@ import { TableCell, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Select,
   SelectContent,
@@ -48,6 +49,8 @@ type AdminPriority = 'low' | 'medium' | 'high' | 'critical';
 
 interface ProblemReportRowProps {
   report: AdminProblemReport;
+  isSelected: boolean;
+  onSelect: (id: number, selected: boolean) => void;
   onUpdateStatus: (id: number, status: ProblemReportStatus) => void;
   onUpdatePriority: (id: number, priority: AdminPriority | null) => void;
   onArchive: (id: number) => void;
@@ -85,6 +88,8 @@ const PRIORITY_OPTIONS: AdminPriority[] = ['low', 'medium', 'high', 'critical'];
 
 export function ProblemReportRow({
   report,
+  isSelected,
+  onSelect,
   onUpdateStatus,
   onUpdatePriority,
   onArchive,
@@ -123,9 +128,19 @@ export function ProblemReportRow({
       <TableRow
         className={cn(
           'group transition-colors hover:bg-white/5',
-          report.is_archived && 'opacity-60'
+          report.is_archived && 'opacity-60',
+          isSelected && 'bg-secondary/10'
         )}
       >
+        {/* Checkbox */}
+        <TableCell className="w-[40px]">
+          <Checkbox
+            checked={isSelected}
+            onCheckedChange={(checked) => onSelect(report.id, checked as boolean)}
+            className="border-white/20"
+          />
+        </TableCell>
+
         {/* Category */}
         <TableCell>
           <Badge variant="outline" className={cn('text-xs', categoryConfig.className)}>

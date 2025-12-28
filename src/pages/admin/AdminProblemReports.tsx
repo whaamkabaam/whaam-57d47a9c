@@ -1,9 +1,9 @@
 // ============================================
 // Admin Problem Reports Page
-// Full CRUD with filters, screenshot gallery, inline editing
+// Full CRUD with filters, bulk actions, screenshot gallery, inline editing
 // ============================================
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { AlertTriangle, Inbox } from 'lucide-react';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import {
@@ -14,6 +14,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
 import { ProblemReportsToolbar } from '@/components/admin/problem-reports/ProblemReportsToolbar';
 import { ProblemReportRow } from '@/components/admin/problem-reports/ProblemReportRow';
@@ -43,6 +44,9 @@ export default function AdminProblemReports() {
   const [priorityFilter, setPriorityFilter] = useState<AdminPriority | undefined>();
   const [includeArchived, setIncludeArchived] = useState(false);
   const [page, setPage] = useState(1);
+  
+  // Selection state for bulk actions
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   
   // Modal state
   const [selectedReport, setSelectedReport] = useState<AdminProblemReport | null>(null);
@@ -74,7 +78,31 @@ export default function AdminProblemReports() {
   const statusCounts = data?.by_status ?? {};
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
-  // Handlers
+  // Selection handlers
+  const handleSelect = useCallback((id: number, selected: boolean) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (selected) {
+        next.add(id);
+      } else {
+        next.delete(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const handleSelectAll = useCallback(() => {
+    setSelectedIds(new Set(reports.map(r => r.id)));
+  }, [reports]);
+
+  const handleDeselectAll = useCallback(() => {
+    setSelectedIds(new Set());
+  }, []);
+
+  const allSelected = reports.length > 0 && reports.every(r => selectedIds.has(r.id));
+  const someSelected = reports.some(r => selectedIds.has(r.id));
+
+  // Individual handlers
   const handleUpdateStatus = async (id: number, status: ProblemReportStatus) => {
     try {
       await updateMutation.mutateAsync({ id, data: { status } });
@@ -114,6 +142,11 @@ export default function AdminProblemReports() {
   const handleDelete = async (id: number) => {
     try {
       await deleteMutation.mutateAsync(id);
+      setSelectedIds(prev => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
       toast.success('Report deleted');
     } catch {
       toast.error('Failed to delete report');
@@ -127,6 +160,51 @@ export default function AdminProblemReports() {
       setSelectedReport(null);
     } catch {
       toast.error('Failed to update report');
+    }
+  };
+
+  // Bulk action handlers
+  const handleBulkStatusChange = async (status: ProblemReportStatus) => {
+    const ids = Array.from(selectedIds);
+    try {
+      await Promise.all(ids.map(id => updateMutation.mutateAsync({ id, data: { status } })));
+      toast.success(`${ids.length} report${ids.length !== 1 ? 's' : ''} updated`);
+      setSelectedIds(new Set());
+    } catch {
+      toast.error('Failed to update some reports');
+    }
+  };
+
+  const handleBulkPriorityChange = async (priority: AdminPriority) => {
+    const ids = Array.from(selectedIds);
+    try {
+      await Promise.all(ids.map(id => updateMutation.mutateAsync({ id, data: { priority } })));
+      toast.success(`${ids.length} report${ids.length !== 1 ? 's' : ''} updated`);
+      setSelectedIds(new Set());
+    } catch {
+      toast.error('Failed to update some reports');
+    }
+  };
+
+  const handleBulkArchive = async () => {
+    const ids = Array.from(selectedIds);
+    try {
+      await Promise.all(ids.map(id => archiveMutation.mutateAsync(id)));
+      toast.success(`${ids.length} report${ids.length !== 1 ? 's' : ''} archived`);
+      setSelectedIds(new Set());
+    } catch {
+      toast.error('Failed to archive some reports');
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    const ids = Array.from(selectedIds);
+    try {
+      await Promise.all(ids.map(id => deleteMutation.mutateAsync(id)));
+      toast.success(`${ids.length} report${ids.length !== 1 ? 's' : ''} deleted`);
+      setSelectedIds(new Set());
+    } catch {
+      toast.error('Failed to delete some reports');
     }
   };
 
@@ -153,7 +231,7 @@ export default function AdminProblemReports() {
         </div>
       </div>
 
-      {/* Toolbar */}
+      {/* Toolbar with bulk actions */}
       <ProblemReportsToolbar
         status={statusFilter}
         category={categoryFilter}
@@ -167,6 +245,14 @@ export default function AdminProblemReports() {
         onIncludeArchivedChange={setIncludeArchived}
         onRefresh={() => refetch()}
         isRefreshing={isFetching}
+        selectedCount={selectedIds.size}
+        onBulkStatusChange={handleBulkStatusChange}
+        onBulkPriorityChange={handleBulkPriorityChange}
+        onBulkArchive={handleBulkArchive}
+        onBulkDelete={handleBulkDelete}
+        onSelectAll={handleSelectAll}
+        onDeselectAll={handleDeselectAll}
+        isBulkOperating={isUpdating}
       />
 
       {/* Table */}
@@ -175,6 +261,20 @@ export default function AdminProblemReports() {
           <Table>
             <TableHeader>
               <TableRow className="border-white/10 hover:bg-transparent">
+                <TableHead className="w-[40px]">
+                  <Checkbox
+                    checked={allSelected}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        handleSelectAll();
+                      } else {
+                        handleDeselectAll();
+                      }
+                    }}
+                    className="border-white/20"
+                    aria-label="Select all"
+                  />
+                </TableHead>
                 <TableHead className="text-muted-foreground">Category</TableHead>
                 <TableHead className="text-muted-foreground">Description</TableHead>
                 <TableHead className="text-muted-foreground">Screenshots</TableHead>
@@ -191,7 +291,7 @@ export default function AdminProblemReports() {
                 <ProblemReportsTableSkeleton />
               ) : isError ? (
                 <TableRow>
-                  <td colSpan={9} className="py-12">
+                  <td colSpan={10} className="py-12">
                     <div className="text-center">
                       <AlertTriangle className="h-12 w-12 mx-auto text-destructive/50 mb-3" />
                       <p className="text-muted-foreground mb-4">Failed to load problem reports</p>
@@ -203,7 +303,7 @@ export default function AdminProblemReports() {
                 </TableRow>
               ) : reports.length === 0 ? (
                 <TableRow>
-                  <td colSpan={9} className="py-12">
+                  <td colSpan={10} className="py-12">
                     <div className="text-center">
                       <Inbox className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
                       <p className="text-muted-foreground mb-2">No problem reports found</p>
@@ -220,6 +320,8 @@ export default function AdminProblemReports() {
                   <ProblemReportRow
                     key={report.id}
                     report={report}
+                    isSelected={selectedIds.has(report.id)}
+                    onSelect={handleSelect}
                     onUpdateStatus={handleUpdateStatus}
                     onUpdatePriority={handleUpdatePriority}
                     onArchive={handleArchive}

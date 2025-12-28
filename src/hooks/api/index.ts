@@ -66,3 +66,26 @@ export {
   useVoteFeatureRequest,
   featureRequestKeys,
 } from './useFeatureRequests';
+
+// Admin hooks
+export {
+  useAdminStats,
+  useAdminConfig,
+  useUpdateAdminConfig,
+  useAdminUsers,
+  useAdminUser,
+  useSetTestUser,
+  useAdminFeatureRequests,
+  useAdminFeatureRequest,
+  useUpdateAdminFeatureRequest,
+  useArchiveFeatureRequest,
+  useUnarchiveFeatureRequest,
+  useDeleteFeatureRequest,
+  useAdminProblemReports,
+  useAdminProblemReport,
+  useUpdateAdminProblemReport,
+  useArchiveProblemReport,
+  useUnarchiveProblemReport,
+  useDeleteProblemReport,
+  adminKeys,
+} from './useAdmin';

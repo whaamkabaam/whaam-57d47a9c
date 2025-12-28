@@ -11,6 +11,7 @@ export interface User {
   email_verified: boolean;
   discord_id: number | null;
   has_legacy_account: boolean;
+  is_admin: boolean;
 }
 
 export interface SessionResponse {
@@ -225,4 +226,118 @@ export interface CreateFeatureRequestInput {
 export interface VoteResponse {
   message: string;
   success: boolean;
+}
+
+// ============================================
+// Admin Types
+// ============================================
+
+// Admin Stats
+export interface AdminStats {
+  total_users: number;
+  total_curves: number;
+  total_feedback: number;
+  active_subscriptions: number;
+}
+
+// Admin Config
+export interface AdminConfig {
+  daily_cap: number;
+  bot_version: string;
+}
+
+export interface UpdateAdminConfigRequest {
+  daily_cap?: number;
+}
+
+// Admin User (extended with activity counts)
+export interface AdminUser {
+  id: string;
+  email: string;
+  display_name: string | null;
+  avatar_url: string | null;
+  email_verified: boolean;
+  discord_id: number | null;
+  has_legacy_account: boolean;
+  is_test_user: boolean;
+  feature_request_count: number;
+  problem_report_count: number;
+  vote_count: number;
+  created_at: string;
+}
+
+export interface AdminUsersListResponse {
+  users: AdminUser[];
+  total: number;
+}
+
+// Admin Feature Request (extended with admin fields)
+export type AdminFeatureRequestStatus = 'open' | 'planned' | 'in_progress' | 'completed' | 'declined';
+export type AdminPriority = 'low' | 'medium' | 'high' | 'critical';
+
+export interface AdminFeatureRequest {
+  id: number;
+  user_id: string;
+  title: string;
+  description: string;
+  status: AdminFeatureRequestStatus;
+  is_anonymous: boolean;
+  admin_notes: string | null;
+  admin_priority: AdminPriority | null;
+  is_archived: boolean;
+  author_email: string;
+  author_name: string | null;
+  vote_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AdminFeatureRequestsListResponse {
+  items: AdminFeatureRequest[];
+  total: number;
+  by_status: Record<AdminFeatureRequestStatus, number>;
+}
+
+export interface UpdateAdminFeatureRequest {
+  status?: AdminFeatureRequestStatus;
+  admin_notes?: string;
+  admin_priority?: AdminPriority;
+}
+
+// Admin Problem Report
+export type ProblemReportStatus = 'new' | 'triaged' | 'in_progress' | 'fixed' | 'wont_fix' | 'duplicate';
+
+export interface AdminProblemReport {
+  id: number;
+  user_id: string;
+  page_url: string | null;
+  category: ProblemCategory;
+  description: string;
+  user_agent: string | null;
+  screenshot_urls: string[];
+  status: ProblemReportStatus;
+  priority: AdminPriority | null;
+  admin_notes: string | null;
+  is_archived: boolean;
+  user_email: string;
+  user_name: string | null;
+  created_at: string;
+}
+
+export interface AdminProblemReportsListResponse {
+  reports: AdminProblemReport[];
+  total: number;
+  by_status: Record<ProblemReportStatus, number>;
+}
+
+export interface UpdateAdminProblemReport {
+  status?: ProblemReportStatus;
+  priority?: AdminPriority;
+  admin_notes?: string;
+}
+
+// Shared admin success response
+export interface AdminSuccessResponse {
+  success: boolean;
+  id?: number;
 }

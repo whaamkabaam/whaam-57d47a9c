@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +12,7 @@ import { ProtectedRoute } from "@/components/app/ProtectedRoute";
 import { DashboardLayout } from "@/components/app/DashboardLayout";
 import { AdminProtectedRoute } from "@/components/admin/AdminProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
+import { AdminPageLoader } from "@/components/admin/AdminPageLoader";
 import Index from "./pages/Index";
 import Privacy from "./pages/Privacy";
 import TermsOfService from "./pages/TermsOfService";
@@ -23,13 +25,15 @@ import DashboardHome from "./pages/app/DashboardHome";
 import CurveHistory from "./pages/app/CurveHistory";
 import Account from "./pages/app/Account";
 import FeatureRequests from "./pages/app/FeatureRequests";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminUsers from "./pages/admin/AdminUsers";
-import AdminFeatureRequests from "./pages/admin/AdminFeatureRequests";
-import AdminProblemReports from "./pages/admin/AdminProblemReports";
-import AdminSettings from "./pages/admin/AdminSettings";
 import NotFound from "./pages/NotFound";
 import InteractiveBackground from "./components/InteractiveBackground";
+
+// Lazy load admin pages for better initial bundle size
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
+const AdminFeatureRequests = lazy(() => import("./pages/admin/AdminFeatureRequests"));
+const AdminProblemReports = lazy(() => import("./pages/admin/AdminProblemReports"));
+const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 
 const queryClient = new QueryClient();
 
@@ -65,17 +69,17 @@ const App = () => (
               <Route path="account" element={<Account />} />
             </Route>
 
-            {/* Admin Routes */}
+            {/* Admin Routes - Lazy loaded with Suspense */}
             <Route path="/admin" element={
               <AdminProtectedRoute>
                 <AdminLayout />
               </AdminProtectedRoute>
             }>
-              <Route index element={<AdminDashboard />} />
-              <Route path="users" element={<AdminUsers />} />
-              <Route path="features" element={<AdminFeatureRequests />} />
-              <Route path="problems" element={<AdminProblemReports />} />
-              <Route path="settings" element={<AdminSettings />} />
+              <Route index element={<Suspense fallback={<AdminPageLoader />}><AdminDashboard /></Suspense>} />
+              <Route path="users" element={<Suspense fallback={<AdminPageLoader />}><AdminUsers /></Suspense>} />
+              <Route path="features" element={<Suspense fallback={<AdminPageLoader />}><AdminFeatureRequests /></Suspense>} />
+              <Route path="problems" element={<Suspense fallback={<AdminPageLoader />}><AdminProblemReports /></Suspense>} />
+              <Route path="settings" element={<Suspense fallback={<AdminPageLoader />}><AdminSettings /></Suspense>} />
             </Route>
             
             {/* Legacy redirects: /dashboard, /app -> /studio */}

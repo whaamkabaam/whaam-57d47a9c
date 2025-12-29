@@ -4,6 +4,7 @@
 // ============================================
 
 import { useMemo } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { LayoutDashboard, Users, FileText, MessageSquare, CreditCard, AlertTriangle, Lightbulb, RefreshCw, TrendingUp } from 'lucide-react';
 import { useAdminStats, useAdminTimeseries } from '@/hooks/api/useAdmin';
 import { StatCard } from '@/components/admin/dashboard/StatCard';
@@ -24,7 +25,17 @@ function formatStatusLabel(status: string): string {
 
 export default function AdminDashboard() {
   const { data: stats, isLoading, isError, refetch } = useAdminStats();
-  const { data: timeseriesData, isLoading: isTimeseriesLoading } = useAdminTimeseries(30);
+  
+  // Intersection observer for analytics section - only load timeseries when visible
+  const { ref: analyticsRef, inView: analyticsInView } = useInView({
+    triggerOnce: true,
+    rootMargin: '100px', // Start loading 100px before visible
+  });
+
+  // Cascade loading: timeseries only fetches when stats loaded AND analytics section is visible
+  const { data: timeseriesData, isLoading: isTimeseriesLoading } = useAdminTimeseries(30, {
+    enabled: !isLoading && !!stats && analyticsInView,
+  });
 
   // Transform timeseries data for the chart
   const activityData = useMemo(() => {
@@ -51,7 +62,7 @@ export default function AdminDashboard() {
     );
   }, [stats?.feature_requests_by_status]);
 
-  const chartsLoading = isLoading || isTimeseriesLoading;
+  const chartsLoading = isTimeseriesLoading || !analyticsInView;
 
   return (
     <div className="space-y-8">
@@ -139,8 +150,8 @@ export default function AdminDashboard() {
         </div>
       </section>
 
-      {/* Analytics Section */}
-      <section className="space-y-3">
+      {/* Analytics Section - Uses intersection observer for lazy loading */}
+      <section ref={analyticsRef} className="space-y-3">
         <div className="flex items-center gap-2">
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
           <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Analytics</h2>

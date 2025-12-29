@@ -47,6 +47,10 @@ export default function AdminProblemReports() {
   const [includeArchived, setIncludeArchived] = useState(false);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
+  const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({
+    from: undefined,
+    to: undefined,
+  });
   
   // Selection state for bulk actions
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
@@ -54,7 +58,7 @@ export default function AdminProblemReports() {
   // Modal state
   const [selectedReport, setSelectedReport] = useState<AdminProblemReport | null>(null);
 
-  // Data fetching
+  // Data fetching - now with server-side search and date filtering
   const {
     data,
     isLoading,
@@ -68,6 +72,9 @@ export default function AdminProblemReports() {
     limit: PAGE_SIZE,
     offset: (page - 1) * PAGE_SIZE,
     includeArchived,
+    search: search || undefined,
+    dateFrom: dateRange.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined,
+    dateTo: dateRange.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined,
   });
 
   // Mutations
@@ -80,15 +87,6 @@ export default function AdminProblemReports() {
   const total = data?.total ?? 0;
   const statusCounts = data?.by_status ?? {};
   const totalPages = Math.ceil(total / PAGE_SIZE);
-
-  // Filter items by search locally
-  const filteredReports = search
-    ? reports.filter(report => 
-        report.description.toLowerCase().includes(search.toLowerCase()) ||
-        report.user_email?.toLowerCase().includes(search.toLowerCase()) ||
-        report.category.toLowerCase().includes(search.toLowerCase())
-      )
-    : reports;
 
   // Selection handlers
   const handleSelect = useCallback((id: number, selected: boolean) => {
@@ -104,14 +102,14 @@ export default function AdminProblemReports() {
   }, []);
 
   const handleSelectAll = useCallback(() => {
-    setSelectedIds(new Set(filteredReports.map(r => r.id)));
-  }, [filteredReports]);
+    setSelectedIds(new Set(reports.map(r => r.id)));
+  }, [reports]);
 
   const handleDeselectAll = useCallback(() => {
     setSelectedIds(new Set());
   }, []);
 
-  const allSelected = filteredReports.length > 0 && filteredReports.every(r => selectedIds.has(r.id));
+  const allSelected = reports.length > 0 && reports.every(r => selectedIds.has(r.id));
 
   // Individual handlers
   const handleUpdateStatus = async (id: number, status: ProblemReportStatus) => {
@@ -230,23 +228,30 @@ export default function AdminProblemReports() {
     setSelectedIds(new Set());
   }, []);
 
+  const handleDateRangeChange = useCallback((range: { from: Date | undefined; to: Date | undefined }) => {
+    setDateRange(range);
+    setPage(1);
+    setSelectedIds(new Set());
+  }, []);
+
   const handleClearFilters = () => {
     setStatusFilter(undefined);
     setCategoryFilter(undefined);
     setPriorityFilter(undefined);
     setSearch('');
+    setDateRange({ from: undefined, to: undefined });
     setPage(1);
     setSelectedIds(new Set());
   };
 
   // Export handler
   const handleExport = useCallback(() => {
-    if (filteredReports.length === 0) {
+    if (reports.length === 0) {
       toast.error('Nothing to export');
       return;
     }
 
-    exportToCsv(filteredReports, `problem-reports-${format(new Date(), 'yyyy-MM-dd')}`, [
+    exportToCsv(reports, `problem-reports-${format(new Date(), 'yyyy-MM-dd')}`, [
       { key: 'id', header: 'ID' },
       { key: 'category', header: 'Category' },
       { key: 'description', header: 'Description' },
@@ -260,7 +265,7 @@ export default function AdminProblemReports() {
     ]);
 
     toast.success('Export complete');
-  }, [filteredReports]);
+  }, [reports]);
 
   const isUpdating = updateMutation.isPending || archiveMutation.isPending || 
                      unarchiveMutation.isPending || deleteMutation.isPending;
@@ -294,6 +299,8 @@ export default function AdminProblemReports() {
         isRefreshing={isFetching}
         search={search}
         onSearchChange={handleSearchChange}
+        dateRange={dateRange}
+        onDateRangeChange={handleDateRangeChange}
         selectedCount={selectedIds.size}
         onBulkStatusChange={handleBulkStatusChange}
         onBulkPriorityChange={handleBulkPriorityChange}
@@ -351,13 +358,13 @@ export default function AdminProblemReports() {
                     </div>
                   </td>
                 </TableRow>
-              ) : filteredReports.length === 0 ? (
+              ) : reports.length === 0 ? (
                 <TableRow>
                   <td colSpan={10} className="py-12">
                     <div className="text-center">
                       <Inbox className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
                       <p className="text-muted-foreground mb-2">No problem reports found</p>
-                      {(statusFilter || categoryFilter || priorityFilter || search) && (
+                      {(statusFilter || categoryFilter || priorityFilter || search || dateRange.from || dateRange.to) && (
                         <Button variant="link" onClick={handleClearFilters} className="text-secondary">
                           Clear filters
                         </Button>
@@ -366,7 +373,7 @@ export default function AdminProblemReports() {
                   </td>
                 </TableRow>
               ) : (
-                filteredReports.map((report) => (
+                reports.map((report) => (
                   <ProblemReportRow
                     key={report.id}
                     report={report}

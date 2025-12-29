@@ -1,6 +1,6 @@
 // ============================================
 // Problem Reports Toolbar Component
-// Status pills, category/priority filters, archive toggle, bulk actions, search, export
+// Status pills, category/priority filters, archive toggle, bulk actions, search, date range, export
 // ============================================
 
 import { useState, useEffect } from 'react';
@@ -27,6 +27,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
+import { DateRangeFilter, DateRangeValue } from '@/components/admin/shared/DateRangeFilter';
 import { cn } from '@/lib/utils';
 
 // Types
@@ -50,6 +51,9 @@ interface ProblemReportsToolbarProps {
   // Search
   search?: string;
   onSearchChange?: (search: string) => void;
+  // Date range
+  dateRange?: DateRangeValue;
+  onDateRangeChange?: (range: DateRangeValue) => void;
   // Bulk action props
   selectedCount: number;
   onBulkStatusChange: (status: ProblemReportStatus) => void;

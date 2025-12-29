@@ -1,6 +1,6 @@
 // ============================================
 // Admin Feature Requests Toolbar
-// With search, bulk actions, and CSV export
+// With search, bulk actions, date range filter, and CSV export
 // ============================================
 
 import { useState, useEffect } from 'react';
@@ -27,6 +27,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { DateRangeFilter, DateRangeValue } from '@/components/admin/shared/DateRangeFilter';
 import { cn } from '@/lib/utils';
 import type { AdminFeatureRequestStatus, AdminPriority } from '@/lib/api/types';
 
@@ -42,6 +43,9 @@ interface FeatureRequestsToolbarProps {
   // Search
   search?: string;
   onSearchChange?: (search: string) => void;
+  // Date range
+  dateRange?: DateRangeValue;
+  onDateRangeChange?: (range: DateRangeValue) => void;
   // Bulk actions
   selectedCount?: number;
   onBulkStatusChange?: (status: AdminFeatureRequestStatus) => void;
@@ -82,6 +86,8 @@ export function FeatureRequestsToolbar({
   isRefreshing,
   search = '',
   onSearchChange,
+  dateRange,
+  onDateRangeChange,
   selectedCount = 0,
   onBulkStatusChange,
   onBulkPriorityChange,
@@ -268,8 +274,8 @@ export function FeatureRequestsToolbar({
           </div>
         </div>
 
-        {/* Bottom row: Toggle + Actions */}
-        <div className="flex items-center gap-4">
+        {/* Bottom row: Toggle + Date filter + Actions */}
+        <div className="flex flex-wrap items-center gap-4">
           {/* Include Archived Toggle */}
           <div className="flex items-center gap-2">
             <Switch
@@ -284,6 +290,15 @@ export function FeatureRequestsToolbar({
               Include archived
             </Label>
           </div>
+
+          {/* Date Range Filter */}
+          {onDateRangeChange && dateRange && (
+            <DateRangeFilter
+              value={dateRange}
+              onChange={onDateRangeChange}
+              className="h-9"
+            />
+          )}
 
           <div className="flex-1" />
 

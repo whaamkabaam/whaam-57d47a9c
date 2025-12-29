@@ -6,6 +6,7 @@ import { useState, useCallback } from 'react';
 import { Lightbulb, AlertCircle } from 'lucide-react';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Table,
   TableBody,
@@ -13,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { FeatureRequestsToolbar } from '@/components/admin/feature-requests/FeatureRequestsToolbar';
 import { FeatureRequestRow } from '@/components/admin/feature-requests/FeatureRequestRow';
 import { FeatureRequestDetailModal } from '@/components/admin/feature-requests/FeatureRequestDetailModal';
@@ -26,6 +27,8 @@ import {
   useUnarchiveFeatureRequest,
   useDeleteFeatureRequest,
 } from '@/hooks/api/useAdmin';
+import { exportToCsv } from '@/lib/exportToCsv';
+import { format } from 'date-fns';
 import type { 
   AdminFeatureRequest, 
   AdminFeatureRequestStatus, 
@@ -40,6 +43,10 @@ export default function AdminFeatureRequests() {
   const [statusFilter, setStatusFilter] = useState<AdminFeatureRequestStatus | undefined>(undefined);
   const [includeArchived, setIncludeArchived] = useState(false);
   const [page, setPage] = useState(0);
+  const [search, setSearch] = useState('');
+  
+  // Selection state for bulk actions
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   
   // Detail modal state
   const [selectedRequest, setSelectedRequest] = useState<AdminFeatureRequest | null>(null);
@@ -57,6 +64,7 @@ export default function AdminFeatureRequests() {
     limit: PAGE_SIZE,
     offset: page * PAGE_SIZE,
     includeArchived,
+    // Note: search would be passed here if API supports it
   });
 
   // Mutations
@@ -71,10 +79,51 @@ export default function AdminFeatureRequests() {
     unarchiveMutation.isPending ||
     deleteMutation.isPending;
 
+  const items = data?.items ?? [];
+  
+  // Filter items by search locally (if API doesn't support search)
+  const filteredItems = search
+    ? items.filter(item => 
+        item.title.toLowerCase().includes(search.toLowerCase()) ||
+        item.description.toLowerCase().includes(search.toLowerCase()) ||
+        item.author_email?.toLowerCase().includes(search.toLowerCase())
+      )
+    : items;
+
+  // Selection handlers
+  const handleSelect = useCallback((id: number, selected: boolean) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (selected) {
+        next.add(id);
+      } else {
+        next.delete(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const handleSelectAll = useCallback(() => {
+    setSelectedIds(new Set(filteredItems.map(r => r.id)));
+  }, [filteredItems]);
+
+  const handleDeselectAll = useCallback(() => {
+    setSelectedIds(new Set());
+  }, []);
+
+  const allSelected = filteredItems.length > 0 && filteredItems.every(r => selectedIds.has(r.id));
+
   // Handlers
   const handleStatusChange = useCallback((status: AdminFeatureRequestStatus | undefined) => {
     setStatusFilter(status);
     setPage(0);
+    setSelectedIds(new Set());
+  }, []);
+
+  const handleSearchChange = useCallback((value: string) => {
+    setSearch(value);
+    setPage(0);
+    setSelectedIds(new Set());
   }, []);
 
   const handleUpdateStatus = useCallback((id: number, status: AdminFeatureRequestStatus) => {
@@ -82,10 +131,10 @@ export default function AdminFeatureRequests() {
       { id, data: { status } },
       {
         onSuccess: () => {
-          toast({ title: 'Status updated' });
+          toast.success('Status updated');
         },
         onError: () => {
-          toast({ title: 'Failed to update status', variant: 'destructive' });
+          toast.error('Failed to update status');
         },
       }
     );
@@ -96,10 +145,10 @@ export default function AdminFeatureRequests() {
       { id, data: { admin_priority: priority || undefined } },
       {
         onSuccess: () => {
-          toast({ title: 'Priority updated' });
+          toast.success('Priority updated');
         },
         onError: () => {
-          toast({ title: 'Failed to update priority', variant: 'destructive' });
+          toast.error('Failed to update priority');
         },
       }
     );
@@ -108,10 +157,15 @@ export default function AdminFeatureRequests() {
   const handleArchive = useCallback((id: number) => {
     archiveMutation.mutate(id, {
       onSuccess: () => {
-        toast({ title: 'Request archived' });
+        toast.success('Request archived');
+        setSelectedIds(prev => {
+          const next = new Set(prev);
+          next.delete(id);
+          return next;
+        });
       },
       onError: () => {
-        toast({ title: 'Failed to archive', variant: 'destructive' });
+        toast.error('Failed to archive');
       },
     });
   }, [archiveMutation]);
@@ -119,10 +173,10 @@ export default function AdminFeatureRequests() {
   const handleUnarchive = useCallback((id: number) => {
     unarchiveMutation.mutate(id, {
       onSuccess: () => {
-        toast({ title: 'Request unarchived' });
+        toast.success('Request unarchived');
       },
       onError: () => {
-        toast({ title: 'Failed to unarchive', variant: 'destructive' });
+        toast.error('Failed to unarchive');
       },
     });
   }, [unarchiveMutation]);
@@ -130,10 +184,15 @@ export default function AdminFeatureRequests() {
   const handleDelete = useCallback((id: number) => {
     deleteMutation.mutate(id, {
       onSuccess: () => {
-        toast({ title: 'Request deleted' });
+        toast.success('Request deleted');
+        setSelectedIds(prev => {
+          const next = new Set(prev);
+          next.delete(id);
+          return next;
+        });
       },
       onError: () => {
-        toast({ title: 'Failed to delete', variant: 'destructive' });
+        toast.error('Failed to delete');
       },
     });
   }, [deleteMutation]);
@@ -143,15 +202,83 @@ export default function AdminFeatureRequests() {
       { id, data: updateData },
       {
         onSuccess: () => {
-          toast({ title: 'Changes saved' });
+          toast.success('Changes saved');
           setSelectedRequest(null);
         },
         onError: () => {
-          toast({ title: 'Failed to save changes', variant: 'destructive' });
+          toast.error('Failed to save changes');
         },
       }
     );
   }, [updateMutation]);
+
+  // Bulk action handlers
+  const handleBulkStatusChange = useCallback(async (status: AdminFeatureRequestStatus) => {
+    const ids = Array.from(selectedIds);
+    try {
+      await Promise.all(ids.map(id => updateMutation.mutateAsync({ id, data: { status } })));
+      toast.success(`${ids.length} request${ids.length !== 1 ? 's' : ''} updated`);
+      setSelectedIds(new Set());
+    } catch {
+      toast.error('Failed to update some requests');
+    }
+  }, [selectedIds, updateMutation]);
+
+  const handleBulkPriorityChange = useCallback(async (priority: AdminPriority) => {
+    const ids = Array.from(selectedIds);
+    try {
+      await Promise.all(ids.map(id => updateMutation.mutateAsync({ id, data: { admin_priority: priority } })));
+      toast.success(`${ids.length} request${ids.length !== 1 ? 's' : ''} updated`);
+      setSelectedIds(new Set());
+    } catch {
+      toast.error('Failed to update some requests');
+    }
+  }, [selectedIds, updateMutation]);
+
+  const handleBulkArchive = useCallback(async () => {
+    const ids = Array.from(selectedIds);
+    try {
+      await Promise.all(ids.map(id => archiveMutation.mutateAsync(id)));
+      toast.success(`${ids.length} request${ids.length !== 1 ? 's' : ''} archived`);
+      setSelectedIds(new Set());
+    } catch {
+      toast.error('Failed to archive some requests');
+    }
+  }, [selectedIds, archiveMutation]);
+
+  const handleBulkDelete = useCallback(async () => {
+    const ids = Array.from(selectedIds);
+    try {
+      await Promise.all(ids.map(id => deleteMutation.mutateAsync(id)));
+      toast.success(`${ids.length} request${ids.length !== 1 ? 's' : ''} deleted`);
+      setSelectedIds(new Set());
+    } catch {
+      toast.error('Failed to delete some requests');
+    }
+  }, [selectedIds, deleteMutation]);
+
+  // Export handler
+  const handleExport = useCallback(() => {
+    if (filteredItems.length === 0) {
+      toast.error('Nothing to export');
+      return;
+    }
+    
+    exportToCsv(filteredItems, `feature-requests-${format(new Date(), 'yyyy-MM-dd')}`, [
+      { key: 'id', header: 'ID' },
+      { key: 'title', header: 'Title' },
+      { key: 'description', header: 'Description' },
+      { key: 'status', header: 'Status' },
+      { key: 'admin_priority', header: 'Priority', format: (v) => v ? String(v) : 'None' },
+      { key: 'author_email', header: 'Author Email' },
+      { key: 'author_name', header: 'Author Name', format: (v) => v ? String(v) : '' },
+      { key: 'vote_count', header: 'Votes' },
+      { key: 'is_archived', header: 'Archived' },
+      { key: 'created_at', header: 'Created At', format: (v) => format(new Date(String(v)), 'yyyy-MM-dd HH:mm') },
+    ]);
+    
+    toast.success('Export complete');
+  }, [filteredItems]);
 
   const totalPages = Math.ceil((data?.total || 0) / PAGE_SIZE);
 
@@ -178,6 +305,17 @@ export default function AdminFeatureRequests() {
         total={data?.total || 0}
         onRefresh={() => refetch()}
         isRefreshing={isFetching && !isLoading}
+        search={search}
+        onSearchChange={handleSearchChange}
+        selectedCount={selectedIds.size}
+        onBulkStatusChange={handleBulkStatusChange}
+        onBulkPriorityChange={handleBulkPriorityChange}
+        onBulkArchive={handleBulkArchive}
+        onBulkDelete={handleBulkDelete}
+        onSelectAll={handleSelectAll}
+        onDeselectAll={handleDeselectAll}
+        isBulkOperating={isAnyMutating}
+        onExport={handleExport}
       />
 
       {/* Table */}
@@ -186,6 +324,20 @@ export default function AdminFeatureRequests() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-10">
+                  <Checkbox
+                    checked={allSelected}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        handleSelectAll();
+                      } else {
+                        handleDeselectAll();
+                      }
+                    }}
+                    className="border-white/20"
+                    aria-label="Select all"
+                  />
+                </TableHead>
                 <TableHead className="w-16">Votes</TableHead>
                 <TableHead className="max-w-xs">Request</TableHead>
                 <TableHead className="w-36">Status</TableHead>
@@ -200,7 +352,7 @@ export default function AdminFeatureRequests() {
                 <FeatureRequestsTableSkeleton rows={6} />
               ) : isError ? (
                 <TableRow>
-                  <td colSpan={7} className="py-12">
+                  <td colSpan={8} className="py-12">
                     <div className="flex flex-col items-center justify-center text-center">
                       <AlertCircle className="h-12 w-12 text-destructive/50 mb-3" />
                       <p className="text-muted-foreground mb-3">
@@ -212,22 +364,22 @@ export default function AdminFeatureRequests() {
                     </div>
                   </td>
                 </TableRow>
-              ) : data?.items.length === 0 ? (
+              ) : filteredItems.length === 0 ? (
                 <TableRow>
-                  <td colSpan={7} className="py-12">
+                  <td colSpan={8} className="py-12">
                     <div className="flex flex-col items-center justify-center text-center">
                       <Lightbulb className="h-12 w-12 text-muted-foreground/30 mb-3" />
                       <p className="text-muted-foreground mb-1">No feature requests found</p>
                       <p className="text-sm text-muted-foreground/70">
-                        {statusFilter || !includeArchived 
-                          ? 'Try adjusting your filters'
+                        {statusFilter || !includeArchived || search
+                          ? 'Try adjusting your filters or search'
                           : 'Feature requests from users will appear here'}
                       </p>
                     </div>
                   </td>
                 </TableRow>
               ) : (
-                data?.items.map((request) => (
+                filteredItems.map((request) => (
                   <FeatureRequestRow
                     key={request.id}
                     request={request}
@@ -238,6 +390,8 @@ export default function AdminFeatureRequests() {
                     onDelete={handleDelete}
                     onViewDetails={setSelectedRequest}
                     isUpdating={isAnyMutating}
+                    isSelected={selectedIds.has(request.id)}
+                    onSelect={handleSelect}
                   />
                 ))
               )}

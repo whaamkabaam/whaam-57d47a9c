@@ -1,11 +1,12 @@
 // ============================================
 // Problem Reports Toolbar Component
-// Status pills, category/priority filters, archive toggle, bulk actions
+// Status pills, category/priority filters, archive toggle, bulk actions, search, export
 // ============================================
 
-import { useState } from 'react';
-import { Archive, RefreshCw, Trash2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Archive, RefreshCw, Trash2, Search, Download, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import {
@@ -46,6 +47,9 @@ interface ProblemReportsToolbarProps {
   onIncludeArchivedChange: (include: boolean) => void;
   onRefresh: () => void;
   isRefreshing: boolean;
+  // Search
+  search?: string;
+  onSearchChange?: (search: string) => void;
   // Bulk action props
   selectedCount: number;
   onBulkStatusChange: (status: ProblemReportStatus) => void;
@@ -55,6 +59,8 @@ interface ProblemReportsToolbarProps {
   onSelectAll: () => void;
   onDeselectAll: () => void;
   isBulkOperating: boolean;
+  // Export
+  onExport?: () => void;
 }
 
 const STATUS_OPTIONS: { value: ProblemReportStatus; label: string }[] = [
@@ -93,6 +99,8 @@ export function ProblemReportsToolbar({
   onIncludeArchivedChange,
   onRefresh,
   isRefreshing,
+  search = '',
+  onSearchChange,
   selectedCount,
   onBulkStatusChange,
   onBulkPriorityChange,
@@ -101,12 +109,49 @@ export function ProblemReportsToolbar({
   onSelectAll,
   onDeselectAll,
   isBulkOperating,
+  onExport,
 }: ProblemReportsToolbarProps) {
   const [showBulkDeleteDialog, setShowBulkDeleteDialog] = useState(false);
+  const [localSearch, setLocalSearch] = useState(search);
+
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onSearchChange?.(localSearch);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [localSearch, onSearchChange]);
+
+  // Sync external search changes
+  useEffect(() => {
+    setLocalSearch(search);
+  }, [search]);
 
   return (
     <LiquidGlassCard variant="secondary" className="p-4">
       <div className="flex flex-col gap-4">
+        {/* Search Bar */}
+        {onSearchChange && (
+          <div className="relative max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search reports..."
+              value={localSearch}
+              onChange={(e) => setLocalSearch(e.target.value)}
+              className="pl-9 pr-8 bg-background/50 border-border/50 w-full"
+            />
+            {localSearch && (
+              <button
+                onClick={() => setLocalSearch('')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        )}
+
         {/* Bulk Actions Bar - shown when items are selected */}
         {selectedCount > 0 && (
           <div className="flex flex-wrap items-center gap-3 p-3 rounded-lg bg-secondary/10 border border-secondary/20">
@@ -279,6 +324,19 @@ export function ProblemReportsToolbar({
               Include archived
             </Label>
           </div>
+
+          {/* Export Button */}
+          {onExport && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onExport}
+              className="text-muted-foreground hover:text-foreground gap-1.5"
+            >
+              <Download className="h-4 w-4" />
+              <span className="hidden sm:inline">Export</span>
+            </Button>
+          )}
 
           {/* Refresh button */}
           <Button

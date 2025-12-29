@@ -14,15 +14,19 @@ interface UserTableRowProps {
   user: AdminUser;
   onToggleTestUser: (userId: string, isTestUser: boolean) => void;
   isToggling?: boolean;
+  onViewDetails?: (user: AdminUser) => void;
 }
 
-export function UserTableRow({ user, onToggleTestUser, isToggling }: UserTableRowProps) {
+export function UserTableRow({ user, onToggleTestUser, isToggling, onViewDetails }: UserTableRowProps) {
   const initials = user.display_name
     ? user.display_name.slice(0, 2).toUpperCase()
     : user.email.slice(0, 2).toUpperCase();
 
   return (
-    <TableRow className="hover:bg-muted/30 transition-colors">
+    <TableRow 
+      className="hover:bg-muted/30 transition-colors cursor-pointer"
+      onClick={() => onViewDetails?.(user)}
+    >
       {/* User Info */}
       <TableCell>
         <div className="flex items-center gap-3">
@@ -62,7 +66,7 @@ export function UserTableRow({ user, onToggleTestUser, isToggling }: UserTableRo
       </TableCell>
 
       {/* Test User Toggle */}
-      <TableCell>
+      <TableCell onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center gap-2">
           <Switch
             checked={user.is_test_user}

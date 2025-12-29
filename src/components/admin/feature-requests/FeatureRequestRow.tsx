@@ -7,6 +7,7 @@ import { MoreHorizontal, Archive, ArchiveRestore, Trash2, ChevronUp } from 'luci
 import { TableRow, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Select,
   SelectContent,
@@ -50,6 +51,8 @@ interface FeatureRequestRowProps {
   onDelete: (id: number) => void;
   onViewDetails: (request: AdminFeatureRequest) => void;
   isUpdating: boolean;
+  isSelected?: boolean;
+  onSelect?: (id: number, selected: boolean) => void;
 }
 
 // Status styling
@@ -78,6 +81,8 @@ export function FeatureRequestRow({
   onDelete,
   onViewDetails,
   isUpdating,
+  isSelected = false,
+  onSelect,
 }: FeatureRequestRowProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
@@ -90,8 +95,21 @@ export function FeatureRequestRow({
       <TableRow className={cn(
         'transition-colors',
         request.is_archived && 'opacity-60',
-        isUpdating && 'animate-pulse'
+        isUpdating && 'animate-pulse',
+        isSelected && 'bg-secondary/10'
       )}>
+        {/* Checkbox */}
+        {onSelect && (
+          <TableCell className="w-10">
+            <Checkbox
+              checked={isSelected}
+              onCheckedChange={(checked) => onSelect(request.id, !!checked)}
+              className="border-white/20"
+              aria-label={`Select ${request.title}`}
+            />
+          </TableCell>
+        )}
+        
         {/* Vote Count */}
         <TableCell className="w-16">
           <div className="flex items-center gap-1 text-muted-foreground">

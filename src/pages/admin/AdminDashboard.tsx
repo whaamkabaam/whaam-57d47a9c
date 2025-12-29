@@ -123,6 +123,20 @@ export default function AdminDashboard() {
             isLoading={isLoading}
           />
         </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <StatCard
+            icon={Lightbulb}
+            label="Feature Requests"
+            value={stats?.total_feature_requests}
+            isLoading={isLoading}
+          />
+          <StatCard
+            icon={AlertTriangle}
+            label="Problem Reports"
+            value={stats?.total_problem_reports}
+            isLoading={isLoading}
+          />
+        </div>
       </section>
 
       {/* Analytics Section */}

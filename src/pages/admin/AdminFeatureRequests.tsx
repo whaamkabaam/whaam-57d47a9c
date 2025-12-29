@@ -41,6 +41,7 @@ const PAGE_SIZE = 20;
 export default function AdminFeatureRequests() {
   // Filter state
   const [statusFilter, setStatusFilter] = useState<AdminFeatureRequestStatus | undefined>(undefined);
+  const [priorityFilter, setPriorityFilter] = useState<AdminPriority | undefined>(undefined);
   const [includeArchived, setIncludeArchived] = useState(false);
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
@@ -55,7 +56,7 @@ export default function AdminFeatureRequests() {
   // Detail modal state
   const [selectedRequest, setSelectedRequest] = useState<AdminFeatureRequest | null>(null);
 
-  // Data fetching - now with server-side search and date filtering
+  // Data fetching - now with server-side search, date, and priority filtering
   const { 
     data, 
     isLoading, 
@@ -65,6 +66,7 @@ export default function AdminFeatureRequests() {
     isFetching,
   } = useAdminFeatureRequests({
     status: statusFilter,
+    priority: priorityFilter,
     limit: PAGE_SIZE,
     offset: page * PAGE_SIZE,
     includeArchived,
@@ -125,6 +127,12 @@ export default function AdminFeatureRequests() {
 
   const handleDateRangeChange = useCallback((range: { from: Date | undefined; to: Date | undefined }) => {
     setDateRange(range);
+    setPage(0);
+    setSelectedIds(new Set());
+  }, []);
+
+  const handlePriorityChange = useCallback((priority: AdminPriority | undefined) => {
+    setPriorityFilter(priority);
     setPage(0);
     setSelectedIds(new Set());
   }, []);
@@ -312,6 +320,8 @@ export default function AdminFeatureRequests() {
         onSearchChange={handleSearchChange}
         dateRange={dateRange}
         onDateRangeChange={handleDateRangeChange}
+        priority={priorityFilter}
+        onPriorityChange={handlePriorityChange}
         selectedCount={selectedIds.size}
         onBulkStatusChange={handleBulkStatusChange}
         onBulkPriorityChange={handleBulkPriorityChange}

@@ -46,6 +46,9 @@ interface FeatureRequestsToolbarProps {
   // Date range
   dateRange?: DateRangeValue;
   onDateRangeChange?: (range: DateRangeValue) => void;
+  // Priority filter
+  priority?: AdminPriority | undefined;
+  onPriorityChange?: (priority: AdminPriority | undefined) => void;
   // Bulk actions
   selectedCount?: number;
   onBulkStatusChange?: (status: AdminFeatureRequestStatus) => void;
@@ -75,6 +78,14 @@ const PRIORITY_OPTIONS: Array<{ value: AdminPriority; label: string }> = [
   { value: 'critical', label: 'Critical' },
 ];
 
+const PRIORITY_FILTER_OPTIONS: Array<{ value: AdminPriority | 'all'; label: string }> = [
+  { value: 'all', label: 'All Priorities' },
+  { value: 'low', label: 'Low' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'high', label: 'High' },
+  { value: 'critical', label: 'Critical' },
+];
+
 export function FeatureRequestsToolbar({
   status,
   onStatusChange,
@@ -88,6 +99,8 @@ export function FeatureRequestsToolbar({
   onSearchChange,
   dateRange,
   onDateRangeChange,
+  priority,
+  onPriorityChange,
   selectedCount = 0,
   onBulkStatusChange,
   onBulkPriorityChange,
@@ -298,6 +311,25 @@ export function FeatureRequestsToolbar({
               onChange={onDateRangeChange}
               className="h-9"
             />
+          )}
+
+          {/* Priority Filter */}
+          {onPriorityChange && (
+            <Select
+              value={priority || 'all'}
+              onValueChange={(val) => onPriorityChange(val === 'all' ? undefined : val as AdminPriority)}
+            >
+              <SelectTrigger className="w-[140px] h-9 bg-background/50 border-border/50">
+                <SelectValue placeholder="Priority" />
+              </SelectTrigger>
+              <SelectContent className="bg-background border-border">
+                {PRIORITY_FILTER_OPTIONS.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           )}
 
           <div className="flex-1" />

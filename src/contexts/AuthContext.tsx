@@ -66,6 +66,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
+    // In development, this can happen during HMR - return a safe loading state
+    if (import.meta.env.DEV) {
+      console.warn('useAuth called outside AuthProvider - returning loading state (likely HMR)');
+      return {
+        user: null,
+        session: null,
+        isLoading: true,
+        isAuthenticated: false,
+        login: async () => {},
+        logout: async () => {},
+        register: async () => {},
+        refetchSession: () => {},
+      };
+    }
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;

@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Search, RefreshCw, FlaskConical } from 'lucide-react';
+import { Search, RefreshCw, FlaskConical, Download } from 'lucide-react';
 
 interface UsersToolbarProps {
   search: string;
@@ -18,6 +18,7 @@ interface UsersToolbarProps {
   totalUsers: number;
   isLoading?: boolean;
   onRefresh: () => void;
+  onExport?: () => void;
 }
 
 export function UsersToolbar({
@@ -28,6 +29,7 @@ export function UsersToolbar({
   totalUsers,
   isLoading,
   onRefresh,
+  onExport,
 }: UsersToolbarProps) {
   const [localSearch, setLocalSearch] = useState(search);
 
@@ -82,6 +84,20 @@ export function UsersToolbar({
         <span className="text-sm text-muted-foreground">
           {isLoading ? 'Loading...' : `${totalUsers.toLocaleString()} users`}
         </span>
+
+        {/* Export Button */}
+        {onExport && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onExport}
+            disabled={isLoading}
+            className="text-muted-foreground hover:text-foreground"
+            title="Export to CSV"
+          >
+            <Download className="h-4 w-4" />
+          </Button>
+        )}
 
         {/* Refresh Button */}
         <Button

@@ -1,6 +1,6 @@
 // ============================================
 // Admin Problem Reports Page
-// Full CRUD with filters, bulk actions, screenshot gallery, inline editing
+// Full CRUD with filters, bulk actions, screenshot gallery, inline editing, search, export
 // ============================================
 
 import { useState, useCallback } from 'react';
@@ -28,6 +28,8 @@ import {
   useUnarchiveProblemReport,
   useDeleteProblemReport,
 } from '@/hooks/api/useAdmin';
+import { exportToCsv } from '@/lib/exportToCsv';
+import { format } from 'date-fns';
 import type { AdminProblemReport, UpdateAdminProblemReport } from '@/lib/api/types';
 
 // Types
@@ -44,6 +46,7 @@ export default function AdminProblemReports() {
   const [priorityFilter, setPriorityFilter] = useState<AdminPriority | undefined>();
   const [includeArchived, setIncludeArchived] = useState(false);
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
   
   // Selection state for bulk actions
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
@@ -78,6 +81,15 @@ export default function AdminProblemReports() {
   const statusCounts = data?.by_status ?? {};
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
+  // Filter items by search locally
+  const filteredReports = search
+    ? reports.filter(report => 
+        report.description.toLowerCase().includes(search.toLowerCase()) ||
+        report.user_email?.toLowerCase().includes(search.toLowerCase()) ||
+        report.category.toLowerCase().includes(search.toLowerCase())
+      )
+    : reports;
+
   // Selection handlers
   const handleSelect = useCallback((id: number, selected: boolean) => {
     setSelectedIds(prev => {
@@ -92,15 +104,14 @@ export default function AdminProblemReports() {
   }, []);
 
   const handleSelectAll = useCallback(() => {
-    setSelectedIds(new Set(reports.map(r => r.id)));
-  }, [reports]);
+    setSelectedIds(new Set(filteredReports.map(r => r.id)));
+  }, [filteredReports]);
 
   const handleDeselectAll = useCallback(() => {
     setSelectedIds(new Set());
   }, []);
 
-  const allSelected = reports.length > 0 && reports.every(r => selectedIds.has(r.id));
-  const someSelected = reports.some(r => selectedIds.has(r.id));
+  const allSelected = filteredReports.length > 0 && filteredReports.every(r => selectedIds.has(r.id));
 
   // Individual handlers
   const handleUpdateStatus = async (id: number, status: ProblemReportStatus) => {
@@ -125,6 +136,11 @@ export default function AdminProblemReports() {
     try {
       await archiveMutation.mutateAsync(id);
       toast.success('Report archived');
+      setSelectedIds(prev => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
     } catch {
       toast.error('Failed to archive report');
     }
@@ -208,12 +224,43 @@ export default function AdminProblemReports() {
     }
   };
 
+  const handleSearchChange = useCallback((value: string) => {
+    setSearch(value);
+    setPage(1);
+    setSelectedIds(new Set());
+  }, []);
+
   const handleClearFilters = () => {
     setStatusFilter(undefined);
     setCategoryFilter(undefined);
     setPriorityFilter(undefined);
+    setSearch('');
     setPage(1);
+    setSelectedIds(new Set());
   };
+
+  // Export handler
+  const handleExport = useCallback(() => {
+    if (filteredReports.length === 0) {
+      toast.error('Nothing to export');
+      return;
+    }
+
+    exportToCsv(filteredReports, `problem-reports-${format(new Date(), 'yyyy-MM-dd')}`, [
+      { key: 'id', header: 'ID' },
+      { key: 'category', header: 'Category' },
+      { key: 'description', header: 'Description' },
+      { key: 'status', header: 'Status' },
+      { key: 'priority', header: 'Priority', format: (v) => v ? String(v) : 'None' },
+      { key: 'user_email', header: 'User Email' },
+      { key: 'user_name', header: 'User Name', format: (v) => v ? String(v) : '' },
+      { key: 'page_url', header: 'Page URL', format: (v) => v ? String(v) : '' },
+      { key: 'is_archived', header: 'Archived' },
+      { key: 'created_at', header: 'Created At', format: (v) => format(new Date(String(v)), 'yyyy-MM-dd HH:mm') },
+    ]);
+
+    toast.success('Export complete');
+  }, [filteredReports]);
 
   const isUpdating = updateMutation.isPending || archiveMutation.isPending || 
                      unarchiveMutation.isPending || deleteMutation.isPending;
@@ -239,12 +286,14 @@ export default function AdminProblemReports() {
         includeArchived={includeArchived}
         statusCounts={statusCounts}
         total={total}
-        onStatusChange={(status) => { setStatusFilter(status); setPage(1); }}
-        onCategoryChange={(category) => { setCategoryFilter(category); setPage(1); }}
-        onPriorityChange={(priority) => { setPriorityFilter(priority); setPage(1); }}
+        onStatusChange={(status) => { setStatusFilter(status); setPage(1); setSelectedIds(new Set()); }}
+        onCategoryChange={(category) => { setCategoryFilter(category); setPage(1); setSelectedIds(new Set()); }}
+        onPriorityChange={(priority) => { setPriorityFilter(priority); setPage(1); setSelectedIds(new Set()); }}
         onIncludeArchivedChange={setIncludeArchived}
         onRefresh={() => refetch()}
         isRefreshing={isFetching}
+        search={search}
+        onSearchChange={handleSearchChange}
         selectedCount={selectedIds.size}
         onBulkStatusChange={handleBulkStatusChange}
         onBulkPriorityChange={handleBulkPriorityChange}
@@ -253,6 +302,7 @@ export default function AdminProblemReports() {
         onSelectAll={handleSelectAll}
         onDeselectAll={handleDeselectAll}
         isBulkOperating={isUpdating}
+        onExport={handleExport}
       />
 
       {/* Table */}
@@ -301,13 +351,13 @@ export default function AdminProblemReports() {
                     </div>
                   </td>
                 </TableRow>
-              ) : reports.length === 0 ? (
+              ) : filteredReports.length === 0 ? (
                 <TableRow>
                   <td colSpan={10} className="py-12">
                     <div className="text-center">
                       <Inbox className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
                       <p className="text-muted-foreground mb-2">No problem reports found</p>
-                      {(statusFilter || categoryFilter || priorityFilter) && (
+                      {(statusFilter || categoryFilter || priorityFilter || search) && (
                         <Button variant="link" onClick={handleClearFilters} className="text-secondary">
                           Clear filters
                         </Button>
@@ -316,7 +366,7 @@ export default function AdminProblemReports() {
                   </td>
                 </TableRow>
               ) : (
-                reports.map((report) => (
+                filteredReports.map((report) => (
                   <ProblemReportRow
                     key={report.id}
                     report={report}

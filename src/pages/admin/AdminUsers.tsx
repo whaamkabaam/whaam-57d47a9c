@@ -18,7 +18,11 @@ import { UserTableRow } from '@/components/admin/users/UserTableRow';
 import { UserTableSkeleton } from '@/components/admin/users/UserTableSkeleton';
 import { UsersToolbar } from '@/components/admin/users/UsersToolbar';
 import { UsersPagination } from '@/components/admin/users/UsersPagination';
+import { UserDetailModal } from '@/components/admin/users/UserDetailModal';
+import { exportToCsv } from '@/lib/exportToCsv';
 import { toast } from 'sonner';
+import { format } from 'date-fns';
+import type { AdminUser } from '@/lib/api/types';
 
 const PAGE_SIZE = 20;
 
@@ -26,6 +30,7 @@ export default function AdminUsers() {
   const [search, setSearch] = useState('');
   const [includeTestUsers, setIncludeTestUsers] = useState(true);
   const [page, setPage] = useState(0);
+  const [selectedUser, setSelectedUser] = useState<AdminUser | null>(null);
 
   const {
     data,
@@ -47,13 +52,17 @@ export default function AdminUsers() {
       {
         onSuccess: () => {
           toast.success(isTestUser ? 'User marked as test user' : 'Test user status removed');
+          // Update selected user if it's the one being modified
+          if (selectedUser?.id === userId) {
+            setSelectedUser(prev => prev ? { ...prev, is_test_user: isTestUser } : null);
+          }
         },
         onError: () => {
           toast.error('Failed to update test user status');
         },
       }
     );
-  }, [setTestUserMutation]);
+  }, [setTestUserMutation, selectedUser]);
 
   const handleSearchChange = useCallback((value: string) => {
     setSearch(value);
@@ -64,6 +73,27 @@ export default function AdminUsers() {
     setIncludeTestUsers(value);
     setPage(0); // Reset to first page on filter change
   }, []);
+
+  const handleExport = useCallback(() => {
+    const users = data?.users || [];
+    if (users.length === 0) {
+      toast.error('Nothing to export');
+      return;
+    }
+
+    exportToCsv(users, `users-${format(new Date(), 'yyyy-MM-dd')}`, [
+      { key: 'email', header: 'Email' },
+      { key: 'display_name', header: 'Display Name', format: (v) => v ? String(v) : '' },
+      { key: 'created_at', header: 'Created At', format: (v) => format(new Date(String(v)), 'yyyy-MM-dd HH:mm') },
+      { key: 'feature_request_count', header: 'Feature Requests' },
+      { key: 'problem_report_count', header: 'Problem Reports' },
+      { key: 'vote_count', header: 'Votes' },
+      { key: 'is_test_user', header: 'Is Test User' },
+      { key: 'email_verified', header: 'Email Verified' },
+    ]);
+
+    toast.success('Export complete');
+  }, [data]);
 
   const totalPages = data ? Math.ceil(data.total / PAGE_SIZE) : 0;
   const users = data?.users || [];
@@ -90,6 +120,7 @@ export default function AdminUsers() {
         totalUsers={data?.total || 0}
         isLoading={isLoading}
         onRefresh={() => refetch()}
+        onExport={handleExport}
       />
 
       {/* Users Table */}
@@ -155,6 +186,7 @@ export default function AdminUsers() {
                       user={user}
                       onToggleTestUser={handleToggleTestUser}
                       isToggling={setTestUserMutation.isPending}
+                      onViewDetails={setSelectedUser}
                     />
                   ))
                 )}
@@ -173,6 +205,15 @@ export default function AdminUsers() {
           isLoading={isLoading}
         />
       )}
+
+      {/* User Detail Modal */}
+      <UserDetailModal
+        user={selectedUser}
+        open={!!selectedUser}
+        onOpenChange={(open) => !open && setSelectedUser(null)}
+        onToggleTestUser={handleToggleTestUser}
+        isToggling={setTestUserMutation.isPending}
+      />
     </div>
   );
 }

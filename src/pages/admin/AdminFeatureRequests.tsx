@@ -44,6 +44,10 @@ export default function AdminFeatureRequests() {
   const [includeArchived, setIncludeArchived] = useState(false);
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
+  const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({
+    from: undefined,
+    to: undefined,
+  });
   
   // Selection state for bulk actions
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
@@ -51,7 +55,7 @@ export default function AdminFeatureRequests() {
   // Detail modal state
   const [selectedRequest, setSelectedRequest] = useState<AdminFeatureRequest | null>(null);
 
-  // Data fetching
+  // Data fetching - now with server-side search and date filtering
   const { 
     data, 
     isLoading, 
@@ -64,7 +68,9 @@ export default function AdminFeatureRequests() {
     limit: PAGE_SIZE,
     offset: page * PAGE_SIZE,
     includeArchived,
-    // Note: search would be passed here if API supports it
+    search: search || undefined,
+    dateFrom: dateRange.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined,
+    dateTo: dateRange.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined,
   });
 
   // Mutations
@@ -80,15 +86,6 @@ export default function AdminFeatureRequests() {
     deleteMutation.isPending;
 
   const items = data?.items ?? [];
-  
-  // Filter items by search locally (if API doesn't support search)
-  const filteredItems = search
-    ? items.filter(item => 
-        item.title.toLowerCase().includes(search.toLowerCase()) ||
-        item.description.toLowerCase().includes(search.toLowerCase()) ||
-        item.author_email?.toLowerCase().includes(search.toLowerCase())
-      )
-    : items;
 
   // Selection handlers
   const handleSelect = useCallback((id: number, selected: boolean) => {
@@ -104,14 +101,14 @@ export default function AdminFeatureRequests() {
   }, []);
 
   const handleSelectAll = useCallback(() => {
-    setSelectedIds(new Set(filteredItems.map(r => r.id)));
-  }, [filteredItems]);
+    setSelectedIds(new Set(items.map(r => r.id)));
+  }, [items]);
 
   const handleDeselectAll = useCallback(() => {
     setSelectedIds(new Set());
   }, []);
 
-  const allSelected = filteredItems.length > 0 && filteredItems.every(r => selectedIds.has(r.id));
+  const allSelected = items.length > 0 && items.every(r => selectedIds.has(r.id));
 
   // Handlers
   const handleStatusChange = useCallback((status: AdminFeatureRequestStatus | undefined) => {
@@ -122,6 +119,12 @@ export default function AdminFeatureRequests() {
 
   const handleSearchChange = useCallback((value: string) => {
     setSearch(value);
+    setPage(0);
+    setSelectedIds(new Set());
+  }, []);
+
+  const handleDateRangeChange = useCallback((range: { from: Date | undefined; to: Date | undefined }) => {
+    setDateRange(range);
     setPage(0);
     setSelectedIds(new Set());
   }, []);
@@ -259,12 +262,12 @@ export default function AdminFeatureRequests() {
 
   // Export handler
   const handleExport = useCallback(() => {
-    if (filteredItems.length === 0) {
+    if (items.length === 0) {
       toast.error('Nothing to export');
       return;
     }
     
-    exportToCsv(filteredItems, `feature-requests-${format(new Date(), 'yyyy-MM-dd')}`, [
+    exportToCsv(items, `feature-requests-${format(new Date(), 'yyyy-MM-dd')}`, [
       { key: 'id', header: 'ID' },
       { key: 'title', header: 'Title' },
       { key: 'description', header: 'Description' },
@@ -278,7 +281,7 @@ export default function AdminFeatureRequests() {
     ]);
     
     toast.success('Export complete');
-  }, [filteredItems]);
+  }, [items]);
 
   const totalPages = Math.ceil((data?.total || 0) / PAGE_SIZE);
 
@@ -307,6 +310,8 @@ export default function AdminFeatureRequests() {
         isRefreshing={isFetching && !isLoading}
         search={search}
         onSearchChange={handleSearchChange}
+        dateRange={dateRange}
+        onDateRangeChange={handleDateRangeChange}
         selectedCount={selectedIds.size}
         onBulkStatusChange={handleBulkStatusChange}
         onBulkPriorityChange={handleBulkPriorityChange}
@@ -364,14 +369,14 @@ export default function AdminFeatureRequests() {
                     </div>
                   </td>
                 </TableRow>
-              ) : filteredItems.length === 0 ? (
+              ) : items.length === 0 ? (
                 <TableRow>
                   <td colSpan={8} className="py-12">
                     <div className="flex flex-col items-center justify-center text-center">
                       <Lightbulb className="h-12 w-12 text-muted-foreground/30 mb-3" />
                       <p className="text-muted-foreground mb-1">No feature requests found</p>
                       <p className="text-sm text-muted-foreground/70">
-                        {statusFilter || !includeArchived || search
+                        {statusFilter || !includeArchived || search || dateRange.from || dateRange.to
                           ? 'Try adjusting your filters or search'
                           : 'Feature requests from users will appear here'}
                       </p>
@@ -379,7 +384,7 @@ export default function AdminFeatureRequests() {
                   </td>
                 </TableRow>
               ) : (
-                filteredItems.map((request) => (
+                items.map((request) => (
                   <FeatureRequestRow
                     key={request.id}
                     request={request}

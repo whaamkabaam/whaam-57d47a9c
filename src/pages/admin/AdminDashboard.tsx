@@ -5,55 +5,53 @@
 
 import { useMemo } from 'react';
 import { LayoutDashboard, Users, FileText, MessageSquare, CreditCard, AlertTriangle, Lightbulb, RefreshCw, TrendingUp } from 'lucide-react';
-import { useAdminStats } from '@/hooks/api/useAdmin';
+import { useAdminStats, useAdminTimeseries } from '@/hooks/api/useAdmin';
 import { StatCard } from '@/components/admin/dashboard/StatCard';
 import { QuickActionCard } from '@/components/admin/dashboard/QuickActionCard';
 import { ChartContainer, ActivityLineChart, StatusPieChart, StatusBarChart } from '@/components/admin/dashboard/StatsChart';
 import { RecentActivityFeed } from '@/components/admin/dashboard/RecentActivityFeed';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Button } from '@/components/ui/button';
+import { format } from 'date-fns';
 
-// Generate mock activity data for the last 30 days
-function generateMockActivityData() {
-  const data = [];
-  const today = new Date();
-  
-  for (let i = 29; i >= 0; i--) {
-    const date = new Date(today);
-    date.setDate(date.getDate() - i);
-    
-    data.push({
-      date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      reports: Math.floor(Math.random() * 8) + 1,
-      requests: Math.floor(Math.random() * 5) + 1,
-    });
-  }
-  
-  return data;
+// Helper to format status labels from snake_case to Title Case
+function formatStatusLabel(status: string): string {
+  return status
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
 
 export default function AdminDashboard() {
   const { data: stats, isLoading, isError, refetch } = useAdminStats();
+  const { data: timeseriesData, isLoading: isTimeseriesLoading } = useAdminTimeseries(30);
 
-  // Mock activity data (would come from API in production)
-  const activityData = useMemo(() => generateMockActivityData(), []);
+  // Transform timeseries data for the chart
+  const activityData = useMemo(() => {
+    if (!timeseriesData?.data) return [];
+    return timeseriesData.data.map(d => ({
+      date: format(new Date(d.date), 'MMM d'),
+      reports: d.problem_reports,
+      requests: d.feature_requests,
+    }));
+  }, [timeseriesData]);
 
-  // Mock status distribution data (would come from API in production)
-  const problemReportsStatusData = useMemo(() => [
-    { name: 'New', value: 12 },
-    { name: 'Triaged', value: 8 },
-    { name: 'In Progress', value: 5 },
-    { name: 'Fixed', value: 15 },
-    { name: "Won't Fix", value: 3 },
-  ], []);
+  // Transform status distribution data from API
+  const problemReportsStatusData = useMemo(() => {
+    if (!stats?.problem_reports_by_status) return [];
+    return Object.entries(stats.problem_reports_by_status).map(
+      ([name, value]) => ({ name: formatStatusLabel(name), value: value as number })
+    );
+  }, [stats?.problem_reports_by_status]);
 
-  const featureRequestsStatusData = useMemo(() => [
-    { name: 'Pending', value: 18 },
-    { name: 'Under Review', value: 6 },
-    { name: 'Planned', value: 4 },
-    { name: 'In Progress', value: 3 },
-    { name: 'Completed', value: 8 },
-  ], []);
+  const featureRequestsStatusData = useMemo(() => {
+    if (!stats?.feature_requests_by_status) return [];
+    return Object.entries(stats.feature_requests_by_status).map(
+      ([name, value]) => ({ name: formatStatusLabel(name), value: value as number })
+    );
+  }, [stats?.feature_requests_by_status]);
+
+  const chartsLoading = isLoading || isTimeseriesLoading;
 
   return (
     <div className="space-y-8">
@@ -137,12 +135,18 @@ export default function AdminDashboard() {
         {/* Activity Over Time + Recent Activity */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2">
-            <ChartContainer title="Activity Over Time (Last 30 Days)" isLoading={isLoading}>
-              <ActivityLineChart data={activityData} />
+            <ChartContainer title="Activity Over Time (Last 30 Days)" isLoading={chartsLoading}>
+              {activityData.length > 0 ? (
+                <ActivityLineChart data={activityData} />
+              ) : (
+                <div className="h-[250px] flex items-center justify-center text-muted-foreground">
+                  No activity data available
+                </div>
+              )}
             </ChartContainer>
           </div>
           <div className="lg:col-span-1">
-            <RecentActivityFeed isLoading={isLoading} className="h-full" />
+            <RecentActivityFeed className="h-full" />
           </div>
         </div>
 

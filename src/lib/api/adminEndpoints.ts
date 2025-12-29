@@ -20,6 +20,8 @@ import type {
   ProblemReportStatus,
   ProblemCategory,
   AdminPriority,
+  TimeseriesResponse,
+  ActivityResponse,
 } from './types';
 
 // ============================================
@@ -27,6 +29,12 @@ import type {
 // ============================================
 export const adminStatsApi = {
   getStats: () => api.get<AdminStats>('/admin/stats'),
+  
+  getTimeseries: (days: number = 30) => 
+    api.get<TimeseriesResponse>(`/admin/stats/timeseries?days=${days}`),
+  
+  getActivity: (limit: number = 20) => 
+    api.get<ActivityResponse>(`/admin/activity?limit=${limit}`),
 };
 
 // ============================================
@@ -81,17 +89,41 @@ export const adminUsersApi = {
 // ============================================
 interface AdminFeatureRequestsParams {
   status?: AdminFeatureRequestStatus;
+  priority?: AdminPriority;
   limit?: number;
   offset?: number;
   include_archived?: boolean;
+  search?: string;
+  date_from?: string;
+  date_to?: string;
 }
 
 export const adminFeatureRequestsApi = {
   list: (params: AdminFeatureRequestsParams = {}) => {
-    const { status, limit = 50, offset = 0, include_archived = false } = params;
-    const statusParam = status ? `&status=${status}` : '';
+    const { 
+      status, 
+      priority,
+      limit = 50, 
+      offset = 0, 
+      include_archived = false,
+      search,
+      date_from,
+      date_to,
+    } = params;
+    
+    const queryParts = [
+      `limit=${limit}`,
+      `offset=${offset}`,
+      `include_archived=${include_archived}`,
+    ];
+    if (status) queryParts.push(`status=${status}`);
+    if (priority) queryParts.push(`priority=${priority}`);
+    if (search) queryParts.push(`search=${encodeURIComponent(search)}`);
+    if (date_from) queryParts.push(`date_from=${date_from}`);
+    if (date_to) queryParts.push(`date_to=${date_to}`);
+    
     return api.get<AdminFeatureRequestsListResponse>(
-      `/admin/feature-requests?limit=${limit}&offset=${offset}&include_archived=${include_archived}${statusParam}`
+      `/admin/feature-requests?${queryParts.join('&')}`
     );
   },
 
@@ -121,6 +153,9 @@ interface AdminProblemReportsParams {
   limit?: number;
   offset?: number;
   include_archived?: boolean;
+  search?: string;
+  date_from?: string;
+  date_to?: string;
 }
 
 export const adminProblemReportsApi = {
@@ -132,6 +167,9 @@ export const adminProblemReportsApi = {
       limit = 50,
       offset = 0,
       include_archived = false,
+      search,
+      date_from,
+      date_to,
     } = params;
 
     const queryParts = [
@@ -142,6 +180,9 @@ export const adminProblemReportsApi = {
     if (status) queryParts.push(`status=${status}`);
     if (category) queryParts.push(`category=${category}`);
     if (priority) queryParts.push(`priority=${priority}`);
+    if (search) queryParts.push(`search=${encodeURIComponent(search)}`);
+    if (date_from) queryParts.push(`date_from=${date_from}`);
+    if (date_to) queryParts.push(`date_to=${date_to}`);
 
     return api.get<AdminProblemReportsListResponse>(
       `/admin/problem-reports?${queryParts.join('&')}`

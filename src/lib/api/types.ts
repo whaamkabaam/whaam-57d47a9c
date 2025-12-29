@@ -238,6 +238,39 @@ export interface AdminStats {
   total_curves: number;
   total_feedback: number;
   active_subscriptions: number;
+  total_feature_requests?: number;
+  total_problem_reports?: number;
+  feature_requests_by_status?: Record<string, number>;
+  problem_reports_by_status?: Record<string, number>;
+}
+
+// Timeseries data for dashboard charts
+export interface TimeseriesDataPoint {
+  date: string;
+  problem_reports: number;
+  feature_requests: number;
+  new_users: number;
+}
+
+export interface TimeseriesResponse {
+  data: TimeseriesDataPoint[];
+  days: number;
+}
+
+// Activity feed items
+export type ActivityType = 'feature_request' | 'problem_report' | 'user_joined';
+
+export interface ActivityItem {
+  id: number;
+  type: ActivityType;
+  title: string;
+  description: string | null;
+  user_email: string | null;
+  created_at: string;
+}
+
+export interface ActivityResponse {
+  items: ActivityItem[];
 }
 
 // Admin Config

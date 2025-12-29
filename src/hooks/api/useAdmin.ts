@@ -26,6 +26,8 @@ import type {
 export const adminKeys = {
   all: ['admin'] as const,
   stats: () => [...adminKeys.all, 'stats'] as const,
+  timeseries: (days?: number) => [...adminKeys.all, 'timeseries', days] as const,
+  activity: (limit?: number) => [...adminKeys.all, 'activity', limit] as const,
   config: () => [...adminKeys.all, 'config'] as const,
   users: (filters?: object) => [...adminKeys.all, 'users', filters] as const,
   user: (id: string) => [...adminKeys.all, 'users', id] as const,
@@ -46,6 +48,22 @@ export function useAdminStats() {
   return useQuery({
     queryKey: adminKeys.stats(),
     queryFn: () => adminStatsApi.getStats(),
+    staleTime: 60 * 1000, // 1 minute
+  });
+}
+
+export function useAdminTimeseries(days: number = 30) {
+  return useQuery({
+    queryKey: adminKeys.timeseries(days),
+    queryFn: () => adminStatsApi.getTimeseries(days),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+export function useAdminActivity(limit: number = 20) {
+  return useQuery({
+    queryKey: adminKeys.activity(limit),
+    queryFn: () => adminStatsApi.getActivity(limit),
     staleTime: 60 * 1000, // 1 minute
   });
 }
@@ -128,29 +146,50 @@ export function useSetTestUser() {
 // ============================================
 interface UseAdminFeatureRequestsParams {
   status?: AdminFeatureRequestStatus;
+  priority?: AdminPriority;
   limit?: number;
   offset?: number;
   includeArchived?: boolean;
+  search?: string;
+  dateFrom?: string;
+  dateTo?: string;
 }
 
 export function useAdminFeatureRequests(
   params: UseAdminFeatureRequestsParams = {}
 ) {
-  const { status, limit = 50, offset = 0, includeArchived = false } = params;
+  const { 
+    status, 
+    priority,
+    limit = 50, 
+    offset = 0, 
+    includeArchived = false,
+    search,
+    dateFrom,
+    dateTo,
+  } = params;
 
   return useQuery({
     queryKey: adminKeys.featureRequests({
       status,
+      priority,
       limit,
       offset,
       includeArchived,
+      search,
+      dateFrom,
+      dateTo,
     }),
     queryFn: () =>
       adminFeatureRequestsApi.list({
         status,
+        priority,
         limit,
         offset,
         include_archived: includeArchived,
+        search,
+        date_from: dateFrom,
+        date_to: dateTo,
       }),
     staleTime: 30 * 1000,
   });
@@ -219,6 +258,9 @@ interface UseAdminProblemReportsParams {
   limit?: number;
   offset?: number;
   includeArchived?: boolean;
+  search?: string;
+  dateFrom?: string;
+  dateTo?: string;
 }
 
 export function useAdminProblemReports(
@@ -231,6 +273,9 @@ export function useAdminProblemReports(
     limit = 50,
     offset = 0,
     includeArchived = false,
+    search,
+    dateFrom,
+    dateTo,
   } = params;
 
   return useQuery({
@@ -241,6 +286,9 @@ export function useAdminProblemReports(
       limit,
       offset,
       includeArchived,
+      search,
+      dateFrom,
+      dateTo,
     }),
     queryFn: () =>
       adminProblemReportsApi.list({
@@ -250,6 +298,9 @@ export function useAdminProblemReports(
         limit,
         offset,
         include_archived: includeArchived,
+        search,
+        date_from: dateFrom,
+        date_to: dateTo,
       }),
     staleTime: 30 * 1000,
   });

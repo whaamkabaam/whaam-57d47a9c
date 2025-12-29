@@ -52,11 +52,16 @@ export function useAdminStats() {
   });
 }
 
-export function useAdminTimeseries(days: number = 30) {
+interface UseAdminTimeseriesOptions {
+  enabled?: boolean;
+}
+
+export function useAdminTimeseries(days: number = 30, options?: UseAdminTimeseriesOptions) {
   return useQuery({
     queryKey: adminKeys.timeseries(days),
     queryFn: () => adminStatsApi.getTimeseries(days),
     staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: options?.enabled ?? true,
   });
 }
 

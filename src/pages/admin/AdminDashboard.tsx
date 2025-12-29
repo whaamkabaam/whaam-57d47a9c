@@ -1,6 +1,6 @@
 // ============================================
 // Admin Dashboard Page
-// Overview stats and analytics charts
+// Overview stats, analytics charts, and recent activity
 // ============================================
 
 import { useMemo } from 'react';
@@ -9,6 +9,7 @@ import { useAdminStats } from '@/hooks/api/useAdmin';
 import { StatCard } from '@/components/admin/dashboard/StatCard';
 import { QuickActionCard } from '@/components/admin/dashboard/QuickActionCard';
 import { ChartContainer, ActivityLineChart, StatusPieChart, StatusBarChart } from '@/components/admin/dashboard/StatsChart';
+import { RecentActivityFeed } from '@/components/admin/dashboard/RecentActivityFeed';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Button } from '@/components/ui/button';
 
@@ -133,10 +134,17 @@ export default function AdminDashboard() {
           <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Analytics</h2>
         </div>
         
-        {/* Activity Over Time Chart */}
-        <ChartContainer title="Activity Over Time (Last 30 Days)" isLoading={isLoading}>
-          <ActivityLineChart data={activityData} />
-        </ChartContainer>
+        {/* Activity Over Time + Recent Activity */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2">
+            <ChartContainer title="Activity Over Time (Last 30 Days)" isLoading={isLoading}>
+              <ActivityLineChart data={activityData} />
+            </ChartContainer>
+          </div>
+          <div className="lg:col-span-1">
+            <RecentActivityFeed isLoading={isLoading} className="h-full" />
+          </div>
+        </div>
 
         {/* Status Distribution Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

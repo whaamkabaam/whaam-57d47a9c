@@ -1,5 +1,6 @@
 // ============================================
 // Admin Sidebar Component - Liquid Glass Design
+// With keyboard shortcuts button and mobile optimizations
 // ============================================
 
 import { Link, useLocation } from 'react-router-dom';
@@ -10,7 +11,8 @@ import {
   AlertTriangle, 
   Settings,
   ArrowLeft,
-  Shield
+  Shield,
+  Keyboard
 } from 'lucide-react';
 import {
   Sidebar,
@@ -22,7 +24,12 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+
+interface AdminSidebarProps {
+  onOpenShortcuts?: () => void;
+}
 
 const navItems = [
   { title: 'Dashboard', url: '/admin', icon: LayoutDashboard },
@@ -32,7 +39,7 @@ const navItems = [
   { title: 'Settings', url: '/admin/settings', icon: Settings },
 ];
 
-export function AdminSidebar() {
+export function AdminSidebar({ onOpenShortcuts }: AdminSidebarProps) {
   const location = useLocation();
   const { state } = useSidebar();
   const { user, isLoading } = useAuth();
@@ -123,6 +130,27 @@ export function AdminSidebar() {
             </p>
           )}
         </div>
+
+        {/* Keyboard Shortcuts Button */}
+        {onOpenShortcuts && (
+          <div className="mt-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onOpenShortcuts}
+              className={cn(
+                'w-full justify-start gap-3 px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-white/5',
+                collapsed && 'justify-center px-2'
+              )}
+            >
+              <Keyboard className="h-4 w-4 flex-shrink-0" />
+              {!collapsed && <span className="text-sm">Shortcuts</span>}
+              {!collapsed && (
+                <kbd className="ml-auto text-xs bg-muted/30 px-1.5 py-0.5 rounded">?</kbd>
+              )}
+            </Button>
+          </div>
+        )}
       </SidebarContent>
 
       {/* Account Footer */}

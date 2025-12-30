@@ -466,6 +466,26 @@
   }
 }
 
+/* Disabled state - visual feedback */
+.glass-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  pointer-events: auto;
+}
+
+.glass-button:disabled:hover {
+  transform: none;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Remove glow from disabled buttons */
+.liquid-glow:disabled,
+.liquid-glow-secondary:disabled,
+.liquid-glow-accent:disabled {
+  box-shadow: none;
+}
+
 /* Liquid Glow Effects */
 .liquid-glow {
   box-shadow: 

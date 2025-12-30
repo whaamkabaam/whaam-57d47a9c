@@ -184,6 +184,7 @@ export function AIProcessingModal({
   const sizeSpring = useSpring({
     maxWidth: showSuccess ? 420 : 320,
     paddingY: showSuccess ? 40 : 28,
+    minHeight: showSuccess ? 380 : 280,
     config: { tension: 200, friction: 22 },
   });
 
@@ -254,6 +255,7 @@ export function AIProcessingModal({
               top: '50%',
               transform: 'translate(-50%, -50%)',
               maxWidth: sizeSpring.maxWidth,
+              minHeight: sizeSpring.minHeight,
             }}
           >
             <animated.div 
@@ -357,10 +359,7 @@ export function AIProcessingModal({
                   Close
                 </button>
               </animated.div>
-            ) : (
-              // Reserve same vertical space during processing
-              <div className="h-[88px]" />
-            )}
+            ) : null}
 
             {/* Subtle ambient glow when complete */}
             {showSuccess && (

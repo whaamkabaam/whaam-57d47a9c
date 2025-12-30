@@ -5,7 +5,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useIsAdmin } from '@/hooks/useIsAdmin';
-import { Loader2 } from 'lucide-react';
+import { LiquidOrbSpinner } from '@/components/app/LiquidOrbSpinner';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
@@ -30,7 +30,7 @@ export function AdminProtectedRoute({ children }: AdminProtectedRouteProps) {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <LiquidOrbSpinner size="lg" />
       </div>
     );
   }

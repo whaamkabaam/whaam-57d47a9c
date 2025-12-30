@@ -7,7 +7,8 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useVerifyEmail } from '@/hooks/api';
 import { ApiClientError } from '@/lib/api';
 import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
-import { Loader2, CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
+import { LiquidOrbSpinner } from '@/components/app/LiquidOrbSpinner';
 
 export default function AuthVerify() {
   const navigate = useNavigate();
@@ -54,11 +55,11 @@ export default function AuthVerify() {
           </Link>
 
           {status === 'loading' && (
-            <>
-              <Loader2 className="h-16 w-16 animate-spin text-primary mx-auto mb-4" />
+            <div className="flex flex-col items-center">
+              <LiquidOrbSpinner size="lg" className="mb-4" />
               <h1 className="text-2xl font-bold glass-text mb-2">Verifying Your Email</h1>
               <p className="text-muted-foreground">Please wait...</p>
-            </>
+            </div>
           )}
 
           {status === 'success' && (

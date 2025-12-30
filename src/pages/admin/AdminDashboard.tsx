@@ -44,6 +44,7 @@ export default function AdminDashboard() {
       date: format(new Date(d.date), 'MMM d'),
       reports: d.problem_reports,
       requests: d.feature_requests,
+      curves: d.curves,
     }));
   }, [timeseriesData]);
 

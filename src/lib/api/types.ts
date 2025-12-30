@@ -250,6 +250,7 @@ export interface TimeseriesDataPoint {
   problem_reports: number;
   feature_requests: number;
   new_users: number;
+  curves: number;
 }
 
 export interface TimeseriesResponse {
@@ -258,7 +259,16 @@ export interface TimeseriesResponse {
 }
 
 // Activity feed items
-export type ActivityType = 'feature_request' | 'problem_report' | 'user_joined';
+export type ActivityType = 
+  | 'feature_request' 
+  | 'problem_report' 
+  | 'user_joined'
+  | 'curve_created'
+  | 'curve_iterated'
+  | 'curve_renamed'
+  | 'curve_favorited'
+  | 'curve_set_current'
+  | 'curve_deleted';
 
 export interface ActivityItem {
   id: number;

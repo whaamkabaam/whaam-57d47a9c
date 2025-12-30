@@ -9,6 +9,12 @@ import {
   Lightbulb, 
   UserPlus, 
   Activity,
+  Upload,
+  RefreshCw,
+  Pencil,
+  Star,
+  CheckCircle,
+  Undo2,
 } from 'lucide-react';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -26,12 +32,24 @@ const activityIcons = {
   problem_report: AlertTriangle,
   feature_request: Lightbulb,
   user_joined: UserPlus,
+  curve_created: Upload,
+  curve_iterated: RefreshCw,
+  curve_renamed: Pencil,
+  curve_favorited: Star,
+  curve_set_current: CheckCircle,
+  curve_deleted: Undo2,
 };
 
 const activityColors = {
   problem_report: 'text-destructive',
   feature_request: 'text-secondary',
   user_joined: 'text-primary',
+  curve_created: 'text-purple-500',
+  curve_iterated: 'text-purple-500',
+  curve_renamed: 'text-purple-500',
+  curve_favorited: 'text-yellow-500',
+  curve_set_current: 'text-green-500',
+  curve_deleted: 'text-muted-foreground',
 };
 
 function getActivityLink(item: ApiActivityItem): string {
@@ -42,6 +60,13 @@ function getActivityLink(item: ApiActivityItem): string {
       return '/admin/feature-requests';
     case 'user_joined':
       return '/admin/users';
+    case 'curve_created':
+    case 'curve_iterated':
+    case 'curve_renamed':
+    case 'curve_favorited':
+    case 'curve_set_current':
+    case 'curve_deleted':
+      return '/admin';
     default:
       return '/admin';
   }

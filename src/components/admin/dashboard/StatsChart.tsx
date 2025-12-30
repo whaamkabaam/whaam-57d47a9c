@@ -68,6 +68,7 @@ const CHART_COLORS = {
   blue: 'hsl(210, 100%, 60%)',
   emerald: 'hsl(160, 60%, 45%)',
   purple: 'hsl(280, 60%, 60%)',
+  teal: 'hsl(175, 70%, 45%)',        // For curves
   orange: 'hsl(30, 100%, 50%)',
   muted: 'hsl(220, 40%, 40%)',
 };
@@ -87,6 +88,7 @@ interface ActivityChartProps {
     date: string;
     reports: number;
     requests: number;
+    curves: number;
   }>;
 }
 
@@ -103,6 +105,10 @@ export function ActivityLineChart({ data }: ActivityChartProps) {
             <linearGradient id="colorRequests" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor={CHART_COLORS.secondary} stopOpacity={0.3} />
               <stop offset="95%" stopColor={CHART_COLORS.secondary} stopOpacity={0} />
+            </linearGradient>
+            <linearGradient id="colorCurves" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor={CHART_COLORS.teal} stopOpacity={0.3} />
+              <stop offset="95%" stopColor={CHART_COLORS.teal} stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
@@ -140,6 +146,15 @@ export function ActivityLineChart({ data }: ActivityChartProps) {
             stroke={CHART_COLORS.secondary}
             fillOpacity={1}
             fill="url(#colorRequests)"
+            strokeWidth={2}
+          />
+          <Area
+            type="monotone"
+            dataKey="curves"
+            name="Curves"
+            stroke={CHART_COLORS.teal}
+            fillOpacity={1}
+            fill="url(#colorCurves)"
             strokeWidth={2}
           />
         </AreaChart>

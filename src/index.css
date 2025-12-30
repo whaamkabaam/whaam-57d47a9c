@@ -618,6 +618,60 @@
   animation: float-slow 9s ease-in-out infinite 4s;
 }
 
+/* Liquid spinner rotation - slow and organic */
+@keyframes liquid-spinner-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Caustic light orbiting effects */
+@keyframes caustic-orbit {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes caustic-orbit-reverse {
+  0% { transform: rotate(180deg); }
+  100% { transform: rotate(-180deg); }
+}
+
+@keyframes caustic-orbit-slow {
+  0% { transform: rotate(90deg); }
+  100% { transform: rotate(450deg); }
+}
+
+/* Gentle scale breathing for spinner inner glow */
+@keyframes spinner-breathe {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 0.6; 
+  }
+  50% { 
+    transform: scale(1.12); 
+    opacity: 0.9; 
+  }
+}
+
+.animate-liquid-rotate {
+  animation: liquid-spinner-rotate 8s linear infinite;
+}
+
+.animate-caustic-orbit {
+  animation: caustic-orbit 3s ease-in-out infinite;
+}
+
+.animate-caustic-orbit-reverse {
+  animation: caustic-orbit-reverse 4s ease-in-out infinite;
+}
+
+.animate-caustic-orbit-slow {
+  animation: caustic-orbit-slow 6s ease-in-out infinite;
+}
+
+.animate-spinner-breathe {
+  animation: spinner-breathe 3s ease-in-out infinite;
+}
+
 @layer base {
   html, body {
     background-color: #121212; /* Fallback for overscroll */

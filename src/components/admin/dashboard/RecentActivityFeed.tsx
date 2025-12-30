@@ -75,6 +75,17 @@ function getActivityLink(item: ApiActivityItem): string {
 export function RecentActivityFeed({ limit = 10, className }: RecentActivityFeedProps) {
   const { data, isLoading, isError } = useAdminActivity(limit);
 
+  // Debug: Log activity data to diagnose curve events
+  if (import.meta.env.DEV && data?.items) {
+    const curveEvents = data.items.filter(item => item.type.startsWith('curve_'));
+    console.log('[RecentActivityFeed] Activity debug:', {
+      totalItems: data.items.length,
+      curveEvents: curveEvents.length,
+      types: [...new Set(data.items.map(i => i.type))],
+      sampleItems: data.items.slice(0, 3),
+    });
+  }
+
   return (
     <LiquidGlassCard variant="secondary" className={cn('p-4', className)}>
       <div className="flex items-center gap-2 mb-4">

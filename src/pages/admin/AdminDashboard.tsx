@@ -5,8 +5,9 @@
 
 import { useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useQueryClient } from '@tanstack/react-query';
 import { LayoutDashboard, Users, FileText, MessageSquare, CreditCard, AlertTriangle, Lightbulb, RefreshCw, TrendingUp } from 'lucide-react';
-import { useAdminStats, useAdminTimeseries } from '@/hooks/api/useAdmin';
+import { useAdminStats, useAdminTimeseries, adminKeys } from '@/hooks/api/useAdmin';
 import { StatCard } from '@/components/admin/dashboard/StatCard';
 import { QuickActionCard } from '@/components/admin/dashboard/QuickActionCard';
 import { ChartContainer, ActivityLineChart, StatusPieChart, StatusBarChart } from '@/components/admin/dashboard/StatsChart';
@@ -24,7 +25,15 @@ function formatStatusLabel(status: string): string {
 }
 
 export default function AdminDashboard() {
+  const queryClient = useQueryClient();
   const { data: stats, isLoading, isError, refetch } = useAdminStats();
+  
+  // Refresh all dashboard data
+  const handleRefresh = () => {
+    queryClient.invalidateQueries({ queryKey: adminKeys.stats() });
+    queryClient.invalidateQueries({ queryKey: adminKeys.timeseries(30) });
+    queryClient.invalidateQueries({ queryKey: adminKeys.activity() });
+  };
   
   // Intersection observer for analytics section - only load timeseries when visible
   const { ref: analyticsRef, inView: analyticsInView } = useInView({
@@ -40,11 +49,24 @@ export default function AdminDashboard() {
   // Transform timeseries data for the chart
   const activityData = useMemo(() => {
     if (!timeseriesData?.data) return [];
+    
+    // Debug: Log raw timeseries data to diagnose curves field
+    if (import.meta.env.DEV) {
+      const hasCurves = timeseriesData.data.some(d => d.curves > 0);
+      const samplePoint = timeseriesData.data[0];
+      console.log('[AdminDashboard] Timeseries debug:', {
+        totalPoints: timeseriesData.data.length,
+        hasCurvesField: samplePoint && 'curves' in samplePoint,
+        anyCurvesNonZero: hasCurves,
+        sampleDataPoint: samplePoint,
+      });
+    }
+    
     return timeseriesData.data.map(d => ({
       date: format(new Date(d.date), 'MMM d'),
       reports: d.problem_reports,
       requests: d.feature_requests,
-      curves: d.curves,
+      curves: d.curves ?? 0, // Fallback to 0 if undefined
     }));
   }, [timeseriesData]);
 
@@ -81,7 +103,7 @@ export default function AdminDashboard() {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => refetch()}
+          onClick={handleRefresh}
           disabled={isLoading}
           className="gap-2"
         >

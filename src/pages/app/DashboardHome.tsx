@@ -24,6 +24,12 @@ import { CurveDetailModal } from '@/components/app/curves/CurveDetailModal';
 import { AIProcessingModal } from '@/components/app/AIProcessingModal';
 import { CurveUploadCard } from '@/components/app/curves/CurveUploadCard';
 
+// Extract version number from curve name (e.g., "lol_v3.ccurve" → 3)
+function extractVersionFromName(name: string): number | null {
+  const match = name.match(/_v(\d+)\.ccurve$/i);
+  return match ? parseInt(match[1], 10) : null;
+}
+
 export default function DashboardHome() {
   const [graphModalOpen, setGraphModalOpen] = useState(false);
   
@@ -52,8 +58,9 @@ export default function DashboardHome() {
   const renameMutation = useRenameCurve();
   const invalidateCurveQueries = useInvalidateCurveQueries();
 
-  // Use upload_number directly for iteration display
-  const currentIteration = currentCurve?.upload_number ?? 1;
+  // Extract version from curve name (e.g., "lol_v3.ccurve" → 3)
+  const extractedVersion = currentCurve ? extractVersionFromName(currentCurve.name) : null;
+  const currentIteration = extractedVersion ?? 1;
 
   // Handlers
   const handleDownload = async () => {

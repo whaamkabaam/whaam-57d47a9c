@@ -8,8 +8,9 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { useSpring, animated, config } from 'react-spring';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { LiquidGlassButton } from '@/components/LiquidGlassEffects';
-import { Sparkles, Download, Check } from 'lucide-react';
+import { Download, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { LiquidOrbSpinner } from './LiquidOrbSpinner';
 
 interface AIProcessingModalProps {
   open: boolean;
@@ -265,7 +266,7 @@ export function AIProcessingModal({
             
             {/* Animated Icon Container */}
             <div className="relative w-20 h-20 mb-6">
-              {/* Processing sparkles */}
+              {/* Processing liquid orb spinner */}
               <animated.div
                 style={{
                   scale: sparklesSpring.scale,
@@ -275,9 +276,7 @@ export function AIProcessingModal({
                 }}
                 className="flex items-center justify-center"
               >
-                <div className="w-full h-full rounded-full bg-white/[0.06] backdrop-blur-sm border border-white/[0.1] flex items-center justify-center">
-                  <Sparkles className="h-9 w-9 text-whaam-yellow animate-pulse" />
-                </div>
+                <LiquidOrbSpinner progress={progress} size="lg" />
               </animated.div>
 
               {/* Success checkmark */}

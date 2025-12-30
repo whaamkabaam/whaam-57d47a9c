@@ -171,12 +171,19 @@ export function AIProcessingModal({
     config: { mass: 0.6, tension: 280, friction: 22 },
   });
 
-  // Spring for success content reveal
+  // Spring animation for success content reveal
   const contentSpring = useSpring({
     opacity: showSuccess ? 1 : 0,
     y: showSuccess ? 0 : 10,
     config: config.gentle,
     delay: showSuccess ? 200 : 0,
+  });
+
+  // Spring for modal size animation (smaller during loading, expands when ready)
+  const sizeSpring = useSpring({
+    maxWidth: showSuccess ? 420 : 320,
+    paddingY: showSuccess ? 40 : 28,
+    config: { tension: 200, friction: 22 },
   });
 
   // Cycle through messages based on progress phase
@@ -224,29 +231,37 @@ export function AIProcessingModal({
           className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" 
         />
         
-        {/* Modal content with liquid glass styling */}
-        <DialogPrimitive.Content
-          className={cn(
-            "liquid-glass",
-            "z-50",
-            "w-full sm:max-w-md rounded-[24px]",
-            "border border-white/[0.12]",
-            "shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)]",
-            "focus:outline-none",
-            "data-[state=open]:animate-in data-[state=closed]:animate-out",
-            "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-            "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
-            "data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]",
-            "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]"
-          )}
-          style={{
-            position: 'fixed',
-            left: '50%',
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          <div className="flex flex-col items-center text-center py-10 px-6 relative">
+        {/* Modal content with liquid glass styling - animated size */}
+        <DialogPrimitive.Content asChild>
+          <animated.div
+            className={cn(
+              "liquid-glass",
+              "z-50",
+              "w-full rounded-[24px]",
+              "border border-white/[0.12]",
+              "shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)]",
+              "focus:outline-none",
+              "data-[state=open]:animate-in data-[state=closed]:animate-out",
+              "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+              "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+              "data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]",
+              "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]"
+            )}
+            style={{
+              position: 'fixed',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              maxWidth: sizeSpring.maxWidth,
+            }}
+          >
+            <animated.div 
+              className="flex flex-col items-center text-center px-6 relative"
+              style={{
+                paddingTop: sizeSpring.paddingY,
+                paddingBottom: sizeSpring.paddingY,
+              }}
+            >
             
             {/* Animated Icon Container */}
             <div className="relative w-20 h-20 mb-6">
@@ -357,7 +372,8 @@ export function AIProcessingModal({
                 }}
               />
             )}
-          </div>
+            </animated.div>
+          </animated.div>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>

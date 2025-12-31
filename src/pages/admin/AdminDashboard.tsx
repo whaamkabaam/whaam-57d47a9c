@@ -218,13 +218,13 @@ export default function AdminDashboard() {
             icon={AlertTriangle}
             title="Problem Reports"
             description="Review user-submitted issues"
-            to="/admin/problem-reports"
+            to="/admin/problems"
           />
           <QuickActionCard
             icon={Lightbulb}
             title="Feature Requests"
             description="Manage feature suggestions"
-            to="/admin/feature-requests"
+            to="/admin/features"
           />
           <QuickActionCard
             icon={Users}

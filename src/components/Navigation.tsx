@@ -65,7 +65,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 </button>
               ))}
             
-              <div className="flex items-center justify-end space-x-4 min-w-[220px]">
+              <div className="flex items-center gap-3">
                 {isLoading ? (
                   <div className="h-[42px] w-[180px]" />
                 ) : isAuthenticated ? (

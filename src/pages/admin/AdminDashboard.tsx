@@ -28,11 +28,11 @@ export default function AdminDashboard() {
   const queryClient = useQueryClient();
   const { data: stats, isLoading, isError, refetch } = useAdminStats();
   
-  // Refresh all dashboard data
+  // Refresh all dashboard data - use partial matching for activity key
   const handleRefresh = () => {
     queryClient.invalidateQueries({ queryKey: adminKeys.stats() });
     queryClient.invalidateQueries({ queryKey: adminKeys.timeseries(30) });
-    queryClient.invalidateQueries({ queryKey: adminKeys.activity() });
+    queryClient.invalidateQueries({ queryKey: ['admin', 'activity'], exact: false });
   };
   
   // Intersection observer for analytics section - only load timeseries when visible
@@ -41,32 +41,20 @@ export default function AdminDashboard() {
     rootMargin: '100px', // Start loading 100px before visible
   });
 
-  // Cascade loading: timeseries only fetches when stats loaded AND analytics section is visible
+  // Parallel loading: timeseries fetches when analytics section is visible (no dependency on stats)
   const { data: timeseriesData, isLoading: isTimeseriesLoading } = useAdminTimeseries(30, {
-    enabled: !isLoading && !!stats && analyticsInView,
+    enabled: analyticsInView,
   });
 
   // Transform timeseries data for the chart
   const activityData = useMemo(() => {
     if (!timeseriesData?.data) return [];
     
-    // Debug: Log raw timeseries data to diagnose curves field
-    if (import.meta.env.DEV) {
-      const hasCurves = timeseriesData.data.some(d => d.curves > 0);
-      const samplePoint = timeseriesData.data[0];
-      console.log('[AdminDashboard] Timeseries debug:', {
-        totalPoints: timeseriesData.data.length,
-        hasCurvesField: samplePoint && 'curves' in samplePoint,
-        anyCurvesNonZero: hasCurves,
-        sampleDataPoint: samplePoint,
-      });
-    }
-    
     return timeseriesData.data.map(d => ({
       date: format(new Date(d.date), 'MMM d'),
       reports: d.problem_reports,
       requests: d.feature_requests,
-      curves: d.curves ?? 0, // Fallback to 0 if undefined
+      curves: d.curves ?? 0,
     }));
   }, [timeseriesData]);
 

@@ -58,6 +58,7 @@ interface AdminUsersParams {
 
 interface AdminUsersActivityParams extends AdminUsersParams {
   include_test_users?: boolean;
+  search?: string;
 }
 
 export const adminUsersApi = {
@@ -72,9 +73,20 @@ export const adminUsersApi = {
   getById: (userId: string) => api.get<AdminUser>(`/admin/users/${userId}`),
 
   listWithActivity: (params: AdminUsersActivityParams = {}) => {
-    const { limit = 50, offset = 0, include_test_users = true } = params;
+    const { limit = 50, offset = 0, include_test_users = true, search } = params;
+    
+    const queryParts = [
+      `limit=${limit}`,
+      `offset=${offset}`,
+      `include_test_users=${include_test_users}`,
+    ];
+    
+    if (search) {
+      queryParts.push(`search=${encodeURIComponent(search)}`);
+    }
+    
     return api.get<AdminUsersListResponse>(
-      `/admin/users/activity?limit=${limit}&offset=${offset}&include_test_users=${include_test_users}`
+      `/admin/users/activity?${queryParts.join('&')}`
     );
   },
 

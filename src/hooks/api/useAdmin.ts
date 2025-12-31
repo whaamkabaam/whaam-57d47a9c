@@ -116,8 +116,9 @@ export function useAdminUsers(params: UseAdminUsersParams = {}) {
         limit,
         offset,
         include_test_users: includeTestUsers,
+        search,
       }),
-    staleTime: 30 * 1000, // 30 seconds
+    staleTime: search ? 0 : 30 * 1000, // No cache when searching
   });
 }
 

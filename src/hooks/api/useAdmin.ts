@@ -60,7 +60,7 @@ export function useAdminTimeseries(days: number = 30, options?: UseAdminTimeseri
   return useQuery({
     queryKey: adminKeys.timeseries(days),
     queryFn: () => adminStatsApi.getTimeseries(days),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 30 * 1000, // 30 seconds (backend caches anyway)
     enabled: options?.enabled ?? true,
   });
 }
@@ -69,7 +69,7 @@ export function useAdminActivity(limit: number = 20) {
   return useQuery({
     queryKey: adminKeys.activity(limit),
     queryFn: () => adminStatsApi.getActivity(limit),
-    staleTime: 60 * 1000, // 1 minute
+    staleTime: 30 * 1000, // 30 seconds
   });
 }
 

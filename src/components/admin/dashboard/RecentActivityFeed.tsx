@@ -55,9 +55,9 @@ const activityColors = {
 function getActivityLink(item: ApiActivityItem): string {
   switch (item.type) {
     case 'problem_report':
-      return '/admin/problem-reports';
+      return '/admin/problems';
     case 'feature_request':
-      return '/admin/feature-requests';
+      return '/admin/features';
     case 'user_joined':
       return '/admin/users';
     case 'curve_created':

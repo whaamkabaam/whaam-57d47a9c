@@ -142,7 +142,7 @@ export function CurveListItem({
               )}
             </div>
             <p className="text-sm text-muted-foreground">
-              Upload #{curve.upload_number} • {format(new Date(curve.created_at), 'MMM d, yyyy')}
+              Curve #{curve.upload_number} • {format(new Date(curve.created_at), 'MMM d, yyyy')}
             </p>
           </div>
         </div>

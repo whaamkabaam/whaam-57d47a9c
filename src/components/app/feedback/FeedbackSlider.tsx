@@ -11,6 +11,7 @@ interface FeedbackSliderProps {
   value: number;
   onChange: (value: number) => void;
   disabled?: boolean;
+  step?: number; // 0.5 for Basic, 0.1 for Plus/Ultra
 }
 
 function getZoneInfo(value: number): { label: string; color: string; bgColor: string } {
@@ -27,7 +28,7 @@ function getZoneInfo(value: number): { label: string; color: string; bgColor: st
   }
 }
 
-export function FeedbackSlider({ label, hint, value, onChange, disabled }: FeedbackSliderProps) {
+export function FeedbackSlider({ label, hint, value, onChange, disabled, step }: FeedbackSliderProps) {
   const zone = getZoneInfo(value);
   const isPerfect = value === 5;
 
@@ -64,7 +65,7 @@ export function FeedbackSlider({ label, hint, value, onChange, disabled }: Feedb
         onValueChange={([v]) => onChange(v)}
         min={0}
         max={10}
-        step={0.1}
+        step={step ?? 0.1}
         disabled={disabled}
         variant="glass"
         className="w-full"

@@ -1,15 +1,18 @@
 // ============================================
 // Curve Upload Card
 // For new users to upload their first .ccurve file
+// Gated for Plus+ tiers only
 // ============================================
 
 import { useState, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { LiquidGlassButton } from '@/components/LiquidGlassEffects';
-import { Upload, FileText, X, AlertCircle, Loader2, Crosshair } from 'lucide-react';
+import { Upload, FileText, X, AlertCircle, Loader2, Crosshair, Lock, Zap } from 'lucide-react';
 import { useUploadCurve } from '@/hooks/api/useCurves';
 import { toast } from 'sonner';
 import { ApiClientError } from '@/lib/api/client';
+import { useSubscription } from '@/contexts/SubscriptionContext';
 
 const MAX_FILE_SIZE = 100 * 1024; // 100KB
 
@@ -24,6 +27,8 @@ export function CurveUploadCard({ onUploadSuccess }: CurveUploadCardProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const uploadMutation = useUploadCurve();
+  const { hasFeature } = useSubscription();
+  const canUpload = hasFeature('can_upload');
 
   // Client-side validation
   const validateFile = useCallback((file: File): string | null => {
@@ -116,6 +121,36 @@ export function CurveUploadCard({ onUploadSuccess }: CurveUploadCardProps) {
     if (bytes < 1024) return `${bytes} B`;
     return `${(bytes / 1024).toFixed(1)} KB`;
   };
+
+  // If user can't upload (Basic tier), show upgrade prompt instead
+  if (!canUpload) {
+    return (
+      <LiquidGlassCard variant="secondary" className="p-6 max-w-lg mx-auto">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+            <Lock className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">Upload Locked</h2>
+            <p className="text-sm text-muted-foreground">Plus or higher required</p>
+          </div>
+        </div>
+        
+        <p className="text-muted-foreground mb-6">
+          Uploading custom .ccurve files is available on Plus and Ultra plans. 
+          Basic tier users can only tune their generated curves.
+        </p>
+        
+        <Link to="/pricing">
+          <LiquidGlassButton variant="accent" className="w-full">
+            <Zap className="h-4 w-4 mr-2" />
+            Upgrade to Plus
+          </LiquidGlassButton>
+        </Link>
+      </LiquidGlassCard>
+    );
+  }
 
   return (
     <LiquidGlassCard variant="secondary" className="p-6 max-w-lg mx-auto">

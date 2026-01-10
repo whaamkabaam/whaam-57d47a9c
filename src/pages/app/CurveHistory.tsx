@@ -18,6 +18,7 @@ import {
   useCurveContent,
 } from '@/hooks/api/useCurves';
 import { Curve } from '@/lib/api/types';
+import { useSubscription } from '@/contexts/SubscriptionContext';
 
 import { CurveListItem } from '@/components/app/curves/CurveListItem';
 import { CurveHistoryModal } from '@/components/app/curves/CurveHistoryModal';
@@ -32,6 +33,10 @@ export default function CurveHistory() {
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
   const [revertingId, setRevertingId] = useState<number | null>(null);
   const [filter, setFilter] = useState<'all' | 'favorite'>('all');
+
+  // Subscription context for feature gating
+  const { hasFeature } = useSubscription();
+  const canRestoreAnyVersion = hasFeature('can_restore_any_version');
 
   // Pagination state - true server-side pagination
   const [page, setPage] = useState(0);
@@ -248,6 +253,7 @@ export default function CurveHistory() {
                   onRename={handleRename}
                   isDownloading={downloadingId === curve.id}
                   isReverting={revertingId === curve.id}
+                  canRestoreAnyVersion={canRestoreAnyVersion}
                 />
               </div>
             );

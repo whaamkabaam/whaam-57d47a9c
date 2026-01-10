@@ -86,30 +86,31 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
   );
 }
 
-export function useSubscription() {
+// Default fallback for when context is unavailable (e.g., Pricing page for unauthenticated users)
+const defaultSubscriptionValue: SubscriptionContextType = {
+  features: null,
+  isLoading: false,
+  isError: false,
+  isFreeUser: true,
+  isActive: false,
+  isGracePeriod: false,
+  isExpired: false,
+  tier: null,
+  hasFeature: () => false,
+  adjustmentsRemaining: 0,
+  isAtDailyLimit: true,
+  libraryLimit: 0,
+  favoriteLimit: 0,
+  refresh: async () => {},
+};
+
+export function useSubscription(): SubscriptionContextType {
   const context = useContext(SubscriptionContext);
+  
+  // Return default values if used outside provider (e.g., public pricing page)
   if (context === undefined) {
-    // HMR safety in dev
-    if (import.meta.env.DEV) {
-      console.warn('useSubscription called outside SubscriptionProvider');
-      return {
-        features: null,
-        isLoading: true,
-        isError: false,
-        isFreeUser: true,
-        isActive: false,
-        isGracePeriod: false,
-        isExpired: false,
-        tier: null,
-        hasFeature: () => false,
-        adjustmentsRemaining: 0,
-        isAtDailyLimit: true,
-        libraryLimit: 0,
-        favoriteLimit: 0,
-        refresh: async () => {},
-      };
-    }
-    throw new Error('useSubscription must be used within a SubscriptionProvider');
+    return defaultSubscriptionValue;
   }
+  
   return context;
 }

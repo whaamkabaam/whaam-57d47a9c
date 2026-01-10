@@ -28,8 +28,16 @@ export default function Auth() {
   const { login, register, isAuthenticated, isLoading: authLoading } = useAuth();
   const forgotPasswordMutation = useForgotPassword();
 
-  const [mode, setMode] = useState<AuthMode>('login');
-  const [email, setEmail] = useState('');
+  // Check for email pre-fill from URL params (e.g., /auth?email=user@example.com)
+  const searchParams = new URLSearchParams(location.search);
+  const prefillEmail = searchParams.get('email') || '';
+  const prefillMode = searchParams.get('mode') as AuthMode | null;
+
+  // Default to register mode if email is pre-filled (guest checkout flow)
+  const [mode, setMode] = useState<AuthMode>(
+    prefillMode || (prefillEmail ? 'register' : 'login')
+  );
+  const [email, setEmail] = useState(prefillEmail);
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -153,6 +153,13 @@ export const subscriptionsApi = {
   // Cancel subscription
   cancel: (data?: CancelRequest) => 
     api.post<CancelResponse>('/subscriptions/cancel', data),
+
+  // Get the manage billing redirect URL
+  // Opens in new tab - backend redirects (302) to FastSpring account portal
+  getManageUrl: () => {
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+    return `${baseUrl}/subscriptions/manage`;
+  },
 };
 
 // ============================================

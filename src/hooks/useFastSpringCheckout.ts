@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { subscriptionsApi } from '@/lib/api';
 import { subscriptionKeys } from '@/hooks/api';
-import { openFastSpringCheckout } from '@/lib/fastspring';
+import { openFastSpringCheckout, isFastSpringReady, verifyFastSpringConfig } from '@/lib/fastspring';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import type { SubscriptionTier, SubscriptionDuration } from '@/lib/api';
@@ -34,6 +34,11 @@ export function useFastSpringCheckout() {
   
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const pollingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Verify FastSpring config on mount (development aid)
+  useEffect(() => {
+    verifyFastSpringConfig();
+  }, []);
 
   const clearPolling = useCallback(() => {
     if (pollingIntervalRef.current) {
@@ -124,6 +129,17 @@ export function useFastSpringCheckout() {
       return;
     }
 
+    // Check if FastSpring is ready before proceeding
+    if (!isFastSpringReady()) {
+      toast({
+        title: "Checkout unavailable",
+        description: "Payment system is loading. Please try again in a moment.",
+        variant: "destructive",
+      });
+      console.error('[FastSpring] Checkout attempted but SBL not ready');
+      return;
+    }
+
     setState({ 
       isProcessing: true, 
       isPolling: false, 
@@ -133,7 +149,28 @@ export function useFastSpringCheckout() {
     });
 
     // Open FastSpring popup
-    openFastSpringCheckout(tier, duration, user.id);
+    const result = openFastSpringCheckout(tier, duration, user.id);
+    
+    if (!result.success) {
+      const errorMessages: Record<string, string> = {
+        not_loaded: 'Payment system failed to load. Please refresh the page.',
+        builder_unavailable: 'Payment system encountered an error. Please try again.',
+        unknown: 'An unexpected error occurred. Please try again.',
+      };
+      
+      setState(s => ({ 
+        ...s, 
+        isProcessing: false,
+        error: errorMessages[result.error || 'unknown'],
+      }));
+      
+      toast({
+        title: "Checkout failed",
+        description: errorMessages[result.error || 'unknown'],
+        variant: "destructive",
+      });
+      return;
+    }
 
     // Start polling after a delay (give user time to complete checkout)
     setTimeout(() => {

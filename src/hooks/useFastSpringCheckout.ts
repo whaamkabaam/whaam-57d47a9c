@@ -3,7 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { subscriptionsApi } from '@/lib/api';
 import { subscriptionKeys } from '@/hooks/api';
-import { openFastSpringCheckout, isFastSpringReady, verifyFastSpringConfig } from '@/lib/fastspring';
+import { 
+  openFastSpringCheckout, 
+  isFastSpringReady, 
+  verifyFastSpringConfig,
+  registerCheckoutCallbacks,
+  clearCheckoutCallbacks,
+} from '@/lib/fastspring';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import type { SubscriptionTier, SubscriptionDuration } from '@/lib/api';
@@ -21,6 +27,16 @@ interface CheckoutState {
   isGuestCheckout: boolean;
 }
 
+const initialState: CheckoutState = {
+  isProcessing: false,
+  isPolling: false,
+  error: null,
+  selectedTier: null,
+  selectedDuration: null,
+  checkoutComplete: false,
+  isGuestCheckout: false,
+};
+
 export function useFastSpringCheckout() {
   // === All hooks must be called unconditionally at the top ===
   const navigate = useNavigate();
@@ -28,15 +44,7 @@ export function useFastSpringCheckout() {
   const { user } = useAuth();
   const { toast } = useToast();
   
-  const [state, setState] = useState<CheckoutState>({
-    isProcessing: false,
-    isPolling: false,
-    error: null,
-    selectedTier: null,
-    selectedDuration: null,
-    checkoutComplete: false,
-    isGuestCheckout: false,
-  });
+  const [state, setState] = useState<CheckoutState>(initialState);
   
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const pollingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -59,7 +67,10 @@ export function useFastSpringCheckout() {
 
   // Cleanup on unmount
   useEffect(() => {
-    return () => clearPolling();
+    return () => {
+      clearPolling();
+      clearCheckoutCallbacks();
+    };
   }, [clearPolling]);
 
   const pollForActivation = useCallback(async () => {
@@ -83,15 +94,7 @@ export function useFastSpringCheckout() {
             description: `Welcome to ${features.tier.charAt(0).toUpperCase() + features.tier.slice(1)}!`,
           });
           
-          setState({ 
-            isProcessing: false, 
-            isPolling: false, 
-            error: null,
-            selectedTier: null,
-            selectedDuration: null,
-            checkoutComplete: false,
-            isGuestCheckout: false,
-          });
+          setState(initialState);
           navigate('/studio');
           return;
         }
@@ -147,6 +150,33 @@ export function useFastSpringCheckout() {
       isGuestCheckout: isGuest,
     });
 
+    // Register callbacks BEFORE opening checkout
+    // These will be called by FastSpring when popup closes or order completes
+    registerCheckoutCallbacks(
+      // onComplete - order was placed successfully
+      (email: string, reference: string) => {
+        console.log('[Checkout] Order complete - email:', email, 'reference:', reference);
+        
+        if (isGuest) {
+          // Guest checkout complete - show success message
+          setState(s => ({
+            ...s,
+            isProcessing: false,
+            isPolling: false,
+            checkoutComplete: true,
+          }));
+        } else {
+          // Logged-in user - poll for subscription activation
+          pollForActivation();
+        }
+      },
+      // onCancel - popup closed without completing order
+      () => {
+        console.log('[Checkout] User cancelled checkout');
+        setState(initialState);
+      }
+    );
+
     // Pass user ID if logged in, otherwise guest checkout
     const result = openFastSpringCheckout(tier, duration, user?.id);
     
@@ -156,6 +186,8 @@ export function useFastSpringCheckout() {
         builder_unavailable: 'Payment system encountered an error. Please try again.',
         unknown: 'An unexpected error occurred. Please try again.',
       };
+      
+      clearCheckoutCallbacks();
       
       setState(s => ({ 
         ...s, 
@@ -171,35 +203,25 @@ export function useFastSpringCheckout() {
       return;
     }
 
-    // For guest checkout, show success message after a delay (no polling since no user to check)
-    if (isGuest) {
+    // For logged-in users, also start polling after a delay as backup
+    // (in case callbacks don't fire due to popup blockers, etc.)
+    if (!isGuest) {
       setTimeout(() => {
-        setState(s => ({
-          ...s,
-          isProcessing: false,
-          isPolling: false,
-          checkoutComplete: true,
-        }));
-      }, 3000);
-    } else {
-      // For logged-in users, poll for activation
-      setTimeout(() => {
-        pollForActivation();
-      }, 5000);
+        // Only start polling if we're still in processing state
+        setState(s => {
+          if (s.isProcessing && !s.isPolling && !s.checkoutComplete) {
+            pollForActivation();
+          }
+          return s;
+        });
+      }, 10000); // 10 second delay before backup polling
     }
-  }, [user, navigate, toast, pollForActivation]);
+  }, [user, toast, pollForActivation]);
 
   const cancelPolling = useCallback(() => {
     clearPolling();
-    setState({ 
-      isProcessing: false, 
-      isPolling: false, 
-      error: null,
-      selectedTier: null,
-      selectedDuration: null,
-      checkoutComplete: false,
-      isGuestCheckout: false,
-    });
+    clearCheckoutCallbacks();
+    setState(initialState);
   }, [clearPolling]);
 
   return {

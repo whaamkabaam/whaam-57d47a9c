@@ -4,12 +4,23 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { subscriptionsApi } from '@/lib/api';
-import type { CheckoutRequest, CancelRequest } from '@/lib/api';
+import type { CancelRequest } from '@/lib/api';
 
 export const subscriptionKeys = {
+  features: ['subscriptions', 'features'] as const,
   tiers: ['subscriptions', 'tiers'] as const,
   current: ['subscriptions', 'current'] as const,
 };
+
+// Primary hook for feature access (call in SubscriptionContext)
+export function useSubscriptionFeatures(enabled = true) {
+  return useQuery({
+    queryKey: subscriptionKeys.features,
+    queryFn: () => subscriptionsApi.getFeatures(),
+    enabled,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
 
 // Get available subscription tiers (public, no auth required)
 export function useSubscriptionTiers() {
@@ -20,37 +31,11 @@ export function useSubscriptionTiers() {
   });
 }
 
-// Get current user's subscription
+// Get current user's subscription (for account page)
 export function useCurrentSubscription() {
   return useQuery({
     queryKey: subscriptionKeys.current,
     queryFn: () => subscriptionsApi.getCurrent(),
-  });
-}
-
-// Create checkout session and redirect to Paddle
-export function useCreateCheckout() {
-  return useMutation({
-    mutationFn: (data: CheckoutRequest) => subscriptionsApi.createCheckout(data),
-    onSuccess: (response) => {
-      if (response.success && response.checkout_url) {
-        // Redirect to Paddle checkout
-        window.location.href = response.checkout_url;
-      }
-    },
-  });
-}
-
-// Get Paddle customer portal URL
-export function useSubscriptionPortal() {
-  return useMutation({
-    mutationFn: () => subscriptionsApi.getPortal(),
-    onSuccess: (response) => {
-      if (response.success && response.portal_url) {
-        // Redirect to Paddle portal
-        window.location.href = response.portal_url;
-      }
-    },
   });
 }
 
@@ -62,6 +47,7 @@ export function useCancelSubscription() {
     mutationFn: (data?: CancelRequest) => subscriptionsApi.cancel(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: subscriptionKeys.current });
+      queryClient.invalidateQueries({ queryKey: subscriptionKeys.features });
     },
   });
 }

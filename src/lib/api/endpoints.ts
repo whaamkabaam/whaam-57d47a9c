@@ -21,12 +21,11 @@ import type {
   FeedbackRequest,
   FeedbackResponse,
   DailyLimit,
+  SubscriptionFeatures,
   SubscriptionTierInfo,
-  Subscription,
-  CheckoutRequest,
-  CheckoutResponse,
-  PortalResponse,
+  SubscriptionCurrent,
   CancelRequest,
+  CancelResponse,
   FeatureRequest,
   FeatureRequestsListResponse,
   CreateFeatureRequestInput,
@@ -139,21 +138,21 @@ export const feedbackApi = {
 // Subscriptions Endpoints
 // ============================================
 export const subscriptionsApi = {
-  // Public endpoint - no auth required
+  // Primary features endpoint (call after login, cache result)
+  getFeatures: () => 
+    api.get<SubscriptionFeatures>('/subscriptions/features'),
+
+  // Tier list for pricing page (public, no auth)
   getTiers: () => 
     api.get<SubscriptionTierInfo[]>('/subscriptions/tiers'),
 
+  // Current subscription details (for account page)
   getCurrent: () => 
-    api.get<Subscription>('/subscriptions/current'),
+    api.get<SubscriptionCurrent>('/subscriptions/current'),
 
-  createCheckout: (data: CheckoutRequest) => 
-    api.post<CheckoutResponse>('/subscriptions/checkout', data),
-
-  getPortal: () => 
-    api.post<PortalResponse>('/subscriptions/portal'),
-
+  // Cancel subscription
   cancel: (data?: CancelRequest) => 
-    api.post<MessageResponse & { success: boolean }>('/subscriptions/cancel', data),
+    api.post<CancelResponse>('/subscriptions/cancel', data),
 };
 
 // ============================================

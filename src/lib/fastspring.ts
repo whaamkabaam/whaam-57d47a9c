@@ -75,7 +75,7 @@ export interface FastSpringResult {
 export function openFastSpringCheckout(
   tier: PaidTier,
   duration: SubscriptionDuration,
-  userId: string
+  userId?: string // Now optional for guest checkout
 ): FastSpringResult {
   // Check if SBL script exists
   if (!window.fastspring) {
@@ -94,7 +94,8 @@ export function openFastSpringCheckout(
 
     window.fastspring.builder.push({
       products: [{ path: productPath }],
-      tags: { user_id: userId },
+      // Only pass user_id if logged in - backend will use email for guest checkout
+      tags: userId ? { user_id: userId } : undefined,
       checkout: true,
     });
     

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
@@ -22,6 +22,7 @@ type PaidTier = Exclude<SubscriptionTier, 'free'>;
 export default function Pricing() {
   const [duration, setDuration] = useState<SubscriptionDuration>('monthly');
   const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+  const navigate = useNavigate();
   
   const { isAuthenticated } = useAuth();
   const subscription = useSubscription();
@@ -30,11 +31,18 @@ export default function Pricing() {
     cancelPolling, 
     isProcessing, 
     isPolling, 
-    error 
+    error,
+    checkoutComplete,
+    isGuestCheckout,
   } = useFastSpringCheckout();
 
   const handleSelectTier = (tier: PaidTier) => {
     startCheckout(tier, duration);
+  };
+
+  const handleGoToAuth = () => {
+    cancelPolling();
+    navigate('/auth');
   };
 
   const currentTier = subscription?.tier;
@@ -138,10 +146,13 @@ export default function Pricing() {
 
       {/* Processing Modal */}
       <ProcessingModal
-        isOpen={isProcessing || isPolling || !!error}
+        isOpen={isProcessing || isPolling || !!error || checkoutComplete}
         isPolling={isPolling}
         error={error}
+        checkoutComplete={checkoutComplete}
+        isGuestCheckout={isGuestCheckout}
         onCancel={cancelPolling}
+        onGoToAuth={handleGoToAuth}
       />
     </div>
   );

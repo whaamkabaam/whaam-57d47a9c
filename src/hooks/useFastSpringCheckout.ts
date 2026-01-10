@@ -16,6 +16,9 @@ interface CheckoutState {
   error: string | null;
   selectedTier: PaidTier | null;
   selectedDuration: SubscriptionDuration | null;
+  // Guest checkout success state
+  checkoutComplete: boolean;
+  isGuestCheckout: boolean;
 }
 
 export function useFastSpringCheckout() {
@@ -31,6 +34,8 @@ export function useFastSpringCheckout() {
     error: null,
     selectedTier: null,
     selectedDuration: null,
+    checkoutComplete: false,
+    isGuestCheckout: false,
   });
   
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -84,6 +89,8 @@ export function useFastSpringCheckout() {
             error: null,
             selectedTier: null,
             selectedDuration: null,
+            checkoutComplete: false,
+            isGuestCheckout: false,
           });
           navigate('/studio');
           return;
@@ -118,15 +125,7 @@ export function useFastSpringCheckout() {
     tier: PaidTier,
     duration: SubscriptionDuration
   ) => {
-    if (!user?.id) {
-      toast({
-        title: "Please log in",
-        description: "You need to be logged in to subscribe.",
-        variant: "destructive",
-      });
-      navigate('/auth');
-      return;
-    }
+    const isGuest = !user?.id;
 
     if (!isFastSpringReady()) {
       toast({
@@ -144,9 +143,12 @@ export function useFastSpringCheckout() {
       error: null,
       selectedTier: tier,
       selectedDuration: duration,
+      checkoutComplete: false,
+      isGuestCheckout: isGuest,
     });
 
-    const result = openFastSpringCheckout(tier, duration, user.id);
+    // Pass user ID if logged in, otherwise guest checkout
+    const result = openFastSpringCheckout(tier, duration, user?.id);
     
     if (!result.success) {
       const errorMessages: Record<string, string> = {
@@ -169,9 +171,22 @@ export function useFastSpringCheckout() {
       return;
     }
 
-    setTimeout(() => {
-      pollForActivation();
-    }, 5000);
+    // For guest checkout, show success message after a delay (no polling since no user to check)
+    if (isGuest) {
+      setTimeout(() => {
+        setState(s => ({
+          ...s,
+          isProcessing: false,
+          isPolling: false,
+          checkoutComplete: true,
+        }));
+      }, 3000);
+    } else {
+      // For logged-in users, poll for activation
+      setTimeout(() => {
+        pollForActivation();
+      }, 5000);
+    }
   }, [user, navigate, toast, pollForActivation]);
 
   const cancelPolling = useCallback(() => {
@@ -182,6 +197,8 @@ export function useFastSpringCheckout() {
       error: null,
       selectedTier: null,
       selectedDuration: null,
+      checkoutComplete: false,
+      isGuestCheckout: false,
     });
   }, [clearPolling]);
 

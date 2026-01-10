@@ -286,16 +286,16 @@ function CurveGraphInner({
                 );
               }
               
-              // Intermediate points: small gold circles
+              // Intermediate points: same style as first dot
               return (
                 <circle
                   key={`dot-${index}`}
                   cx={cx}
                   cy={cy}
-                  r={3}
-                  fill="#FFD740"
-                  stroke="rgba(0,0,0,0.3)"
-                  strokeWidth={1}
+                  r={5}
+                  fill="#A0A0A0"
+                  stroke="rgba(0,0,0,0.5)"
+                  strokeWidth={2}
                 />
               );
             }}
@@ -388,16 +388,16 @@ function CurveGraphInner({
                     );
                   }
                   
-                  // Intermediate points: small accent circles
+                  // Intermediate points: same style as first dot
                   return (
                     <circle
                       key={`ydot-${index}`}
                       cx={cx}
                       cy={cy}
-                      r={2.5}
-                      fill="hsl(var(--accent))"
-                      stroke="rgba(0,0,0,0.3)"
-                      strokeWidth={1}
+                      r={4}
+                      fill="#A0A0A0"
+                      stroke="rgba(0,0,0,0.5)"
+                      strokeWidth={2}
                     />
                   );
                 }}

@@ -10,6 +10,7 @@ const LegacyRedirect = () => <Navigate to="/studio" replace />;
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/app/ProtectedRoute";
 import { DashboardLayout } from "@/components/app/DashboardLayout";
+import { SubscriptionGate } from "@/components/app/SubscriptionGate";
 import { AdminProtectedRoute } from "@/components/admin/AdminProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageLoader } from "@/components/admin/AdminPageLoader";
@@ -62,7 +63,9 @@ const App = () => (
             {/* Protected Studio Routes */}
             <Route path="/studio" element={
               <ProtectedRoute>
-                <DashboardLayout />
+                <SubscriptionGate>
+                  <DashboardLayout />
+                </SubscriptionGate>
               </ProtectedRoute>
             }>
               <Route index element={<DashboardHome />} />

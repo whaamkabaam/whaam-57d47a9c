@@ -236,7 +236,7 @@ function CurveGraphInner({
                     cx={cx}
                     cy={cy}
                     r={5}
-                    fill="#A0A0A0"
+                    fill="#C8C8C8"
                     stroke="rgba(0,0,0,0.5)"
                     strokeWidth={2}
                   />
@@ -293,7 +293,7 @@ function CurveGraphInner({
                   cx={cx}
                   cy={cy}
                   r={5}
-                  fill="#A0A0A0"
+                  fill="#C8C8C8"
                   stroke="rgba(0,0,0,0.5)"
                   strokeWidth={2}
                 />
@@ -338,7 +338,7 @@ function CurveGraphInner({
                         cx={cx}
                         cy={cy}
                         r={4}
-                        fill="#A0A0A0"
+                        fill="#C8C8C8"
                         stroke="rgba(0,0,0,0.5)"
                         strokeWidth={2}
                       />
@@ -395,7 +395,7 @@ function CurveGraphInner({
                       cx={cx}
                       cy={cy}
                       r={4}
-                      fill="#A0A0A0"
+                      fill="#C8C8C8"
                       stroke="rgba(0,0,0,0.5)"
                       strokeWidth={2}
                     />

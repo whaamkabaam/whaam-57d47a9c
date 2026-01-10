@@ -1,6 +1,24 @@
 import { CONFIG } from '@/config';
 import type { SubscriptionTier, SubscriptionDuration } from '@/lib/api';
 
+// FastSpring order data structure
+interface FastSpringOrderData {
+  reference?: string;
+  id?: string;
+  customer?: {
+    email?: string;
+    first?: string;
+    last?: string;
+  };
+  items?: Array<{
+    product?: string;
+    display?: string;
+    quantity?: number;
+  }>;
+  total?: string;
+  currency?: string;
+}
+
 // Extend window for FastSpring
 declare global {
   interface Window {
@@ -10,6 +28,9 @@ declare global {
         reset: () => void;
       };
     };
+    // FastSpring popup callbacks - called by SBL script
+    onFSPopupClosed?: (orderReference: string | null) => void;
+    onFSDataCallback?: (data: FastSpringOrderData) => void;
   }
 }
 
@@ -20,6 +41,69 @@ interface FastSpringConfig {
 }
 
 type PaidTier = Exclude<SubscriptionTier, 'free'>;
+
+// Callback storage
+let onCheckoutCompleteCallback: ((email: string, reference: string) => void) | null = null;
+let onCheckoutCancelledCallback: (() => void) | null = null;
+let pendingOrderReference: string | null = null;
+
+// Initialize FastSpring popup callbacks on window
+// These are called by the FastSpring SBL script based on data-popup-closed and data-data-callback attributes
+if (typeof window !== 'undefined') {
+  // Called when popup closes - orderReference is set if order was placed, null if cancelled
+  window.onFSPopupClosed = (orderReference: string | null) => {
+    console.log('[FastSpring] Popup closed, orderReference:', orderReference);
+    
+    if (orderReference) {
+      // Order was placed - store reference and wait for data callback
+      pendingOrderReference = orderReference;
+    } else {
+      // Popup closed without placing an order (user cancelled)
+      console.log('[FastSpring] User cancelled checkout');
+      onCheckoutCancelledCallback?.();
+      clearCheckoutCallbacks();
+    }
+  };
+
+  // Called with order data after successful purchase
+  window.onFSDataCallback = (data: FastSpringOrderData) => {
+    console.log('[FastSpring] Order data received:', data);
+    
+    const reference = data.reference || data.id || pendingOrderReference;
+    const email = data.customer?.email;
+    
+    if (reference) {
+      console.log('[FastSpring] Checkout complete - reference:', reference, 'email:', email);
+      onCheckoutCompleteCallback?.(email || '', reference);
+      clearCheckoutCallbacks();
+    }
+  };
+}
+
+/**
+ * Register callbacks for checkout completion and cancellation.
+ * Call this before opening the checkout popup.
+ */
+export function registerCheckoutCallbacks(
+  onComplete: (email: string, reference: string) => void,
+  onCancel: () => void
+): void {
+  console.log('[FastSpring] Registering checkout callbacks');
+  onCheckoutCompleteCallback = onComplete;
+  onCheckoutCancelledCallback = onCancel;
+  pendingOrderReference = null;
+}
+
+/**
+ * Clear all registered checkout callbacks.
+ * Call this when cancelling the checkout flow or after handling completion.
+ */
+export function clearCheckoutCallbacks(): void {
+  console.log('[FastSpring] Clearing checkout callbacks');
+  onCheckoutCompleteCallback = null;
+  onCheckoutCancelledCallback = null;
+  pendingOrderReference = null;
+}
 
 /**
  * Verifies that the FastSpring SBL script in index.html matches our config.
@@ -43,6 +127,18 @@ export function verifyFastSpringConfig(): boolean {
       `  Fix: Update index.html data-storefront to match config.`
     );
     return false;
+  }
+  
+  // Verify callbacks are configured
+  const hasPopupClosedCallback = script.hasAttribute('data-popup-closed');
+  const hasDataCallback = script.hasAttribute('data-data-callback');
+  
+  if (!hasPopupClosedCallback || !hasDataCallback) {
+    console.warn(
+      '[FastSpring] Missing callback attributes on SBL script.\n' +
+      `  data-popup-closed: ${hasPopupClosedCallback}\n` +
+      `  data-data-callback: ${hasDataCallback}`
+    );
   }
   
   return true;
@@ -91,6 +187,7 @@ export function openFastSpringCheckout(
 
   try {
     const productPath = getProductPath(tier, duration);
+    console.log('[FastSpring] Opening checkout for:', productPath, 'userId:', userId || '(guest)');
 
     window.fastspring.builder.push({
       products: [{ path: productPath }],

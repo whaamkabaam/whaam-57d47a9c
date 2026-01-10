@@ -4,8 +4,8 @@ import type { SubscriptionTier, SubscriptionDuration } from '@/lib/api';
 // Extend window for FastSpring
 declare global {
   interface Window {
-    fastspring: {
-      builder: {
+    fastspring?: {
+      builder?: {
         push: (config: FastSpringConfig) => void;
         reset: () => void;
       };
@@ -21,6 +21,40 @@ interface FastSpringConfig {
 
 type PaidTier = Exclude<SubscriptionTier, 'free'>;
 
+/**
+ * Verifies that the FastSpring SBL script in index.html matches our config.
+ * Call this early in app startup to catch misconfigurations.
+ */
+export function verifyFastSpringConfig(): boolean {
+  const script = document.querySelector('#fsc-api');
+  if (!script) {
+    console.warn('[FastSpring] SBL script (#fsc-api) not found in document');
+    return false;
+  }
+  
+  const htmlStorefront = script.getAttribute('data-storefront');
+  const configStorefront = CONFIG.fastspring.storefront;
+  
+  if (htmlStorefront !== configStorefront) {
+    console.error(
+      `[FastSpring] Storefront mismatch!\n` +
+      `  index.html:   ${htmlStorefront}\n` +
+      `  config.ts:    ${configStorefront}\n` +
+      `  Fix: Update index.html data-storefront to match config.`
+    );
+    return false;
+  }
+  
+  return true;
+}
+
+/**
+ * Checks if FastSpring SBL is fully loaded and ready for checkout.
+ */
+export function isFastSpringReady(): boolean {
+  return !!(window.fastspring?.builder?.push);
+}
+
 export function getProductPath(
   tier: PaidTier, 
   duration: SubscriptionDuration
@@ -28,23 +62,47 @@ export function getProductPath(
   return CONFIG.fastspring.products[tier][duration];
 }
 
+export type FastSpringError = 
+  | 'not_loaded' 
+  | 'builder_unavailable' 
+  | 'unknown';
+
+export interface FastSpringResult {
+  success: boolean;
+  error?: FastSpringError;
+}
+
 export function openFastSpringCheckout(
   tier: PaidTier,
   duration: SubscriptionDuration,
   userId: string
-): void {
+): FastSpringResult {
+  // Check if SBL script exists
   if (!window.fastspring) {
-    console.error('FastSpring SBL not loaded');
-    return;
+    console.error('[FastSpring] SBL not loaded - window.fastspring is undefined');
+    return { success: false, error: 'not_loaded' };
   }
 
-  const productPath = getProductPath(tier, duration);
+  // Check if builder is available
+  if (!window.fastspring.builder?.push) {
+    console.error('[FastSpring] SBL loaded but builder.push unavailable - possible CORS/network issue');
+    return { success: false, error: 'builder_unavailable' };
+  }
 
-  window.fastspring.builder.push({
-    products: [{ path: productPath }],
-    tags: { user_id: userId },
-    checkout: true,
-  });
+  try {
+    const productPath = getProductPath(tier, duration);
+
+    window.fastspring.builder.push({
+      products: [{ path: productPath }],
+      tags: { user_id: userId },
+      checkout: true,
+    });
+    
+    return { success: true };
+  } catch (err) {
+    console.error('[FastSpring] Checkout push failed:', err);
+    return { success: false, error: 'unknown' };
+  }
 }
 
 export function getPrice(

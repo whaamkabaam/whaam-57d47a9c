@@ -228,12 +228,7 @@ function CurveGraphInner({
               const isFirstPoint = index === 0;
               const isLastPoint = index === curveData.length - 1;
               
-              // Only render first and last dots for performance
-              if (!isFirstPoint && !isLastPoint) {
-                return null;
-              }
-              
-              // First point: simple anchor dot
+              // First point: gray anchor dot
               if (isFirstPoint) {
                 return (
                   <circle
@@ -249,47 +244,59 @@ function CurveGraphInner({
               }
               
               // Last point: arrow indicator
-              if (curveData.length < 2) {
+              if (isLastPoint) {
+                if (curveData.length < 2) {
+                  return (
+                    <circle
+                      key={`dot-last`}
+                      cx={cx}
+                      cy={cy}
+                      r={5}
+                      fill="#FFD740"
+                      stroke="rgba(0,0,0,0.5)"
+                      strokeWidth={2}
+                    />
+                  );
+                }
+                
+                const lastPoint = curveData[curveData.length - 1];
+                const prevPoint = curveData[curveData.length - 2];
+                
+                const xDataRange = Math.ceil(maxX / 10) * 10;
+                const yDataRange = maxY - 0;
+                const pixelWidth = 500;
+                const pixelHeight = 250;
+                
+                const pixelDx = (lastPoint.x - prevPoint.x) * (pixelWidth / xDataRange);
+                const pixelDy = -(lastPoint.y - prevPoint.y) * (pixelHeight / yDataRange);
+                
+                const angleRad = Math.atan2(pixelDy, pixelDx);
+                const angleDeg = angleRad * (180 / Math.PI);
+                
                 return (
-                  <circle
-                    key={`dot-last`}
-                    cx={cx}
-                    cy={cy}
-                    r={5}
-                    fill="#FFD740"
-                    stroke="rgba(0,0,0,0.5)"
-                    strokeWidth={2}
-                  />
+                  <g key={`arrow-last`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
+                    <polygon
+                      points="-4,-5 8,0 -4,5"
+                      fill="#FFD740"
+                      stroke="rgba(0,0,0,0.3)"
+                      strokeWidth={1}
+                      strokeLinejoin="round"
+                    />
+                  </g>
                 );
               }
               
-              // Calculate arrow direction from second-to-last → last point
-              const lastPoint = curveData[curveData.length - 1];
-              const prevPoint = curveData[curveData.length - 2];
-              
-              // Convert data deltas to approximate pixel deltas for correct visual angle
-              const xDataRange = Math.ceil(maxX / 10) * 10;
-              const yDataRange = maxY - 0;
-              const pixelWidth = 500;
-              const pixelHeight = 250;
-              
-              const pixelDx = (lastPoint.x - prevPoint.x) * (pixelWidth / xDataRange);
-              const pixelDy = -(lastPoint.y - prevPoint.y) * (pixelHeight / yDataRange); // Invert Y for SVG
-              
-              const angleRad = Math.atan2(pixelDy, pixelDx);
-              const angleDeg = angleRad * (180 / Math.PI);
-              
+              // Intermediate points: small gold circles
               return (
-                <g key={`arrow-last`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
-                  {/* Filled triangular arrowhead */}
-                  <polygon
-                    points="-4,-5 8,0 -4,5"
-                    fill="#FFD740"
-                    stroke="rgba(0,0,0,0.3)"
-                    strokeWidth={1}
-                    strokeLinejoin="round"
-                  />
-                </g>
+                <circle
+                  key={`dot-${index}`}
+                  cx={cx}
+                  cy={cy}
+                  r={3}
+                  fill="#FFD740"
+                  stroke="rgba(0,0,0,0.3)"
+                  strokeWidth={1}
+                />
               );
             }}
             activeDot={{
@@ -323,12 +330,7 @@ function CurveGraphInner({
                   const isFirstPoint = index === 0;
                   const isLastPoint = yAxisData && index === yAxisData.length - 1;
                   
-                  // Only render first and last dots for performance
-                  if (!isFirstPoint && !isLastPoint) {
-                    return null;
-                  }
-                  
-                  // First point: simple anchor dot
+                  // First point: gray anchor dot
                   if (isFirstPoint) {
                     return (
                       <circle
@@ -343,46 +345,60 @@ function CurveGraphInner({
                     );
                   }
                   
-                  if (!yAxisData || yAxisData.length < 2) {
+                  // Last point: arrow indicator
+                  if (isLastPoint) {
+                    if (!yAxisData || yAxisData.length < 2) {
+                      return (
+                        <circle
+                          key={`ydot-last`}
+                          cx={cx}
+                          cy={cy}
+                          r={4}
+                          fill="hsl(var(--accent))"
+                          stroke="rgba(0,0,0,0.5)"
+                          strokeWidth={2}
+                        />
+                      );
+                    }
+                    
+                    const lastPoint = yAxisData[yAxisData.length - 1];
+                    const prevPoint = yAxisData[yAxisData.length - 2];
+                    
+                    const xDataRange = Math.ceil(maxX / 10) * 10;
+                    const yDataRange = maxY - 0;
+                    const pixelWidth = 500;
+                    const pixelHeight = 250;
+                    
+                    const pixelDx = (lastPoint.x - prevPoint.x) * (pixelWidth / xDataRange);
+                    const pixelDy = -(lastPoint.y - prevPoint.y) * (pixelHeight / yDataRange);
+                    
+                    const angleRad = Math.atan2(pixelDy, pixelDx);
+                    const angleDeg = angleRad * (180 / Math.PI);
+                    
                     return (
-                      <circle
-                        key={`ydot-last`}
-                        cx={cx}
-                        cy={cy}
-                        r={4}
-                        fill="hsl(var(--accent))"
-                        stroke="rgba(0,0,0,0.5)"
-                        strokeWidth={2}
-                      />
+                      <g key={`yarrow-last`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
+                        <polygon
+                          points="-4,-5 8,0 -4,5"
+                          fill="hsl(var(--accent))"
+                          stroke="rgba(0,0,0,0.3)"
+                          strokeWidth={1}
+                          strokeLinejoin="round"
+                        />
+                      </g>
                     );
                   }
                   
-                  const lastPoint = yAxisData[yAxisData.length - 1];
-                  const prevPoint = yAxisData[yAxisData.length - 2];
-                  
-                  // Convert data deltas to approximate pixel deltas
-                  const xDataRange = Math.ceil(maxX / 10) * 10;
-                  const yDataRange = maxY - 0;
-                  const pixelWidth = 500;
-                  const pixelHeight = 250;
-                  
-                  const pixelDx = (lastPoint.x - prevPoint.x) * (pixelWidth / xDataRange);
-                  const pixelDy = -(lastPoint.y - prevPoint.y) * (pixelHeight / yDataRange);
-                  
-                  const angleRad = Math.atan2(pixelDy, pixelDx);
-                  const angleDeg = angleRad * (180 / Math.PI);
-                  
+                  // Intermediate points: small accent circles
                   return (
-                    <g key={`yarrow-last`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
-                      {/* Filled triangular arrowhead */}
-                      <polygon
-                        points="-4,-5 8,0 -4,5"
-                        fill="hsl(var(--accent))"
-                        stroke="rgba(0,0,0,0.3)"
-                        strokeWidth={1}
-                        strokeLinejoin="round"
-                      />
-                    </g>
+                    <circle
+                      key={`ydot-${index}`}
+                      cx={cx}
+                      cy={cy}
+                      r={2.5}
+                      fill="hsl(var(--accent))"
+                      stroke="rgba(0,0,0,0.3)"
+                      strokeWidth={1}
+                    />
                   );
                 }}
                 activeDot={{

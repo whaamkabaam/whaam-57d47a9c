@@ -4,6 +4,16 @@ import { cn } from '@/lib/utils';
 import { getPrice, formatPrice, getDurationLabel } from '@/lib/fastspring';
 import type { SubscriptionDuration } from '@/lib/api';
 
+import basicBadge from '@/assets/tiers/basic.png';
+import plusBadge from '@/assets/tiers/plus.png';
+import ultraBadge from '@/assets/tiers/ultra.png';
+
+const tierBadges: Record<PaidTier, string> = {
+  basic: basicBadge,
+  plus: plusBadge,
+  ultra: ultraBadge,
+};
+
 type PaidTier = 'basic' | 'plus' | 'ultra';
 
 interface TierCardProps {
@@ -90,7 +100,12 @@ export function TierCard({
       
       <div className="glass-content-layer !p-0 flex flex-col flex-1">
         {/* Header */}
-        <div className="mb-4">
+        <div className="mb-4 text-center">
+          <img 
+            src={tierBadges[tier]} 
+            alt={`${config.name} tier`}
+            className="w-20 h-20 mx-auto mb-3 object-contain"
+          />
           {isPopular && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 mb-2 text-xs font-bold uppercase bg-secondary text-secondary-foreground rounded-full">
               <Sparkles className="w-3 h-3" />

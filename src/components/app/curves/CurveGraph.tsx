@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState, memo } from 'react';
 import {
   Line,
   XAxis,
@@ -10,7 +10,6 @@ import {
   ComposedChart,
   Tooltip,
 } from 'recharts';
-import { useSpring, animated } from '@react-spring/web';
 import { parseCcurveContent, curvesAreEqual } from '@/lib/curveParser';
 
 interface CurveGraphProps {
@@ -18,13 +17,16 @@ interface CurveGraphProps {
   className?: string;
   height?: number | string;
   showControls?: boolean;
+  /** Enable SVG glow effect on curve (default: false for performance) */
+  enableGlow?: boolean;
 }
 
-export function CurveGraph({ 
+function CurveGraphInner({ 
   curveContent, 
   className = '', 
   height = 200,
   showControls = true,
+  enableGlow = false,
 }: CurveGraphProps) {
   const { curveData, yAxisData, hasDifferentCurves, maxX, minY, maxY } = useMemo(() => {
     try {
@@ -57,17 +59,14 @@ export function CurveGraph({
     }
   }, [curveContent]);
 
-  // Spring physics tooltip with smart positioning
-  const chartHeight = useRef(300);
-  const [tooltipData, setTooltipData] = useState<{ sensitivity: number; speed: number } | null>(null);
-  
-  const [springProps, api] = useSpring(() => ({
-    x: 0,
-    y: 0,
-    opacity: 0.001, // Near-invisible but keeps backdrop-blur composited
-    scale: 0.95,
-    config: { mass: 0.8, tension: 320, friction: 28 },
-  }));
+  // Lightweight CSS tooltip state (replaces react-spring for performance)
+  const [tooltipState, setTooltipState] = useState<{
+    x: number;
+    y: number;
+    visible: boolean;
+    sensitivity: number;
+    speed: number;
+  }>({ x: 0, y: 0, visible: false, sensitivity: 0, speed: 0 });
 
   if (curveData.length === 0) {
     return (
@@ -82,76 +81,55 @@ export function CurveGraph({
 
   return (
     <div className={`${className} relative overflow-visible h-full w-full`}>
-      {/* Animated tooltip rendered outside chart for spring physics */}
-      <animated.div
+      {/* CSS-animated tooltip (no react-spring overhead) */}
+      <div
         style={{
           position: 'absolute',
           left: 0,
           top: 0,
-          transform: springProps.x.to((x) => {
-            const y = springProps.y.get();
-            return `translate3d(${x + 15}px, ${y}px, 0)`;
-          }),
-          opacity: springProps.opacity,
-          scale: springProps.scale,
+          transform: `translate3d(${tooltipState.x + 25}px, ${tooltipState.y}px, 0) scale(${tooltipState.visible ? 1 : 0.95})`,
+          opacity: tooltipState.visible ? 1 : 0,
           pointerEvents: 'none',
           zIndex: 50,
-          willChange: 'transform, opacity, backdrop-filter',
-          backfaceVisibility: 'hidden',
-          isolation: 'isolate',
+          transition: 'transform 120ms ease-out, opacity 120ms ease-out',
+          willChange: 'transform, opacity',
         }}
       >
         <div 
           style={{
-            background: 'rgba(24, 24, 27, 0.92)',
-            backdropFilter: 'blur(24px) saturate(1.5)',
-            WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
+            background: 'rgba(24, 24, 27, 0.95)',
             border: '1px solid rgba(255, 255, 255, 0.15)',
             borderRadius: '12px',
             padding: '12px 16px',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.05)',
           }}
         >
-          <p className="text-foreground text-sm">Sensitivity: {tooltipData?.sensitivity?.toFixed(3) ?? '0.000'}</p>
-          <p className="text-muted-foreground text-xs">Speed: {tooltipData?.speed?.toFixed(1) ?? '0.0'} dpms</p>
+          <p className="text-foreground text-sm">Sensitivity: {tooltipState.sensitivity.toFixed(3)}</p>
+          <p className="text-muted-foreground text-xs">Speed: {tooltipState.speed.toFixed(1)} dpms</p>
         </div>
-      </animated.div>
+      </div>
 
       <ResponsiveContainer width="100%" height={height}>
         <ComposedChart
           data={curveData}
           margin={{ top: 20, right: 50, left: 20, bottom: 25 }}
           onMouseMove={(e: any) => {
-            if (e?.chartX !== undefined && e?.chartY !== undefined) {
-              // Store chart height for smart positioning
-              if (e.height) chartHeight.current = e.height;
-              
-              // Always position above cursor, but cap at minimum Y (no flip down)
+            if (e?.chartX !== undefined && e?.chartY !== undefined && e.activePayload?.[0]?.payload) {
+              const point = e.activePayload[0].payload;
               const rawY = e.chartY - 80;
-              const clampedY = Math.max(10, rawY); // Never go above 10px from chart top
+              const clampedY = Math.max(10, rawY);
               
-              // Store tooltip data via state for proper re-rendering
-              if (e.activePayload?.[0]?.payload) {
-                const point = e.activePayload[0].payload;
-                setTooltipData({ 
-                  sensitivity: point.y,
-                  speed: point.x
-                });
-              }
-              
-              api.start({ 
-                x: e.chartX + 10,
+              setTooltipState({
+                x: e.chartX,
                 y: clampedY,
-                opacity: 1,
-                scale: 1,
+                visible: true,
+                sensitivity: point.y,
+                speed: point.x,
               });
             }
           }}
           onMouseLeave={() => {
-            api.start({ 
-              opacity: 0.001, // Never go to true 0 to keep backdrop-blur composited
-              scale: 0.95,
-            });
+            setTooltipState(prev => ({ ...prev, visible: false }));
           }}
         >
           <defs>
@@ -161,7 +139,7 @@ export function CurveGraph({
               <stop offset="50%" stopColor="#FFD740" stopOpacity={0.05} />
               <stop offset="100%" stopColor="#FFD740" stopOpacity={0} />
             </linearGradient>
-            {/* Glow filter for the curve line */}
+            {/* Glow filter for the curve line - kept for enableGlow prop */}
             <filter id="curveGlow" x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="2" result="blur" />
               <feMerge>
@@ -243,21 +221,42 @@ export function CurveGraph({
             stroke="#FFD740"
             strokeWidth={2.5}
             name="X-Axis"
-            filter="url(#curveGlow)"
+            filter={enableGlow ? "url(#curveGlow)" : undefined}
             isAnimationActive={false}
             dot={(props: any) => {
               const { cx, cy, index } = props;
+              const isFirstPoint = index === 0;
               const isLastPoint = index === curveData.length - 1;
               
-              if (!isLastPoint || curveData.length < 2) {
-                // Regular grey dot for all points except last
+              // Only render first and last dots for performance
+              if (!isFirstPoint && !isLastPoint) {
+                return null;
+              }
+              
+              // First point: simple anchor dot
+              if (isFirstPoint) {
                 return (
                   <circle
-                    key={`dot-${index}`}
+                    key={`dot-first`}
                     cx={cx}
                     cy={cy}
-                    r={5.5}
+                    r={5}
                     fill="#A0A0A0"
+                    stroke="rgba(0,0,0,0.5)"
+                    strokeWidth={2}
+                  />
+                );
+              }
+              
+              // Last point: arrow indicator
+              if (curveData.length < 2) {
+                return (
+                  <circle
+                    key={`dot-last`}
+                    cx={cx}
+                    cy={cy}
+                    r={5}
+                    fill="#FFD740"
                     stroke="rgba(0,0,0,0.5)"
                     strokeWidth={2}
                   />
@@ -269,7 +268,6 @@ export function CurveGraph({
               const prevPoint = curveData[curveData.length - 2];
               
               // Convert data deltas to approximate pixel deltas for correct visual angle
-              // Chart has roughly 500px width for X range and 250px height for Y range
               const xDataRange = Math.ceil(maxX / 10) * 10;
               const yDataRange = maxY - 0;
               const pixelWidth = 500;
@@ -282,7 +280,7 @@ export function CurveGraph({
               const angleDeg = angleRad * (180 / Math.PI);
               
               return (
-                <g key={`arrow-${index}`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
+                <g key={`arrow-last`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
                   {/* Filled triangular arrowhead */}
                   <polygon
                     points="-4,-5 8,0 -4,5"
@@ -309,6 +307,7 @@ export function CurveGraph({
                 dataKey="y"
                 stroke="none"
                 fill="url(#yAxisGradient)"
+                isAnimationActive={false}
               />
               <Line
                 type="monotone"
@@ -318,18 +317,40 @@ export function CurveGraph({
                 strokeWidth={2}
                 strokeDasharray="4 2"
                 name="Y-Axis"
+                isAnimationActive={false}
                 dot={(props: any) => {
                   const { cx, cy, index } = props;
+                  const isFirstPoint = index === 0;
                   const isLastPoint = yAxisData && index === yAxisData.length - 1;
                   
-                  if (!isLastPoint || !yAxisData || yAxisData.length < 2) {
+                  // Only render first and last dots for performance
+                  if (!isFirstPoint && !isLastPoint) {
+                    return null;
+                  }
+                  
+                  // First point: simple anchor dot
+                  if (isFirstPoint) {
                     return (
                       <circle
-                        key={`ydot-${index}`}
+                        key={`ydot-first`}
                         cx={cx}
                         cy={cy}
-                        r={5}
+                        r={4}
                         fill="#A0A0A0"
+                        stroke="rgba(0,0,0,0.5)"
+                        strokeWidth={2}
+                      />
+                    );
+                  }
+                  
+                  if (!yAxisData || yAxisData.length < 2) {
+                    return (
+                      <circle
+                        key={`ydot-last`}
+                        cx={cx}
+                        cy={cy}
+                        r={4}
+                        fill="hsl(var(--accent))"
                         stroke="rgba(0,0,0,0.5)"
                         strokeWidth={2}
                       />
@@ -352,7 +373,7 @@ export function CurveGraph({
                   const angleDeg = angleRad * (180 / Math.PI);
                   
                   return (
-                    <g key={`yarrow-${index}`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
+                    <g key={`yarrow-last`} transform={`translate(${cx}, ${cy}) rotate(${angleDeg})`}>
                       {/* Filled triangular arrowhead */}
                       <polygon
                         points="-4,-5 8,0 -4,5"
@@ -378,3 +399,13 @@ export function CurveGraph({
     </div>
   );
 }
+
+// Memoize to prevent unnecessary re-renders when parent updates
+export const CurveGraph = memo(CurveGraphInner, (prevProps, nextProps) => {
+  return (
+    prevProps.curveContent === nextProps.curveContent &&
+    prevProps.height === nextProps.height &&
+    prevProps.enableGlow === nextProps.enableGlow &&
+    prevProps.className === nextProps.className
+  );
+});

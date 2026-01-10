@@ -26,7 +26,7 @@ export const CONFIG = {
   },
   
   pricing: {
-    basic: { daily: 3.99, weekly: 7.99, monthly: 14.49 },
+    basic: { daily: 3.99, weekly: 7.99, monthly: 14.99 },
     plus: { daily: 5.99, weekly: 12.99, monthly: 23.99 },
     ultra: { daily: 8.99, weekly: 17.99, monthly: 34.99 },
   },

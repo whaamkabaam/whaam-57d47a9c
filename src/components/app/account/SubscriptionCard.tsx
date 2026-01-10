@@ -5,8 +5,7 @@
 import { Link } from 'react-router-dom';
 import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
 import { Skeleton } from '@/components/ui/skeleton';
-import { openFastSpringAccount } from '@/lib/fastspring';
-import type { SubscriptionCurrent } from '@/lib/api';
+import { subscriptionsApi, type SubscriptionCurrent } from '@/lib/api';
 import { 
   CreditCard, 
   Crown, 
@@ -67,7 +66,7 @@ export function SubscriptionCard({
     subscription.status !== 'none';
 
   const handleManageBilling = () => {
-    openFastSpringAccount();
+    window.open(subscriptionsApi.getManageUrl(), '_blank', 'noopener');
   };
 
   return (

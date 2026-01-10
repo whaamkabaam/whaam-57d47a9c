@@ -50,10 +50,9 @@ export {
 
 // Subscription hooks
 export { 
+  useSubscriptionFeatures,
   useSubscriptionTiers, 
   useCurrentSubscription, 
-  useCreateCheckout, 
-  useSubscriptionPortal, 
   useCancelSubscription,
   subscriptionKeys,
 } from './useSubscription';

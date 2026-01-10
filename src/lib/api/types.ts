@@ -77,46 +77,72 @@ export interface DailyLimit {
 }
 
 // Subscription Types
-export type SubscriptionTier = 'free' | 'basic' | 'pro';
-export type SubscriptionStatus = 'active' | 'canceled' | 'past_due' | 'trialing';
+export type SubscriptionTier = 'free' | 'basic' | 'plus' | 'ultra';
+export type SubscriptionDuration = 'daily' | 'weekly' | 'monthly';
+export type SubscriptionStatus = 'active' | 'grace_period' | 'expired' | 'none';
 
+// Main features endpoint response (primary for all tier-based UI)
+export interface SubscriptionFeatures {
+  tier: SubscriptionTier;
+  duration: SubscriptionDuration | null;
+  status: SubscriptionStatus;
+  expires_at: string | null;
+  grace_period_ends_at: string | null;
+  
+  // Limits (null = unlimited)
+  daily_adjustment_limit: number | null;
+  daily_adjustments_used: number;
+  library_limit: number | null;
+  favorite_limit: number | null;
+  
+  // Feature flags
+  can_upload: boolean;
+  can_restore_any_version: boolean;
+  can_modify_form_settings: boolean;
+  feedback_increment: 0.5 | 0.1;
+}
+
+// Tier info for pricing page
 export interface SubscriptionTierInfo {
   tier: SubscriptionTier;
   name: string;
-  daily_adjustments: number;
-  history_days: number;
-  price_monthly: number;
-  is_available: boolean;
+  daily_adjustments: number | null;
+  library_limit: number | null;
+  favorite_limit: number | null;
+  can_upload: boolean;
+  can_restore_any_version: boolean;
+  can_modify_form_settings: boolean;
+  feedback_increment: number;
 }
 
-export interface Subscription {
+// Current subscription status (for account page)
+export interface SubscriptionCurrent {
   tier: SubscriptionTier;
+  duration: SubscriptionDuration | null;
   status: SubscriptionStatus;
-  daily_adjustments: number;
-  history_days: number;
   is_active: boolean;
-  is_legacy: boolean;
   cancel_at_period_end: boolean;
   current_period_end: string | null;
-}
-
-export interface CheckoutRequest {
-  tier: 'basic' | 'pro';
-  success_url?: string;
-}
-
-export interface CheckoutResponse {
-  success: boolean;
-  checkout_url: string;
-}
-
-export interface PortalResponse {
-  success: boolean;
-  portal_url?: string;
+  grace_period_ends_at: string | null;
 }
 
 export interface CancelRequest {
   immediate?: boolean;
+}
+
+export interface CancelResponse {
+  success: boolean;
+  message: string;
+}
+
+// Admin tier override types
+export interface TierOverrideResponse {
+  tier_override: SubscriptionTier | null;
+  message: string;
+}
+
+export interface SetTierOverrideRequest {
+  tier: SubscriptionTier | null;
 }
 
 // Settings Types (Legacy Accounts)

@@ -58,6 +58,11 @@ export function formatPrice(price: number): string {
   return `$${price.toFixed(2)}`;
 }
 
+// Open FastSpring account management portal for billing
+export function openFastSpringAccount(): void {
+  window.open(CONFIG.fastspring.accountUrl, '_blank', 'noopener');
+}
+
 export function getDurationLabel(duration: SubscriptionDuration): string {
   switch (duration) {
     case 'daily': return 'day';

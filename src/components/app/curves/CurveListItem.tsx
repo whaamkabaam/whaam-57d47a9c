@@ -7,8 +7,9 @@ import { Curve } from '@/lib/api/types';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Download, History, Star, RotateCcw, Loader2, Check, Pencil, X } from 'lucide-react';
+import { Download, History, Star, RotateCcw, Loader2, Check, Pencil, X, Lock } from 'lucide-react';
 import { format } from 'date-fns';
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 
 interface CurveListItemProps {
   curve: Curve;
@@ -20,6 +21,7 @@ interface CurveListItemProps {
   onRename: (id: number, newName: string) => void;
   isDownloading?: boolean;
   isReverting?: boolean;
+  canRestoreAnyVersion?: boolean; // Plus+ only
 }
 
 export function CurveListItem({
@@ -32,6 +34,7 @@ export function CurveListItem({
   onRename,
   isDownloading,
   isReverting,
+  canRestoreAnyVersion = true,
 }: CurveListItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   // Store only the base name (without .ccurve extension)
@@ -173,19 +176,39 @@ export function CurveListItem({
           
           {/* Set as Current - for non-current curves */}
           {!curve.is_current && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onSetCurrent(curve.id)}
-              disabled={isReverting}
-              title="Set as current"
-            >
-              {isReverting ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Check className="h-4 w-4" />
-              )}
-            </Button>
+            canRestoreAnyVersion ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onSetCurrent(curve.id)}
+                disabled={isReverting}
+                title="Set as current"
+              >
+                {isReverting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Check className="h-4 w-4" />
+                )}
+              </Button>
+            ) : (
+              <TooltipProvider delayDuration={0}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      disabled
+                      className="opacity-50 cursor-not-allowed"
+                    >
+                      <Lock className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    Upgrade to Plus to restore any version
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )
           )}
           
           {/* Revert to Parent - only for current curve with a parent */}

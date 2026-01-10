@@ -19,6 +19,7 @@ interface CheckoutState {
 }
 
 export function useFastSpringCheckout() {
+  // === All hooks must be called unconditionally at the top ===
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { user } = useAuth();
@@ -35,11 +36,6 @@ export function useFastSpringCheckout() {
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const pollingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Verify FastSpring config on mount (development aid)
-  useEffect(() => {
-    verifyFastSpringConfig();
-  }, []);
-
   const clearPolling = useCallback(() => {
     if (pollingIntervalRef.current) {
       clearInterval(pollingIntervalRef.current);
@@ -49,6 +45,11 @@ export function useFastSpringCheckout() {
       clearTimeout(pollingTimeoutRef.current);
       pollingTimeoutRef.current = null;
     }
+  }, []);
+
+  // Verify FastSpring config on mount (development aid)
+  useEffect(() => {
+    verifyFastSpringConfig();
   }, []);
 
   // Cleanup on unmount
@@ -69,7 +70,6 @@ export function useFastSpringCheckout() {
         const features = await subscriptionsApi.getFeatures();
         
         if (features.status === 'active' && features.tier !== 'free') {
-          // Subscription activated!
           clearPolling();
           queryClient.invalidateQueries({ queryKey: subscriptionKeys.features });
           
@@ -103,7 +103,6 @@ export function useFastSpringCheckout() {
       }
     }, 2000);
 
-    // Safety timeout
     pollingTimeoutRef.current = setTimeout(() => {
       clearPolling();
       setState(s => ({ 
@@ -129,7 +128,6 @@ export function useFastSpringCheckout() {
       return;
     }
 
-    // Check if FastSpring is ready before proceeding
     if (!isFastSpringReady()) {
       toast({
         title: "Checkout unavailable",
@@ -148,7 +146,6 @@ export function useFastSpringCheckout() {
       selectedDuration: duration,
     });
 
-    // Open FastSpring popup
     const result = openFastSpringCheckout(tier, duration, user.id);
     
     if (!result.success) {
@@ -172,7 +169,6 @@ export function useFastSpringCheckout() {
       return;
     }
 
-    // Start polling after a delay (give user time to complete checkout)
     setTimeout(() => {
       pollForActivation();
     }, 5000);

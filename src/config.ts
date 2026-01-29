@@ -5,8 +5,8 @@ export const CONFIG = {
   },
   
   fastspring: {
-    storefront: "whaam.onfastspring.com",
-    accountUrl: "https://whaam.onfastspring.com/account",
+    storefront: "whaamkabaam.test.onfastspring.com",
+    accountUrl: "https://whaamkabaam.test.onfastspring.com/account",
     products: {
       basic: {
         daily: "ccs-basic-day-pass",

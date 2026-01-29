@@ -5,7 +5,7 @@ export const CONFIG = {
   },
   
   fastspring: {
-    storefront: "whaamkabaam.test.onfastspring.com",
+    storefront: "whaamkabaam.test.onfastspring.com/popup-defaultB2B",
     accountUrl: "https://whaamkabaam.test.onfastspring.com/account",
     products: {
       basic: {

@@ -48,6 +48,7 @@ export function useFastSpringCheckout() {
   
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const pollingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const preCheckoutTierRef = useRef<string | null>(null);
 
   const clearPolling = useCallback(() => {
     if (pollingIntervalRef.current) {
@@ -85,15 +86,20 @@ export function useFastSpringCheckout() {
       try {
         const features = await subscriptionsApi.getFeatures();
         
-        if (features.status === 'active' && features.tier !== 'free') {
+        if (
+          features.status === 'active' &&
+          features.tier !== 'free' &&
+          features.tier !== preCheckoutTierRef.current
+        ) {
           clearPolling();
+          preCheckoutTierRef.current = null;
           queryClient.invalidateQueries({ queryKey: subscriptionKeys.features });
-          
+
           toast({
             title: "Subscription activated!",
             description: `Welcome to ${features.tier.charAt(0).toUpperCase() + features.tier.slice(1)}!`,
           });
-          
+
           setState(initialState);
           navigate('/studio');
           return;
@@ -124,7 +130,7 @@ export function useFastSpringCheckout() {
     }, 35000);
   }, [clearPolling, queryClient, navigate, toast]);
 
-  const startCheckout = useCallback((
+  const startCheckout = useCallback(async (
     tier: PaidTier,
     duration: SubscriptionDuration
   ) => {
@@ -140,9 +146,19 @@ export function useFastSpringCheckout() {
       return;
     }
 
-    setState({ 
-      isProcessing: true, 
-      isPolling: false, 
+    // Snapshot current tier before checkout so polling can detect actual changes
+    // (prevents admin tier_override from triggering false "activated" detection)
+    try {
+      const currentFeatures = await subscriptionsApi.getFeatures();
+      preCheckoutTierRef.current = currentFeatures.tier || null;
+      console.log('[Checkout] Pre-checkout tier snapshot:', preCheckoutTierRef.current);
+    } catch {
+      preCheckoutTierRef.current = null;
+    }
+
+    setState({
+      isProcessing: true,
+      isPolling: false,
       error: null,
       selectedTier: tier,
       selectedDuration: duration,

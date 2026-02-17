@@ -33,47 +33,61 @@ const tierConfig: Record<PaidTier, {
 }> = {
   basic: {
     name: 'Basic',
-    description: 'Get started with essentials',
+    description: 'Get started with the essentials',
     features: [
       { text: '5 adjustments per day', included: true },
+      { text: 'Preset feedback buttons (0.5 steps)', included: true },
       { text: '5 library slots', included: true },
       { text: '1 favorite slot', included: true },
-      { text: 'Preset feedback buttons', included: true },
+      { text: 'Restore last version only', included: true },
       { text: 'Upload .ccurve files', included: false },
-      { text: 'Restore any version', included: false },
+      { text: 'Multiple curve lineages', included: false },
       { text: 'Form settings', included: false },
     ],
     accent: 'border-border',
   },
   plus: {
     name: 'Plus',
-    description: 'For serious aimers',
+    description: 'For serious aimers who want room to tweak',
     features: [
       { text: '25 adjustments per day', included: true },
+      { text: 'Fine feedback slider (0.1 steps)', included: true },
       { text: '20 library slots', included: true },
       { text: '5 favorite slots', included: true },
-      { text: 'Fine feedback slider (0.1)', included: true },
-      { text: 'Upload .ccurve files', included: true },
       { text: 'Restore any version', included: true },
+      { text: 'Upload .ccurve files', included: true },
+      { text: 'Multiple curve lineages', included: true },
       { text: 'Form settings', included: false },
     ],
     accent: 'border-secondary',
   },
   ultra: {
     name: 'Ultra',
-    description: 'Unlimited everything',
+    description: 'Unlimited everything, full control',
     features: [
       { text: 'Unlimited adjustments', included: true },
+      { text: 'Fine feedback slider (0.1 steps)', included: true },
       { text: 'Unlimited library slots', included: true },
       { text: 'Unlimited favorites', included: true },
-      { text: 'Fine feedback slider (0.1)', included: true },
-      { text: 'Upload .ccurve files', included: true },
       { text: 'Restore any version', included: true },
+      { text: 'Upload .ccurve files', included: true },
+      { text: 'Multiple curve lineages', included: true },
       { text: 'Form settings access', included: true },
     ],
     accent: 'border-primary',
   },
 };
+
+function getMicroline(duration: SubscriptionDuration): string {
+  switch (duration) {
+    case 'daily':
+      return 'One-time purchase · valid for 24 hours';
+    case 'weekly':
+      return 'One-time purchase · valid for 7 days';
+    case 'monthly':
+      return 'Auto-renews monthly · cancel anytime';
+  }
+}
 
 export function TierCard({ 
   tier, 
@@ -158,7 +172,7 @@ export function TierCard({
 
         {/* Microline */}
         <p className="mt-3 text-xs text-center text-muted-foreground">
-          Auto-renews • Cancel anytime
+          {getMicroline(duration)}
         </p>
       </div>
     </div>

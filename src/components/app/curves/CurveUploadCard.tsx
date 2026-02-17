@@ -142,7 +142,7 @@ export function CurveUploadCard({ onUploadSuccess }: CurveUploadCardProps) {
           Basic tier users can only tune their generated curves.
         </p>
         
-        <Link to="/pricing">
+        <Link to="/#products">
           <LiquidGlassButton variant="accent" className="w-full">
             <Zap className="h-4 w-4 mr-2" />
             Upgrade to Plus

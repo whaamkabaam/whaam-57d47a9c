@@ -22,7 +22,7 @@ export function ExpiredOverlay() {
           Resubscribe to continue adjusting your curve. Your existing curves are safe.
         </p>
         
-        <Link to="/pricing">
+        <Link to="/#products">
           <LiquidGlassButton 
             variant="accent" 
             className="px-5 py-2.5"

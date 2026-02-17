@@ -64,7 +64,7 @@ export function SubscriptionBanner() {
           </div>
           <div className="flex items-center gap-2">
             <Button asChild size="sm" className="whitespace-nowrap">
-              <Link to="/pricing">Renew Now</Link>
+              <Link to="/#products">Renew Now</Link>
             </Button>
             <button 
               onClick={handleDismiss}
@@ -99,7 +99,7 @@ export function SubscriptionBanner() {
           </div>
           <div className="flex items-center gap-2">
             <Button asChild size="sm" className="whitespace-nowrap">
-              <Link to="/pricing">
+              <Link to="/#products">
                 <CreditCard className="h-4 w-4 mr-2" />
                 Resubscribe
               </Link>

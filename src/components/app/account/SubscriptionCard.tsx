@@ -149,7 +149,7 @@ export function SubscriptionCard({
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-2 pt-2">
-            <Link to="/pricing" className="flex-1">
+            <Link to="/#products" className="flex-1">
               <LiquidGlassButton variant="primary" className="w-full text-sm px-4 py-2.5">
                 Change Plan
                 <ArrowRight className="h-4 w-4 ml-1" />
@@ -189,7 +189,7 @@ export function SubscriptionCard({
             <Crown className="h-8 w-8 text-muted-foreground" />
           </div>
           <p className="text-muted-foreground mb-4">No active subscription</p>
-          <Link to="/pricing">
+          <Link to="/#products">
             <LiquidGlassButton variant="primary" className="text-sm px-6 py-2.5">
               View Plans
               <ArrowRight className="h-4 w-4 ml-1" />

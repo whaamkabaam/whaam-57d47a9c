@@ -41,18 +41,7 @@ export const ThreeSteps = () => {
 
         {/* Steps Grid */}
         <div className="grid md:grid-cols-3 gap-8">
-          {steps.map((step, index) => <motion.div key={step.number} initial={{
-          opacity: 1,
-          y: 30
-        }} whileInView={{
-          opacity: 1,
-          y: 0
-        }} viewport={{
-          once: true
-        }} transition={{
-          duration: 0.5,
-          delay: index * 0.15
-        }}>
+          {steps.map((step) => <div key={step.number}>
               <LiquidGlassCard variant="secondary" className="h-full p-8 flex flex-col">
                 {/* Step Number */}
                 <div className="glass-primary w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
@@ -69,7 +58,7 @@ export const ThreeSteps = () => {
                   {step.description}
                 </p>
               </LiquidGlassCard>
-            </motion.div>)}
+            </div>)}
         </div>
 
         {/* CTA Section */}

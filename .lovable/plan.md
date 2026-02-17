@@ -1,45 +1,56 @@
 
 
-# Redesign StickyCTA -- Hide During Pricing, Make It Elegant
+# Fix 4 Broken Things on the Homepage
 
-## Problems
+## Issue 1: "SAVE" badge clipped on the DurationToggle
 
-1. **Shows during the pricing section** -- The StickyCTA with "Book 1:1 Live Session" and "See plans" buttons appears while the user is already looking at the plans. That's redundant and distracting.
-2. **Looks bulky and cheap** -- Two stacked glass buttons inside a glass card creates a thick, clunky floating element that feels more like a popup than a premium nudge.
-3. **Entrance timing is fine** -- It already appears after scrolling past the hero, which aligns with what you want (visible from the three steps cards onward).
+The "Save" badge uses `absolute -top-2 -right-2` positioning, but the parent `LiquidGlassCard` has `!rounded-full` and implicitly `overflow: hidden` (from the glass card styles). The badge gets clipped at the edge.
 
-## Changes
-
-### 1. Hide during the products section
-
-In `StickyCTA.tsx`, add `"products"` to the hide condition so it fades out when users are browsing pricing:
-
-```text
-// Before
-const shouldShow = activeSection !== "home" && activeSection !== "";
-
-// After  
-const shouldShow = activeSection !== "home" && activeSection !== "products" && activeSection !== "";
+**Fix in `src/components/pricing/DurationToggle.tsx`**: Add `overflow-visible` to the `LiquidGlassCard` wrapper so the badge can escape the pill boundary:
+```
+<LiquidGlassCard className="!p-1 !rounded-full inline-flex items-center gap-1 !overflow-visible">
 ```
 
-### 2. Redesign to a slim, elegant floating bar
+## Issue 2: Pricing title cut off + excess spacing above
 
-Replace the chunky stacked-button glass card with a compact horizontal pill:
+The Products component already wraps itself in `<section id="products" className="py-24">`, but Index.tsx wraps it again in another `<section id="products" className="py-16">`. This creates double padding (py-24 + py-16 = massive gap) and the duplicate `id="products"` causes scroll-to issues.
 
-- Remove the `LiquidGlassCard` wrapper (it's too thick for a floating element)
-- Use a simple frosted dark pill (`bg-[rgba(20,20,25,0.8)] backdrop-blur-xl border border-white/10 rounded-full`)
-- Place both buttons inline horizontally with smaller padding
-- "Book 1:1 Live Session" stays as the primary CTA (warm gradient text or subtle glow)
-- The secondary button (plans/discord) uses muted styling
-- Add a subtle separator dot or thin divider between them
-- Overall height shrinks from ~120px to ~48px
-- Smooth slide-up entrance animation (already exists via translate-y transition)
+**Fix in `src/pages/Index.tsx`**: Remove the outer wrapper section. Products already has its own section tag with id and padding:
+```
+{/* Before */}
+<section id="products" className="py-16 relative z-10">
+  <Products />
+</section>
 
-The result is a slim floating pill in the bottom-right that feels like a gentle nudge rather than an intrusive popup -- similar to how premium SaaS apps handle persistent CTAs.
+{/* After */}
+<Products />
+```
 
-## File Changed
+## Issue 3: Hero vertical spacing broken -- content pushed too low
 
-| File | Change |
-|------|--------|
-| `src/components/StickyCTA.tsx` | Add products to hide condition, redesign from glass card to slim frosted pill |
+The hero section uses `min-h-[100svh]` with `items-start` and large top padding (`pt-28 sm:pt-32 lg:pt-36`). The content and stats grid uses `items-center` which vertically centers the two columns, but combined with `items-start` on the outer flex, the CTA buttons get pushed far down. The `min-h-[120px]` on the animated subhead wrapper also adds unnecessary height.
+
+**Fix in `src/components/Hero.tsx`**:
+- Reduce the `min-h` on the subhead wrapper from `120px` to `80px` to tighten the gap
+- Remove the empty `<div className="space-y-4"></div>` which adds dead space
+- Reduce CTA button gap from `gap-6` to `gap-4`
+
+## Issue 4: Yellow line at the bottom of the hero
+
+Line 46 in Hero.tsx creates a visible accent-colored line at the bottom of the hero:
+```
+<div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-accent/30 to-transparent"></div>
+```
+
+**Fix in `src/components/Hero.tsx`**: Remove this line entirely. It was a decorative element that now looks out of place.
+
+---
+
+## Summary of file changes
+
+| File | Changes |
+|------|---------|
+| `src/components/pricing/DurationToggle.tsx` | Add `!overflow-visible` to LiquidGlassCard wrapper |
+| `src/pages/Index.tsx` | Remove double-wrapping section around Products |
+| `src/components/Hero.tsx` | Remove bottom yellow line div, reduce subhead min-height, remove empty spacer div, tighten CTA gap |
 

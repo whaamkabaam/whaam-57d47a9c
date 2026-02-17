@@ -42,7 +42,7 @@ export const ThreeSteps = () => {
         {/* Steps Grid */}
         <div className="grid md:grid-cols-3 gap-8">
           {steps.map((step, index) => <motion.div key={step.number} initial={{
-          opacity: 0,
+          opacity: 1,
           y: 30
         }} whileInView={{
           opacity: 1,

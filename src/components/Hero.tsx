@@ -43,7 +43,7 @@ export default function Hero() {
       <div className="absolute inset-0 pointer-events-none">
         {/* Static Liquid Elements */}
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
-        <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-accent/30 to-transparent"></div>
+        
         {/* Floating Glass Orbs removed for clarity */}
       </div>
 
@@ -61,7 +61,7 @@ export default function Hero() {
               </h1>
 
               {/* Decorative subhead with animated text */}
-              <div className="min-h-[120px] flex items-center justify-center lg:justify-start">
+              <div className="min-h-[80px] flex items-center justify-center lg:justify-start">
                 <motion.div layout className="flex items-center justify-center lg:justify-start">
                   <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
                     Make your aim{" "}
@@ -76,11 +76,11 @@ export default function Hero() {
                 </motion.div>
               </div>
 
-              <div className="space-y-4"></div>
+              
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 transition-all duration-300 ease-out">
+            <div className="flex flex-col sm:flex-row gap-4 transition-all duration-300 ease-out">
               <div className="relative group">
                 <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <LiquidGlassButton

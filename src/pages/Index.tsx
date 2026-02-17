@@ -70,9 +70,7 @@ const Index = () => {
       </section>
 
       {/* Pricing - immediately after 3 steps */}
-      <section id="products" className="py-16 relative z-10">
-        <Products />
-      </section>
+      <Products />
 
       {/* Outcomes grid */}
       <section id="outcomes" className="py-12 relative z-10">

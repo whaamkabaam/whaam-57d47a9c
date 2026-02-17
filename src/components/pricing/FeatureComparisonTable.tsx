@@ -35,16 +35,16 @@ export function FeatureComparisonTable() {
       <table className="w-full min-w-[480px]">
         <thead>
           <tr className="border-b border-border">
-            <th className="py-4 px-3 text-left text-sm font-semibold text-foreground">
+            <th className="py-4 px-4 text-left text-base font-bold text-foreground">
               Feature
             </th>
-            <th className="py-4 px-3 text-center text-sm font-semibold text-foreground">
+            <th className="py-4 px-4 text-center text-base font-bold text-foreground">
               Basic
             </th>
-            <th className="py-4 px-3 text-center text-sm font-semibold text-secondary">
+            <th className="py-4 px-4 text-center text-base font-bold text-secondary">
               Plus
             </th>
-            <th className="py-4 px-3 text-center text-sm font-semibold text-primary">
+            <th className="py-4 px-4 text-center text-base font-bold text-primary">
               Ultra
             </th>
           </tr>
@@ -58,16 +58,16 @@ export function FeatureComparisonTable() {
                 index % 2 === 0 && "bg-muted/20"
               )}
             >
-              <td className="py-3 px-3 text-sm text-muted-foreground">
+              <td className="py-4 px-4 text-sm text-muted-foreground">
                 {feature.name}
               </td>
-              <td className="py-3 px-3 text-center">
+              <td className="py-4 px-4 text-center">
                 <CellValue value={feature.basic} />
               </td>
-              <td className="py-3 px-3 text-center">
+              <td className="py-4 px-4 text-center">
                 <CellValue value={feature.plus} />
               </td>
-              <td className="py-3 px-3 text-center">
+              <td className="py-4 px-4 text-center">
                 <CellValue value={feature.ultra} />
               </td>
             </tr>

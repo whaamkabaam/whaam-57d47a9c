@@ -8,25 +8,19 @@ import whaamLogo from "@/assets/whaam-kabaam-logo.png";
 import { motion } from "motion/react";
 
 // StatItem component for animated statistics
-const StatItem = ({
-  end,
-  suffix,
-  label
-}: {
-  end: number;
-  suffix?: string;
-  label: string;
-}) => {
+const StatItem = ({ end, suffix, label }: { end: number; suffix?: string; label: string }) => {
   const counter = useAnimatedCounter({
     end,
-    suffix
+    suffix,
   });
-  return <div className="text-center">
+  return (
+    <div className="text-center">
       <div className="text-4xl md:text-5xl font-bold text-primary mb-4">
         <span ref={counter.ref}>{counter.value}</span>
       </div>
       <div className="glass-text text-lg">{label}</div>
-    </div>;
+    </div>
+  );
 };
 export default function Hero() {
   const [visible, setVisible] = useState(false);
@@ -35,15 +29,16 @@ export default function Hero() {
   }, []);
   const scrollToContact = () => {
     document.getElementById("contact")?.scrollIntoView({
-      behavior: "smooth"
+      behavior: "smooth",
     });
   };
   const scrollToProducts = () => {
     document.getElementById("products")?.scrollIntoView({
-      behavior: "smooth"
+      behavior: "smooth",
     });
   };
-  return <section className="relative min-h-[100svh] flex items-start justify-center overflow-hidden pt-28 sm:pt-32 lg:pt-36">
+  return (
+    <section className="relative min-h-[100svh] flex items-start justify-center overflow-hidden pt-28 sm:pt-32 lg:pt-36">
       {/* Liquid Glass Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Static Liquid Elements */}
@@ -51,7 +46,6 @@ export default function Hero() {
         <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-accent/30 to-transparent"></div>
         {/* Floating Glass Orbs removed for clarity */}
       </div>
-
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
@@ -61,41 +55,61 @@ export default function Hero() {
             <div className="space-y-4 text-center lg:text-left">
               <h1 className="liquid-headline font-extrabold leading-tight text-shadow-lg">
                 <span className="text-foreground">Improve your aim with a </span>
-                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">custom mouse acceleration curve</span>
+                <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  custom mouse acceleration curve
+                </span>
               </h1>
-              
+
               {/* Decorative subhead with animated text */}
               <div className="min-h-[120px] flex items-center justify-center lg:justify-start">
                 <motion.div layout className="flex items-center justify-center lg:justify-start">
                   <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
                     Make your aim{" "}
-                    <ContainerTextFlip words={["faster", "steadier", "more consistent", "more natural"]} interval={2200} className="!bg-white/10 !backdrop-blur-md !border-white/20 !shadow-[0_8px_32px_rgba(0,0,0,0.15)] text-primary font-bold" textClassName="!text-primary" />
-                    {" "}— without guesswork.
+                    <ContainerTextFlip
+                      words={["faster", "steadier", "more consistent", "more natural"]}
+                      interval={2200}
+                      className="!bg-white/10 !backdrop-blur-md !border-white/20 !shadow-[0_8px_32px_rgba(0,0,0,0.15)] text-primary font-bold"
+                      textClassName="!text-primary"
+                    />{" "}
+                    — without guesswork.
                   </p>
                 </motion.div>
               </div>
-              
-              <div className="space-y-4">
-                
-              </div>
+
+              <div className="space-y-4"></div>
             </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 transition-all duration-300 ease-out">
               <div className="relative group">
                 <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <LiquidGlassButton variant="primary" className="relative text-lg px-8 py-4 font-bold text-white shadow-xl" onClick={() => document.getElementById("products")?.scrollIntoView({
-                behavior: "smooth"
-              })}>Book 1:1 Live Session</LiquidGlassButton>
+                <LiquidGlassButton
+                  variant="primary"
+                  className="relative text-lg px-8 py-4 font-bold text-white shadow-xl"
+                  onClick={() =>
+                    document.getElementById("products")?.scrollIntoView({
+                      behavior: "smooth",
+                    })
+                  }
+                >
+                  Book 1:1 Live Session
+                </LiquidGlassButton>
               </div>
-              
-              <LiquidGlassButton variant="secondary" className="text-lg px-8 py-4 font-bold" onClick={() => document.getElementById("products")?.scrollIntoView({
-              behavior: "smooth"
-            })}>See plans (from 7$)</LiquidGlassButton>
+
+              <LiquidGlassButton
+                variant="secondary"
+                className="text-lg px-8 py-4 font-bold"
+                onClick={() =>
+                  document.getElementById("products")?.scrollIntoView({
+                    behavior: "smooth",
+                  })
+                }
+              >
+                See plans (from 3.99$)
+              </LiquidGlassButton>
             </div>
 
             {/* Micro-proof line */}
-            
           </div>
 
           {/* Right Column - Stats */}
@@ -105,22 +119,22 @@ export default function Hero() {
                 <div className="text-4xl md:text-5xl font-bold text-primary mb-4">Instant</div>
                 <div className="glass-text text-lg">Delivery</div>
               </LiquidGlassCard>
-              
+
               <LiquidGlassCard variant="primary" className="text-center p-6">
                 <StatItem end={100} suffix="%" label="Satisfaction" />
               </LiquidGlassCard>
-              
+
               <LiquidGlassCard variant="secondary" className="text-center p-6">
                 <StatItem end={4} suffix="+" label="Years of Experience" />
               </LiquidGlassCard>
-              
+
               <LiquidGlassCard variant="accent" className="text-center p-6">
                 <StatItem end={1100} suffix="+" label="Players Helped" />
               </LiquidGlassCard>
             </div>
           </div>
         </div>
-
       </div>
-    </section>;
+    </section>
+  );
 }

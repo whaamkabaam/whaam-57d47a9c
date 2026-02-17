@@ -26,7 +26,7 @@ export function SubscriptionGate({ children }: SubscriptionGateProps) {
 
   // Free users (never subscribed) → redirect to pricing
   if (isFreeUser) {
-    return <Navigate to="/pricing" state={{ from: location }} replace />;
+    return <Navigate to="/#products" state={{ from: location }} replace />;
   }
 
   // Grace period users CAN access studio (with banner shown in layout)

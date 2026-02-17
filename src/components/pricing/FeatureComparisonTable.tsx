@@ -1,4 +1,4 @@
-import { Check, X, Minus } from 'lucide-react';
+import { Check, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface FeatureRow {
@@ -10,12 +10,12 @@ interface FeatureRow {
 
 const features: FeatureRow[] = [
   { name: 'Daily adjustments', basic: '5', plus: '25', ultra: '∞' },
+  { name: 'Feedback control', basic: 'Buttons (0.5)', plus: 'Slider (0.1)', ultra: 'Slider (0.1)' },
   { name: 'Library slots', basic: '5', plus: '20', ultra: '∞' },
   { name: 'Favorite slots', basic: '1', plus: '5', ultra: '∞' },
-  { name: 'Feedback control', basic: 'Buttons', plus: 'Slider', ultra: 'Slider' },
-  { name: 'Feedback precision', basic: '±0.5', plus: '±0.1', ultra: '±0.1' },
+  { name: 'Restore version', basic: 'Last only', plus: 'Any', ultra: 'Any' },
   { name: 'Upload .ccurve', basic: false, plus: true, ultra: true },
-  { name: 'Restore any version', basic: false, plus: true, ultra: true },
+  { name: 'Multiple lineages', basic: false, plus: true, ultra: true },
   { name: 'Form settings', basic: false, plus: false, ultra: true },
 ];
 

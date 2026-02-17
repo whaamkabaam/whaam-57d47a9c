@@ -25,7 +25,7 @@ export default function StickyCTA({
       <LiquidGlassButton variant="secondary" className="px-4 py-2 font-bold" onClick={() => rightIsPlans ? document.getElementById("products")?.scrollIntoView({
       behavior: "smooth"
     }) : window.open(CONFIG.discord.invite, "_blank")}>
-        {rightIsPlans ? "See plans (from $39)" : "Join Discord"}
+        {rightIsPlans ? "See plans (from $3.99/day)" : "Join Discord"}
       </LiquidGlassButton>
     </LiquidGlassCard>
   </div>;

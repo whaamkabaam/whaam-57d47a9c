@@ -15,7 +15,7 @@ import { AdminProtectedRoute } from "@/components/admin/AdminProtectedRoute";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { AdminPageLoader } from "@/components/admin/AdminPageLoader";
 import Index from "./pages/Index";
-import Pricing from "./pages/Pricing";
+// Pricing page removed - now inline in Products section on homepage
 import Privacy from "./pages/Privacy";
 import TermsOfService from "./pages/TermsOfService";
 import ReviewsGallery from "./pages/ReviewsGallery";
@@ -49,7 +49,7 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/pricing" element={<Navigate to="/#products" replace />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/reviews" element={<ReviewsGallery />} />

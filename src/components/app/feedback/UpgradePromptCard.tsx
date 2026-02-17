@@ -43,7 +43,7 @@ export function UpgradePromptCard({ currentTier, adjustmentsUsed }: UpgradePromp
               You've used all {adjustmentsUsed} adjustments today. {getUpgradeMessage()}.
             </p>
             
-            <Link to="/pricing">
+            <Link to="/#products">
               <LiquidGlassButton 
                 variant="accent" 
                 className="px-4 py-2 text-sm"

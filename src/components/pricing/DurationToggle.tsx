@@ -7,8 +7,8 @@ interface DurationToggleProps {
 }
 
 const durations: { value: SubscriptionDuration; label: string; badge?: string }[] = [
-  { value: 'daily', label: 'Daily' },
-  { value: 'weekly', label: 'Weekly' },
+  { value: 'daily', label: 'Day Pass' },
+  { value: 'weekly', label: 'Week Pass' },
   { value: 'monthly', label: 'Monthly', badge: 'Best value' },
 ];
 

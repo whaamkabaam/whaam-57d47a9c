@@ -15,7 +15,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { LiquidGlassCard } from "./LiquidGlassEffects";
+import { LiquidGlassCard } from "@/components/LiquidGlassEffects";
 import type { SubscriptionDuration, SubscriptionTier } from "@/lib/api";
 
 type PaidTier = Exclude<SubscriptionTier, 'free'>;
@@ -114,9 +114,9 @@ const Products = () => {
               </Button>
             </CollapsibleTrigger>
             <CollapsibleContent className="mt-4">
-              <div className="p-6 rounded-2xl glass-secondary">
+              <LiquidGlassCard>
                 <FeatureComparisonTable />
-              </div>
+              </LiquidGlassCard>
             </CollapsibleContent>
           </Collapsible>
         </div>

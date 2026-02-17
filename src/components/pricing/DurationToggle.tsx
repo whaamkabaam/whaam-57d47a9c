@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import type { SubscriptionDuration } from '@/lib/api';
 
 interface DurationToggleProps {
@@ -14,7 +15,7 @@ const durations: { value: SubscriptionDuration; label: string; badge?: string }[
 
 export function DurationToggle({ value, onChange }: DurationToggleProps) {
   return (
-    <div className="inline-flex items-center gap-1 p-1 rounded-full glass-secondary">
+    <LiquidGlassCard className="!p-1 !rounded-full inline-flex items-center gap-1">
       {durations.map((duration) => (
         <button
           key={duration.value}
@@ -34,6 +35,6 @@ export function DurationToggle({ value, onChange }: DurationToggleProps) {
           )}
         </button>
       ))}
-    </div>
+    </LiquidGlassCard>
   );
 }

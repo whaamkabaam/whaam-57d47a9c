@@ -2,6 +2,7 @@ import { Check, X, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { getPrice, formatPrice, getDurationLabel } from '@/lib/fastspring';
+import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import type { SubscriptionDuration } from '@/lib/api';
 
 import basicBadge from '@/assets/tiers/basic.png';
@@ -102,23 +103,21 @@ export function TierCard({
   const durationLabel = getDurationLabel(duration);
 
   return (
-    <div
+    <LiquidGlassCard
       className={cn(
-        "relative flex flex-col p-6 rounded-2xl glass-container border-2 transition-all duration-300",
+        "flex flex-col border-2 transition-all duration-300",
         config.accent,
-        isPopular && "scale-[1.02] shadow-lg shadow-secondary/20",
+        isPopular && "scale-[1.02] shadow-lg shadow-secondary/20 border-secondary",
         isCurrentTier && "ring-2 ring-secondary ring-offset-2 ring-offset-background"
       )}
     >
-      <div className="glass-effect-layer" />
-      
-      <div className="glass-content-layer !p-0 flex flex-col flex-1">
+      <div className="flex flex-col flex-1">
         {/* Header */}
         <div className="mb-4 text-center">
           <img 
             src={tierBadges[tier]} 
             alt={`${config.name} tier`}
-            className="w-20 h-20 mx-auto mb-3 object-contain"
+            className="w-24 h-24 mx-auto mb-3 object-contain"
           />
           {isPopular && (
             <span className="inline-flex items-center gap-1 px-2.5 py-1 mb-2 text-xs font-bold uppercase bg-secondary text-secondary-foreground rounded-full">
@@ -131,8 +130,8 @@ export function TierCard({
         </div>
 
         {/* Price */}
-        <div className="mb-6">
-          <div className="flex items-baseline gap-1">
+        <div className="mb-6 text-center">
+          <div className="flex items-baseline gap-1 justify-center">
             <span className="text-4xl font-bold text-foreground">{formatPrice(price)}</span>
             <span className="text-muted-foreground">/{durationLabel}</span>
           </div>
@@ -149,7 +148,7 @@ export function TierCard({
               )}
               <span className={cn(
                 "text-sm",
-                feature.included ? "text-foreground" : "text-muted-foreground/50"
+                feature.included ? "text-foreground font-semibold" : "text-muted-foreground/50"
               )}>
                 {feature.text}
               </span>
@@ -163,7 +162,7 @@ export function TierCard({
           disabled={isProcessing || isCurrentTier}
           variant={isPopular ? "whaam" : "outline"}
           className={cn(
-            "w-full",
+            "w-full h-12",
             isPopular && "liquid-glow-secondary"
           )}
         >
@@ -175,6 +174,6 @@ export function TierCard({
           {getMicroline(duration)}
         </p>
       </div>
-    </div>
+    </LiquidGlassCard>
   );
 }

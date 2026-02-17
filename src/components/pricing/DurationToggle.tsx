@@ -15,7 +15,7 @@ const durations: { value: SubscriptionDuration; label: string; badge?: string }[
 
 export function DurationToggle({ value, onChange }: DurationToggleProps) {
   return (
-    <LiquidGlassCard className="!p-1 !rounded-full inline-flex items-center gap-1">
+    <LiquidGlassCard className="!p-1 !rounded-full inline-flex items-center gap-1 !overflow-visible">
       {durations.map((duration) => (
         <button
           key={duration.value}

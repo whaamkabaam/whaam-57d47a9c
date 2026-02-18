@@ -1,58 +1,64 @@
 
 
-# Smarter, Leaner Navigation Bar
+# Scroll-Responsive Navigation Bar
 
-## Problem Analysis
+## Problem
 
-1. **Too much vertical space**: The nav uses `p-3` padding on the glass card plus `rounded-[28px]` and large logo/text, making it tall and heavy
-2. **"Get Started" is a dead-end for new visitors**: Both "Get Started" and "Sign In" go to `/auth`. A new visitor hasn't seen pricing or understood the product yet -- asking them to create an account before they know what they're paying for is a UX anti-pattern
+The navbar stretches edge-to-edge (`mx-6`), creating a large empty gap between the logo on the left and nav links on the right. The nav text is also small (`text-sm`). After the hero, the full-width bar adds no value -- it just wastes horizontal space.
 
-## Design Decision: Smarter CTA Strategy
+## Solution: Two-State Navbar
 
-For **logged-out users**, replace the two buttons with:
-- **"See Plans"** (primary CTA) -- scrolls to pricing section. This is where conversion happens. New visitors need to understand value before signing up.
-- **"Sign In"** (text link, no button chrome) -- for returning users, it's always visible but doesn't compete visually.
+The navbar starts full-width at the top of the page (matching the hero), then after a small scroll (~50px) it smoothly transitions to a compact, auto-width centered pill. Items move closer together, the bar gets tighter, and text bumps up slightly.
 
-For **logged-in users**, keep the single "Studio" button (already correct).
+```text
+STATE 1 (top of page):
++--[logo]------------------------------------[How  Pricing  About  Contact  |  Sign In  See Plans]--+
 
-This follows Krug's principle: the primary action should match the user's most likely intent at that moment. A first-time visitor wants to understand the product, not create an account.
+STATE 2 (after scroll):
+              +--[logo]--[How  Pricing  About  Contact  |  Sign In  See Plans]--+
+                              (centered, auto-width pill)
+```
 
-## Visual Tightening
+## Visual Changes
 
-| Element | Current | Proposed |
-|---------|---------|----------|
-| Card padding | `p-3` | `p-2 px-4` |
-| Card corners | `rounded-[28px]` (from LiquidGlassCard) | `rounded-2xl` override |
-| Logo size | `w-10 h-10` | `w-8 h-8` |
-| Brand text | `text-2xl` | `text-xl` |
-| Nav link gap | `space-x-8` | `space-x-6` |
-| Logo-text gap | `space-x-3` | `space-x-2` |
-| Button area | Two full buttons with gap-3 | One text link + one compact primary button |
+| Property | At top | After scroll |
+|----------|--------|-------------|
+| Width | Full (`mx-6`) | Auto-fit centered (`mx-auto w-fit px-6`) |
+| Nav text | `text-sm` | `text-[15px]` (slightly bigger) |
+| Justify | `justify-between` | `justify-between` (but gap collapses since container is `w-fit`) |
+| Gap between items | `space-x-6` | `space-x-5` |
+| Transition | -- | `transition-all duration-500 ease-out` on the wrapper |
 
-Net effect: the navbar drops from roughly 64px tall to around 48px -- tighter without losing any functionality.
-
-## Technical Changes
+## Technical Implementation
 
 ### `src/components/Navigation.tsx`
 
-**Desktop (logged-out state)**:
-- Replace "Get Started" LiquidGlassButton with "See Plans" LiquidGlassButton that calls `scrollToSection("products")`
-- Replace "Sign In" LiquidGlassButton with a plain text button (same `glass-text-contrast` style as nav links) that navigates to `/auth`
-- Reduce spacing/sizing classes as described above
+1. Add a `scrolled` state via a scroll listener (threshold: 50px)
+2. Conditionally apply classes to the wrapper and LiquidGlassCard:
+   - **Not scrolled**: `mx-6` (full width with side margins)
+   - **Scrolled**: `mx-auto w-fit px-6` (shrink-to-fit, centered)
+3. Bump nav link text from `text-sm` to `text-[15px]`
+4. All changes animate via CSS `transition-all duration-500`
+5. The LiquidGlassCard already handles mouse interactions -- no changes needed there
 
-**Mobile (logged-out state)**:
-- Same logic: "See Plans" as primary, "Sign In" as secondary text link
-- Keep the existing mobile menu structure
+### Scroll listener (simple, no dependencies)
 
-**Logged-in state**: No changes -- "Studio" button stays as-is.
+```typescript
+const [scrolled, setScrolled] = useState(false);
 
-### `src/components/LiquidGlassEffects.tsx`
+useEffect(() => {
+  const onScroll = () => setScrolled(window.scrollY > 50);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  return () => window.removeEventListener('scroll', onScroll);
+}, []);
+```
 
-No changes needed. The card `rounded-[28px]` will be overridden via className on the Navigation component.
+### Class application
 
-## File Changes Summary
+The outer card wrapper switches between:
+- `mx-6 mt-2` (full width state)
+- `mx-auto w-fit mt-2 px-8` (compact centered state)
 
-| File | Changes |
-|------|---------|
-| `src/components/Navigation.tsx` | Tighten padding/sizing; replace "Get Started" with "See Plans" (scroll to pricing); make "Sign In" a plain text link |
+Both states keep `p-2 px-4 rounded-2xl` and the glass variant.
 
+No changes to mobile behavior -- the compact mode only applies on `md:` and up, since mobile already uses a hamburger menu.

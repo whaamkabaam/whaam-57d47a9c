@@ -1,64 +1,58 @@
 
 
-# Scroll-Responsive Navigation Bar
+# Fix Navigation Scroll Animation and Compact Layout
 
-## Problem
+## Problems
 
-The navbar stretches edge-to-edge (`mx-6`), creating a large empty gap between the logo on the left and nav links on the right. The nav text is also small (`text-sm`). After the hero, the full-width bar adds no value -- it just wastes horizontal space.
+1. **Janky animation**: `transition-all` on `w-fit` doesn't work -- CSS can't interpolate between a percentage/fixed width and `fit-content`. The navbar just snaps instead of smoothly shrinking.
+2. **Compact state is visually broken**: When scrolled, logo text "whaamkabaam" runs directly into "How" because `justify-between` in a `w-fit` container collapses the gap to zero.
 
-## Solution: Two-State Navbar
+## Solution
 
-The navbar starts full-width at the top of the page (matching the hero), then after a small scroll (~50px) it smoothly transitions to a compact, auto-width centered pill. Items move closer together, the bar gets tighter, and text bumps up slightly.
+### 1. Smooth width animation via max-width
 
-```text
-STATE 1 (top of page):
-+--[logo]------------------------------------[How  Pricing  About  Contact  |  Sign In  See Plans]--+
+Instead of toggling between `mx-6` (full) and `w-fit` (compact), use a `max-width` approach:
+- **Top of page**: `max-w-[1400px] mx-auto` (stretches wide with margins)
+- **After scroll**: `max-w-[820px] mx-auto` (shrinks to a compact centered pill)
 
-STATE 2 (after scroll):
-              +--[logo]--[How  Pricing  About  Contact  |  Sign In  See Plans]--+
-                              (centered, auto-width pill)
-```
+`max-width` is a numeric CSS property so `transition-all` can interpolate it smoothly. The bar stays `w-full` at all times -- only the max-width changes.
 
-## Visual Changes
+### 2. Fix compact spacing
 
-| Property | At top | After scroll |
-|----------|--------|-------------|
-| Width | Full (`mx-6`) | Auto-fit centered (`mx-auto w-fit px-6`) |
-| Nav text | `text-sm` | `text-[15px]` (slightly bigger) |
-| Justify | `justify-between` | `justify-between` (but gap collapses since container is `w-fit`) |
-| Gap between items | `space-x-6` | `space-x-5` |
-| Transition | -- | `transition-all duration-500 ease-out` on the wrapper |
+Replace `justify-between` with a `gap` approach. Add a visible gap between the logo group and the nav links group:
+- Use `gap-8` (or `gap-6` when scrolled) on the flex container
+- This ensures items are always visually separated regardless of container width
 
-## Technical Implementation
+### 3. Hide brand text when scrolled
+
+To make the compact pill even tighter and avoid the cramped feeling, hide the "whaamkabaam" text when scrolled (keep just the logo icon). This is a common pattern -- the user already knows what site they're on after scrolling past the hero. The text fades out with opacity + width animation.
+
+## Technical Changes
 
 ### `src/components/Navigation.tsx`
 
-1. Add a `scrolled` state via a scroll listener (threshold: 50px)
-2. Conditionally apply classes to the wrapper and LiquidGlassCard:
-   - **Not scrolled**: `mx-6` (full width with side margins)
-   - **Scrolled**: `mx-auto w-fit px-6` (shrink-to-fit, centered)
-3. Bump nav link text from `text-sm` to `text-[15px]`
-4. All changes animate via CSS `transition-all duration-500`
-5. The LiquidGlassCard already handles mouse interactions -- no changes needed there
-
-### Scroll listener (simple, no dependencies)
-
-```typescript
-const [scrolled, setScrolled] = useState(false);
-
-useEffect(() => {
-  const onScroll = () => setScrolled(window.scrollY > 50);
-  window.addEventListener('scroll', onScroll, { passive: true });
-  return () => window.removeEventListener('scroll', onScroll);
-}, []);
+**LiquidGlassCard className**:
 ```
+Before: scrolled ? 'mx-auto w-fit px-8' : 'mx-6'
+After:  scrolled ? 'max-w-[820px] mx-auto' : 'max-w-[1400px] mx-auto px-4'
+```
+Both states use `mx-auto` so the bar is always centered. Only `max-width` changes, which CSS transitions handle smoothly.
 
-### Class application
+**Inner flex container**:
+- Change from `justify-between` to `gap-8` so spacing is explicit and doesn't collapse
+- The logo group and nav group sit next to each other with a consistent gap
 
-The outer card wrapper switches between:
-- `mx-6 mt-2` (full width state)
-- `mx-auto w-fit mt-2 px-8` (compact centered state)
+**Brand text**:
+- Add transition classes for opacity and max-width
+- When scrolled: `opacity-0 max-w-0 overflow-hidden` (collapses away)
+- When not scrolled: `opacity-100 max-w-[200px]` (visible)
+- This uses `transition-all duration-500` for a smooth fade + collapse
 
-Both states keep `p-2 px-4 rounded-2xl` and the glass variant.
+**GPU acceleration**: Add `will-change: max-width` on the card wrapper so the browser optimizes the transition on the compositor thread.
 
-No changes to mobile behavior -- the compact mode only applies on `md:` and up, since mobile already uses a hamburger menu.
+## File Changes
+
+| File | Changes |
+|------|---------|
+| `src/components/Navigation.tsx` | Replace w-fit with max-width animation; add gap instead of justify-between; hide brand text on scroll |
+

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { LiquidGlassCard, LiquidGlassButton } from "./LiquidGlassEffects";
@@ -12,8 +12,15 @@ interface NavigationProps {
 
 export default function Navigation({ activeSection }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const navItems = [
     { label: "How", href: "services" },
@@ -38,7 +45,9 @@ export default function Navigation({ activeSection }: NavigationProps) {
         <LiquidGlassCard 
           variant="primary"
           glassVariant="nav"
-          className="mx-6 mt-2 p-2 px-4 rounded-2xl"
+          className={`mt-2 p-2 px-4 rounded-2xl transition-all duration-500 ease-out ${
+            scrolled ? 'mx-auto w-fit px-8' : 'mx-6'
+          }`}
         >
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -52,11 +61,11 @@ export default function Navigation({ activeSection }: NavigationProps) {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6">
+            <div className={`hidden md:flex items-center transition-all duration-500 ease-out ${scrolled ? 'space-x-5' : 'space-x-6'}`}>
               {navItems.map((item) => (
                 <button
                   key={item.href}
-                  className={`glass-text-contrast hover:text-primary transition-colors duration-300 font-medium text-sm ${
+                  className={`glass-text-contrast hover:text-primary transition-all duration-300 font-medium text-[15px] ${
                     activeSection === item.href ? 'text-primary' : ''
                   }`}
                   onClick={() => scrollToSection(item.href)}
@@ -71,7 +80,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 ) : isAuthenticated ? (
                   <LiquidGlassButton 
                     variant="primary"
-                    className="px-5 py-1.5 font-bold text-sm"
+                    className="px-5 py-1.5 font-bold text-[15px]"
                     onClick={() => navigate("/studio")}
                   >
                     Studio
@@ -79,14 +88,14 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 ) : (
                   <>
                     <button
-                      className="glass-text-contrast hover:text-primary transition-colors duration-300 font-medium text-sm"
+                      className="glass-text-contrast hover:text-primary transition-colors duration-300 font-medium text-[15px]"
                       onClick={() => navigate("/auth")}
                     >
                       Sign In
                     </button>
                     <LiquidGlassButton 
                       variant="primary"
-                      className="px-5 py-1.5 font-bold text-sm"
+                      className="px-5 py-1.5 font-bold text-[15px]"
                       onClick={() => scrollToSection("products")}
                     >
                       See Plans

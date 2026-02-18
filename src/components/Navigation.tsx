@@ -38,25 +38,25 @@ export default function Navigation({ activeSection }: NavigationProps) {
         <LiquidGlassCard 
           variant="primary"
           glassVariant="nav"
-          className="mx-6 mt-2 p-3"
+          className="mx-6 mt-2 p-2 px-4 rounded-2xl"
         >
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2">
               <img 
                 src={whaamLogo} 
                 alt="WHAAM KABAAM Logo" 
-                className="w-10 h-10 object-contain"
+                className="w-8 h-8 object-contain"
               />
-              <span className="text-2xl font-bold glass-text-contrast">whaamkabaam</span>
+              <span className="text-xl font-bold glass-text-contrast">whaamkabaam</span>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-6">
               {navItems.map((item) => (
                 <button
                   key={item.href}
-                  className={`glass-text-contrast hover:text-primary transition-colors duration-300 font-medium ${
+                  className={`glass-text-contrast hover:text-primary transition-colors duration-300 font-medium text-sm ${
                     activeSection === item.href ? 'text-primary' : ''
                   }`}
                   onClick={() => scrollToSection(item.href)}
@@ -65,32 +65,31 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 </button>
               ))}
             
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 {isLoading ? (
-                  <div className="h-[42px] w-[180px]" />
+                  <div className="h-[36px] w-[140px]" />
                 ) : isAuthenticated ? (
                   <LiquidGlassButton 
                     variant="primary"
-                    className="px-6 py-2 font-bold"
+                    className="px-5 py-1.5 font-bold text-sm"
                     onClick={() => navigate("/studio")}
                   >
                     Studio
                   </LiquidGlassButton>
                 ) : (
                   <>
-                    <LiquidGlassButton 
-                      variant="secondary"
-                      className="px-4 py-2 font-medium"
+                    <button
+                      className="glass-text-contrast hover:text-primary transition-colors duration-300 font-medium text-sm"
                       onClick={() => navigate("/auth")}
                     >
                       Sign In
-                    </LiquidGlassButton>
+                    </button>
                     <LiquidGlassButton 
                       variant="primary"
-                      className="px-6 py-2 font-bold"
-                      onClick={() => navigate("/auth")}
+                      className="px-5 py-1.5 font-bold text-sm"
+                      onClick={() => scrollToSection("products")}
                     >
-                      Get Started
+                      See Plans
                     </LiquidGlassButton>
                   </>
                 )}
@@ -132,7 +131,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 {isAuthenticated ? (
                   <LiquidGlassButton 
                     variant="primary"
-                    className="w-full mt-4 py-3 font-bold"
+                    className="w-full mt-4 py-2.5 font-bold text-sm"
                     onClick={() => {
                       navigate("/studio");
                       setIsMenuOpen(false);
@@ -143,25 +142,24 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 ) : (
                   <>
                     <LiquidGlassButton 
-                      variant="secondary"
-                      className="w-full mt-4 py-3 font-medium"
+                      variant="primary"
+                      className="w-full mt-4 py-2.5 font-bold text-sm"
+                      onClick={() => {
+                        scrollToSection("products");
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      See Plans
+                    </LiquidGlassButton>
+                    <button
+                      className="w-full mt-3 py-2 glass-text-contrast hover:text-primary transition-colors duration-300 font-medium text-sm text-center"
                       onClick={() => {
                         navigate("/auth");
                         setIsMenuOpen(false);
                       }}
                     >
                       Sign In
-                    </LiquidGlassButton>
-                    <LiquidGlassButton 
-                      variant="primary"
-                      className="w-full mt-2 py-3 font-bold"
-                      onClick={() => {
-                        navigate("/auth");
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      Get Started
-                    </LiquidGlassButton>
+                    </button>
                   </>
                 )}
               </div>

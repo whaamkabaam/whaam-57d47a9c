@@ -67,7 +67,7 @@ const Index = () => {
       </section>
 
       {/* 3 Easy Steps */}
-      <section className="pt-8 pb-16 md:pt-12 md:pb-24 relative z-10">
+      <section className="pt-8 pb-8 md:pt-12 md:pb-12 relative z-10">
         <ThreeSteps />
       </section>
 

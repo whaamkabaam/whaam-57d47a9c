@@ -27,7 +27,7 @@ const Index = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "reviews", "outcomes", "services", "products", "about", "faq", "contact"];
+      const sections = ["home", "storycards", "reviews", "outcomes", "services", "products", "about", "faq", "contact"];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -57,7 +57,9 @@ const Index = () => {
       </section>
 
       {/* Story Cards with integrated CredibilityStrip */}
-      <StoryCards />
+      <div id="storycards">
+        <StoryCards />
+      </div>
 
       {/* Reviews Parallax Gallery */}
       <section id="reviews" className="relative z-0">

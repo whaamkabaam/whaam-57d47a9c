@@ -117,7 +117,7 @@ export const HeroParallax = ({
       
       <div className="flex flex-row justify-center gap-3 md:gap-5 lg:gap-6 px-2 md:px-4 w-full max-w-7xl mx-auto overflow-hidden">
         {/* Column 1 - outer, slower */}
-        <div className="parallax-column-fade flex flex-col overflow-hidden h-[75vh]">
+        <div className="parallax-column-fade flex flex-col flex-1 min-w-0 overflow-hidden h-[75vh]">
           <div 
             ref={col1Ref}
             className="flex flex-col space-y-6 md:space-y-10 will-change-transform"
@@ -133,7 +133,7 @@ export const HeroParallax = ({
         </div>
         
         {/* Column 2 - middle, faster */}
-        <div className="parallax-column-fade flex flex-col overflow-hidden h-[75vh]">
+        <div className="parallax-column-fade flex flex-col flex-1 min-w-0 overflow-hidden h-[75vh]">
           <div 
             ref={col2Ref}
             className="flex flex-col space-y-6 md:space-y-10 will-change-transform"
@@ -149,7 +149,7 @@ export const HeroParallax = ({
         </div>
         
         {/* Column 3 - outer, slower */}
-        <div className="parallax-column-fade flex flex-col overflow-hidden h-[75vh]">
+        <div className="parallax-column-fade flex flex-col flex-1 min-w-0 overflow-hidden h-[75vh]">
           <div 
             ref={col3Ref}
             className="flex flex-col space-y-6 md:space-y-10 will-change-transform"
@@ -186,7 +186,7 @@ export const ProductCard = ({
   product: Product;
 }) => {
   return (
-    <div className="w-[30vw] md:w-[30vw] lg:w-[28vw] xl:w-[26vw] 2xl:w-[24vw] max-w-[32rem] relative shrink-0">
+    <div className="w-full relative shrink-0">
       <div className="relative rounded-2xl p-2 bg-background/20 backdrop-blur-xl border border-white/10 shadow-xl">
         <div className="relative rounded-xl overflow-hidden bg-black/40">
           <img

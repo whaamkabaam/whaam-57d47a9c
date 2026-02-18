@@ -5,7 +5,6 @@ interface Props {
 }
 
 export default function StickyCTA({ activeSection }: Props) {
-  const rightIsPlans = activeSection !== "products";
   const shouldShow = activeSection !== "home" && activeSection !== "products" && activeSection !== "";
 
   return (
@@ -33,13 +32,11 @@ export default function StickyCTA({ activeSection }: Props) {
         {/* Secondary CTA */}
         <button
           onClick={() =>
-            rightIsPlans
-              ? document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })
-              : window.open(CONFIG.discord.invite, "_blank")
+            document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })
           }
           className="px-5 py-2.5 text-sm font-medium text-white/50 hover:text-white/80 transition-colors whitespace-nowrap"
         >
-          {rightIsPlans ? "See plans" : "Join Discord"}
+          See plans
         </button>
       </div>
     </div>

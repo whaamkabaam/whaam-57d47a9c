@@ -55,7 +55,7 @@ const Products = () => {
   ];
 
   return (
-    <section id="products" className="py-24 relative overflow-hidden">
+    <section id="products" className="pt-8 pb-24 relative overflow-x-hidden overflow-y-visible">
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Header */}
         <div className="text-center mb-12">

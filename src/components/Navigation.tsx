@@ -47,12 +47,12 @@ export default function Navigation({ activeSection }: NavigationProps) {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style={{ transform: 'translateZ(0)' }}>
+      <nav className="fixed top-0 left-0 right-0 z-50" style={{ transform: 'translateZ(0)' }}>
         <LiquidGlassCard 
           variant="primary"
           glassVariant="nav"
           className={`mt-2 p-2 px-4 rounded-2xl w-full ${
-            mounted ? 'transition-[max-width,padding,border-radius] duration-500 ease-out' : ''
+            mounted ? 'transition-[max-width] duration-500 ease-out' : ''
           } ${
             scrolled ? 'max-w-[820px] mx-auto' : 'max-w-[1400px] mx-auto'
           }`}

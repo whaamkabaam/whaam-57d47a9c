@@ -38,7 +38,7 @@ export default function Hero() {
     });
   };
   return (
-    <section className="relative min-h-[90svh] flex items-start justify-center overflow-x-hidden pt-28 sm:pt-32 lg:pt-36">
+    <section className="relative min-h-[90svh] flex items-start justify-center pt-28 sm:pt-32 lg:pt-36">
       {/* Liquid Glass Background Elements */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Static Liquid Elements */}
@@ -80,7 +80,7 @@ export default function Hero() {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pb-4 transition-all duration-300 ease-out">
+            <div className="flex flex-col sm:flex-row gap-4 transition-all duration-300 ease-out">
               <div className="relative group">
                 <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <LiquidGlassButton

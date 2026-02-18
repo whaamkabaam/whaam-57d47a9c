@@ -59,9 +59,9 @@ const Products = () => {
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold glass-text-contrast mb-6 pb-2 leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold glass-text-contrast mb-6 leading-tight">
             Pick your plan,
-            <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mt-2">
+            <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mt-2 leading-normal">
               start aiming better.
             </span>
           </h2>

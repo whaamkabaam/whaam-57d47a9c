@@ -12,9 +12,15 @@ interface NavigationProps {
 
 export default function Navigation({ activeSection }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(() => typeof window !== 'undefined' ? window.scrollY > 50 : false);
+  const [mounted, setMounted] = useState(false);
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Suppress transitions on mount — snap to correct state instantly
+    requestAnimationFrame(() => setMounted(true));
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -45,7 +51,9 @@ export default function Navigation({ activeSection }: NavigationProps) {
         <LiquidGlassCard 
           variant="primary"
           glassVariant="nav"
-          className={`mt-2 p-2 px-4 rounded-2xl transition-all duration-500 ease-out w-full ${
+          className={`mt-2 p-2 px-4 rounded-2xl w-full ${
+            mounted ? 'transition-[max-width,padding,border-radius] duration-500 ease-out' : ''
+          } ${
             scrolled ? 'max-w-[820px] mx-auto' : 'max-w-[1400px] mx-auto'
           }`}
           style={{ willChange: 'max-width' }}
@@ -56,10 +64,12 @@ export default function Navigation({ activeSection }: NavigationProps) {
               <img 
                 src={whaamLogo} 
                 alt="WHAAM KABAAM Logo" 
-                className="w-8 h-8 object-contain"
+                className="w-10 h-10 object-contain transition-all duration-500 ease-out"
               />
-              <span className={`text-xl font-bold glass-text-contrast transition-all duration-500 ease-out whitespace-nowrap ${
-                scrolled ? 'opacity-0 max-w-0 overflow-hidden' : 'opacity-100 max-w-[200px]'
+              <span className={`text-xl font-bold glass-text-contrast whitespace-nowrap ${
+                mounted ? 'transition-all duration-500 ease-out' : ''
+              } ${
+                scrolled ? 'opacity-0 max-w-0 overflow-hidden scale-95 blur-[2px] -translate-x-1' : 'opacity-100 max-w-[200px] scale-100 blur-0 translate-x-0'
               }`}>whaamkabaam</span>
             </div>
 

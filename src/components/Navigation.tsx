@@ -45,23 +45,26 @@ export default function Navigation({ activeSection }: NavigationProps) {
         <LiquidGlassCard 
           variant="primary"
           glassVariant="nav"
-          className={`mt-2 p-2 px-4 rounded-2xl transition-all duration-500 ease-out ${
-            scrolled ? 'mx-auto w-fit px-8' : 'mx-6'
+          className={`mt-2 p-2 px-4 rounded-2xl transition-all duration-500 ease-out w-full ${
+            scrolled ? 'max-w-[820px] mx-auto' : 'max-w-[1400px] mx-auto'
           }`}
+          style={{ willChange: 'max-width' }}
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-8">
             {/* Logo */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 shrink-0">
               <img 
                 src={whaamLogo} 
                 alt="WHAAM KABAAM Logo" 
                 className="w-8 h-8 object-contain"
               />
-              <span className="text-xl font-bold glass-text-contrast">whaamkabaam</span>
+              <span className={`text-xl font-bold glass-text-contrast transition-all duration-500 ease-out whitespace-nowrap ${
+                scrolled ? 'opacity-0 max-w-0 overflow-hidden' : 'opacity-100 max-w-[200px]'
+              }`}>whaamkabaam</span>
             </div>
 
             {/* Desktop Navigation */}
-            <div className={`hidden md:flex items-center transition-all duration-500 ease-out ${scrolled ? 'space-x-5' : 'space-x-6'}`}>
+            <div className="hidden md:flex items-center space-x-5 ml-auto">
               {navItems.map((item) => (
                 <button
                   key={item.href}

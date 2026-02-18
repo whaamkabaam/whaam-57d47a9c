@@ -1,48 +1,42 @@
 
 
-# Fix 4 Broken Things on the Homepage
+# Fix 4 Remaining Issues
 
-## Issue 1: "SAVE" badge clipped on the DurationToggle
+## Issue 1: Sticky CTA appears too late + Discord text flicker
 
-The "Save" badge uses `absolute -top-2 -right-2` positioning, but the parent `LiquidGlassCard` has `!rounded-full` and implicitly `overflow: hidden` (from the glass card styles). The badge gets clipped at the edge.
+**Root cause**: The scroll handler in `Index.tsx` uses sections `["home", "reviews", ...]`. Between "home" and "reviews", there are StoryCards and ThreeSteps which have no IDs in that array, so `activeSection` stays `"home"` and the CTA stays hidden until the user reaches the reviews section.
 
-**Fix in `src/components/pricing/DurationToggle.tsx`**: Add `overflow-visible` to the `LiquidGlassCard` wrapper so the badge can escape the pill boundary:
-```
-<LiquidGlassCard className="!p-1 !rounded-full inline-flex items-center gap-1 !overflow-visible">
-```
+The Discord text appears because the `rightIsPlans` logic flips to `false` when `activeSection === "products"`, showing "Join Discord" -- but then `shouldShow` becomes `false` because products is excluded, causing a brief flash.
 
-## Issue 2: Pricing title cut off + excess spacing above
+**Fix in `src/components/StickyCTA.tsx`**:
+- Remove the `rightIsPlans` / Discord toggle entirely. The secondary CTA should always say "See plans" and scroll to products. The Discord link doesn't belong in a floating CTA.
+- Keep `shouldShow` hiding during "home", "products", and empty string.
 
-The Products component already wraps itself in `<section id="products" className="py-24">`, but Index.tsx wraps it again in another `<section id="products" className="py-16">`. This creates double padding (py-24 + py-16 = massive gap) and the duplicate `id="products"` causes scroll-to issues.
+**Fix in `src/pages/Index.tsx`**:
+- Add a wrapper with `id="storycards"` around StoryCards so that the section detection picks it up when the user scrolls past the hero.
+- Add `"storycards"` to the sections array so activeSection updates to something other than "home" once the user passes the hero.
 
-**Fix in `src/pages/Index.tsx`**: Remove the outer wrapper section. Products already has its own section tag with id and padding:
-```
-{/* Before */}
-<section id="products" className="py-16 relative z-10">
-  <Products />
-</section>
+## Issue 2: Discord reviews cut off on the right
 
-{/* After */}
-<Products />
-```
+**Root cause**: In `hero-parallax.tsx` line 118, the outer container uses `overflow-hidden` which clips the third column on wider/narrower aspect ratios. The `ProductCard` component uses viewport-width sizing (`w-[30vw]`) which can push the third column past the container boundary.
 
-## Issue 3: Hero vertical spacing broken -- content pushed too low
+**Fix in `src/components/ui/hero-parallax.tsx`**:
+- Change the outer flex container from `overflow-hidden` to `overflow-hidden` is fine but add `w-full` constraint and ensure columns don't exceed their space. The real fix: change `w-[30vw]` on ProductCard to use flex-based sizing instead (`flex-1 min-w-0` on the column wrappers) so all three columns fit within the `max-w-7xl` container.
 
-The hero section uses `min-h-[100svh]` with `items-start` and large top padding (`pt-28 sm:pt-32 lg:pt-36`). The content and stats grid uses `items-center` which vertically centers the two columns, but combined with `items-start` on the outer flex, the CTA buttons get pushed far down. The `min-h-[120px]` on the animated subhead wrapper also adds unnecessary height.
+## Issue 3: Spacing above pricing + "g" being cut off
+
+**Root cause**: Products has `py-24` which is 96px top/bottom padding. The Three Steps section above it also has `pb-16 md:pb-24`. That's 120-192px of whitespace between them. Additionally, `overflow-hidden` on the Products section (line 58) clips the descenders of the heading text ("g" in "aiming").
+
+**Fix in `src/components/Products.tsx`**:
+- Reduce top padding from `py-24` to `pt-8 pb-24` (or `pt-12 pb-24`) to tighten the gap between Three Steps and Pricing.
+- Change `overflow-hidden` to `overflow-x-hidden overflow-y-visible` so the text descenders aren't clipped but horizontal overflow from decorative elements is still hidden.
+
+## Issue 4: Hero CTA button glow cut off
+
+**Root cause**: The hero section has `overflow-hidden` (line 41 in Hero.tsx). The glow effect on the CTA button uses `absolute -inset-2` which extends 8px outside the button, but the section-level `overflow-hidden` clips it when the button is near the bottom of the viewport.
 
 **Fix in `src/components/Hero.tsx`**:
-- Reduce the `min-h` on the subhead wrapper from `120px` to `80px` to tighten the gap
-- Remove the empty `<div className="space-y-4"></div>` which adds dead space
-- Reduce CTA button gap from `gap-6` to `gap-4`
-
-## Issue 4: Yellow line at the bottom of the hero
-
-Line 46 in Hero.tsx creates a visible accent-colored line at the bottom of the hero:
-```
-<div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-l from-transparent via-accent/30 to-transparent"></div>
-```
-
-**Fix in `src/components/Hero.tsx`**: Remove this line entirely. It was a decorative element that now looks out of place.
+- Change the hero section from `overflow-hidden` to `overflow-x-hidden overflow-y-visible` (or just remove `overflow-hidden` entirely since the floating glass orbs are already removed).
 
 ---
 
@@ -50,7 +44,8 @@ Line 46 in Hero.tsx creates a visible accent-colored line at the bottom of the h
 
 | File | Changes |
 |------|---------|
-| `src/components/pricing/DurationToggle.tsx` | Add `!overflow-visible` to LiquidGlassCard wrapper |
-| `src/pages/Index.tsx` | Remove double-wrapping section around Products |
-| `src/components/Hero.tsx` | Remove bottom yellow line div, reduce subhead min-height, remove empty spacer div, tighten CTA gap |
-
+| `src/components/StickyCTA.tsx` | Remove Discord toggle logic; always show "See plans" as secondary CTA |
+| `src/pages/Index.tsx` | Add `id="storycards"` wrapper around StoryCards; add `"storycards"` to sections array |
+| `src/components/ui/hero-parallax.tsx` | Constrain review columns to fit within container using flex sizing |
+| `src/components/Products.tsx` | Reduce top padding to `pt-8`; change `overflow-hidden` to `overflow-x-hidden overflow-y-visible` |
+| `src/components/Hero.tsx` | Remove `overflow-hidden` from the hero section (or change to `overflow-x-hidden`) |

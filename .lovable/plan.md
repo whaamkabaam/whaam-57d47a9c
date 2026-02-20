@@ -1,31 +1,30 @@
 
 
-# Fix Navigation Flash and Scroll Animation (For Real This Time)
+# Navigation Tweaks: Bigger Logo + Tighter Compact Pill
 
-## Root Cause (verified by reading every line)
+## What's changing
 
-There are three layers causing the visual mess:
+### 1. Bigger logo
+Current: `w-10 h-10` (40px).
+New: `w-14 h-14` (56px) -- much more prominent and matches the visual weight you'd expect from the brand mark.
 
-1. **The `<nav>` wrapper** (line 50) has `transition-all duration-300` with NO mount guard. This means every CSS property on the nav animates on initial page load — including padding, dimensions, and background. The `mounted` guard only protects the inner `LiquidGlassCard`, not this outer wrapper.
+### 2. Tighter compact pill
+Current compact max-width: `max-w-[820px]` -- way too wide, leaves a big empty gap between the logo and nav items.
+New: `max-w-[620px]` -- snug fit around logo + nav items + CTA, eliminating the dead space.
 
-2. **LiquidGlassCard base class conflict**: The component hardcodes `rounded-[28px] p-6 md:p-8` (LiquidGlassEffects.tsx line 179). Navigation passes `p-2 px-4 rounded-2xl` to override them. `cn()` (tailwind-merge) resolves correctly, but on the first paint frame the browser computes styles and the unguarded `transition-all` on `<nav>` catches and animates the difference — making padding visibly grow/shrink on load.
+### 3. Reduce inner gap
+Current: `gap-8` (32px) between logo and nav items.
+New: `gap-4` (16px) in compact state, `gap-8` in expanded -- keeps the compact pill tight while the expanded state breathes.
 
-3. **Transition scope too broad on the card**: `transition-[max-width,padding,border-radius]` includes padding and border-radius which don't actually change between scroll states. Only `max-width` changes. Including unused properties adds potential for jank.
+## Technical changes
 
-## Fix
+**File: `src/components/Navigation.tsx`**
 
-### `src/components/Navigation.tsx`
+| Line | What | Before | After |
+|------|------|--------|-------|
+| 57 | Compact max-width | `max-w-[820px]` | `max-w-[620px]` |
+| 61 | Flex gap | `gap-8` (always) | `gap-4` when scrolled, `gap-8` when expanded |
+| 67 | Logo size | `w-10 h-10` | `w-14 h-14` |
 
-| Line | Change | Why |
-|------|--------|-----|
-| 50 | Remove `transition-all duration-300` from `<nav>` | This is the primary flash cause. The nav doesn't need its own transition — only the inner card does. |
-| 55 | Simplify to `transition-[max-width] duration-500 ease-out` | Only animate what actually changes between states |
-
-That's it. Two targeted fixes:
-- Kill the unguarded transition on the `<nav>` wrapper
-- Narrow the card's transition to only `max-width`
-
-### No changes to LiquidGlassEffects.tsx
-
-The base `p-6 md:p-8 rounded-[28px]` classes are fine — `cn()` correctly overrides them. The flash was caused by the transition catching the override, not by the override itself. With the transition removed from `<nav>`, there's nothing to animate the initial style computation.
+Three lines, no structural changes.
 

@@ -222,7 +222,7 @@ export function TierCard({
 
       <div className="relative flex flex-col flex-1">
         {/* Header: badge + name + best-for */}
-        <div className="mb-8 text-center">
+        <div className="mb-4 text-center">
           <img
             src={tierBadges[tier]}
             alt={`${config.name} tier`}

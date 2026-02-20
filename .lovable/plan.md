@@ -1,29 +1,47 @@
 
-# Fix Button Alignment: Propagate Flex Through Glass Card
 
-## Root Cause
-The `LiquidGlassCard` component wraps children in `<div className="relative z-10">{children}</div>` (line 198 of LiquidGlassEffects.tsx). This div does not participate in the flex layout, so the `flex-1` on the DeltaFeatures div has no effect -- it can't push the CTA button to the bottom because the flex chain is broken.
+# Fix Bottom Button Alignment
+
+## Problem
+The `flex-1` on DeltaFeatures should push buttons to the bottom, but the decorative `<span>` elements inside `LiquidGlassCard` are flex siblings competing for space. This breaks the flex-1 expansion.
 
 ## Fix
 
-### File: `src/components/LiquidGlassEffects.tsx` (line 198)
-Change the inner content wrapper from:
-```tsx
-<div className="relative z-10">{children}</div>
+### File: `src/components/pricing/TierCard.tsx`
+
+Instead of relying on `flex-1` on the DeltaFeatures container (which depends on the full flex chain working perfectly), wrap the CTA button + microline in a `mt-auto` container. This is a simpler, more robust approach:
+
+Move the CTA button and microline into a wrapper with `mt-auto`, which pushes them to the very bottom of the flex container regardless of how much content is above.
+
+**Change in the main TierCard component (around line 250):**
+
+Current structure:
 ```
-to:
-```tsx
-<div className="relative z-10 flex flex-col flex-1">{children}</div>
+<div className="relative flex flex-col flex-1">
+  <!-- header -->
+  <!-- price -->
+  <DeltaFeatures ... />  (has flex-1)
+  <LiquidGlassButton ... />
+  <p microline />
+</div>
 ```
 
-This lets the flex layout flow from the outer card all the way through to the CTA button. The `flex-1` on DeltaFeatures will then absorb the extra vertical space in shorter cards, pushing buttons to the same bottom position across all three cards.
+New structure:
+```
+<div className="relative flex flex-col flex-1">
+  <!-- header -->
+  <!-- price -->
+  <DeltaFeatures ... />  (remove flex-1, just use normal flow)
+  <div className="mt-auto">   <!-- pushes to bottom -->
+    <LiquidGlassButton ... />
+    <p microline />
+  </div>
+</div>
+```
 
-### File: `src/components/pricing/TierCard.tsx` (line 167)
-Remove the spacer div `<div className="mb-3 h-[34px]" />` from the Basic card -- it's no longer needed since flexbox will handle the vertical distribution automatically.
+This way, the feature list takes its natural height, and `mt-auto` on the button wrapper eats all remaining space as top margin, perfectly aligning buttons across all cards.
 
-### Why this works
-- CSS Grid already makes all three cards the same height
-- `h-full` on `LiquidGlassCard` fills that grid height
-- Adding `flex flex-col flex-1` to the inner wrapper lets the flex chain reach `DeltaFeatures`
-- `flex-1` on `DeltaFeatures` absorbs remaining space, pushing buttons to the bottom
-- No spacers, no manual height matching needed -- pure flexbox alignment
+### Technical details
+
+1. In `DeltaFeatures`, change `flex-1 mb-6` to just `mb-6` on both code paths (lines 166 and 184)
+2. Wrap the `LiquidGlassButton` and microline `<p>` in a `<div className="mt-auto">` (around lines 297-312)

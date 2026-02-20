@@ -27,11 +27,12 @@ interface LiquidGlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'accent';
   glassVariant?: 'default' | 'nav';
+  contentClassName?: string;
   className?: string;
 }
 
 export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardProps>(
-  ({ className = '', children, glassVariant = 'default', ...props }, forwardedRef) => {
+  ({ className = '', children, glassVariant = 'default', contentClassName, ...props }, forwardedRef) => {
     const ref = React.useRef<HTMLDivElement>(null);
 
     // merge refs
@@ -195,7 +196,7 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
         <span aria-hidden className="liquid-refract liquid-refract--b" />
 
         {/* real content (only once) */}
-        <div className="relative z-10 flex flex-col flex-1">{children}</div>
+        <div className={cn("relative z-10 flex flex-col flex-1", contentClassName)}>{children}</div>
       </div>
     );
   }

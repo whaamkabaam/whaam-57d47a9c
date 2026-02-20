@@ -1,33 +1,28 @@
 
-# Fix Logged-In Compact Navbar: Kill the Gap
 
-## Problem
+# Match Step Number Background to Card Glass Layer
 
-The `ml-auto` on the desktop nav container (line 77) pushes all nav items + Studio button to the far right edge. In the full-width state this looks fine, but in the compact pill it creates a massive empty gap between the logo and the nav links.
+## What's changing
 
-## Fix
+The step number boxes (1, 2, 3) currently use a hardcoded dark background (`bg-[rgba(20,20,25,0.85)]`) with a manual border and shadow. This looks disconnected from the glass card they sit on.
 
-Two changes in `src/components/Navigation.tsx`:
+The fix: use the same glass card background color/transparency as the parent `LiquidGlassCard`, but without the specular light pseudo-elements (`liquid-refract` spans). This means matching the card's `background`, `border`, and `backdrop-blur` values from the `.liquid-glass` CSS class, just on a smaller rounded box -- no cursor-tracking highlights.
 
-### 1. Replace `ml-auto` with `justify-between` on the parent flex
+## Technical detail
 
-Instead of the nav items container using `ml-auto` to push right, make the parent flex container use `justify-between` so items spread evenly within whatever width the pill has. This eliminates the gap naturally.
+**File: `src/components/ThreeSteps.tsx`** (line 47)
 
-- **Line 61**: Change `flex items-center ${scrolled ? 'gap-4' : 'gap-8'}` to `flex items-center justify-between`
-- **Line 77**: Remove `ml-auto` from the desktop nav div
+Replace the current hardcoded style:
+```
+bg-[rgba(20,20,25,0.85)] border border-white/10 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]
+```
 
-### 2. Tighten the authenticated compact width
+With classes that sample the same glass surface as the parent card:
+```
+bg-card/40 border border-white/[0.06] backdrop-blur-md
+```
 
-Reduce from `max-w-[500px]` to `max-w-[480px]` since `justify-between` will distribute space more efficiently.
+This uses `bg-card/40` (the same card token at 40% opacity) so the number box inherits the same tint and transparency as the surrounding card, just without the `liquid-refract` highlight spans. The result: the numbers look embedded in the card surface rather than floating on a separate dark slab.
 
-- **Line 57**: Change `max-w-[500px]` to `max-w-[480px]`
+One line change, same file.
 
-### Summary
-
-| Line | Before | After |
-|------|--------|-------|
-| 57 | `max-w-[500px]` | `max-w-[480px]` |
-| 61 | `flex items-center ${scrolled ? 'gap-4' : 'gap-8'}` | `flex items-center justify-between` |
-| 77 | `ml-auto` | (removed) |
-
-Three small tweaks. The `justify-between` approach means the logo and nav items will always fill available space evenly -- no dead gap regardless of pill width or auth state.

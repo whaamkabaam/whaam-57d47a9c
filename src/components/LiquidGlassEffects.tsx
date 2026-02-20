@@ -75,7 +75,7 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
 
     // persistent last-known values
     const lastShift = React.useRef({ x: 0, y: 0 });
-    const lastMouse = React.useRef({ x: 0.5, y: 0.5 });
+    const lastMouse = React.useRef({ x: 0.5, y: 0.8 });
 
     // tween state
     const startMouse = React.useRef({ x: 0.5, y: 0.5 });

@@ -719,7 +719,7 @@ section {
 /* Liquid Glass Utility — clean, single version */
 .liquid-glass {
   --mx: .5;
-  --my: .3;
+  --my: .8;
   position: relative;
   border-radius: 28px;
 
@@ -802,7 +802,7 @@ section {
 /* Navigation-specific glass with opaque backing to block text flickering */
 .liquid-glass-nav {
   --mx: .5;
-  --my: .3;
+  --my: .8;
   position: relative;
   border-radius: 28px;
   isolation: isolate;

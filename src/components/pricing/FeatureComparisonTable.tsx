@@ -14,7 +14,7 @@ const features: FeatureRow[] = [
   { name: 'Library slots', basic: '5', plus: '20', ultra: '∞' },
   { name: 'Favorite slots', basic: '1', plus: '5', ultra: '∞' },
   { name: 'Restore version', basic: 'Last only', plus: 'Any', ultra: 'Any' },
-  { name: 'Upload .ccurve', basic: false, plus: true, ultra: true },
+  { name: 'Upload & Edit .ccurve', basic: false, plus: true, ultra: true },
   { name: 'Multiple lineages', basic: false, plus: true, ultra: true },
   { name: 'Form settings', basic: false, plus: false, ultra: true },
   { name: 'Beta testing', basic: false, plus: false, ultra: true },

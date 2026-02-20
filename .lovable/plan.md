@@ -1,40 +1,50 @@
 
 
-# "Most Popular" Badge + Button Styling Updates
+# Fix Pricing Card Alignment + Most Popular Badge
 
-## 1. Move "Most Popular" badge to top-right corner of the card
+## Issues Identified
 
-Currently the badge sits inline in the card header. Move it to an absolutely positioned pill on the top-right edge of the LiquidGlassCard, partially overflowing the card boundary for a premium feel.
+1. **Horizontal misalignment**: The Plus card applies `scale-[1.02]` which physically enlarges it, throwing off the grid alignment. All three cards should occupy equal grid space.
+2. **"Most Popular" badge clipping**: The `LiquidGlassCard` component applies `overflow-hidden` via its className (`overflow-hidden` is part of the component). The inline `style={{ overflow: 'visible' }}` fights with this, and the parent section has `overflow-x-hidden` which clips the badge anyway.
 
-**File: `src/components/pricing/TierCard.tsx`**
+---
 
-- Make the LiquidGlassCard wrapper `relative overflow-visible` (add to className)
-- Remove the current inline `{isPopular && <span>...}` block from the header section
-- Add a new absolutely positioned badge outside the card content flow:
-  - Position: `absolute -top-3 -right-3`
-  - Style: liquid glass aesthetic -- use `backdrop-blur-md bg-white/10 border border-white/20` with a warm golden glow (`shadow-[0_0_12px_rgba(255,215,64,0.4)]`)
-  - Content: Sparkles icon + "Most Popular" text in `text-whaam-yellow`
-  - Rounded pill shape
-
-## 2. Golden CTA button for Plus (most popular tier)
+## Fix 1: Remove scale transform from Plus card
 
 **File: `src/components/pricing/TierCard.tsx`**
 
-- When `isPopular` is true, add a golden accent class to the LiquidGlassButton
-- Add a custom className that applies a warm golden glow: `shadow-[0_0_20px_rgba(255,215,64,0.3)] border border-whaam-yellow/30 hover:border-whaam-yellow/60`
-- This makes the Plus button visually pop compared to Basic and Ultra while staying in the liquid glass family
+Remove `scale-[1.02]` from the `isPopular` conditional class. The card should stay the same size as siblings -- the "Most Popular" badge and golden button glow already differentiate it visually.
 
-## 3. Keep Basic and Ultra buttons as-is
+## Fix 2: Move the "Most Popular" badge outside the LiquidGlassCard
 
-They already use `LiquidGlassButton variant="primary"` which is the standard liquid glass look -- no changes needed.
+**File: `src/components/pricing/TierCard.tsx`**
+
+Wrap the entire return in a `div` with `relative` positioning. Place the badge as a sibling above the `LiquidGlassCard`, not inside it. This avoids the overflow clipping entirely.
+
+Structure becomes:
+```text
+<div className="relative">        <-- new wrapper
+  {badge}                          <-- absolute positioned, lives outside the card
+  <LiquidGlassCard>                <-- no overflow override needed
+    ...card content...
+  </LiquidGlassCard>
+</div>
+```
+
+Remove the `style={{ overflow: 'visible' }}` from LiquidGlassCard since it's no longer needed.
+
+## Fix 3: Fix parent section overflow
+
+**File: `src/components/Products.tsx`**
+
+The parent section has `overflow-x-hidden` which clips anything that extends beyond the section bounds (like an absolute badge). Change to just `overflow-visible` or remove the overflow constraint, since the grid container already constrains the cards to `max-w-5xl`.
 
 ---
 
 ## Technical Summary
 
-Only one file changes: `src/components/pricing/TierCard.tsx`
+**Files changed: 2**
 
-- Add `relative` to LiquidGlassCard className (it already has `overflow-visible` via the component itself)
-- Move the "Most Popular" badge to an absolute-positioned element before the card content
-- Style badge with liquid glass tokens (backdrop-blur, subtle border, golden glow)
-- Add golden glow styling to the CTA button when `isPopular` is true
+- `src/components/pricing/TierCard.tsx`: Wrap return in a relative div, move badge outside card, remove scale transform, remove overflow style override
+- `src/components/Products.tsx`: Remove `overflow-x-hidden` from the section (line 58) to prevent badge clipping
+

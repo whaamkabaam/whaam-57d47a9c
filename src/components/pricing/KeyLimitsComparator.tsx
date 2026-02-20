@@ -1,9 +1,9 @@
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 
 const limits = [
-  { label: 'Adj/day', basic: '5', plus: '25', ultra: '∞' },
-  { label: 'Library', basic: '5', plus: '20', ultra: '∞' },
-  { label: 'Favs', basic: '1', plus: '5', ultra: '∞' },
+  { label: 'Adjustments/day', basic: '5', plus: '25', ultra: '∞' },
+  { label: 'Library slots', basic: '5', plus: '20', ultra: '∞' },
+  { label: 'Favorites', basic: '1', plus: '5', ultra: '∞' },
   { label: 'Precision', basic: '0.5x', plus: '0.1x', ultra: '0.1x' },
 ];
 

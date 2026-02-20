@@ -215,25 +215,17 @@ export function TierCard({
           </div>
 
           {/* Features */}
-          <ul className="flex-1 space-y-2 mb-6">
+          <ul className="flex-1 space-y-3 mb-6">
             {config.features.map((feature, index) => (
-              <li 
-                key={index} 
-                className={cn(
-                  "flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors",
-                  feature.included 
-                    ? "bg-white/[0.04] border border-white/[0.06]" 
-                    : "opacity-40"
-                )}
-              >
+              <li key={index} className="flex items-start gap-2">
                 {feature.included ? (
-                  <Check className="w-4 h-4 text-whaam-yellow shrink-0" />
+                  <Check className="w-4 h-4 mt-0.5 text-secondary shrink-0" />
                 ) : (
-                  <X className="w-4 h-4 text-muted-foreground/50 shrink-0" />
+                  <X className="w-4 h-4 mt-0.5 text-muted-foreground/50 shrink-0" />
                 )}
                 <span className={cn(
                   "text-sm",
-                  feature.included ? "text-foreground" : "text-muted-foreground/50 line-through"
+                  feature.included ? "text-foreground font-semibold" : "text-muted-foreground/50"
                 )}>
                   {feature.text}
                 </span>

@@ -1,15 +1,16 @@
 
-# Fix Nav Bar Height and Round Corners
 
-## Problem
-Restoring `w-16 h-16` (64px) made the bar tall again. You want the logo to fill the bar's height without making the bar bigger, plus rounder corners.
+# Bigger Logo, Same Bar Height
+
+## The Math
+Right now: `h-10` (40px) logo + `py-1` (4px top + 4px bottom) = 48px bar.
+
+Trade the padding for logo size: `h-12` (48px) logo + `py-0` (0px) = 48px bar. Same height, bigger logo.
 
 ## Changes
 
 **File: `src/components/Navigation.tsx`**
 
-1. **Logo size** (line 67): Change `w-16 h-16` to `h-10 w-auto` -- this caps the logo height at 40px and lets width scale proportionally, so it looks full-size relative to the bar without inflating it
-2. **Corner radius** (line 54): Change `rounded-2xl` to `rounded-3xl` for softer, more rounded corners
-3. **Padding stays** at `py-1` -- with the 40px logo this gives a slim ~48px total bar height
+1. **Line 54**: Change `py-1` to `py-0` -- remove vertical padding
+2. **Line 67**: Change `h-10` to `h-12` -- logo grows from 40px to 48px, filling the bar edge-to-edge
 
-Result: logo fills the bar height naturally, bar stays compact, corners are rounder.

@@ -149,12 +149,21 @@ export function TierCard({
   return (
     <LiquidGlassCard
       className={cn(
-        "flex flex-col border-2 transition-all duration-300",
+        "relative flex flex-col border-2 transition-all duration-300",
         config.accent,
         isPopular && "scale-[1.02] shadow-lg shadow-secondary/20 border-secondary",
         isCurrentTier && "ring-2 ring-secondary ring-offset-2 ring-offset-background"
       )}
+      style={{ overflow: 'visible' }}
     >
+      {/* Most Popular badge — absolute top-right */}
+      {isPopular && (
+        <span className="absolute -top-3 -right-3 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase rounded-full backdrop-blur-md bg-white/10 border border-white/20 shadow-[0_0_12px_rgba(255,215,64,0.4)] text-whaam-yellow">
+          <Sparkles className="w-3.5 h-3.5" />
+          Most Popular
+        </span>
+      )}
+
       <div className="flex flex-col flex-1">
         {/* Header */}
         <div className="mb-4 text-center">
@@ -163,12 +172,6 @@ export function TierCard({
             alt={`${config.name} tier`}
             className="w-24 h-24 mx-auto mb-3 object-contain"
           />
-          {isPopular && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 mb-2 text-xs font-bold uppercase bg-secondary text-secondary-foreground rounded-full">
-              <Sparkles className="w-3 h-3" />
-              Most Popular
-            </span>
-          )}
           <h3 className="text-xl font-bold text-foreground">{config.name}</h3>
           <p className="flex items-center justify-center gap-1.5 mt-1.5 text-xs text-muted-foreground italic">
             <Target className="w-3 h-3" />
@@ -235,7 +238,10 @@ export function TierCard({
           onClick={onSelect}
           disabled={isProcessing || isCurrentTier}
           variant="primary"
-          className={cn("w-full h-12")}
+          className={cn(
+            "w-full h-12",
+            isPopular && "shadow-[0_0_20px_rgba(255,215,64,0.3)] border border-whaam-yellow/30 hover:border-whaam-yellow/60"
+          )}
         >
           {isCurrentTier ? 'Current Plan' : isProcessing ? 'Processing...' : `Start ${config.name}`}
         </LiquidGlassButton>

@@ -60,11 +60,11 @@ export default function Navigation({ activeSection }: NavigationProps) {
         >
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center space-x-2 shrink-0">
+            <div className="flex items-center space-x-2 shrink-0 overflow-visible">
               <img 
                 src={whaamLogo} 
                 alt="WHAAM KABAAM Logo" 
-                className="h-12 w-auto object-contain transition-all duration-500 ease-out"
+                className="h-16 -my-2 w-auto object-contain transition-all duration-500 ease-out"
               />
               <span className={`text-xl font-bold glass-text-contrast whitespace-nowrap ${
                 mounted ? 'transition-all duration-500 ease-out' : ''

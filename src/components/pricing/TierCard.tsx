@@ -33,6 +33,7 @@ interface TierConfig {
   includes: string | null;
   deltaFeatures: DeltaFeature[];
   notIncludedFeatures: string[];
+  bonusFeatures: string[];
 }
 
 const tierConfig: Record<PaidTier, TierConfig> = {
@@ -49,6 +50,7 @@ const tierConfig: Record<PaidTier, TierConfig> = {
     includes: null,
     deltaFeatures: [],
     notIncludedFeatures: ['.ccurve upload/edit', 'Multiple curve families', 'Form settings', 'Beta testing'],
+    bonusFeatures: [],
   },
   plus: {
     name: 'Plus',
@@ -64,6 +66,7 @@ const tierConfig: Record<PaidTier, TierConfig> = {
       { prefix: '', bold: '+ multiple', suffix: ' curve families' },
     ],
     notIncludedFeatures: ['Form settings', 'Beta testing'],
+    bonusFeatures: [],
   },
   ultra: {
     name: 'Ultra',
@@ -78,6 +81,7 @@ const tierConfig: Record<PaidTier, TierConfig> = {
       { prefix: '', bold: '+ beta testing' },
     ],
     notIncludedFeatures: [],
+    bonusFeatures: ['Extra swag', 'Extra aura', 'You cannot get more VIP than this'],
   },
 };
 
@@ -141,11 +145,26 @@ function NotIncludedFeatures({ features }: { features: string[] }) {
   );
 }
 
+function BonusFeatures({ features }: { features: string[] }) {
+  if (features.length === 0) return null;
+  return (
+    <ul className="space-y-2 mt-3">
+      {features.map((feat, i) => (
+        <li key={i} className="flex items-start gap-2">
+          <Sparkles className="w-3.5 h-3.5 mt-0.5 text-whaam-yellow/30 shrink-0" />
+          <span className="text-sm text-white/35 italic">{feat}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function DeltaFeatures({ config }: { config: TierConfig }) {
   // Basic: show full feature list
   if (config.basicFeatures) {
     return (
       <div className="flex-1 mb-6 min-h-[220px]">
+        <div className="mb-3 h-[34px]" />
         <ul className="space-y-2">
           {config.basicFeatures.map((feat, i) => (
             <li key={i} className="flex items-start gap-2">
@@ -155,6 +174,7 @@ function DeltaFeatures({ config }: { config: TierConfig }) {
           ))}
         </ul>
         <NotIncludedFeatures features={config.notIncludedFeatures} />
+        <BonusFeatures features={config.bonusFeatures} />
       </div>
     );
   }
@@ -180,6 +200,7 @@ function DeltaFeatures({ config }: { config: TierConfig }) {
         ))}
       </ul>
       <NotIncludedFeatures features={config.notIncludedFeatures} />
+      <BonusFeatures features={config.bonusFeatures} />
     </div>
   );
 }

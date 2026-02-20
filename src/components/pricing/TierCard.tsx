@@ -251,11 +251,20 @@ export function TierCard({
               </motion.span>
             </AnimatePresence>
           </div>
-          {duration !== 'daily' && (
-            <p className="text-[11px] text-white/35 mt-1">
-              ~${animatedDailyCost.toFixed(2)}/day
-            </p>
-          )}
+          <AnimatePresence>
+            {duration !== 'daily' && (
+              <motion.p
+                key="daily-cost"
+                initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                animate={{ opacity: 1, height: 'auto', marginTop: 4 }}
+                exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                className="text-[11px] text-white/35 overflow-hidden"
+              >
+                ~${animatedDailyCost.toFixed(2)}/day
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Delta features */}

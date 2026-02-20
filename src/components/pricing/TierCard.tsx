@@ -71,7 +71,7 @@ const tierConfig: Record<PaidTier, {
   ultra: {
     name: 'Ultra',
     description: 'Unlimited everything, full control',
-    bestFor: 'Power users + full control',
+    bestFor: 'Unlimited everything · full control',
     features: [
       { text: 'Unlimited adjustments', included: true },
       { text: 'Fine feedback slider (0.1 steps)', included: true },
@@ -170,7 +170,6 @@ export function TierCard({
             </span>
           )}
           <h3 className="text-xl font-bold text-foreground">{config.name}</h3>
-          <p className="text-sm text-muted-foreground">{config.description}</p>
           <p className="flex items-center justify-center gap-1.5 mt-1.5 text-xs text-muted-foreground italic">
             <Target className="w-3 h-3" />
             {config.bestFor}

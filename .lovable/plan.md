@@ -1,50 +1,30 @@
 
 
-# Fix Pricing Card Alignment + Most Popular Badge
+# Align LiveSessionCard with Liquid Glass Design Language
 
-## Issues Identified
+## Problem
+The LiveSessionCard currently uses a standard `Button` component with `variant="whaam"` and plain opaque badge styling (`bg-primary/20`). This doesn't match the liquid glass aesthetic used across the rest of the pricing section (TierCards use `LiquidGlassButton`, glass-styled badges, etc.).
 
-1. **Horizontal misalignment**: The Plus card applies `scale-[1.02]` which physically enlarges it, throwing off the grid alignment. All three cards should occupy equal grid space.
-2. **"Most Popular" badge clipping**: The `LiquidGlassCard` component applies `overflow-hidden` via its className (`overflow-hidden` is part of the component). The inline `style={{ overflow: 'visible' }}` fights with this, and the parent section has `overflow-x-hidden` which clips the badge anyway.
+## Changes
 
----
+**File: `src/components/pricing/LiveSessionCard.tsx`**
 
-## Fix 1: Remove scale transform from Plus card
+1. **Replace the standard Button with LiquidGlassButton** -- swap the `Button` import for `LiquidGlassButton` from `LiquidGlassEffects`, using `variant="primary"` with a golden accent border (matching the popular tier CTA pattern: `border border-whaam-yellow/30 hover:border-whaam-yellow/60 shadow-[0_0_20px_rgba(255,215,64,0.3)]`).
 
-**File: `src/components/pricing/TierCard.tsx`**
+2. **Restyle the "Premium Experience" badge to liquid glass** -- replace `bg-primary/20 text-primary` with glass tokens: `backdrop-blur-md bg-white/10 border border-white/20 text-whaam-yellow shadow-[0_0_12px_rgba(255,215,64,0.4)]` to match the "Most Popular" badge styling from TierCard.
 
-Remove `scale-[1.02]` from the `isPopular` conditional class. The card should stay the same size as siblings -- the "Most Popular" badge and golden button glow already differentiate it visually.
+3. **Style the benefit icons with glass-friendly tones** -- change `text-primary` on icons to `text-whaam-yellow` for a warmer, more premium feel consistent with the golden accent language.
 
-## Fix 2: Move the "Most Popular" badge outside the LiquidGlassCard
-
-**File: `src/components/pricing/TierCard.tsx`**
-
-Wrap the entire return in a `div` with `relative` positioning. Place the badge as a sibling above the `LiquidGlassCard`, not inside it. This avoids the overflow clipping entirely.
-
-Structure becomes:
-```text
-<div className="relative">        <-- new wrapper
-  {badge}                          <-- absolute positioned, lives outside the card
-  <LiquidGlassCard>                <-- no overflow override needed
-    ...card content...
-  </LiquidGlassCard>
-</div>
-```
-
-Remove the `style={{ overflow: 'visible' }}` from LiquidGlassCard since it's no longer needed.
-
-## Fix 3: Fix parent section overflow
-
-**File: `src/components/Products.tsx`**
-
-The parent section has `overflow-x-hidden` which clips anything that extends beyond the section bounds (like an absolute badge). Change to just `overflow-visible` or remove the overflow constraint, since the grid container already constrains the cards to `max-w-5xl`.
+4. **Remove the hard `border-2 border-primary/50`** on the LiquidGlassCard -- the card already has liquid glass borders baked in; the extra primary border looks out of place. Replace with a subtle `border border-white/10` or remove entirely.
 
 ---
 
-## Technical Summary
+### Technical Summary
 
-**Files changed: 2**
+**1 file changed:** `src/components/pricing/LiveSessionCard.tsx`
 
-- `src/components/pricing/TierCard.tsx`: Wrap return in a relative div, move badge outside card, remove scale transform, remove overflow style override
-- `src/components/Products.tsx`: Remove `overflow-x-hidden` from the section (line 58) to prevent badge clipping
-
+- Import `LiquidGlassButton` instead of `Button`
+- Update badge classes to glass + golden glow
+- Update CTA to `LiquidGlassButton` with golden accent
+- Update icon colors to `text-whaam-yellow`
+- Remove opaque `border-primary/50` from card wrapper

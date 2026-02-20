@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { Check, X, Sparkles } from 'lucide-react';
+import { Check, X, Sparkles, Target } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { getPrice, formatPrice, getDurationLabel } from '@/lib/fastspring';
-import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
+import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
 import type { SubscriptionDuration } from '@/lib/api';
 
 import basicBadge from '@/assets/tiers/basic.png';
@@ -31,12 +30,14 @@ interface TierCardProps {
 const tierConfig: Record<PaidTier, {
   name: string;
   description: string;
+  bestFor: string;
   features: Array<{ text: string; included: boolean }>;
   accent: string;
 }> = {
   basic: {
     name: 'Basic',
     description: 'Get started with the essentials',
+    bestFor: 'Light tweaking / casual use',
     features: [
       { text: '5 adjustments per day', included: true },
       { text: 'Preset feedback buttons (0.5 steps)', included: true },
@@ -46,12 +47,14 @@ const tierConfig: Record<PaidTier, {
       { text: 'Upload .ccurve files', included: false },
       { text: 'Multiple curve lineages', included: false },
       { text: 'Form settings', included: false },
+      { text: 'Beta feature testing', included: false },
     ],
     accent: 'border-border',
   },
   plus: {
     name: 'Plus',
     description: 'For serious aimers who want room to tweak',
+    bestFor: 'Most players who iterate daily',
     features: [
       { text: '25 adjustments per day', included: true },
       { text: 'Fine feedback slider (0.1 steps)', included: true },
@@ -61,12 +64,14 @@ const tierConfig: Record<PaidTier, {
       { text: 'Upload .ccurve files', included: true },
       { text: 'Multiple curve lineages', included: true },
       { text: 'Form settings', included: false },
+      { text: 'Beta feature testing', included: false },
     ],
     accent: 'border-secondary',
   },
   ultra: {
     name: 'Ultra',
     description: 'Unlimited everything, full control',
+    bestFor: 'Power users + full control',
     features: [
       { text: 'Unlimited adjustments', included: true },
       { text: 'Fine feedback slider (0.1 steps)', included: true },
@@ -76,6 +81,7 @@ const tierConfig: Record<PaidTier, {
       { text: 'Upload .ccurve files', included: true },
       { text: 'Multiple curve lineages', included: true },
       { text: 'Form settings access', included: true },
+      { text: 'Beta feature testing', included: true },
     ],
     accent: 'border-primary',
   },
@@ -109,7 +115,7 @@ function useAnimatedPrice(targetPrice: number) {
     const animate = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
       setDisplayPrice(from + (to - from) * eased);
       if (progress < 1) requestAnimationFrame(animate);
     };
@@ -118,6 +124,12 @@ function useAnimatedPrice(targetPrice: number) {
   }, [targetPrice]);
 
   return displayPrice;
+}
+
+function getEffectiveDailyCost(price: number, duration: SubscriptionDuration): string | null {
+  if (duration === 'daily') return null;
+  const days = duration === 'weekly' ? 7 : 30;
+  return `~$${(price / days).toFixed(2)}/day on average`;
 }
 
 export function TierCard({ 
@@ -132,6 +144,7 @@ export function TierCard({
   const price = getPrice(tier, duration);
   const animatedPrice = useAnimatedPrice(price);
   const durationLabel = getDurationLabel(duration);
+  const dailyCost = getEffectiveDailyCost(price, duration);
 
   return (
     <LiquidGlassCard
@@ -158,6 +171,10 @@ export function TierCard({
           )}
           <h3 className="text-xl font-bold text-foreground">{config.name}</h3>
           <p className="text-sm text-muted-foreground">{config.description}</p>
+          <p className="flex items-center justify-center gap-1.5 mt-1.5 text-xs text-muted-foreground italic">
+            <Target className="w-3 h-3" />
+            {config.bestFor}
+          </p>
         </div>
 
         {/* Price */}
@@ -179,6 +196,20 @@ export function TierCard({
               </motion.span>
             </AnimatePresence>
           </div>
+          <AnimatePresence mode="wait">
+            {dailyCost && (
+              <motion.p
+                key={dailyCost}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.2 }}
+                className="text-xs text-muted-foreground mt-1"
+              >
+                {dailyCost}
+              </motion.p>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Features */}
@@ -201,17 +232,14 @@ export function TierCard({
         </ul>
 
         {/* CTA */}
-        <Button
+        <LiquidGlassButton
           onClick={onSelect}
           disabled={isProcessing || isCurrentTier}
-          variant={isPopular ? "whaam" : "outline"}
-          className={cn(
-            "w-full h-12",
-            isPopular && "liquid-glow-secondary"
-          )}
+          variant="primary"
+          className={cn("w-full h-12")}
         >
-          {isCurrentTier ? 'Current Plan' : isProcessing ? 'Processing...' : `Get ${config.name}`}
-        </Button>
+          {isCurrentTier ? 'Current Plan' : isProcessing ? 'Processing...' : `Start ${config.name}`}
+        </LiquidGlassButton>
 
         {/* Microline */}
         <p className="mt-3 text-xs text-center text-muted-foreground">

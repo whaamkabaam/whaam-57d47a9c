@@ -78,13 +78,16 @@ export default function Pricing() {
             Pick your plan, start aiming better
           </h1>
           <p className="text-lg text-muted-foreground">
-            Choose the subscription that fits your needs. Upgrade or downgrade anytime.
+            Choose your tier and duration. Upgrade or downgrade anytime.
           </p>
         </div>
 
         {/* Duration Toggle */}
-        <div className="flex justify-center mb-10">
+        <div className="flex flex-col items-center gap-3 mb-10">
           <DurationToggle value={duration} onChange={setDuration} />
+          <p className="text-sm text-muted-foreground text-center max-w-md">
+            Just visiting? Grab a Day or Week Pass. Serious improvement? Monthly saves you money.
+          </p>
         </div>
 
         {/* Tier Cards */}

@@ -1,51 +1,62 @@
 
 
-# Dashboard Explainer Section
+# Update Tier Cards: Full Basic Features, Unabbreviated Labels, Remove Explainer
 
-Add a visual explainer section below the pricing cards (inside `Products.tsx`) and the `/pricing` page that showcases the dashboard experience using the uploaded screenshot.
+## Changes
 
-## New Asset
+### 1. Remove DashboardExplainer from both pages
+Delete the `<DashboardExplainer />` usage and import from `Products.tsx` and `Pricing.tsx`.
 
-Copy `user-uploads://image-450.png` to `src/assets/dashboard-preview.png`.
+### 2. Unabbreviate labels in KeyLimitsComparator
+Update the `limits` array labels:
+- `Adj/day` --> `Adjustments/day`
+- `Library` --> `Library slots`
+- `Favs` --> `Favorites`
+- `Precision` stays as-is (already clear)
 
-## New Component: `src/components/pricing/DashboardExplainer.tsx`
+### 3. Rewrite Basic tier config to list all features
+Replace the `coreSummary` approach with a full feature list using check-style bullets:
 
-A self-contained section placed between the Live Session card and the Benefits section. Layout:
+- 5 daily adjustments
+- Buttons feedback (0.5x precision)
+- 5 library slots
+- 1 favorite slot
+- Restore last version only
 
-- **Header**: centered text block
-  - Small muted label: `"What you get inside"` (`text-xs text-white/40 uppercase tracking-wider`)
-  - Heading: `"Your AI-powered curve studio"` (`text-2xl md:text-3xl font-bold`)
-  - Subtitle: 1-line muted description (`text-sm text-muted-foreground`), e.g. "Play games, rate how it felt, and your curve improves automatically."
+And a "Not included" line: `.ccurve upload, lineages, form settings, beta testing`
 
-- **Screenshot**: the uploaded dashboard image
-  - Wrapped in a `LiquidGlassCard` with subtle border (`border-white/[0.08]`)
-  - `rounded-xl overflow-hidden` with the image inside at full width
-  - Subtle shadow/glow beneath for depth (`shadow-2xl shadow-black/30`)
-  - Max width: `max-w-4xl mx-auto`
+### 4. Change "plus:" to "and:" in includes lines
+- Plus: `'Includes Basic, and:'`
+- Ultra: `'Includes Plus, and:'`
 
-- **Feature callouts** (optional, below the image): 3 compact inline items in a horizontal row
-  - "AI curve generation" / "Feedback sliders" / "Version history"
-  - Small icons + muted text, no cards -- just a light annotation row
+### 5. Unabbreviate delta feature labels in Plus and Ultra
 
-## Integration
+**Plus** deltas (expanded, with more detail):
+- `Precision: 0.5 → 0.1`
+- `Restore: last → any version`
+- `Library slots: 5 → 20`
+- `Favorite slots: 1 → 5`
+- `+ .ccurve upload/edit`
+- `+ multiple curve families`
 
-### `src/components/Products.tsx`
-Insert `<DashboardExplainer />` between the Live Session card and the Benefits ("Why choose WHAAMKABAAM?") section.
+**Ultra** deltas (expanded):
+- `Adjustments/day: 25 → ∞`
+- `Library slots: 20 → ∞`
+- `Favorite slots: 5 → ∞`
+- `+ form settings`
+- `+ beta testing`
 
-### `src/pages/Pricing.tsx`
-Insert `<DashboardExplainer />` between the Live Session card and the closing `</main>`.
+### 6. Update TierConfig interface
+- Add a `basicFeatures` array (simple string list for Basic's full feature display)
+- Keep `coreSummary` as null for all tiers (or remove it)
+- Keep `deltaFeatures` for Plus/Ultra
 
-## Files Changed
+## Files changed
 
-| File | Action |
+| File | Change |
 |------|--------|
-| `src/assets/dashboard-preview.png` | Copy uploaded image |
-| `src/components/pricing/DashboardExplainer.tsx` | New component |
-| `src/components/Products.tsx` | Import and place `DashboardExplainer` |
-| `src/pages/Pricing.tsx` | Import and place `DashboardExplainer` |
-
-## What stays the same
-- All existing pricing card logic, comparator strip, and benefits section
-- Liquid-glass aesthetic and dark background
-- No new dependencies needed
+| `src/components/pricing/TierCard.tsx` | Rewrite Basic rendering, update tierConfig data, change "plus:" to "and:", expand deltas |
+| `src/components/pricing/KeyLimitsComparator.tsx` | Unabbreviate labels |
+| `src/components/Products.tsx` | Remove DashboardExplainer import and usage |
+| `src/pages/Pricing.tsx` | Remove DashboardExplainer import and usage |
 

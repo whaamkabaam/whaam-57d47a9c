@@ -54,11 +54,11 @@ export default function Navigation({ activeSection }: NavigationProps) {
           className={`mt-2 p-2 px-4 rounded-2xl w-full ${
             mounted ? 'transition-[max-width] duration-500 ease-out' : ''
           } ${
-            scrolled ? (isAuthenticated ? 'max-w-[500px] mx-auto' : 'max-w-[620px] mx-auto') : 'max-w-[1400px] mx-auto'
+            scrolled ? (isAuthenticated ? 'max-w-[480px] mx-auto' : 'max-w-[620px] mx-auto') : 'max-w-[1400px] mx-auto'
           }`}
           style={{ willChange: 'max-width' }}
         >
-          <div className={`flex items-center ${scrolled ? 'gap-4' : 'gap-8'}`}>
+          <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-2 shrink-0">
               <img 
@@ -74,7 +74,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-5 ml-auto">
+            <div className="hidden md:flex items-center space-x-5">
               {navItems.map((item) => (
                 <button
                   key={item.href}

@@ -17,7 +17,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { LiquidGlassCard } from "@/components/LiquidGlassEffects";
-import { DashboardExplainer } from "@/components/pricing/DashboardExplainer";
 import type { SubscriptionDuration, SubscriptionTier } from "@/lib/api";
 
 type PaidTier = Exclude<SubscriptionTier, 'free'>;
@@ -138,9 +137,6 @@ const Products = () => {
           </div>
           <LiveSessionCard />
         </div>
-
-        {/* Dashboard Explainer */}
-        <DashboardExplainer />
 
         {/* Benefits Section */}
         <LiquidGlassCard variant="primary" className="p-8 md:p-10">

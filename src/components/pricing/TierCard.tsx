@@ -29,7 +29,7 @@ interface DeltaFeature {
 interface TierConfig {
   name: string;
   bestFor: string;
-  coreSummary: string | null;
+  basicFeatures: string[] | null;
   includes: string | null;
   deltaFeatures: DeltaFeature[];
   notIncluded: string | null;
@@ -39,32 +39,41 @@ const tierConfig: Record<PaidTier, TierConfig> = {
   basic: {
     name: 'Basic',
     bestFor: 'Light tweaking · casual use',
-    coreSummary: 'Coarse tuning + last-version restore',
+    basicFeatures: [
+      '5 daily adjustments',
+      'Buttons feedback (0.5x precision)',
+      '5 library slots',
+      '1 favorite slot',
+      'Restore last version only',
+    ],
     includes: null,
     deltaFeatures: [],
-    notIncluded: '.ccurve upload, lineages, form settings, beta',
+    notIncluded: '.ccurve upload, lineages, form settings, beta testing',
   },
   plus: {
     name: 'Plus',
     bestFor: 'Daily iteration · most players',
-    coreSummary: null,
-    includes: 'Includes Basic, plus:',
+    basicFeatures: null,
+    includes: 'Includes Basic, and:',
     deltaFeatures: [
       { prefix: 'Precision: ', bold: '0.5 → 0.1' },
-      { prefix: 'Restore: ', bold: 'last → any' },
+      { prefix: 'Restore: ', bold: 'last → any version' },
+      { prefix: 'Library slots: ', bold: '5 → 20' },
+      { prefix: 'Favorite slots: ', bold: '1 → 5' },
       { prefix: '', bold: '+ .ccurve', suffix: ' upload/edit' },
       { prefix: '', bold: '+ multiple', suffix: ' curve families' },
     ],
-    notIncluded: 'form settings, beta',
+    notIncluded: 'form settings, beta testing',
   },
   ultra: {
     name: 'Ultra',
     bestFor: 'Unlimited · full control',
-    coreSummary: null,
-    includes: 'Includes Plus, plus:',
+    basicFeatures: null,
+    includes: 'Includes Plus, and:',
     deltaFeatures: [
-      { prefix: 'Adj/day: ', bold: '25 → ∞' },
-      { prefix: 'Library + favs: ', bold: '20/5 → ∞' },
+      { prefix: 'Adjustments/day: ', bold: '25 → ∞' },
+      { prefix: 'Library slots: ', bold: '20 → ∞' },
+      { prefix: 'Favorite slots: ', bold: '5 → ∞' },
       { prefix: '', bold: '+ form settings' },
       { prefix: '', bold: '+ beta testing' },
     ],
@@ -119,15 +128,20 @@ function getEffectiveDailyCost(price: number, duration: SubscriptionDuration): s
 /* ── Sub-components ── */
 
 function DeltaFeatures({ config }: { config: TierConfig }) {
-  // Basic: show core summary only
-  if (config.coreSummary) {
+  // Basic: show full feature list
+  if (config.basicFeatures) {
     return (
       <div className="flex-1 mb-6">
-        <p className="text-xs text-white/45">
-          Core: {config.coreSummary}
-        </p>
+        <ul className="space-y-2">
+          {config.basicFeatures.map((feat, i) => (
+            <li key={i} className="flex items-start gap-2">
+              <Check className="w-3.5 h-3.5 mt-0.5 text-whaam-yellow/50 shrink-0" />
+              <span className="text-sm text-foreground/70">{feat}</span>
+            </li>
+          ))}
+        </ul>
         {config.notIncluded && (
-          <p className="mt-3 text-[11px] text-white/30">
+          <p className="mt-4 text-[11px] text-white/30">
             Not included: {config.notIncluded}
           </p>
         )}

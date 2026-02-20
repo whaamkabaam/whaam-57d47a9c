@@ -1,51 +1,85 @@
 
 
-# Improve Pricing Card Feature Lists
+# Align Pricing Card Buttons and Add Ultra Swag
+
+## Problem
+1. Basic's feature list starts higher than Plus/Ultra because it lacks the inheritance badge, causing CTAs to misalign vertically.
+2. Ultra has fewer rows (6 visual elements) compared to Plus (9), leaving its CTA button floating higher.
 
 ## Changes
 
-### 1. Update inheritance text
-Change "Includes Basic, and:" to "Includes everything in Basic, and:" (and same for Plus).
+### File: `src/components/pricing/TierCard.tsx`
 
-### 2. Convert Basic's "Not included" into explicit X-marked rows
-Instead of the tiny "Not included: .ccurve upload, lineages, form settings, beta testing" text at the bottom of the Basic card, show those as actual list items with a red/muted X icon -- matching the same visual pattern as the checkmark rows. This fills the vertical space so all three cards' CTAs align naturally, and makes it immediately clear what Basic is missing.
+#### 1. Add spacer to Basic card
+In the `DeltaFeatures` component, when rendering Basic features (the `config.basicFeatures` path), add a blank spacer div with the same height as the inheritance badge (~40px) so the feature bullets start at the same vertical position as Plus/Ultra.
 
-Same for Plus's "Not included" items.
+#### 2. Add fun bonus rows to Ultra
+Add 3 tongue-in-cheek items to Ultra's `notIncludedFeatures` array -- but these aren't "not included", they're bonus perks. Instead, add a new `bonusFeatures` field to `TierConfig`:
 
-### 3. Remove the `notIncluded` string approach
-Replace `notIncluded: string | null` with `notIncludedFeatures: string[]` arrays so each missing feature gets its own X-marked row.
-
-## File: `src/components/pricing/TierCard.tsx`
-
-### Data changes (tierConfig)
-
-**Basic:**
-- Remove `notIncluded: '...'`
-- Add `notIncludedFeatures: ['.ccurve upload/edit', 'Multiple curve families', 'Form settings', 'Beta testing']`
-
-**Plus:**
-- Change `includes` to `'Includes everything in Basic, and:'`
-- Remove `notIncluded: '...'`
-- Add `notIncludedFeatures: ['Form settings', 'Beta testing']`
-
-**Ultra:**
-- Change `includes` to `'Includes everything in Plus, and:'`
-- `notIncludedFeatures: []`
-
-### Interface changes
-- Replace `notIncluded: string | null` with `notIncludedFeatures: string[]` in `TierConfig`
-
-### DeltaFeatures component changes
-- Replace the small `<p>` "Not included:" text block with a list of X-marked items rendered identically to the check-marked items but using an `X` icon in `text-white/25` (muted) and `text-white/30` label text
-- This applies to both the basic features path and the delta features path
-
-The X items render like:
 ```
-X  .ccurve upload/edit
-X  Multiple curve families
-X  Form settings
-X  Beta testing
+bonusFeatures: string[]
 ```
 
-This fills the vertical space so cards align, and makes missing features scannable at a glance -- no tiny footnote needed.
+Ultra gets:
+- `Extra swag`
+- `Extra aura`
+- `You cannot get more VIP than this`
+
+These render with a Sparkles icon in `text-whaam-yellow/30` and `text-white/40` italic text -- clearly playful, not mistaken for real features.
+
+#### 3. Interface update
+Add `bonusFeatures: string[]` to `TierConfig`. Basic and Plus get empty arrays.
+
+#### 4. Render bonus features
+In `DeltaFeatures`, after `NotIncludedFeatures`, render bonus items with the Sparkles icon, styled lighter/italic to read as tongue-in-cheek extras.
+
+### Row count after changes
+- **Basic**: spacer + 5 features + 4 not-included = matches Plus height
+- **Plus**: badge + 6 delta + 2 not-included = 9 visual elements (tallest, sets the bar)
+- **Ultra**: badge + 5 delta + 3 bonus = 9 visual elements (matches Plus)
+
+All three CTAs will align.
+
+## Technical details
+
+### Data changes in `tierConfig`
+
+```typescript
+// Add to interface
+bonusFeatures: string[];
+
+// Basic
+bonusFeatures: [],
+
+// Plus  
+bonusFeatures: [],
+
+// Ultra
+bonusFeatures: ['Extra swag', 'Extra aura', 'You cannot get more VIP than this'],
+```
+
+### Basic spacer (in DeltaFeatures, basicFeatures path)
+Add before the `<ul>`:
+```tsx
+<div className="mb-3 h-[34px]" /> {/* spacer to match inheritance badge height */}
+```
+
+### BonusFeatures sub-component
+```tsx
+function BonusFeatures({ features }: { features: string[] }) {
+  if (features.length === 0) return null;
+  return (
+    <ul className="space-y-2 mt-3">
+      {features.map((feat, i) => (
+        <li key={i} className="flex items-start gap-2">
+          <Sparkles className="w-3.5 h-3.5 mt-0.5 text-whaam-yellow/30 shrink-0" />
+          <span className="text-sm text-white/35 italic">{feat}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+Rendered after `NotIncludedFeatures` in both code paths of `DeltaFeatures`.
 

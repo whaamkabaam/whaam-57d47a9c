@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Check, X, Sparkles, Target } from 'lucide-react';
+import { Check, Sparkles, Target } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { getPrice, formatPrice, getDurationLabel } from '@/lib/fastspring';
@@ -27,62 +27,70 @@ interface TierCardProps {
   isCurrentTier?: boolean;
 }
 
-const tierConfig: Record<PaidTier, {
+interface TierConfig {
   name: string;
-  description: string;
   bestFor: string;
-  features: Array<{ text: string; included: boolean }>;
+  caps: Array<{ label: string; value: string }>;
+  includes: string | null;
+  deltaFeatures: string[];
+  notIncluded: string | null;
   accent: string;
-}> = {
+}
+
+const tierConfig: Record<PaidTier, TierConfig> = {
   basic: {
     name: 'Basic',
-    description: 'Get started with the essentials',
     bestFor: 'Light tweaking / casual use',
-    features: [
-      { text: '5 adjustments per day', included: true },
-      { text: 'Preset feedback buttons (0.5x)', included: true },
-      { text: '5 library slots', included: true },
-      { text: '1 favorite slot', included: true },
-      { text: 'Restore last version only', included: true },
-      { text: 'Upload & Edit your own .ccurve files', included: false },
-      { text: 'Multiple curve lineages', included: false },
-      { text: 'Form settings', included: false },
-      { text: 'Beta feature testing', included: false },
+    caps: [
+      { label: 'Adjustments/day', value: '5' },
+      { label: 'Library slots', value: '5' },
+      { label: 'Favorites', value: '1' },
+      { label: 'Tuning precision', value: '0.5x' },
     ],
+    includes: null,
+    deltaFeatures: [
+      'Coarse tuning (0.5 steps)',
+      'Last version restore',
+    ],
+    notIncluded: '.ccurve upload, lineages, form settings, beta',
     accent: 'border-border',
   },
   plus: {
     name: 'Plus',
-    description: 'For serious aimers who want room to tweak',
     bestFor: 'Most players who iterate daily',
-    features: [
-      { text: '25 adjustments per day', included: true },
-      { text: 'Fine feedback slider (0.1x)', included: true },
-      { text: '20 library slots', included: true },
-      { text: '5 favorite slots', included: true },
-      { text: 'Restore any version', included: true },
-      { text: 'Upload & Edit your own .ccurve files', included: true },
-      { text: 'Multiple curve lineages', included: true },
-      { text: 'Form settings', included: false },
-      { text: 'Beta feature testing', included: false },
+    caps: [
+      { label: 'Adjustments/day', value: '25' },
+      { label: 'Library slots', value: '20' },
+      { label: 'Favorites', value: '5' },
+      { label: 'Tuning precision', value: '0.1x' },
     ],
+    includes: 'Everything in Basic, plus:',
+    deltaFeatures: [
+      'Fine tuning (0.1 steps)',
+      'Full version history',
+      'Upload & edit .ccurve files',
+      'Multiple curve families',
+    ],
+    notIncluded: 'form settings, beta',
     accent: 'border-secondary',
   },
   ultra: {
     name: 'Ultra',
-    description: 'Unlimited everything, full control',
     bestFor: 'Unlimited everything · full control',
-    features: [
-      { text: 'Unlimited adjustments', included: true },
-      { text: 'Fine feedback slider (0.1x)', included: true },
-      { text: 'Unlimited library slots', included: true },
-      { text: 'Unlimited favorites', included: true },
-      { text: 'Restore any version', included: true },
-      { text: 'Upload & Edit your own .ccurve files', included: true },
-      { text: 'Multiple curve lineages', included: true },
-      { text: 'Form settings access', included: true },
-      { text: 'Beta feature testing', included: true },
+    caps: [
+      { label: 'Adjustments/day', value: '∞' },
+      { label: 'Library slots', value: '∞' },
+      { label: 'Favorites', value: '∞' },
+      { label: 'Tuning precision', value: '0.1x' },
     ],
+    includes: 'Everything in Plus, plus:',
+    deltaFeatures: [
+      'Unlimited adjustments',
+      'Unlimited library & favorites',
+      'Form settings access',
+      'Beta feature testing',
+    ],
+    notIncluded: null,
     accent: 'border-primary',
   },
 };
@@ -132,11 +140,59 @@ function getEffectiveDailyCost(price: number, duration: SubscriptionDuration): s
   return `~$${(price / days).toFixed(2)}/day`;
 }
 
-export function TierCard({ 
-  tier, 
-  duration, 
-  isPopular, 
-  onSelect, 
+/* ── Sub-components ── */
+
+function CapsBlock({ caps }: { caps: TierConfig['caps'] }) {
+  return (
+    <div className="grid grid-cols-2 gap-x-4 gap-y-0 mb-6 py-3 px-3 rounded-lg bg-muted/30 border border-border/50">
+      {caps.map((cap, i) => (
+        <div
+          key={cap.label}
+          className={cn(
+            "flex items-center justify-between py-2",
+            i < caps.length - 2 && "border-b border-border/30"
+          )}
+        >
+          <span className="text-xs text-muted-foreground">{cap.label}</span>
+          <span className="text-sm font-bold text-foreground">{cap.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function DeltaFeatures({ config }: { config: TierConfig }) {
+  return (
+    <div className="flex-1 mb-6">
+      {config.includes && (
+        <p className="text-xs text-muted-foreground italic mb-3">
+          {config.includes}
+        </p>
+      )}
+      <ul className="space-y-2.5">
+        {config.deltaFeatures.map((feature) => (
+          <li key={feature} className="flex items-start gap-2">
+            <Check className="w-4 h-4 mt-0.5 text-secondary shrink-0" />
+            <span className="text-sm text-foreground font-semibold">{feature}</span>
+          </li>
+        ))}
+      </ul>
+      {config.notIncluded && (
+        <p className="mt-4 text-xs text-muted-foreground/60">
+          Not included: {config.notIncluded}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/* ── Main component ── */
+
+export function TierCard({
+  tier,
+  duration,
+  isPopular,
+  onSelect,
   isProcessing,
   isCurrentTier,
 }: TierCardProps) {
@@ -148,7 +204,7 @@ export function TierCard({
 
   return (
     <div className="relative">
-      {/* Most Popular badge — outside card to avoid overflow clipping */}
+      {/* Most Popular badge */}
       {isPopular && (
         <span className="absolute -top-3 -right-3 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase rounded-full backdrop-blur-md bg-white/10 border border-white/20 shadow-[0_0_12px_rgba(255,215,64,0.4)] text-whaam-yellow">
           <Sparkles className="w-3.5 h-3.5" />
@@ -165,10 +221,10 @@ export function TierCard({
         )}
       >
         <div className="flex flex-col flex-1">
-          {/* Header */}
+          {/* Header: badge + name + best-for */}
           <div className="mb-4 text-center">
-            <img 
-              src={tierBadges[tier]} 
+            <img
+              src={tierBadges[tier]}
               alt={`${config.name} tier`}
               className="w-24 h-24 mx-auto mb-3 object-contain"
             />
@@ -180,7 +236,7 @@ export function TierCard({
           </div>
 
           {/* Price */}
-          <div className="mb-6 text-center">
+          <div className="mb-4 text-center">
             <div className="flex items-baseline gap-1 justify-center">
               <span className="text-4xl font-bold text-foreground">
                 {formatPrice(animatedPrice)}
@@ -214,24 +270,11 @@ export function TierCard({
             </AnimatePresence>
           </div>
 
-          {/* Features */}
-          <ul className="flex-1 space-y-3 mb-6">
-            {config.features.map((feature, index) => (
-              <li key={index} className="flex items-start gap-2">
-                {feature.included ? (
-                  <Check className="w-4 h-4 mt-0.5 text-secondary shrink-0" />
-                ) : (
-                  <X className="w-4 h-4 mt-0.5 text-muted-foreground/50 shrink-0" />
-                )}
-                <span className={cn(
-                  "text-sm",
-                  feature.included ? "text-foreground font-semibold" : "text-muted-foreground/50"
-                )}>
-                  {feature.text}
-                </span>
-              </li>
-            ))}
-          </ul>
+          {/* Caps block */}
+          <CapsBlock caps={config.caps} />
+
+          {/* Delta features */}
+          <DeltaFeatures config={config} />
 
           {/* CTA */}
           <LiquidGlassButton

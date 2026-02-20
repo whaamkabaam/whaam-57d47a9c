@@ -784,6 +784,18 @@ section {
   .liquid-glass { background: rgba(255,255,255,.04); }
 }
 
+.liquid-glow-yellow {
+  box-shadow: 
+    0 0 20px rgba(255, 215, 64, 0.35),
+    0 0 40px rgba(255, 215, 64, 0.2);
+}
+
+.liquid-glow-yellow-strong {
+  box-shadow: 
+    0 0 30px rgba(255, 215, 64, 0.5),
+    0 0 50px rgba(255, 215, 64, 0.3);
+}
+
 
 /* The card becomes its own stacking context */
 .liquid-glass { isolation: isolate; }

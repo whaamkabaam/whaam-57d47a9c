@@ -1,29 +1,33 @@
 
 
-# Swap KeyLimitsComparator for DashboardExplainer
+# Smooth Enter/Exit for Daily Cost Line
 
-## What's changing
+## Change
 
-Remove the "Key Limits" comparator table (the grid showing Adjustments/day, Library slots, etc.) from both pages and restore the "AI-powered curve studio" dashboard preview section in its place.
+Wrap the `~$X.XX/day` line in an `AnimatePresence` + `motion.p` so it fades and slides in/out smoothly when toggling between Day Pass and Week/Monthly.
 
-## Files changed
+## File
 
-| File | Change |
-|------|--------|
-| `src/components/Products.tsx` | Replace `KeyLimitsComparator` import/usage with `DashboardExplainer`, placed between Live Session and Benefits |
-| `src/pages/Pricing.tsx` | Replace `KeyLimitsComparator` import/usage with `DashboardExplainer`, placed below Live Session |
+`src/components/pricing/TierCard.tsx` -- lines 254-258
 
-## Details
+Replace the conditional `{duration !== 'daily' && (<p>...</p>)}` with:
 
-### `src/components/Products.tsx`
-- Remove `KeyLimitsComparator` import (line 9) and usage (line 83)
-- Add `DashboardExplainer` import
-- Insert `<DashboardExplainer />` between the Live Session card and the Benefits section (between lines 139 and 141)
+```tsx
+<AnimatePresence>
+  {duration !== 'daily' && (
+    <motion.p
+      key="daily-cost"
+      initial={{ opacity: 0, height: 0, marginTop: 0 }}
+      animate={{ opacity: 1, height: 'auto', marginTop: 4 }}
+      exit={{ opacity: 0, height: 0, marginTop: 0 }}
+      transition={{ duration: 0.25, ease: 'easeInOut' }}
+      className="text-[11px] text-white/35 overflow-hidden"
+    >
+      ~${animatedDailyCost.toFixed(2)}/day
+    </motion.p>
+  )}
+</AnimatePresence>
+```
 
-### `src/pages/Pricing.tsx`
-- Remove `KeyLimitsComparator` import (line 9) and usage (line 95)
-- Add `DashboardExplainer` import
-- Insert `<DashboardExplainer />` after the Live Session card (after line 151, before closing `</main>`)
-
-No changes to the `DashboardExplainer` component itself -- it's already correct.
+This animates opacity + height so the element slides in/out without causing a jarring layout jump, matching the smooth feel of the other pricing animations.
 

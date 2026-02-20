@@ -163,8 +163,7 @@ function DeltaFeatures({ config }: { config: TierConfig }) {
   // Basic: show full feature list
   if (config.basicFeatures) {
     return (
-      <div className="flex-1 mb-6 min-h-[220px]">
-        <div className="mb-3 h-[34px]" />
+      <div className="flex-1 mb-6">
         <ul className="space-y-2">
           {config.basicFeatures.map((feat, i) => (
             <li key={i} className="flex items-start gap-2">
@@ -181,7 +180,7 @@ function DeltaFeatures({ config }: { config: TierConfig }) {
 
   // Plus / Ultra: delta bullets
   return (
-    <div className="flex-1 mb-6 min-h-[220px]">
+    <div className="flex-1 mb-6">
       {config.includes && (
         <div className="mb-3 px-3 py-1.5 rounded-lg bg-white/[0.06] border border-white/[0.1] text-sm text-white/60 text-center">
           {config.includes}

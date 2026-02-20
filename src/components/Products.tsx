@@ -6,7 +6,7 @@ import { useSubscription } from "@/contexts/SubscriptionContext";
 import { useFastSpringCheckout } from "@/hooks/useFastSpringCheckout";
 import { DurationToggle } from "@/components/pricing/DurationToggle";
 import { TierCard } from "@/components/pricing/TierCard";
-import { KeyLimitsComparator } from "@/components/pricing/KeyLimitsComparator";
+import { DashboardExplainer } from "@/components/pricing/DashboardExplainer";
 import { LiveSessionCard } from "@/components/pricing/LiveSessionCard";
 import { FeatureComparisonTable } from "@/components/pricing/FeatureComparisonTable";
 import { ProcessingModal } from "@/components/pricing/ProcessingModal";
@@ -79,8 +79,6 @@ const Products = () => {
           </p>
         </div>
 
-        {/* Key Limits Comparator */}
-        <KeyLimitsComparator />
 
         {/* Tier Cards */}
         <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto mb-12">
@@ -137,6 +135,9 @@ const Products = () => {
           </div>
           <LiveSessionCard />
         </div>
+
+        {/* Dashboard Explainer */}
+        <DashboardExplainer />
 
         {/* Benefits Section */}
         <LiquidGlassCard variant="primary" className="p-8 md:p-10">

@@ -51,7 +51,7 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
       el.style.setProperty('--by', `${by}px`);
     };
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
       updateBgAnchors();
       const onScroll = () => updateBgAnchors();
       const onResize = () => updateBgAnchors();
@@ -61,6 +61,12 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
         window.removeEventListener('scroll', onScroll as any);
         window.removeEventListener('resize', onResize);
       };
+    }, []);
+
+    // Suppress transitions on first paint to prevent flash
+    const [mounted, setMounted] = React.useState(false);
+    React.useEffect(() => {
+      requestAnimationFrame(() => setMounted(true));
     }, []);
 
     // Smooth re-entry tween with retargetable animation
@@ -177,6 +183,7 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
         className={cn(
           glassVariant === 'nav' ? 'liquid-glass-nav' : 'liquid-glass',
           'rounded-[28px] p-6 md:p-8 overflow-hidden',
+          !mounted && 'glass-no-transition',
           className
         )}
         {...props}

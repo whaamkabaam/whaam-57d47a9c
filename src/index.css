@@ -506,6 +506,14 @@
     0 0 40px hsla(var(--accent), 0.2);
 }
 
+/* Kill transitions on first paint to prevent mount flash */
+.glass-no-transition,
+.glass-no-transition *,
+.glass-no-transition::before,
+.glass-no-transition::after {
+  transition: none !important;
+}
+
 /* Fluid Animation System */
 .fluid-animation {
   transition: all 0.4s var(--ease-fluid);

@@ -1,26 +1,20 @@
 
 
-# Fix Bottom Button Alignment
+# Bottom-Align Feature Lists Across Tier Cards
 
-## Problem
-The `flex-1` on DeltaFeatures should push buttons to the bottom, but the decorative `<span>` elements inside `LiquidGlassCard` are flex siblings competing for space. This breaks the flex-1 expansion.
+## What you want
+The feature items should align horizontally across all three cards from the bottom up. "Beta testing" in Basic should sit at the same Y-level as "Beta testing" in Plus and Ultra. Right now only the buttons are bottom-anchored, but the feature lists still start from the top, leaving a gap between the last feature and the button that varies per card.
 
 ## Fix
+Move `DeltaFeatures` inside the `mt-auto` wrapper so the entire block (features + button + microline) is pushed to the bottom of the card together. This way, the last item in each list aligns with the last item in every other list, and items naturally line up row-by-row going upward.
 
-### File: `src/components/pricing/TierCard.tsx`
+## File: `src/components/pricing/TierCard.tsx`
 
-Instead of relying on `flex-1` on the DeltaFeatures container (which depends on the full flex chain working perfectly), wrap the CTA button + microline in a `mt-auto` container. This is a simpler, more robust approach:
-
-Move the CTA button and microline into a wrapper with `mt-auto`, which pushes them to the very bottom of the flex container regardless of how much content is above.
-
-**Change in the main TierCard component (around line 250):**
-
-Current structure:
+Current structure (lines ~297-317):
 ```
-<div className="relative flex flex-col flex-1">
-  <!-- header -->
-  <!-- price -->
-  <DeltaFeatures ... />  (has flex-1)
+<DeltaFeatures config={config} />
+
+<div className="mt-auto">
   <LiquidGlassButton ... />
   <p microline />
 </div>
@@ -28,20 +22,15 @@ Current structure:
 
 New structure:
 ```
-<div className="relative flex flex-col flex-1">
-  <!-- header -->
-  <!-- price -->
-  <DeltaFeatures ... />  (remove flex-1, just use normal flow)
-  <div className="mt-auto">   <!-- pushes to bottom -->
-    <LiquidGlassButton ... />
-    <p microline />
-  </div>
+<div className="mt-auto">
+  <DeltaFeatures config={config} />
+  <LiquidGlassButton ... />
+  <p microline />
 </div>
 ```
 
-This way, the feature list takes its natural height, and `mt-auto` on the button wrapper eats all remaining space as top margin, perfectly aligning buttons across all cards.
+By wrapping both the features and the CTA in one `mt-auto` container, the entire bottom section sticks to the card's bottom edge. Since each card has the same height (CSS grid), the features naturally align from the bottom up -- Basic's longer list just extends higher while the shared items (Form settings, Beta testing) sit at the same level.
 
-### Technical details
-
-1. In `DeltaFeatures`, change `flex-1 mb-6` to just `mb-6` on both code paths (lines 166 and 184)
-2. Wrap the `LiquidGlassButton` and microline `<p>` in a `<div className="mt-auto">` (around lines 297-312)
+## Technical note
+- Single line change: move `<DeltaFeatures config={config} />` from above the `mt-auto` div to inside it as the first child
+- No other files or components need changes

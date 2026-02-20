@@ -163,7 +163,7 @@ function DeltaFeatures({ config }: { config: TierConfig }) {
   // Basic: show full feature list
   if (config.basicFeatures) {
     return (
-      <div className="flex-1 mb-6">
+      <div className="mb-6">
         
         <ul className="space-y-2">
           {config.basicFeatures.map((feat, i) => (
@@ -181,7 +181,7 @@ function DeltaFeatures({ config }: { config: TierConfig }) {
 
   // Plus / Ultra: delta bullets
   return (
-    <div className="flex-1 mb-6">
+      <div className="mb-6">
       {config.includes && (
         <div className="mb-3 px-3 py-1.5 rounded-lg bg-white/[0.06] border border-white/[0.1] text-sm text-white/60 text-center">
           {config.includes}
@@ -298,22 +298,23 @@ export function TierCard({
         <DeltaFeatures config={config} />
 
         {/* CTA */}
-        <LiquidGlassButton
-          onClick={onSelect}
-          disabled={isProcessing || isCurrentTier}
-          variant="none"
-          className={cn(
-            'w-full h-11 rounded-xl liquid-glow-yellow border border-whaam-yellow/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_0_24px_rgba(255,215,64,0.35)] hover:border-whaam-yellow/60 transition-all',
-            isPopular && 'border-whaam-yellow/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_20px_rgba(255,215,64,0.25)]'
-          )}
-        >
-          {isCurrentTier ? 'Current Plan' : isProcessing ? 'Processing...' : `Start ${config.name}`}
-        </LiquidGlassButton>
+        <div className="mt-auto">
+          <LiquidGlassButton
+            onClick={onSelect}
+            disabled={isProcessing || isCurrentTier}
+            variant="none"
+            className={cn(
+              'w-full h-11 rounded-xl liquid-glow-yellow border border-whaam-yellow/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_0_24px_rgba(255,215,64,0.35)] hover:border-whaam-yellow/60 transition-all',
+              isPopular && 'border-whaam-yellow/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_20px_rgba(255,215,64,0.25)]'
+            )}
+          >
+            {isCurrentTier ? 'Current Plan' : isProcessing ? 'Processing...' : `Start ${config.name}`}
+          </LiquidGlassButton>
 
-        {/* Microline */}
-        <p className="mt-3 text-[11px] text-center text-white/40">
-          {getMicroline(duration)}
-        </p>
+          <p className="mt-3 text-[11px] text-center text-white/40">
+            {getMicroline(duration)}
+          </p>
+        </div>
       </div>
     </LiquidGlassCard>
   );

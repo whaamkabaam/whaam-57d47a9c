@@ -10,6 +10,7 @@ import { KeyLimitsComparator } from '@/components/pricing/KeyLimitsComparator';
 import { LiveSessionCard } from '@/components/pricing/LiveSessionCard';
 import { FeatureComparisonTable } from '@/components/pricing/FeatureComparisonTable';
 import { ProcessingModal } from '@/components/pricing/ProcessingModal';
+import { DashboardExplainer } from '@/components/pricing/DashboardExplainer';
 import { Button } from '@/components/ui/button';
 import {
   Collapsible,
@@ -149,6 +150,9 @@ export default function Pricing() {
           </div>
           <LiveSessionCard />
         </div>
+
+        {/* Dashboard Explainer */}
+        <DashboardExplainer />
       </main>
 
       {/* Processing Modal */}

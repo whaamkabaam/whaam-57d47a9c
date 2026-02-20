@@ -20,7 +20,7 @@ export function LiveSessionCard() {
         Live 1-on-1 Session
       </h3>
       <p className="text-muted-foreground mb-4">
-        Skip the endless testing and research. Order, schedule, and get your perfect settings dialed in — in just 45 minutes.
+        Skip the endless testing and research. Order, schedule, and get your perfect settings dialed in – in just 45 minutes.
       </p>
 
       {/* Price */}
@@ -43,7 +43,7 @@ export function LiveSessionCard() {
         </li>
         <li className="flex items-center gap-3 text-sm text-foreground">
           <Calendar className="w-4 h-4 text-whaam-yellow shrink-0" />
-          Schedule after ordering — link sent via email
+          Schedule after ordering – link sent via email
         </li>
         <li className="flex items-center gap-3 text-sm text-foreground">
           <Clock className="w-4 h-4 text-whaam-yellow shrink-0" />
@@ -62,7 +62,7 @@ export function LiveSessionCard() {
 
       {/* Microline */}
       <p className="mt-3 text-xs text-center text-muted-foreground">
-        Don't regret waiting — raise your skill ceiling today.
+        Don't regret waiting – raise your skill ceiling today.
       </p>
     </LiquidGlassCard>
   );

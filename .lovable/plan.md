@@ -1,17 +1,23 @@
 
-# Slim Down the Navigation Bar
+# Tone Down Duration Toggle Pill
 
-## What's changing
+## Problem
+The active pill in the duration toggle uses `bg-secondary` (bright yellow), which clashes with the liquid glass aesthetic used everywhere else.
 
-The nav bar looks taller than it needs to be because the logo is 64px (`w-16 h-16`) and the LiquidGlassCard base styles add default padding (`p-6` from the component) which gets partially overridden by `p-2`. The fix is to shrink the logo and tighten vertical padding.
+## Solution
+Replace the solid yellow background with a frosted glass style that matches the design language -- a subtle white/translucent fill with backdrop blur and a soft border, similar to how other glass elements work throughout the site.
 
-## Changes
+### File: `src/components/pricing/DurationToggle.tsx`
 
-**File: `src/components/Navigation.tsx`**
+**Line 34** -- Replace the pill's classes:
 
-1. Reduce logo size from `w-16 h-16` (64px) to `w-10 h-10` (40px) -- still clearly visible but much more compact
-2. Change card padding from `p-2 px-4` to `py-1.5 px-4` to minimize vertical breathing room
-3. Reduce nav link text from `text-[15px]` to `text-sm` (14px) to match the slimmer proportion
-4. Shrink the CTA button padding from `py-1.5` to `py-1` for a tighter fit
+- **Before:** `bg-secondary rounded-full shadow-md`
+- **After:** `bg-white/10 backdrop-blur-md border border-white/20 rounded-full shadow-sm`
 
-The result: a nav bar that hugs its content tightly -- roughly 48-52px tall instead of the current ~72-76px.
+This gives the pill a frosted glass look -- translucent white with blur and a subtle border glow.
+
+**Line 27** -- Update the active text color:
+- **Before:** `text-secondary-foreground` (dark text designed for yellow bg)
+- **After:** `text-foreground` (standard bright text that works on glass)
+
+One file, two class changes. The pill will feel native to the liquid glass design system.

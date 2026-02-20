@@ -1,62 +1,45 @@
 
 
-# Update Tier Cards: Full Basic Features, Unabbreviated Labels, Remove Explainer
+# Smooth Daily Cost Animation
 
-## Changes
+## Problem
+When switching between Week and Monthly durations, the `~$X.XX/day` text fades out and back in (AnimatePresence). The main price smoothly interpolates using `useAnimatedPrice`. The daily cost should do the same.
 
-### 1. Remove DashboardExplainer from both pages
-Delete the `<DashboardExplainer />` usage and import from `Products.tsx` and `Pricing.tsx`.
+## Solution
 
-### 2. Unabbreviate labels in KeyLimitsComparator
-Update the `limits` array labels:
-- `Adj/day` --> `Adjustments/day`
-- `Library` --> `Library slots`
-- `Favs` --> `Favorites`
-- `Precision` stays as-is (already clear)
+In `src/components/pricing/TierCard.tsx`:
 
-### 3. Rewrite Basic tier config to list all features
-Replace the `coreSummary` approach with a full feature list using check-style bullets:
+1. **Compute a raw daily cost number** instead of a formatted string, so it can be animated:
+   - Change `getEffectiveDailyCost` to return a `number | null` (just the raw daily cost value)
+   - Use `useAnimatedPrice` on that number to get a smooth interpolation
 
-- 5 daily adjustments
-- Buttons feedback (0.5x precision)
-- 5 library slots
-- 1 favorite slot
-- Restore last version only
+2. **Replace the AnimatePresence block** for daily cost with a static `<p>` that simply renders the animated number when `duration !== 'daily'`. No fade in/out -- the number just smoothly ticks up or down like the main price.
 
-And a "Not included" line: `.ccurve upload, lineages, form settings, beta testing`
+3. **Keep the fade** only for the transition between "daily" (where no daily cost is shown) and "weekly/monthly" (where it appears). This is the only case where the element truly appears/disappears.
 
-### 4. Change "plus:" to "and:" in includes lines
-- Plus: `'Includes Basic, and:'`
-- Ultra: `'Includes Plus, and:'`
+## Technical Details
 
-### 5. Unabbreviate delta feature labels in Plus and Ultra
+### `getEffectiveDailyCost` change
+```typescript
+// Before: returns formatted string
+function getEffectiveDailyCost(price, duration): string | null
 
-**Plus** deltas (expanded, with more detail):
-- `Precision: 0.5 → 0.1`
-- `Restore: last → any version`
-- `Library slots: 5 → 20`
-- `Favorite slots: 1 → 5`
-- `+ .ccurve upload/edit`
-- `+ multiple curve families`
+// After: returns raw number
+function getRawDailyCost(price, duration): number | null {
+  if (duration === 'daily') return null;
+  const days = duration === 'weekly' ? 7 : 30;
+  return price / days;
+}
+```
 
-**Ultra** deltas (expanded):
-- `Adjustments/day: 25 → ∞`
-- `Library slots: 20 → ∞`
-- `Favorite slots: 5 → ∞`
-- `+ form settings`
-- `+ beta testing`
+### In the component body
+- Call `getRawDailyCost(price, duration)` to get the target number
+- Feed it into `useAnimatedPrice` (reuse the same hook) for smooth interpolation
+- Render: `~${animatedDailyCost.toFixed(2)}/day` as static text (no AnimatePresence key-swap)
+- Wrap in a simple conditional: only show when `duration !== 'daily'`
 
-### 6. Update TierConfig interface
-- Add a `basicFeatures` array (simple string list for Basic's full feature display)
-- Keep `coreSummary` as null for all tiers (or remove it)
-- Keep `deltaFeatures` for Plus/Ultra
-
-## Files changed
-
+### File changed
 | File | Change |
 |------|--------|
-| `src/components/pricing/TierCard.tsx` | Rewrite Basic rendering, update tierConfig data, change "plus:" to "and:", expand deltas |
-| `src/components/pricing/KeyLimitsComparator.tsx` | Unabbreviate labels |
-| `src/components/Products.tsx` | Remove DashboardExplainer import and usage |
-| `src/pages/Pricing.tsx` | Remove DashboardExplainer import and usage |
+| `src/components/pricing/TierCard.tsx` | Replace string-based daily cost with animated number using existing `useAnimatedPrice` hook |
 

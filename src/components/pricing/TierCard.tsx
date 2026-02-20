@@ -147,16 +147,8 @@ export function TierCard({
   const dailyCost = getEffectiveDailyCost(price, duration);
 
   return (
-    <LiquidGlassCard
-      className={cn(
-        "relative flex flex-col border-2 transition-all duration-300",
-        config.accent,
-        isPopular && "scale-[1.02] shadow-lg shadow-secondary/20 border-secondary",
-        isCurrentTier && "ring-2 ring-secondary ring-offset-2 ring-offset-background"
-      )}
-      style={{ overflow: 'visible' }}
-    >
-      {/* Most Popular badge — absolute top-right */}
+    <div className="relative">
+      {/* Most Popular badge — outside card to avoid overflow clipping */}
       {isPopular && (
         <span className="absolute -top-3 -right-3 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase rounded-full backdrop-blur-md bg-white/10 border border-white/20 shadow-[0_0_12px_rgba(255,215,64,0.4)] text-whaam-yellow">
           <Sparkles className="w-3.5 h-3.5" />
@@ -164,93 +156,102 @@ export function TierCard({
         </span>
       )}
 
-      <div className="flex flex-col flex-1">
-        {/* Header */}
-        <div className="mb-4 text-center">
-          <img 
-            src={tierBadges[tier]} 
-            alt={`${config.name} tier`}
-            className="w-24 h-24 mx-auto mb-3 object-contain"
-          />
-          <h3 className="text-xl font-bold text-foreground">{config.name}</h3>
-          <p className="flex items-center justify-center gap-1.5 mt-1.5 text-xs text-muted-foreground italic">
-            <Target className="w-3 h-3" />
-            {config.bestFor}
-          </p>
-        </div>
+      <LiquidGlassCard
+        className={cn(
+          "flex flex-col border-2 transition-all duration-300 h-full",
+          config.accent,
+          isPopular && "shadow-lg shadow-secondary/20 border-secondary",
+          isCurrentTier && "ring-2 ring-secondary ring-offset-2 ring-offset-background"
+        )}
+      >
+        <div className="flex flex-col flex-1">
+          {/* Header */}
+          <div className="mb-4 text-center">
+            <img 
+              src={tierBadges[tier]} 
+              alt={`${config.name} tier`}
+              className="w-24 h-24 mx-auto mb-3 object-contain"
+            />
+            <h3 className="text-xl font-bold text-foreground">{config.name}</h3>
+            <p className="flex items-center justify-center gap-1.5 mt-1.5 text-xs text-muted-foreground italic">
+              <Target className="w-3 h-3" />
+              {config.bestFor}
+            </p>
+          </div>
 
-        {/* Price */}
-        <div className="mb-6 text-center">
-          <div className="flex items-baseline gap-1 justify-center">
-            <span className="text-4xl font-bold text-foreground">
-              {formatPrice(animatedPrice)}
-            </span>
+          {/* Price */}
+          <div className="mb-6 text-center">
+            <div className="flex items-baseline gap-1 justify-center">
+              <span className="text-4xl font-bold text-foreground">
+                {formatPrice(animatedPrice)}
+              </span>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={durationLabel}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-muted-foreground"
+                >
+                  /{durationLabel}
+                </motion.span>
+              </AnimatePresence>
+            </div>
             <AnimatePresence mode="wait">
-              <motion.span
-                key={durationLabel}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.2 }}
-                className="text-muted-foreground"
-              >
-                /{durationLabel}
-              </motion.span>
+              {dailyCost && (
+                <motion.p
+                  key={dailyCost}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-xs text-muted-foreground mt-1"
+                >
+                  {dailyCost}
+                </motion.p>
+              )}
             </AnimatePresence>
           </div>
-          <AnimatePresence mode="wait">
-            {dailyCost && (
-              <motion.p
-                key={dailyCost}
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="text-xs text-muted-foreground mt-1"
-              >
-                {dailyCost}
-              </motion.p>
+
+          {/* Features */}
+          <ul className="flex-1 space-y-3 mb-6">
+            {config.features.map((feature, index) => (
+              <li key={index} className="flex items-start gap-2">
+                {feature.included ? (
+                  <Check className="w-4 h-4 mt-0.5 text-secondary shrink-0" />
+                ) : (
+                  <X className="w-4 h-4 mt-0.5 text-muted-foreground/50 shrink-0" />
+                )}
+                <span className={cn(
+                  "text-sm",
+                  feature.included ? "text-foreground font-semibold" : "text-muted-foreground/50"
+                )}>
+                  {feature.text}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          {/* CTA */}
+          <LiquidGlassButton
+            onClick={onSelect}
+            disabled={isProcessing || isCurrentTier}
+            variant="primary"
+            className={cn(
+              "w-full h-12",
+              isPopular && "shadow-[0_0_20px_rgba(255,215,64,0.3)] border border-whaam-yellow/30 hover:border-whaam-yellow/60"
             )}
-          </AnimatePresence>
+          >
+            {isCurrentTier ? 'Current Plan' : isProcessing ? 'Processing...' : `Start ${config.name}`}
+          </LiquidGlassButton>
+
+          {/* Microline */}
+          <p className="mt-3 text-xs text-center text-muted-foreground">
+            {getMicroline(duration)}
+          </p>
         </div>
-
-        {/* Features */}
-        <ul className="flex-1 space-y-3 mb-6">
-          {config.features.map((feature, index) => (
-            <li key={index} className="flex items-start gap-2">
-              {feature.included ? (
-                <Check className="w-4 h-4 mt-0.5 text-secondary shrink-0" />
-              ) : (
-                <X className="w-4 h-4 mt-0.5 text-muted-foreground/50 shrink-0" />
-              )}
-              <span className={cn(
-                "text-sm",
-                feature.included ? "text-foreground font-semibold" : "text-muted-foreground/50"
-              )}>
-                {feature.text}
-              </span>
-            </li>
-          ))}
-        </ul>
-
-        {/* CTA */}
-        <LiquidGlassButton
-          onClick={onSelect}
-          disabled={isProcessing || isCurrentTier}
-          variant="primary"
-          className={cn(
-            "w-full h-12",
-            isPopular && "shadow-[0_0_20px_rgba(255,215,64,0.3)] border border-whaam-yellow/30 hover:border-whaam-yellow/60"
-          )}
-        >
-          {isCurrentTier ? 'Current Plan' : isProcessing ? 'Processing...' : `Start ${config.name}`}
-        </LiquidGlassButton>
-
-        {/* Microline */}
-        <p className="mt-3 text-xs text-center text-muted-foreground">
-          {getMicroline(duration)}
-        </p>
-      </div>
-    </LiquidGlassCard>
+      </LiquidGlassCard>
+    </div>
   );
 }

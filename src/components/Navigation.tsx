@@ -51,7 +51,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
         <LiquidGlassCard 
           variant="primary"
           glassVariant="nav"
-          className={`mt-2 p-2 px-4 rounded-2xl w-full ${
+          className={`mt-2 py-1.5 px-4 rounded-2xl w-full ${
             mounted ? 'transition-[max-width] duration-500 ease-out' : ''
           } ${
             scrolled ? (isAuthenticated ? 'max-w-[480px] mx-auto' : 'max-w-[620px] mx-auto') : 'max-w-[1400px] mx-auto'
@@ -64,7 +64,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
               <img 
                 src={whaamLogo} 
                 alt="WHAAM KABAAM Logo" 
-                className="w-16 h-16 object-contain transition-all duration-500 ease-out"
+                className="w-10 h-10 object-contain transition-all duration-500 ease-out"
               />
               <span className={`text-xl font-bold glass-text-contrast whitespace-nowrap ${
                 mounted ? 'transition-all duration-500 ease-out' : ''
@@ -78,7 +78,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
               {navItems.map((item) => (
                 <button
                   key={item.href}
-                  className={`glass-text-contrast hover:text-primary transition-all duration-300 font-medium text-[15px] ${
+                  className={`glass-text-contrast hover:text-primary transition-all duration-300 font-medium text-sm ${
                     activeSection === item.href ? 'text-primary' : ''
                   }`}
                   onClick={() => scrollToSection(item.href)}
@@ -93,7 +93,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 ) : isAuthenticated ? (
                   <LiquidGlassButton 
                     variant="primary"
-                    className="px-5 py-1.5 font-bold text-[15px]"
+                    className="px-5 py-1 font-bold text-sm"
                     onClick={() => navigate("/studio")}
                   >
                     Studio
@@ -101,15 +101,15 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 ) : (
                   <>
                     <button
-                      className="glass-text-contrast hover:text-primary transition-colors duration-300 font-medium text-[15px]"
+                      className="glass-text-contrast hover:text-primary transition-colors duration-300 font-medium text-sm"
                       onClick={() => navigate("/auth")}
                     >
                       Sign In
                     </button>
                     <LiquidGlassButton 
                       variant="primary"
-                      className="px-5 py-1.5 font-bold text-[15px]"
-                      onClick={() => scrollToSection("products")}
+                    className="px-5 py-1 font-bold text-sm"
+                    onClick={() => scrollToSection("products")}
                     >
                       See Plans
                     </LiquidGlassButton>

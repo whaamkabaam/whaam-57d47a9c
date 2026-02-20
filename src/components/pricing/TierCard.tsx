@@ -10,29 +10,28 @@ import basicBadge from '@/assets/tiers/basic.png';
 import plusBadge from '@/assets/tiers/plus.png';
 import ultraBadge from '@/assets/tiers/ultra.png';
 
+type PaidTier = 'basic' | 'plus' | 'ultra';
+
 const tierBadges: Record<PaidTier, string> = {
   basic: basicBadge,
   plus: plusBadge,
   ultra: ultraBadge,
 };
 
-type PaidTier = 'basic' | 'plus' | 'ultra';
+/* ── Delta feature shape ── */
 
-interface TierCardProps {
-  tier: PaidTier;
-  duration: SubscriptionDuration;
-  isPopular?: boolean;
-  onSelect: () => void;
-  isProcessing?: boolean;
-  isCurrentTier?: boolean;
+interface DeltaFeature {
+  prefix: string;
+  bold: string;
+  suffix?: string;
 }
 
 interface TierConfig {
   name: string;
   bestFor: string;
-  caps: Array<{ label: string; value: string }>;
+  coreSummary: string | null;
   includes: string | null;
-  deltaFeatures: string[];
+  deltaFeatures: DeltaFeature[];
   notIncluded: string | null;
 }
 
@@ -40,56 +39,40 @@ const tierConfig: Record<PaidTier, TierConfig> = {
   basic: {
     name: 'Basic',
     bestFor: 'Light tweaking · casual use',
-    caps: [
-      { label: 'Adj/day', value: '5' },
-      { label: 'Library', value: '5' },
-      { label: 'Favs', value: '1' },
-      { label: 'Precision', value: '0.5x' },
-    ],
+    coreSummary: 'Coarse tuning + last-version restore',
     includes: null,
-    deltaFeatures: [
-      'Coarse tuning (0.5 steps)',
-      'Last version restore',
-    ],
-    notIncluded: '.ccurve upload · lineages · form settings · beta',
+    deltaFeatures: [],
+    notIncluded: '.ccurve upload, lineages, form settings, beta',
   },
   plus: {
     name: 'Plus',
     bestFor: 'Daily iteration · most players',
-    caps: [
-      { label: 'Adj/day', value: '25' },
-      { label: 'Library', value: '20' },
-      { label: 'Favs', value: '5' },
-      { label: 'Precision', value: '0.1x' },
-    ],
+    coreSummary: null,
     includes: 'Includes Basic, plus:',
     deltaFeatures: [
-      'Fine tuning (0.1 steps)',
-      'Full version history',
-      'Upload & edit .ccurve',
-      'Multiple curve families',
+      { prefix: 'Precision: ', bold: '0.5 → 0.1' },
+      { prefix: 'Restore: ', bold: 'last → any' },
+      { prefix: '', bold: '+ .ccurve', suffix: ' upload/edit' },
+      { prefix: '', bold: '+ multiple', suffix: ' curve families' },
     ],
-    notIncluded: 'form settings · beta',
+    notIncluded: 'form settings, beta',
   },
   ultra: {
     name: 'Ultra',
     bestFor: 'Unlimited · full control',
-    caps: [
-      { label: 'Adj/day', value: '∞' },
-      { label: 'Library', value: '∞' },
-      { label: 'Favs', value: '∞' },
-      { label: 'Precision', value: '0.1x' },
-    ],
+    coreSummary: null,
     includes: 'Includes Plus, plus:',
     deltaFeatures: [
-      'Unlimited adjustments',
-      'Unlimited library & favorites',
-      'Form settings access',
-      'Beta feature testing',
+      { prefix: 'Adj/day: ', bold: '25 → ∞' },
+      { prefix: 'Library + favs: ', bold: '20/5 → ∞' },
+      { prefix: '', bold: '+ form settings' },
+      { prefix: '', bold: '+ beta testing' },
     ],
     notIncluded: null,
   },
 };
+
+/* ── Helpers ── */
 
 function getMicroline(duration: SubscriptionDuration): string {
   switch (duration) {
@@ -110,12 +93,10 @@ function useAnimatedPrice(targetPrice: number) {
     const from = prevPrice.current;
     const to = targetPrice;
     prevPrice.current = targetPrice;
-
     if (from === to) return;
 
     const duration = 400;
     const startTime = performance.now();
-
     const animate = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
@@ -123,7 +104,6 @@ function useAnimatedPrice(targetPrice: number) {
       setDisplayPrice(from + (to - from) * eased);
       if (progress < 1) requestAnimationFrame(animate);
     };
-
     requestAnimationFrame(animate);
   }, [targetPrice]);
 
@@ -138,20 +118,24 @@ function getEffectiveDailyCost(price: number, duration: SubscriptionDuration): s
 
 /* ── Sub-components ── */
 
-function CapsBlock({ caps }: { caps: TierConfig['caps'] }) {
-  return (
-    <div className="grid grid-cols-2 gap-x-8 gap-y-4 mb-6 pt-5 border-t border-white/[0.06]">
-      {caps.map((cap) => (
-        <div key={cap.label} className="flex flex-col">
-          <span className="text-[11px] text-white/40 mb-0.5">{cap.label}</span>
-          <span className="text-base font-semibold text-white/90">{cap.value}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function DeltaFeatures({ config }: { config: TierConfig }) {
+  // Basic: show core summary only
+  if (config.coreSummary) {
+    return (
+      <div className="flex-1 mb-6">
+        <p className="text-xs text-white/45">
+          Core: {config.coreSummary}
+        </p>
+        {config.notIncluded && (
+          <p className="mt-3 text-[11px] text-white/30">
+            Not included: {config.notIncluded}
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  // Plus / Ultra: delta bullets
   return (
     <div className="flex-1 mb-6">
       {config.includes && (
@@ -160,10 +144,14 @@ function DeltaFeatures({ config }: { config: TierConfig }) {
         </p>
       )}
       <ul className="space-y-2">
-        {config.deltaFeatures.map((feature) => (
-          <li key={feature} className="flex items-start gap-2">
+        {config.deltaFeatures.map((feat, i) => (
+          <li key={i} className="flex items-start gap-2">
             <Check className="w-3.5 h-3.5 mt-0.5 text-whaam-yellow/50 shrink-0" />
-            <span className="text-sm text-foreground/80">{feature}</span>
+            <span className="text-sm text-foreground/70">
+              {feat.prefix}
+              <strong className="text-white/95 font-semibold">{feat.bold}</strong>
+              {feat.suffix ?? ''}
+            </span>
           </li>
         ))}
       </ul>
@@ -177,6 +165,15 @@ function DeltaFeatures({ config }: { config: TierConfig }) {
 }
 
 /* ── Main component ── */
+
+interface TierCardProps {
+  tier: PaidTier;
+  duration: SubscriptionDuration;
+  isPopular?: boolean;
+  onSelect: () => void;
+  isProcessing?: boolean;
+  isCurrentTier?: boolean;
+}
 
 export function TierCard({
   tier,
@@ -195,12 +192,12 @@ export function TierCard({
   return (
     <LiquidGlassCard
       className={cn(
-        "relative flex flex-col border border-white/[0.08] transition-all duration-300 h-full",
-        isPopular && "border-white/[0.12]",
-        isCurrentTier && "ring-2 ring-secondary ring-offset-2 ring-offset-background"
+        'relative flex flex-col border border-white/[0.08] transition-all duration-300 h-full',
+        isPopular && 'border-white/[0.12]',
+        isCurrentTier && 'ring-2 ring-secondary ring-offset-2 ring-offset-background'
       )}
     >
-      {/* Most Popular badge — attached to card top-right */}
+      {/* Most Popular badge */}
       {isPopular && (
         <span className="absolute -top-3 right-4 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wide rounded-full backdrop-blur-md bg-white/10 border border-white/20 shadow-[0_0_12px_rgba(255,215,64,0.4)] text-whaam-yellow whitespace-nowrap">
           <Sparkles className="w-3 h-3" />
@@ -255,9 +252,6 @@ export function TierCard({
           </AnimatePresence>
         </div>
 
-        {/* Caps block */}
-        <CapsBlock caps={config.caps} />
-
         {/* Delta features */}
         <DeltaFeatures config={config} />
 
@@ -267,8 +261,8 @@ export function TierCard({
           disabled={isProcessing || isCurrentTier}
           variant="none"
           className={cn(
-            "w-full h-11 rounded-xl liquid-glow-yellow border border-whaam-yellow/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_0_24px_rgba(255,215,64,0.35)] hover:border-whaam-yellow/60 transition-all",
-            isPopular && "border-whaam-yellow/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_20px_rgba(255,215,64,0.25)]"
+            'w-full h-11 rounded-xl liquid-glow-yellow border border-whaam-yellow/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_0_24px_rgba(255,215,64,0.35)] hover:border-whaam-yellow/60 transition-all',
+            isPopular && 'border-whaam-yellow/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_20px_rgba(255,215,64,0.25)]'
           )}
         >
           {isCurrentTier ? 'Current Plan' : isProcessing ? 'Processing...' : `Start ${config.name}`}

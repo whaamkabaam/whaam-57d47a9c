@@ -6,6 +6,7 @@ import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useFastSpringCheckout } from '@/hooks/useFastSpringCheckout';
 import { DurationToggle } from '@/components/pricing/DurationToggle';
 import { TierCard } from '@/components/pricing/TierCard';
+import { KeyLimitsComparator } from '@/components/pricing/KeyLimitsComparator';
 import { LiveSessionCard } from '@/components/pricing/LiveSessionCard';
 import { FeatureComparisonTable } from '@/components/pricing/FeatureComparisonTable';
 import { ProcessingModal } from '@/components/pricing/ProcessingModal';
@@ -89,6 +90,9 @@ export default function Pricing() {
             Just visiting? Grab a Day or Week Pass. Serious improvement? Monthly saves you money.
           </p>
         </div>
+
+        {/* Key Limits Comparator */}
+        <KeyLimitsComparator />
 
         {/* Tier Cards */}
         <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto mb-12">

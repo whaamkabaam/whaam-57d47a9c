@@ -1,4 +1,6 @@
+import { useState, useEffect, useRef } from 'react';
 import { Check, X, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { getPrice, formatPrice, getDurationLabel } from '@/lib/fastspring';
@@ -90,6 +92,34 @@ function getMicroline(duration: SubscriptionDuration): string {
   }
 }
 
+function useAnimatedPrice(targetPrice: number) {
+  const [displayPrice, setDisplayPrice] = useState(targetPrice);
+  const prevPrice = useRef(targetPrice);
+
+  useEffect(() => {
+    const from = prevPrice.current;
+    const to = targetPrice;
+    prevPrice.current = targetPrice;
+
+    if (from === to) return;
+
+    const duration = 400;
+    const startTime = performance.now();
+
+    const animate = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      setDisplayPrice(from + (to - from) * eased);
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+
+    requestAnimationFrame(animate);
+  }, [targetPrice]);
+
+  return displayPrice;
+}
+
 export function TierCard({ 
   tier, 
   duration, 
@@ -100,6 +130,7 @@ export function TierCard({
 }: TierCardProps) {
   const config = tierConfig[tier];
   const price = getPrice(tier, duration);
+  const animatedPrice = useAnimatedPrice(price);
   const durationLabel = getDurationLabel(duration);
 
   return (
@@ -132,8 +163,21 @@ export function TierCard({
         {/* Price */}
         <div className="mb-6 text-center">
           <div className="flex items-baseline gap-1 justify-center">
-            <span className="text-4xl font-bold text-foreground">{formatPrice(price)}</span>
-            <span className="text-muted-foreground">/{durationLabel}</span>
+            <span className="text-4xl font-bold text-foreground">
+              {formatPrice(animatedPrice)}
+            </span>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={durationLabel}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.2 }}
+                className="text-muted-foreground"
+              >
+                /{durationLabel}
+              </motion.span>
+            </AnimatePresence>
           </div>
         </div>
 

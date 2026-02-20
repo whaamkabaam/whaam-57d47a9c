@@ -1,3 +1,4 @@
+import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import type { SubscriptionDuration } from '@/lib/api';
@@ -21,15 +22,22 @@ export function DurationToggle({ value, onChange }: DurationToggleProps) {
           key={duration.value}
           onClick={() => onChange(duration.value)}
           className={cn(
-            "relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
+            "relative px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200",
             value === duration.value
-              ? "bg-secondary text-secondary-foreground shadow-md"
-              : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              ? "text-secondary-foreground"
+              : "text-muted-foreground hover:text-foreground"
           )}
         >
-          {duration.label}
+          {value === duration.value && (
+            <motion.div
+              layoutId="duration-pill"
+              className="absolute inset-0 bg-secondary rounded-full shadow-md"
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            />
+          )}
+          <span className="relative z-10">{duration.label}</span>
           {duration.badge && value === duration.value && (
-            <span className="absolute -top-2 -right-2 px-1.5 py-0.5 text-[10px] font-bold uppercase bg-primary text-primary-foreground rounded-full">
+            <span className="absolute -top-2 -right-2 px-1.5 py-0.5 text-[10px] font-bold uppercase bg-primary text-primary-foreground rounded-full z-10">
               Save
             </span>
           )}

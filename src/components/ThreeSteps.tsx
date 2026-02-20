@@ -44,7 +44,7 @@ export const ThreeSteps = () => {
           {steps.map((step) => <div key={step.number}>
               <LiquidGlassCard variant="secondary" className="h-full p-8 flex flex-col">
                 {/* Step Number */}
-                <div className="relative z-20 isolate w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-card/40 border border-white/[0.06] backdrop-blur-md">
+                <div className="relative z-20 isolate w-16 h-16 rounded-2xl flex items-center justify-center mb-6 glass-inert">
                   <span className="text-2xl font-bold text-gradient-warm">{step.number}</span>
                 </div>
 

@@ -54,7 +54,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
           className={`mt-2 p-2 px-4 rounded-2xl w-full ${
             mounted ? 'transition-[max-width] duration-500 ease-out' : ''
           } ${
-            scrolled ? 'max-w-[620px] mx-auto' : 'max-w-[1400px] mx-auto'
+            scrolled ? (isAuthenticated ? 'max-w-[500px] mx-auto' : 'max-w-[620px] mx-auto') : 'max-w-[1400px] mx-auto'
           }`}
           style={{ willChange: 'max-width' }}
         >
@@ -64,7 +64,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
               <img 
                 src={whaamLogo} 
                 alt="WHAAM KABAAM Logo" 
-                className="w-14 h-14 object-contain transition-all duration-500 ease-out"
+                className="w-16 h-16 object-contain transition-all duration-500 ease-out"
               />
               <span className={`text-xl font-bold glass-text-contrast whitespace-nowrap ${
                 mounted ? 'transition-all duration-500 ease-out' : ''

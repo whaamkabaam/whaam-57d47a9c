@@ -24,14 +24,14 @@ export function DurationToggle({ value, onChange }: DurationToggleProps) {
           className={cn(
             "relative px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200",
             value === duration.value
-              ? "text-secondary-foreground"
+              ? "text-foreground"
               : "text-muted-foreground hover:text-foreground"
           )}
         >
           {value === duration.value && (
             <motion.div
               layoutId="duration-pill"
-              className="absolute inset-0 bg-secondary rounded-full shadow-md"
+              className="absolute inset-0 bg-white/10 backdrop-blur-md border border-white/20 rounded-full shadow-sm"
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
             />
           )}

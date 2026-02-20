@@ -30,8 +30,7 @@ export const ThreeSteps = () => {
         duration: 0.6
       }} className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient-warm mb-4">
-            Become the best aimer you've ever been<br />
-            in 3 simple steps.
+            Become the best Aimer you can be in 3 easy steps:
           </h2>
           <p className="glass-text text-lg max-w-2xl mx-auto">
             No guesswork. No copy-pasting random pro settings.<br />

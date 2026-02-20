@@ -1,64 +1,54 @@
 
-# Redesign Tier Cards for Instant Comparison
 
-## Problem
-The current cards repeat 9 identical feature rows across all 3 tiers, mixing numeric limits with yes/no capabilities. Users must mentally "diff" the tiers to understand what they get when upgrading.
+# Premium Tier Card Refinement
 
-## Solution: Two-Part Card Redesign
+Refactor `src/components/pricing/TierCard.tsx` to reduce visual clutter and improve typographic rhythm while keeping the same data architecture.
 
-### 1. Caps Block (always visible, right under price)
-A compact 2-column grid showing the 4 key numeric differentiators at a glance:
+## Changes
 
-| Label | Basic | Plus | Ultra |
-|-------|-------|------|-------|
-| Adjustments/day | 5 | 25 | Unlimited |
-| Library slots | 5 | 20 | Unlimited |
-| Favorites | 1 | 5 | Unlimited |
-| Tuning precision | 0.5x | 0.1x | 0.1x |
+### 1. Caps Block -- remove the box, use open stat chips
+Replace the bordered `bg-muted/30 border border-border/50 rounded-lg` container with a borderless 2x2 grid. Each stat uses spacing alone for separation:
+- Labels shortened: "Adj/day", "Library", "Favs", "Precision"
+- Label: `text-[11px] text-white/50`
+- Value: `text-sm font-semibold text-white/90`, right-aligned
+- No dividers, no background -- just `gap-x-6 gap-y-1.5` for breathing room
+- Outer wrapper gets only a subtle top border (`border-t border-white/[0.06]`) to softly delineate from the price above
 
-Each card shows only its own values in this block -- users scan across cards horizontally.
+### 2. "Best for" line -- pill instead of italic text
+Remove `<Target>` icon and italic styling. Render as a subtle pill:
+- `px-3 py-1 rounded-full bg-white/[0.05] border border-white/[0.08] text-[11px] text-muted-foreground`
+- Centered under the tier name, no icon
 
-### 2. Delta Feature List ("Everything in X, plus...")
+### 3. Price spacing and daily cost
+- Increase bottom margin on price block (`mb-6`) so price anchors clearly
+- Daily cost line: `text-[11px] text-white/40` (smaller, lighter, non-competing)
 
-- **Basic**: Shows its 5 included features as a simple checklist (coarse tuning, last version restore, etc.)
-  - Footer line: "Not included: .ccurve upload, lineages, form settings, beta"
-- **Plus**: "Everything in Basic, plus:" followed by only the 4 upgrades (fine tuning, full version history, .ccurve upload, multiple curve families)
-  - Footer line: "Not included: form settings, beta"
-- **Ultra**: "Everything in Plus, plus:" followed by only the 3 upgrades (unlimited everything, form settings, beta testing)
-  - No footer needed
+### 4. Feature list refinements
+- Check icon: `w-3.5 h-3.5 text-whaam-yellow/60` (smaller, gold at lower opacity)
+- Feature text: `text-sm text-foreground/85 font-normal` (regular weight, not bold)
+- "Everything in X, plus:" rendered as `text-[11px] text-white/45 uppercase tracking-wide` (not italic)
+- "Not included" line: `text-[11px] text-white/30` with shortened text to avoid wrapping
 
-### 3. Outcome-Driven Language
-Rename features to what they mean for the user:
-- "Preset feedback buttons (0.5x)" -> "Coarse tuning (0.5 steps)"
-- "Fine feedback slider (0.1x)" -> "Fine tuning (0.1 steps)"
-- "Restore last version only" -> "Last version restore"
-- "Restore any version" -> "Full version history"
-- "Multiple curve lineages" -> "Multiple curve families"
+### 5. Card framing
+- Reduce border from `border-2` to `border border-white/[0.08]`
+- Popular card: `border-white/[0.15] shadow-lg shadow-secondary/10`
+- Add a very subtle inner gradient via a pseudo-element or inline style (top-to-bottom from white/[0.03] to transparent)
 
-### Card Layout Order (top to bottom)
-1. Tier badge image + name
-2. Best-for tagline
-3. Price + daily cost
-4. **Caps block** (4-row spec grid)
-5. **Delta feature list** (with "Everything in X, plus:" header for Plus/Ultra)
-6. CTA button
-7. Microline
+### 6. CTA consistency
+- All CTAs: identical `h-11 rounded-xl` sizing
+- Add `shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]` for pressable glass depth
+- Keep yellow glow styling as-is
 
-## Technical Details
+### 7. "Most Popular" badge
+- Move from `-right-3` to centered: `left-1/2 -translate-x-1/2 -top-3`
 
-### File changed
-`src/components/pricing/TierCard.tsx` -- complete restructure of the `tierConfig` data and render layout.
+## File changed
+`src/components/pricing/TierCard.tsx` -- update `CapsBlock`, `DeltaFeatures`, and main render layout styling.
 
-### Data structure change
-Replace the current flat `features` array with:
-- `caps`: array of `{ label, value }` for the spec block
-- `includes`: the "Everything in X, plus:" header string (null for Basic)
-- `deltaFeatures`: array of strings (only the new features for this tier)
-- `notIncluded`: optional string listing excluded features (for Basic and Plus)
+## What stays the same
+- All data in `tierConfig` (caps, deltaFeatures, includes, notIncluded)
+- LiquidGlassCard wrapper and mouse-tracking effects
+- Animated price counter and duration label transitions
+- Badge images, tier names, CTA logic
+- Processing/current-tier states
 
-### Visual details
-- Caps block: 2-column grid (`grid-cols-2`), label left in muted text, value right in bold foreground, with a subtle divider between rows
-- Delta list: green check icons, bold text, same style as current included items
-- "Everything in X, plus:" line styled as a subtle italic muted-foreground intro
-- "Not included" footer: single line, small text, muted, no X icons -- just a comma-separated list
-- All existing styling (LiquidGlassCard, animated price, badges, CTA buttons) stays unchanged

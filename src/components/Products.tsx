@@ -74,7 +74,7 @@ const Products = () => {
         <div className="flex flex-col items-center gap-3 mb-10">
           <DurationToggle value={duration} onChange={setDuration} />
           <p className="text-sm text-muted-foreground text-center max-w-md">
-            Just visiting? Grab a Day or Week Pass. Serious improvement? Monthly saves you money.
+            Just visiting? Grab a Day or Week Pass. <br />Serious improvement? Monthly saves you money.
           </p>
         </div>
 

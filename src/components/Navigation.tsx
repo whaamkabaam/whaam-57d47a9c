@@ -51,7 +51,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
         <LiquidGlassCard 
           variant="primary"
           glassVariant="nav"
-          className={`mt-2 py-1 px-4 rounded-3xl w-full ${
+          className={`mt-2 py-0 px-4 rounded-3xl w-full ${
             mounted ? 'transition-[max-width] duration-500 ease-out' : ''
           } ${
             scrolled ? (isAuthenticated ? 'max-w-[520px] mx-auto' : 'max-w-[660px] mx-auto') : 'max-w-[1400px] mx-auto'
@@ -64,7 +64,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
               <img 
                 src={whaamLogo} 
                 alt="WHAAM KABAAM Logo" 
-                className="h-10 w-auto object-contain transition-all duration-500 ease-out"
+                className="h-12 w-auto object-contain transition-all duration-500 ease-out"
               />
               <span className={`text-xl font-bold glass-text-contrast whitespace-nowrap ${
                 mounted ? 'transition-all duration-500 ease-out' : ''

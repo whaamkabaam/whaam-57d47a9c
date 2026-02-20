@@ -1,7 +1,6 @@
 import { Calendar, Zap, User, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { CONFIG } from '@/config';
-import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
+import { LiquidGlassCard, LiquidGlassButton } from '@/components/LiquidGlassEffects';
 
 export function LiveSessionCard() {
   const handleBook = () => {
@@ -9,9 +8,9 @@ export function LiveSessionCard() {
   };
 
   return (
-    <LiquidGlassCard variant="primary" className="border-2 border-primary/50">
+    <LiquidGlassCard variant="primary" className="border border-white/10">
       {/* Badge */}
-      <span className="inline-flex items-center gap-1 px-2.5 py-1 mb-4 text-xs font-bold uppercase bg-primary/20 text-primary rounded-full">
+      <span className="inline-flex items-center gap-1 px-2.5 py-1 mb-4 text-xs font-bold uppercase backdrop-blur-md bg-white/10 border border-white/20 text-whaam-yellow shadow-[0_0_12px_rgba(255,215,64,0.4)] rounded-full">
         <Zap className="w-3 h-3" />
         Premium Experience
       </span>
@@ -35,31 +34,31 @@ export function LiveSessionCard() {
       {/* Benefits */}
       <ul className="space-y-3 mb-6">
         <li className="flex items-center gap-3 text-sm text-foreground">
-          <User className="w-4 h-4 text-primary shrink-0" />
+          <User className="w-4 h-4 text-whaam-yellow shrink-0" />
           Personal attention from a curve specialist
         </li>
         <li className="flex items-center gap-3 text-sm text-foreground">
-          <Clock className="w-4 h-4 text-primary shrink-0" />
+          <Clock className="w-4 h-4 text-whaam-yellow shrink-0" />
           45-minute screen share session
         </li>
         <li className="flex items-center gap-3 text-sm text-foreground">
-          <Calendar className="w-4 h-4 text-primary shrink-0" />
+          <Calendar className="w-4 h-4 text-whaam-yellow shrink-0" />
           Pick a time that works for you
         </li>
         <li className="flex items-center gap-3 text-sm text-foreground">
-          <Zap className="w-4 h-4 text-primary shrink-0" />
+          <Zap className="w-4 h-4 text-whaam-yellow shrink-0" />
           Walk away with your optimal curve
         </li>
       </ul>
 
       {/* CTA */}
-      <Button
+      <LiquidGlassButton
         onClick={handleBook}
-        variant="whaam"
-        className="w-full h-12 liquid-glow"
+        variant="primary"
+        className="w-full h-12 shadow-[0_0_20px_rgba(255,215,64,0.3)] border border-whaam-yellow/30 hover:border-whaam-yellow/60"
       >
         Book Your Session
-      </Button>
+      </LiquidGlassButton>
 
       {/* Microline */}
       <p className="mt-3 text-xs text-center text-muted-foreground">

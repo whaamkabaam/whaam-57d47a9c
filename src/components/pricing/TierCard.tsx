@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Check, Sparkles } from 'lucide-react';
+import { Check, X, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { getPrice, formatPrice, getDurationLabel } from '@/lib/fastspring';
@@ -32,7 +32,7 @@ interface TierConfig {
   basicFeatures: string[] | null;
   includes: string | null;
   deltaFeatures: DeltaFeature[];
-  notIncluded: string | null;
+  notIncludedFeatures: string[];
 }
 
 const tierConfig: Record<PaidTier, TierConfig> = {
@@ -48,13 +48,13 @@ const tierConfig: Record<PaidTier, TierConfig> = {
     ],
     includes: null,
     deltaFeatures: [],
-    notIncluded: '.ccurve upload, lineages, form settings, beta testing',
+    notIncludedFeatures: ['.ccurve upload/edit', 'Multiple curve families', 'Form settings', 'Beta testing'],
   },
   plus: {
     name: 'Plus',
     bestFor: 'Daily iteration · most players',
     basicFeatures: null,
-    includes: 'Includes Basic, and:',
+    includes: 'Includes everything in Basic, and:',
     deltaFeatures: [
       { prefix: 'Precision: ', bold: '0.5x Button → 0.1x Slider' },
       { prefix: 'Restore: ', bold: 'last → any version' },
@@ -63,13 +63,13 @@ const tierConfig: Record<PaidTier, TierConfig> = {
       { prefix: '', bold: '+ .ccurve', suffix: ' upload/edit' },
       { prefix: '', bold: '+ multiple', suffix: ' curve families' },
     ],
-    notIncluded: 'form settings, beta testing',
+    notIncludedFeatures: ['Form settings', 'Beta testing'],
   },
   ultra: {
     name: 'Ultra',
     bestFor: 'Unlimited · full control',
     basicFeatures: null,
-    includes: 'Includes Plus, and:',
+    includes: 'Includes everything in Plus, and:',
     deltaFeatures: [
       { prefix: 'Adjustments/day: ', bold: '25 → ∞' },
       { prefix: 'Library slots: ', bold: '20 → ∞' },
@@ -77,7 +77,7 @@ const tierConfig: Record<PaidTier, TierConfig> = {
       { prefix: '', bold: '+ form settings' },
       { prefix: '', bold: '+ beta testing' },
     ],
-    notIncluded: null,
+    notIncludedFeatures: [],
   },
 };
 
@@ -127,6 +127,20 @@ function getRawDailyCost(price: number, duration: SubscriptionDuration): number 
 
 /* ── Sub-components ── */
 
+function NotIncludedFeatures({ features }: { features: string[] }) {
+  if (features.length === 0) return null;
+  return (
+    <ul className="space-y-2 mt-3">
+      {features.map((feat, i) => (
+        <li key={i} className="flex items-start gap-2">
+          <X className="w-3.5 h-3.5 mt-0.5 text-white/20 shrink-0" />
+          <span className="text-sm text-white/30">{feat}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function DeltaFeatures({ config }: { config: TierConfig }) {
   // Basic: show full feature list
   if (config.basicFeatures) {
@@ -140,11 +154,7 @@ function DeltaFeatures({ config }: { config: TierConfig }) {
             </li>
           ))}
         </ul>
-        {config.notIncluded && (
-          <p className="mt-4 text-[11px] text-white/30">
-            Not included: {config.notIncluded}
-          </p>
-        )}
+        <NotIncludedFeatures features={config.notIncludedFeatures} />
       </div>
     );
   }
@@ -169,11 +179,7 @@ function DeltaFeatures({ config }: { config: TierConfig }) {
           </li>
         ))}
       </ul>
-      {config.notIncluded && (
-        <p className="mt-4 text-[11px] text-white/30">
-          Not included: {config.notIncluded}
-        </p>
-      )}
+      <NotIncludedFeatures features={config.notIncludedFeatures} />
     </div>
   );
 }

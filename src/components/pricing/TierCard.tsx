@@ -294,11 +294,9 @@ export function TierCard({
           </AnimatePresence>
         </div>
 
-        {/* Delta features */}
-        <DeltaFeatures config={config} />
-
-        {/* CTA */}
+        {/* Features + CTA anchored to bottom */}
         <div className="mt-auto">
+          <DeltaFeatures config={config} />
           <LiquidGlassButton
             onClick={onSelect}
             disabled={isProcessing || isCurrentTier}

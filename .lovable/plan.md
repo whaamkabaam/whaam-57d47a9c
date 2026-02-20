@@ -1,54 +1,51 @@
 
 
-# Fix Pricing Card Height Alignment and Inheritance Visibility
+# Improve Pricing Card Feature Lists
 
-## Problem
-1. Feature lists have different item counts per tier, causing uneven card heights and misaligned CTAs.
-2. The "Includes Basic, and:" inheritance line is too small (text-xs, white/40) and easy to miss.
+## Changes
 
-## Solution
+### 1. Update inheritance text
+Change "Includes Basic, and:" to "Includes everything in Basic, and:" (and same for Plus).
 
-### 1. Prominent inheritance badge
-Replace the faint "Includes Basic, and:" text with a styled pill/badge that's impossible to miss:
+### 2. Convert Basic's "Not included" into explicit X-marked rows
+Instead of the tiny "Not included: .ccurve upload, lineages, form settings, beta testing" text at the bottom of the Basic card, show those as actual list items with a red/muted X icon -- matching the same visual pattern as the checkmark rows. This fills the vertical space so all three cards' CTAs align naturally, and makes it immediately clear what Basic is missing.
 
+Same for Plus's "Not included" items.
+
+### 3. Remove the `notIncluded` string approach
+Replace `notIncluded: string | null` with `notIncludedFeatures: string[]` arrays so each missing feature gets its own X-marked row.
+
+## File: `src/components/pricing/TierCard.tsx`
+
+### Data changes (tierConfig)
+
+**Basic:**
+- Remove `notIncluded: '...'`
+- Add `notIncludedFeatures: ['.ccurve upload/edit', 'Multiple curve families', 'Form settings', 'Beta testing']`
+
+**Plus:**
+- Change `includes` to `'Includes everything in Basic, and:'`
+- Remove `notIncluded: '...'`
+- Add `notIncludedFeatures: ['Form settings', 'Beta testing']`
+
+**Ultra:**
+- Change `includes` to `'Includes everything in Plus, and:'`
+- `notIncludedFeatures: []`
+
+### Interface changes
+- Replace `notIncluded: string | null` with `notIncludedFeatures: string[]` in `TierConfig`
+
+### DeltaFeatures component changes
+- Replace the small `<p>` "Not included:" text block with a list of X-marked items rendered identically to the check-marked items but using an `X` icon in `text-white/25` (muted) and `text-white/30` label text
+- This applies to both the basic features path and the delta features path
+
+The X items render like:
 ```
-[Everything in Basic, plus:]
-```
-
-- Styled as a subtle bordered pill with slightly larger text (text-sm) and higher contrast (white/60 text, white/10 background, white/15 border)
-- Uses a visual separator feel so users immediately understand the tier builds on the previous one
-
-### 2. Equalize card content height
-Add `min-h-[220px]` to the feature list container (`flex-1 mb-6` div) so all three cards' feature sections occupy the same vertical space regardless of item count. This keeps CTAs and microlines perfectly aligned across the grid.
-
-## File changed
-
-| File | Change |
-|------|--------|
-| `src/components/pricing/TierCard.tsx` | Style the "includes" line as a prominent pill; add min-height to feature list container |
-
-## Technical details
-
-### Inheritance badge (in DeltaFeatures component)
-Replace:
-```tsx
-<p className="text-xs text-white/40 mb-3">
-  {config.includes}
-</p>
-```
-
-With:
-```tsx
-<div className="mb-3 px-3 py-1.5 rounded-lg bg-white/[0.06] border border-white/[0.1] text-sm text-white/60 text-center">
-  {config.includes}
-</div>
-```
-
-### Min-height on feature container
-Both the basic features and delta features wrapper divs get a consistent `min-h-[220px]` so all cards align:
-```tsx
-<div className="flex-1 mb-6 min-h-[220px]">
+X  .ccurve upload/edit
+X  Multiple curve families
+X  Form settings
+X  Beta testing
 ```
 
-This applies to both return paths in the `DeltaFeatures` component (the basic features list and the delta features list).
+This fills the vertical space so cards align, and makes missing features scannable at a glance -- no tiny footnote needed.
 

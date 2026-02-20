@@ -119,10 +119,10 @@ function useAnimatedPrice(targetPrice: number) {
   return displayPrice;
 }
 
-function getEffectiveDailyCost(price: number, duration: SubscriptionDuration): string | null {
+function getRawDailyCost(price: number, duration: SubscriptionDuration): number | null {
   if (duration === 'daily') return null;
   const days = duration === 'weekly' ? 7 : 30;
-  return `~$${(price / days).toFixed(2)}/day`;
+  return price / days;
 }
 
 /* ── Sub-components ── */
@@ -201,7 +201,8 @@ export function TierCard({
   const price = getPrice(tier, duration);
   const animatedPrice = useAnimatedPrice(price);
   const durationLabel = getDurationLabel(duration);
-  const dailyCost = getEffectiveDailyCost(price, duration);
+  const rawDailyCost = getRawDailyCost(price, duration);
+  const animatedDailyCost = useAnimatedPrice(rawDailyCost ?? 0);
 
   return (
     <LiquidGlassCard
@@ -250,20 +251,11 @@ export function TierCard({
               </motion.span>
             </AnimatePresence>
           </div>
-          <AnimatePresence mode="wait">
-            {dailyCost && (
-              <motion.p
-                key={dailyCost}
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="text-[11px] text-white/35 mt-1"
-              >
-                {dailyCost}
-              </motion.p>
-            )}
-          </AnimatePresence>
+          {duration !== 'daily' && (
+            <p className="text-[11px] text-white/35 mt-1">
+              ~${animatedDailyCost.toFixed(2)}/day
+            </p>
+          )}
         </div>
 
         {/* Delta features */}

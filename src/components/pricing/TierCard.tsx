@@ -241,7 +241,7 @@ export function TierCard({
     >
       {/* Most Popular badge */}
       {isPopular && (
-        <span className="absolute -top-3 right-4 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wide rounded-full backdrop-blur-md bg-white/10 border border-white/20 shadow-[0_0_12px_rgba(255,215,64,0.4)] text-whaam-yellow whitespace-nowrap">
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wide rounded-full backdrop-blur-md bg-white/10 border border-white/20 shadow-[0_0_12px_rgba(255,215,64,0.4)] text-whaam-yellow whitespace-nowrap">
           <Sparkles className="w-3 h-3" />
           Most Popular
         </span>

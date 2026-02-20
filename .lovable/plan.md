@@ -1,39 +1,33 @@
 
-
-# Fix Compact Navbar Gap for Logged-In State + Bigger Logo
+# Fix Logged-In Compact Navbar: Kill the Gap
 
 ## Problem
 
-The compact (scrolled) navbar uses a fixed `max-w-[620px]` regardless of auth state. When logged in, there are fewer right-side items (just "Studio" vs "Sign In" + "See Plans"), leaving a massive empty gap between the logo and the nav links.
+The `ml-auto` on the desktop nav container (line 77) pushes all nav items + Studio button to the far right edge. In the full-width state this looks fine, but in the compact pill it creates a massive empty gap between the logo and the nav links.
 
-## Changes
+## Fix
 
-**File: `src/components/Navigation.tsx`**
+Two changes in `src/components/Navigation.tsx`:
 
-| What | Before | After |
+### 1. Replace `ml-auto` with `justify-between` on the parent flex
+
+Instead of the nav items container using `ml-auto` to push right, make the parent flex container use `justify-between` so items spread evenly within whatever width the pill has. This eliminates the gap naturally.
+
+- **Line 61**: Change `flex items-center ${scrolled ? 'gap-4' : 'gap-8'}` to `flex items-center justify-between`
+- **Line 77**: Remove `ml-auto` from the desktop nav div
+
+### 2. Tighten the authenticated compact width
+
+Reduce from `max-w-[500px]` to `max-w-[480px]` since `justify-between` will distribute space more efficiently.
+
+- **Line 57**: Change `max-w-[500px]` to `max-w-[480px]`
+
+### Summary
+
+| Line | Before | After |
 |------|--------|-------|
-| Logo size | `w-14 h-14` (56px) | `w-16 h-16` (64px) |
-| Compact max-width | Always `max-w-[620px]` | `max-w-[500px]` when authenticated, `max-w-[620px]` when logged out |
+| 57 | `max-w-[500px]` | `max-w-[480px]` |
+| 61 | `flex items-center ${scrolled ? 'gap-4' : 'gap-8'}` | `flex items-center justify-between` |
+| 77 | `ml-auto` | (removed) |
 
-The compact width is now auth-aware:
-- Logged in: 4 nav items + Studio button = ~500px is snug
-- Logged out: 4 nav items + Sign In + See Plans = ~620px fits
-
-The `isLoading` placeholder (`w-[140px]`) keeps the logged-out width as default during load to prevent layout shift.
-
-### Technical detail
-
-Line 57 changes from:
-```
-scrolled ? 'max-w-[620px] mx-auto' : 'max-w-[1400px] mx-auto'
-```
-to:
-```
-scrolled
-  ? (isAuthenticated ? 'max-w-[500px] mx-auto' : 'max-w-[620px] mx-auto')
-  : 'max-w-[1400px] mx-auto'
-```
-
-Line 67 changes from `w-14 h-14` to `w-16 h-16`.
-
-Two lines, no structural changes.
+Three small tweaks. The `justify-between` approach means the logo and nav items will always fill available space evenly -- no dead gap regardless of pill width or auth state.

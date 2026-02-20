@@ -37,7 +37,7 @@ export function DurationToggle({ value, onChange }: DurationToggleProps) {
           )}
           <span className="relative z-10">{duration.label}</span>
           {duration.badge && (
-            <span className="absolute -top-5 -right-3 px-2 py-0.5 text-[10px] font-bold uppercase bg-destructive text-destructive-foreground rounded-full z-20 shadow-md">
+            <span className="absolute -top-3.5 -right-3 px-2 py-0.5 text-[10px] font-bold uppercase bg-destructive text-destructive-foreground rounded-full z-20 shadow-md">
               {duration.badge}
             </span>
           )}

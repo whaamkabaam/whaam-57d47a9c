@@ -1,24 +1,105 @@
 
 
-# Bigger Logo That Overflows the Bar (Both States)
+# Pricing Section Adjustments
 
-## Approach
-Use negative vertical margins on the logo so it visually grows beyond the bar's edges without increasing the bar's layout height. The bar stays ~48px tall, but the logo renders at 64px, overflowing top and bottom equally.
+## Changes Overview
 
-## Changes
+Seven targeted updates across three files, no new files needed.
 
-**File: `src/components/Navigation.tsx`**
+---
 
-1. **Line 63** -- Add `overflow-visible` to the logo wrapper div so the oversized logo isn't clipped
-2. **Line 67** -- Change `h-12` to `h-16 -my-2` on the logo `<img>`:
-   - `h-16` = 64px visual height (much bigger)
-   - `-my-2` = negative 8px top + bottom margin, so it only contributes 48px to layout (64 - 16 = 48)
-   - Bar height stays exactly the same
+### 1. Effective daily cost for Week Pass and Monthly
 
-This works identically for both authenticated ("Studio" button) and unauthenticated ("Sign In" + "See Plans") states since the logo markup is shared.
+**File: `src/components/pricing/TierCard.tsx`**
 
-## Result
-- Logo appears ~33% larger (64px vs 48px)
-- Bar height unchanged at ~48px
-- Logo overflows the bar edges slightly for a premium, "hero logo" feel
-- Both auth states get the same treatment automatically
+Below the price block (after line 181), add a line that computes and shows the effective daily rate when duration is `weekly` or `monthly`:
+
+- Weekly: price / 7, formatted as `~$X.XX/day`
+- Monthly: price / 30, formatted as `~$X.XX/day`
+- Daily: hidden (redundant)
+
+Shown as a small muted line: `~$1.14/day on average`
+
+---
+
+### 2. CTA button text and styling
+
+**File: `src/components/pricing/TierCard.tsx`**
+
+- Replace `<Button>` (lines 204-214) with `<LiquidGlassButton>` from LiquidGlassEffects
+- Change label from `Get Basic` to `Start Basic` (and same for Plus/Ultra)
+- Use `variant="primary"` for all tiers (consistent liquid glass look)
+- Keep disabled states for processing/current tier
+
+---
+
+### 3. "Best for" tagline
+
+**File: `src/components/pricing/TierCard.tsx`**
+
+Add a `bestFor` field to `tierConfig`:
+- Basic: "Light tweaking / casual use"
+- Plus: "Most players who iterate daily"
+- Ultra: "Power users + full control"
+
+Render it below the description as a small italic/muted line with a target icon or similar visual cue.
+
+---
+
+### 4. Beta testing feature for Ultra
+
+**File: `src/components/pricing/TierCard.tsx`**
+
+Add `{ text: 'Beta feature testing', included: true }` to Ultra's features list.
+Also add it as `false` to Basic and Plus for visual contrast.
+
+Also update `FeatureComparisonTable.tsx` to include the row:
+`{ name: 'Beta testing', basic: false, plus: false, ultra: true }`
+
+---
+
+### 5. "Why passes exist" contextual line
+
+**File: `src/components/Products.tsx`** (homepage) and **`src/pages/Pricing.tsx`** (standalone page)
+
+Below the DurationToggle, add a single muted-text line:
+"Just visiting? Grab a Day or Week Pass. Serious improvement? Monthly saves you money."
+
+---
+
+### 6. Comparison table header note
+
+**File: `src/components/pricing/FeatureComparisonTable.tsx`**
+
+Add a note above the table (before `<table>`):
+"All durations include the same features. Differences below are by tier."
+Styled as small muted italic text.
+
+---
+
+### 7. Header text update
+
+**File: `src/components/Products.tsx`** (line 68-69) and **`src/pages/Pricing.tsx`** (line 80-82)
+
+Change subtitle from "Choose the pass or subscription that fits your needs. Upgrade or downgrade anytime." to:
+"Choose your tier and duration. Upgrade or downgrade anytime."
+
+---
+
+## Technical Details
+
+### TierCard.tsx changes
+- Import `LiquidGlassButton` from `@/components/LiquidGlassEffects`
+- Add `bestFor: string` to the tierConfig type and populate for each tier
+- Add daily cost calculation: `const dailyCost = duration === 'daily' ? null : price / (duration === 'weekly' ? 7 : 30)`
+- Render daily cost line with AnimatePresence for smooth toggle transitions
+- Replace `<Button variant={isPopular ? "whaam" : "outline"}>` with `<LiquidGlassButton variant="primary">` for all tiers
+
+### FeatureComparisonTable.tsx changes
+- Add `beta testing` row to features array
+- Add header note paragraph before the table element
+
+### Products.tsx + Pricing.tsx changes
+- Update subtitle text
+- Add contextual pass explanation line after DurationToggle
+

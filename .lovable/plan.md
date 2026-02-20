@@ -1,29 +1,31 @@
 
 
-# Default Light to Center-Bottom + Update Upload Text
+# Fix Build Error + Enhance CTA Button Yellow Glow
 
-## Change 1: Move default DOM light to center-bottom
+## Problem 1: Build Error
+The `index.html` has a `crossorigin` attribute without a value on line 8 (`<link ... crossorigin />`). The Vite HTML parser (parse5) is choking on this during production builds. Fix: change `crossorigin` to `crossorigin=""`.
 
-The liquid glass "specular highlight" position is controlled by `--mx` and `--my` CSS custom properties. Currently `--my` defaults to `0.3` (upper area). We'll change it to `0.8` (center-bottom) so the resting glow sits at the bottom of each card.
+## Problem 2: Buttons Need More Yellow Glow
+The three tier CTA buttons ("Start Basic", "Start Plus", "Start Ultra") and the "Book Your Session" button currently use the generic `liquid-glow` class which emits a glow based on `--primary` HSL color. To make them light up more in yellow (on-brand with the `whaam-yellow: #FFD740` accent), we'll update the glow specifically for these pricing buttons.
 
-**Files:**
-- `src/index.css` (line 722): Change `--my: .3` to `--my: .8` for `.liquid-glass`
-- `src/index.css` (line ~805): Same change for `.liquid-glass-nav`
-- `src/components/LiquidGlassEffects.tsx` (line 78): Update `lastMouse` initial ref from `{ x: 0.5, y: 0.5 }` to `{ x: 0.5, y: 0.8 }` so the JS-side default matches the CSS default
+## Changes
 
-## Change 2: Update upload feature text
+### File: `index.html` (line 8)
+- Change `crossorigin` to `crossorigin=""` to fix the parse5 build error.
 
-Change "Upload .ccurve files" to "Upload & Edit your own .ccurve files" in both locations:
+### File: `src/components/pricing/TierCard.tsx`
+- Add a yellow glow class to ALL tier CTA buttons (not just the popular one). Currently only `isPopular` gets the golden shadow. We'll give all three buttons a warm yellow glow:
+  - `shadow-[0_0_15px_rgba(255,215,64,0.25)] border border-whaam-yellow/20 hover:shadow-[0_0_25px_rgba(255,215,64,0.4)] hover:border-whaam-yellow/50`
+  - The popular tier keeps its stronger version with slightly higher intensity values.
 
-- `src/components/pricing/TierCard.tsx`: Update the feature text in all three tier configs (basic, plus, ultra)
-- `src/components/pricing/FeatureComparisonTable.tsx`: Update the feature name in the `features` array
+### File: `src/components/pricing/LiveSessionCard.tsx`
+- Already has yellow glow styling -- no changes needed here.
 
 ---
 
 ### Technical Summary
 
-**4 files changed:**
-- `src/index.css` -- default `--my` from `.3` to `.8` (2 locations)
-- `src/components/LiquidGlassEffects.tsx` -- `lastMouse` initial y from `0.5` to `0.8`
-- `src/components/pricing/TierCard.tsx` -- feature text update (3 tiers)
-- `src/components/pricing/FeatureComparisonTable.tsx` -- feature name update
+**2 files changed:**
+- `index.html` -- fix `crossorigin` attribute for parse5 compatibility
+- `src/components/pricing/TierCard.tsx` -- apply yellow glow to all tier CTA buttons, with stronger glow for the popular tier
+

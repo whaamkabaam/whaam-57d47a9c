@@ -56,7 +56,7 @@ const tierConfig: Record<PaidTier, TierConfig> = {
     basicFeatures: null,
     includes: 'Includes Basic, and:',
     deltaFeatures: [
-      { prefix: 'Precision: ', bold: '0.5 → 0.1' },
+      { prefix: 'Precision: ', bold: '0.5x Button → 0.1x Slider' },
       { prefix: 'Restore: ', bold: 'last → any version' },
       { prefix: 'Library slots: ', bold: '5 → 20' },
       { prefix: 'Favorite slots: ', bold: '1 → 5' },

@@ -11,7 +11,7 @@ interface DurationToggleProps {
 const durations: { value: SubscriptionDuration; label: string; badge?: string }[] = [
   { value: 'daily', label: 'Day Pass' },
   { value: 'weekly', label: 'Week Pass' },
-  { value: 'monthly', label: 'Monthly', badge: 'Best value' },
+  { value: 'monthly', label: 'Monthly', badge: 'Save 50%' },
 ];
 
 export function DurationToggle({ value, onChange }: DurationToggleProps) {
@@ -36,9 +36,9 @@ export function DurationToggle({ value, onChange }: DurationToggleProps) {
             />
           )}
           <span className="relative z-10">{duration.label}</span>
-          {duration.badge && value === duration.value && (
-            <span className="absolute -top-2 -right-2 px-1.5 py-0.5 text-[10px] font-bold uppercase bg-primary text-primary-foreground rounded-full z-10">
-              Save
+          {duration.badge && (
+            <span className="absolute -top-2.5 -right-3 px-2 py-0.5 text-[10px] font-bold uppercase bg-destructive text-destructive-foreground rounded-full z-20 shadow-md">
+              {duration.badge}
             </span>
           )}
         </button>

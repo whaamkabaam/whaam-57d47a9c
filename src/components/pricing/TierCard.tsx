@@ -237,10 +237,10 @@ export function TierCard({
           <LiquidGlassButton
             onClick={onSelect}
             disabled={isProcessing || isCurrentTier}
-            variant="primary"
+            variant="none"
             className={cn(
-              "w-full h-12 shadow-[0_0_20px_rgba(255,215,64,0.35)] border border-whaam-yellow/30 hover:shadow-[0_0_30px_rgba(255,215,64,0.5)] hover:border-whaam-yellow/60",
-              isPopular && "shadow-[0_0_30px_rgba(255,215,64,0.5)] border-whaam-yellow/40 hover:shadow-[0_0_40px_rgba(255,215,64,0.65)] hover:border-whaam-yellow/70"
+              "w-full h-12 liquid-glow-yellow border border-whaam-yellow/30 hover:border-whaam-yellow/60",
+              isPopular && "liquid-glow-yellow-strong border-whaam-yellow/40 hover:border-whaam-yellow/70"
             )}
           >
             {isCurrentTier ? 'Current Plan' : isProcessing ? 'Processing...' : `Start ${config.name}`}

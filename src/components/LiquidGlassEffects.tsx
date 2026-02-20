@@ -204,13 +204,14 @@ LiquidGlassCard.displayName = 'LiquidGlassCard';
 
 // The button is also a pure CSS component.
 export const LiquidGlassButton = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'primary' | 'secondary' | 'accent';
+  variant?: 'primary' | 'secondary' | 'accent' | 'none';
 }>(
   ({ className, variant = 'primary', ...props }, ref) => {
     const variantClasses = {
       primary: 'liquid-glow',
       secondary: 'liquid-glow-secondary', 
-      accent: 'liquid-glow-accent'
+      accent: 'liquid-glow-accent',
+      none: '',
     };
     
     return (

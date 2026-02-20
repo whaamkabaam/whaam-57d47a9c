@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Check, Sparkles, Target } from 'lucide-react';
+import { Check, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { getPrice, formatPrice, getDurationLabel } from '@/lib/fastspring';
@@ -34,54 +34,51 @@ interface TierConfig {
   includes: string | null;
   deltaFeatures: string[];
   notIncluded: string | null;
-  accent: string;
 }
 
 const tierConfig: Record<PaidTier, TierConfig> = {
   basic: {
     name: 'Basic',
-    bestFor: 'Light tweaking / casual use',
+    bestFor: 'Light tweaking · casual use',
     caps: [
-      { label: 'Adjustments/day', value: '5' },
-      { label: 'Library slots', value: '5' },
-      { label: 'Favorites', value: '1' },
-      { label: 'Tuning precision', value: '0.5x' },
+      { label: 'Adj/day', value: '5' },
+      { label: 'Library', value: '5' },
+      { label: 'Favs', value: '1' },
+      { label: 'Precision', value: '0.5x' },
     ],
     includes: null,
     deltaFeatures: [
       'Coarse tuning (0.5 steps)',
       'Last version restore',
     ],
-    notIncluded: '.ccurve upload, lineages, form settings, beta',
-    accent: 'border-border',
+    notIncluded: '.ccurve upload · lineages · form settings · beta',
   },
   plus: {
     name: 'Plus',
-    bestFor: 'Most players who iterate daily',
+    bestFor: 'Daily iteration · most players',
     caps: [
-      { label: 'Adjustments/day', value: '25' },
-      { label: 'Library slots', value: '20' },
-      { label: 'Favorites', value: '5' },
-      { label: 'Tuning precision', value: '0.1x' },
+      { label: 'Adj/day', value: '25' },
+      { label: 'Library', value: '20' },
+      { label: 'Favs', value: '5' },
+      { label: 'Precision', value: '0.1x' },
     ],
     includes: 'Everything in Basic, plus:',
     deltaFeatures: [
       'Fine tuning (0.1 steps)',
       'Full version history',
-      'Upload & edit .ccurve files',
+      'Upload & edit .ccurve',
       'Multiple curve families',
     ],
-    notIncluded: 'form settings, beta',
-    accent: 'border-secondary',
+    notIncluded: 'form settings · beta',
   },
   ultra: {
     name: 'Ultra',
-    bestFor: 'Unlimited everything · full control',
+    bestFor: 'Unlimited · full control',
     caps: [
-      { label: 'Adjustments/day', value: '∞' },
-      { label: 'Library slots', value: '∞' },
-      { label: 'Favorites', value: '∞' },
-      { label: 'Tuning precision', value: '0.1x' },
+      { label: 'Adj/day', value: '∞' },
+      { label: 'Library', value: '∞' },
+      { label: 'Favs', value: '∞' },
+      { label: 'Precision', value: '0.1x' },
     ],
     includes: 'Everything in Plus, plus:',
     deltaFeatures: [
@@ -91,18 +88,17 @@ const tierConfig: Record<PaidTier, TierConfig> = {
       'Beta feature testing',
     ],
     notIncluded: null,
-    accent: 'border-primary',
   },
 };
 
 function getMicroline(duration: SubscriptionDuration): string {
   switch (duration) {
     case 'daily':
-      return 'One-time purchase · valid for 24 hours';
+      return 'One-time · valid 24 hours';
     case 'weekly':
-      return 'One-time purchase · valid for 7 days';
+      return 'One-time · valid 7 days';
     case 'monthly':
-      return 'Auto-renews monthly · cancel anytime';
+      return 'Auto-renews · cancel anytime';
   }
 }
 
@@ -144,17 +140,11 @@ function getEffectiveDailyCost(price: number, duration: SubscriptionDuration): s
 
 function CapsBlock({ caps }: { caps: TierConfig['caps'] }) {
   return (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-0 mb-6 py-3 px-3 rounded-lg bg-muted/30 border border-border/50">
-      {caps.map((cap, i) => (
-        <div
-          key={cap.label}
-          className={cn(
-            "flex items-center justify-between py-2",
-            i < caps.length - 2 && "border-b border-border/30"
-          )}
-        >
-          <span className="text-xs text-muted-foreground">{cap.label}</span>
-          <span className="text-sm font-bold text-foreground">{cap.value}</span>
+    <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 mb-6 pt-5 border-t border-white/[0.06]">
+      {caps.map((cap) => (
+        <div key={cap.label} className="flex items-center justify-between py-1">
+          <span className="text-[11px] text-white/50">{cap.label}</span>
+          <span className="text-sm font-semibold text-white/90">{cap.value}</span>
         </div>
       ))}
     </div>
@@ -165,20 +155,20 @@ function DeltaFeatures({ config }: { config: TierConfig }) {
   return (
     <div className="flex-1 mb-6">
       {config.includes && (
-        <p className="text-xs text-muted-foreground italic mb-3">
+        <p className="text-[11px] text-white/45 uppercase tracking-wide mb-3">
           {config.includes}
         </p>
       )}
-      <ul className="space-y-2.5">
+      <ul className="space-y-2">
         {config.deltaFeatures.map((feature) => (
           <li key={feature} className="flex items-start gap-2">
-            <Check className="w-4 h-4 mt-0.5 text-secondary shrink-0" />
-            <span className="text-sm text-foreground font-semibold">{feature}</span>
+            <Check className="w-3.5 h-3.5 mt-0.5 text-whaam-yellow/60 shrink-0" />
+            <span className="text-sm text-foreground/85">{feature}</span>
           </li>
         ))}
       </ul>
       {config.notIncluded && (
-        <p className="mt-4 text-xs text-muted-foreground/60">
+        <p className="mt-4 text-[11px] text-white/30">
           Not included: {config.notIncluded}
         </p>
       )}
@@ -204,24 +194,26 @@ export function TierCard({
 
   return (
     <div className="relative">
-      {/* Most Popular badge */}
+      {/* Most Popular badge — centered */}
       {isPopular && (
-        <span className="absolute -top-3 -right-3 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase rounded-full backdrop-blur-md bg-white/10 border border-white/20 shadow-[0_0_12px_rgba(255,215,64,0.4)] text-whaam-yellow">
-          <Sparkles className="w-3.5 h-3.5" />
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wide rounded-full backdrop-blur-md bg-white/10 border border-white/20 shadow-[0_0_12px_rgba(255,215,64,0.4)] text-whaam-yellow whitespace-nowrap">
+          <Sparkles className="w-3 h-3" />
           Most Popular
         </span>
       )}
 
       <LiquidGlassCard
         className={cn(
-          "flex flex-col border-2 transition-all duration-300 h-full",
-          config.accent,
-          isPopular && "shadow-lg shadow-secondary/20 border-secondary",
+          "flex flex-col border border-white/[0.08] transition-all duration-300 h-full",
+          isPopular && "border-white/[0.15] shadow-lg shadow-secondary/10",
           isCurrentTier && "ring-2 ring-secondary ring-offset-2 ring-offset-background"
         )}
       >
-        <div className="flex flex-col flex-1">
-          {/* Header: badge + name + best-for */}
+        {/* Subtle inner gradient overlay */}
+        <div className="absolute inset-0 rounded-[inherit] pointer-events-none bg-gradient-to-b from-white/[0.03] to-transparent" />
+
+        <div className="relative flex flex-col flex-1">
+          {/* Header: badge + name + best-for pill */}
           <div className="mb-4 text-center">
             <img
               src={tierBadges[tier]}
@@ -229,14 +221,15 @@ export function TierCard({
               className="w-24 h-24 mx-auto mb-3 object-contain"
             />
             <h3 className="text-xl font-bold text-foreground">{config.name}</h3>
-            <p className="flex items-center justify-center gap-1.5 mt-1.5 text-xs text-muted-foreground italic">
-              <Target className="w-3 h-3" />
-              {config.bestFor}
-            </p>
+            <div className="flex justify-center mt-2">
+              <span className="px-3 py-1 rounded-full bg-white/[0.05] border border-white/[0.08] text-[11px] text-muted-foreground">
+                {config.bestFor}
+              </span>
+            </div>
           </div>
 
           {/* Price */}
-          <div className="mb-4 text-center">
+          <div className="mb-6 text-center">
             <div className="flex items-baseline gap-1 justify-center">
               <span className="text-4xl font-bold text-foreground">
                 {formatPrice(animatedPrice)}
@@ -262,7 +255,7 @@ export function TierCard({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.2 }}
-                  className="text-xs text-muted-foreground mt-1"
+                  className="text-[11px] text-white/40 mt-1"
                 >
                   {dailyCost}
                 </motion.p>
@@ -281,16 +274,13 @@ export function TierCard({
             onClick={onSelect}
             disabled={isProcessing || isCurrentTier}
             variant="none"
-            className={cn(
-              "w-full h-12 liquid-glow-yellow border border-whaam-yellow/30 hover:border-whaam-yellow/60",
-              isPopular && "liquid-glow-yellow-strong border-whaam-yellow/40 hover:border-whaam-yellow/70"
-            )}
+            className="w-full h-11 rounded-xl liquid-glow-yellow border border-whaam-yellow/30 hover:border-whaam-yellow/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]"
           >
             {isCurrentTier ? 'Current Plan' : isProcessing ? 'Processing...' : `Start ${config.name}`}
           </LiquidGlassButton>
 
           {/* Microline */}
-          <p className="mt-3 text-xs text-center text-muted-foreground">
+          <p className="mt-3 text-[11px] text-center text-white/40">
             {getMicroline(duration)}
           </p>
         </div>

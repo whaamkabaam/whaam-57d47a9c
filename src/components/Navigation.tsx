@@ -54,17 +54,17 @@ export default function Navigation({ activeSection }: NavigationProps) {
           className={`mt-2 p-2 px-4 rounded-2xl w-full ${
             mounted ? 'transition-[max-width] duration-500 ease-out' : ''
           } ${
-            scrolled ? 'max-w-[820px] mx-auto' : 'max-w-[1400px] mx-auto'
+            scrolled ? 'max-w-[620px] mx-auto' : 'max-w-[1400px] mx-auto'
           }`}
           style={{ willChange: 'max-width' }}
         >
-          <div className="flex items-center gap-8">
+          <div className={`flex items-center ${scrolled ? 'gap-4' : 'gap-8'}`}>
             {/* Logo */}
             <div className="flex items-center space-x-2 shrink-0">
               <img 
                 src={whaamLogo} 
                 alt="WHAAM KABAAM Logo" 
-                className="w-10 h-10 object-contain transition-all duration-500 ease-out"
+                className="w-14 h-14 object-contain transition-all duration-500 ease-out"
               />
               <span className={`text-xl font-bold glass-text-contrast whitespace-nowrap ${
                 mounted ? 'transition-all duration-500 ease-out' : ''

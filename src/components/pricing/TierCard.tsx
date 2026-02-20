@@ -129,7 +129,7 @@ function useAnimatedPrice(targetPrice: number) {
 function getEffectiveDailyCost(price: number, duration: SubscriptionDuration): string | null {
   if (duration === 'daily') return null;
   const days = duration === 'weekly' ? 7 : 30;
-  return `~$${(price / days).toFixed(2)}/day on average`;
+  return `~$${(price / days).toFixed(2)}/day`;
 }
 
 export function TierCard({ 

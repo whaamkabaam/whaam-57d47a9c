@@ -20,7 +20,7 @@ export function LiveSessionCard() {
         Live 1-on-1 Session
       </h3>
       <p className="text-muted-foreground mb-4">
-        Get your perfect curve dialed in with an expert in 45 minutes
+        Skip the endless testing and research. Order, schedule, and get your perfect settings dialed in — in just 45 minutes.
       </p>
 
       {/* Price */}
@@ -34,20 +34,20 @@ export function LiveSessionCard() {
       {/* Benefits */}
       <ul className="space-y-3 mb-6">
         <li className="flex items-center gap-3 text-sm text-foreground">
-          <User className="w-4 h-4 text-whaam-yellow shrink-0" />
-          Personal attention from a curve specialist
+          <Zap className="w-4 h-4 text-whaam-yellow shrink-0" />
+          Skip hours of curve testing and feature research
         </li>
         <li className="flex items-center gap-3 text-sm text-foreground">
-          <Clock className="w-4 h-4 text-whaam-yellow shrink-0" />
-          45-minute screen share session
+          <User className="w-4 h-4 text-whaam-yellow shrink-0" />
+          45-minute screen share, personally with me
         </li>
         <li className="flex items-center gap-3 text-sm text-foreground">
           <Calendar className="w-4 h-4 text-whaam-yellow shrink-0" />
-          Pick a time that works for you
+          Schedule after ordering — link sent via email
         </li>
         <li className="flex items-center gap-3 text-sm text-foreground">
-          <Zap className="w-4 h-4 text-whaam-yellow shrink-0" />
-          Walk away with your optimal curve
+          <Clock className="w-4 h-4 text-whaam-yellow shrink-0" />
+          Walk away aiming better, same day
         </li>
       </ul>
 
@@ -62,7 +62,7 @@ export function LiveSessionCard() {
 
       {/* Microline */}
       <p className="mt-3 text-xs text-center text-muted-foreground">
-        100% satisfaction guaranteed
+        Don't regret waiting — raise your skill ceiling today.
       </p>
     </LiquidGlassCard>
   );

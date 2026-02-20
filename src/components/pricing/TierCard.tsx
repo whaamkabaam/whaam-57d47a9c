@@ -58,10 +58,11 @@ const tierConfig: Record<PaidTier, TierConfig> = {
     basicFeatures: null,
     includes: 'Includes everything in Basic, and:',
     deltaFeatures: [
+      { prefix: 'Adjustments/day: ', bold: '5 → 25' },
       { prefix: 'Precision: ', bold: '0.5x Button → 0.1x Slider' },
-      { prefix: 'Restore: ', bold: 'last → any version' },
       { prefix: 'Library slots: ', bold: '5 → 20' },
       { prefix: 'Favorite slots: ', bold: '1 → 5' },
+      { prefix: 'Restore: ', bold: 'last → any version' },
       { prefix: '', bold: '+ .ccurve', suffix: ' upload/edit' },
       { prefix: '', bold: '+ multiple', suffix: ' curve families' },
     ],

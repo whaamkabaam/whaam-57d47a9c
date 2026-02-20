@@ -40,7 +40,7 @@ const tierConfig: Record<PaidTier, {
     bestFor: 'Light tweaking / casual use',
     features: [
       { text: '5 adjustments per day', included: true },
-      { text: 'Preset feedback buttons (0.5 steps)', included: true },
+      { text: 'Preset feedback buttons (0.5x)', included: true },
       { text: '5 library slots', included: true },
       { text: '1 favorite slot', included: true },
       { text: 'Restore last version only', included: true },
@@ -57,7 +57,7 @@ const tierConfig: Record<PaidTier, {
     bestFor: 'Most players who iterate daily',
     features: [
       { text: '25 adjustments per day', included: true },
-      { text: 'Fine feedback slider (0.1 steps)', included: true },
+      { text: 'Fine feedback slider (0.1x)', included: true },
       { text: '20 library slots', included: true },
       { text: '5 favorite slots', included: true },
       { text: 'Restore any version', included: true },
@@ -74,7 +74,7 @@ const tierConfig: Record<PaidTier, {
     bestFor: 'Unlimited everything · full control',
     features: [
       { text: 'Unlimited adjustments', included: true },
-      { text: 'Fine feedback slider (0.1 steps)', included: true },
+      { text: 'Fine feedback slider (0.1x)', included: true },
       { text: 'Unlimited library slots', included: true },
       { text: 'Unlimited favorites', included: true },
       { text: 'Restore any version', included: true },

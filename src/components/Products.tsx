@@ -66,13 +66,16 @@ const Products = () => {
             </span>
           </h2>
           <p className="text-lg md:text-xl glass-text max-w-3xl mx-auto">
-            Choose the pass or subscription that fits your needs. Upgrade or downgrade anytime.
+            Choose your tier and duration. Upgrade or downgrade anytime.
           </p>
         </div>
 
         {/* Duration Toggle */}
-        <div className="flex justify-center mb-10">
+        <div className="flex flex-col items-center gap-3 mb-10">
           <DurationToggle value={duration} onChange={setDuration} />
+          <p className="text-sm text-muted-foreground text-center max-w-md">
+            Just visiting? Grab a Day or Week Pass. Serious improvement? Monthly saves you money.
+          </p>
         </div>
 
         {/* Tier Cards */}

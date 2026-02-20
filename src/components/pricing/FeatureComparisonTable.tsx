@@ -17,6 +17,7 @@ const features: FeatureRow[] = [
   { name: 'Upload .ccurve', basic: false, plus: true, ultra: true },
   { name: 'Multiple lineages', basic: false, plus: true, ultra: true },
   { name: 'Form settings', basic: false, plus: false, ultra: true },
+  { name: 'Beta testing', basic: false, plus: false, ultra: true },
 ];
 
 function CellValue({ value }: { value: string | boolean }) {
@@ -32,6 +33,9 @@ function CellValue({ value }: { value: string | boolean }) {
 export function FeatureComparisonTable() {
   return (
     <div className="overflow-x-auto">
+      <p className="text-xs text-muted-foreground italic mb-4">
+        All durations include the same features. Differences below are by tier.
+      </p>
       <table className="w-full min-w-[480px]">
         <thead>
           <tr className="border-b border-border">

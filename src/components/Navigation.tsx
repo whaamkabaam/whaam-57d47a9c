@@ -17,6 +17,9 @@ export default function Navigation({ activeSection }: NavigationProps) {
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
 
+  // Don't enable transitions until both mounted and auth resolved
+  const ready = mounted && !isLoading;
+
   useEffect(() => {
     // Suppress transitions on mount — snap to correct state instantly
     requestAnimationFrame(() => setMounted(true));
@@ -52,7 +55,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
           variant="primary"
           glassVariant="nav"
           className={`mt-2 py-0 px-4 rounded-3xl w-full ${
-            mounted ? 'transition-[max-width] duration-500 ease-out' : ''
+            ready ? 'transition-[max-width] duration-500 ease-out' : ''
           } ${
             scrolled ? (isAuthenticated ? 'max-w-[520px] mx-auto' : 'max-w-[660px] mx-auto') : 'max-w-[1400px] mx-auto'
           }`}
@@ -64,10 +67,10 @@ export default function Navigation({ activeSection }: NavigationProps) {
               <img 
                 src={whaamLogo} 
                 alt="WHAAM KABAAM Logo" 
-                className="h-16 -my-2 w-auto object-contain transition-all duration-500 ease-out"
+                className={`h-16 -my-2 w-auto object-contain ${ready ? 'transition-all duration-500 ease-out' : ''}`}
               />
               <span className={`text-xl font-bold glass-text-contrast whitespace-nowrap ${
-                mounted ? 'transition-all duration-500 ease-out' : ''
+                ready ? 'transition-all duration-500 ease-out' : ''
               } ${
                 scrolled ? 'opacity-0 max-w-0 overflow-hidden scale-95 blur-[2px] -translate-x-1' : 'opacity-100 max-w-[200px] scale-100 blur-0 translate-x-0'
               }`}>whaamkabaam</span>
@@ -87,7 +90,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
                 </button>
               ))}
             
-              <div className="flex items-center gap-4">
+              <div className={`flex items-center gap-4 ${ready ? '' : 'glass-no-transition'}`}>
                 {isLoading ? (
                   <div className="h-[36px] w-[140px]" />
                 ) : isAuthenticated ? (

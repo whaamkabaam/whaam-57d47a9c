@@ -1,12 +1,15 @@
 
-# Restore Full-Size Logo in Navigation Bar
+# Fix Nav Bar Height and Round Corners
 
-## Change
+## Problem
+Restoring `w-16 h-16` (64px) made the bar tall again. You want the logo to fill the bar's height without making the bar bigger, plus rounder corners.
+
+## Changes
 
 **File: `src/components/Navigation.tsx`**
 
-- **Line 67**: Increase logo from `w-10 h-10` (40px) back to `w-16 h-16` (64px) so it displays at full size
-- **Line 54**: Adjust vertical padding from `py-1.5` to `py-1` so the bar wraps the logo snugly with minimal extra space on top/bottom
-- **Line 57**: Bump the scrolled pill widths slightly to accommodate the larger logo -- authenticated from `max-w-[480px]` to `max-w-[520px]`, unauthenticated from `max-w-[620px]` to `max-w-[660px]`
+1. **Logo size** (line 67): Change `w-16 h-16` to `h-10 w-auto` -- this caps the logo height at 40px and lets width scale proportionally, so it looks full-size relative to the bar without inflating it
+2. **Corner radius** (line 54): Change `rounded-2xl` to `rounded-3xl` for softer, more rounded corners
+3. **Padding stays** at `py-1` -- with the 40px logo this gives a slim ~48px total bar height
 
-The logo drives the bar height; the padding just adds a slim breathing margin around it. Both login states (signed-in with "Studio" button, signed-out with "Sign In" + "See Plans") will have the same proportional padding.
+Result: logo fills the bar height naturally, bar stays compact, corners are rounder.

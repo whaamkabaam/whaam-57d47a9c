@@ -1,37 +1,17 @@
 
+# Slim Down the Navigation Bar
 
-# Animated Duration Toggle + Price Transitions
+## What's changing
 
-## Two animations to add
+The nav bar looks taller than it needs to be because the logo is 64px (`w-16 h-16`) and the LiquidGlassCard base styles add default padding (`p-6` from the component) which gets partially overridden by `p-2`. The fix is to shrink the logo and tighten vertical padding.
 
-### A. Sliding pill indicator in DurationToggle
+## Changes
 
-Replace the static `bg-secondary` background on the active button with a shared `motion.div` using `layoutId`. This creates a smooth sliding pill that glides between options when you click a different duration. The buttons themselves become transparent -- the animated pill sits behind the active label.
+**File: `src/components/Navigation.tsx`**
 
-**File: `src/components/pricing/DurationToggle.tsx`**
+1. Reduce logo size from `w-16 h-16` (64px) to `w-10 h-10` (40px) -- still clearly visible but much more compact
+2. Change card padding from `p-2 px-4` to `py-1.5 px-4` to minimize vertical breathing room
+3. Reduce nav link text from `text-[15px]` to `text-sm` (14px) to match the slimmer proportion
+4. Shrink the CTA button padding from `py-1.5` to `py-1` for a tighter fit
 
-- Import `motion` and `AnimatePresence` from the `motion` package (already installed)
-- Add a `motion.div` with `layoutId="duration-pill"` inside each button, rendered only when active
-- The pill uses `position: absolute; inset: 0` with the `bg-secondary` styling
-- Spring physics transition (`type: "spring", stiffness: 400, damping: 30`) for that snappy but smooth feel
-- Button text sits above via `relative z-10`
-
-### B. Animated price counter in TierCard
-
-When the duration changes, the price number animates by counting up/down to the new value (like an odometer). This is much more engaging than a static swap.
-
-**File: `src/components/pricing/TierCard.tsx`**
-
-- Track previous price with `useRef` and detect changes with `useEffect`
-- Use `requestAnimationFrame` loop to interpolate from old price to new price over ~400ms with an ease-out curve
-- Display the interpolated value via `formatPrice()` so the dollar sign and decimals stay formatted
-- The `/day`, `/week`, `/month` label cross-fades using `AnimatePresence` + `motion.span` with opacity + slight Y translate
-
-### Summary of changes
-
-| File | What |
-|------|------|
-| `DurationToggle.tsx` | Sliding pill with `layoutId` spring animation |
-| `TierCard.tsx` | Animated price counter + cross-fade duration label |
-
-No new dependencies needed -- `motion` is already installed. Both animations use spring physics for that premium, tactile feel.
+The result: a nav bar that hugs its content tightly -- roughly 48-52px tall instead of the current ~72-76px.

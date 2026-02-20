@@ -1,40 +1,37 @@
 
 
-# Add Inter Font Globally
+# Animated Duration Toggle + Price Transitions
 
-## Problem
+## Two animations to add
 
-The CSS already declares `font-family: 'Inter', sans-serif` on the body, but Inter is never imported -- so the browser falls back to the default system sans-serif. The font needs to be loaded and also set in the Tailwind config so utility classes respect it too.
+### A. Sliding pill indicator in DurationToggle
 
-## Changes
+Replace the static `bg-secondary` background on the active button with a shared `motion.div` using `layoutId`. This creates a smooth sliding pill that glides between options when you click a different duration. The buttons themselves become transparent -- the animated pill sits behind the active label.
 
-### 1. Load Inter from Google Fonts
+**File: `src/components/pricing/DurationToggle.tsx`**
 
-**File: `index.html`** -- Add a `<link>` to Google Fonts in the `<head>`:
+- Import `motion` and `AnimatePresence` from the `motion` package (already installed)
+- Add a `motion.div` with `layoutId="duration-pill"` inside each button, rendered only when active
+- The pill uses `position: absolute; inset: 0` with the `bg-secondary` styling
+- Spring physics transition (`type: "spring", stiffness: 400, damping: 30`) for that snappy but smooth feel
+- Button text sits above via `relative z-10`
 
-```html
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-```
+### B. Animated price counter in TierCard
 
-### 2. Set Inter as the default font in Tailwind
+When the duration changes, the price number animates by counting up/down to the new value (like an odometer). This is much more engaging than a static swap.
 
-**File: `tailwind.config.ts`** -- Add `fontFamily` to `theme.extend`:
+**File: `src/components/pricing/TierCard.tsx`**
 
-```ts
-fontFamily: {
-  sans: ['Inter', 'sans-serif'],
-},
-```
+- Track previous price with `useRef` and detect changes with `useEffect`
+- Use `requestAnimationFrame` loop to interpolate from old price to new price over ~400ms with an ease-out curve
+- Display the interpolated value via `formatPrice()` so the dollar sign and decimals stay formatted
+- The `/day`, `/week`, `/month` label cross-fades using `AnimatePresence` + `motion.span` with opacity + slight Y translate
 
-This ensures every Tailwind `font-sans` class (which is the default body font) uses Inter.
+### Summary of changes
 
-### 3. Keep existing CSS declaration
+| File | What |
+|------|------|
+| `DurationToggle.tsx` | Sliding pill with `layoutId` spring animation |
+| `TierCard.tsx` | Animated price counter + cross-fade duration label |
 
-**File: `src/index.css`** -- The existing `font-family: 'Inter', sans-serif` on `body` (line 212) stays as-is. No change needed there.
-
----
-
-Three small additions across two files. Every element on the site will render in Inter.
-
+No new dependencies needed -- `motion` is already installed. Both animations use spring physics for that premium, tactile feel.

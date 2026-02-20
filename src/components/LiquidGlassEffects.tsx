@@ -195,7 +195,7 @@ export const LiquidGlassCard = React.forwardRef<HTMLDivElement, LiquidGlassCardP
         <span aria-hidden className="liquid-refract liquid-refract--b" />
 
         {/* real content (only once) */}
-        <div className="relative z-10">{children}</div>
+        <div className="relative z-10 flex flex-col flex-1">{children}</div>
       </div>
     );
   }

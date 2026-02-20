@@ -164,7 +164,7 @@ function DeltaFeatures({ config }: { config: TierConfig }) {
   if (config.basicFeatures) {
     return (
       <div className="flex-1 mb-6">
-        <div className="mb-3 h-[34px]" />
+        
         <ul className="space-y-2">
           {config.basicFeatures.map((feat, i) => (
             <li key={i} className="flex items-start gap-2">

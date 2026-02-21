@@ -1,22 +1,40 @@
 
-# Smooth Feature Comparison Section
 
-## Problem
-The "Compare all features" collapsible snaps open/closed with no animation -- it just pops in. The Radix Collapsible doesn't animate by default, and the content inside is a basic HTML table with no visual polish matching the rest of the liquid glass design.
+# Fix Feature Comparison: Smooth Animation + Liquid Glass Toggle
+
+## Problems
+1. **Instant open/close**: The `AnimatePresence` height animation from 0 to `auto` doesn't work reliably in Motion -- `height: 'auto'` often snaps instead of animating smoothly.
+2. **Toggle button is a plain ghost Button**: It doesn't match the liquid glass design language used everywhere else on the page.
 
 ## Changes
 
-### 1. `src/pages/Pricing.tsx` -- Replace Radix Collapsible with Motion animation
-- Remove `Collapsible` from Radix; use `motion.div` with `AnimatePresence` instead
-- The toggle button stays, but the content area smoothly slides open with opacity + height animation (matching the odometer/duration toggle animation style already in use)
-- Animate chevron rotation with `motion` instead of CSS class toggle
+### 1. `src/pages/Pricing.tsx` -- Fix animation + use LiquidGlassCard for toggle
 
-### 2. `src/components/pricing/FeatureComparisonTable.tsx` -- Polish the table
-- Add staggered row fade-in animation using `motion.tr` so rows cascade in when the section opens (subtle, ~30ms stagger)
-- Remove the zebra stripe (`bg-muted/20` on even rows) -- it clashes with the glass aesthetic. Use consistent subtle row dividers instead
-- Increase cell padding slightly for breathing room
-- Make the infinity symbol render larger (`text-lg`) for visual punch, matching how the tier cards do it
-- Add a subtle hover highlight on rows for interactivity feel
+**Animation fix**: Wrap the collapsible content in a `motion.div` that uses `grid-template-rows` trick instead of `height: auto`. This is the reliable CSS-based approach for animating to unknown heights:
+- Container uses `display: grid` with `grid-template-rows: 0fr` (closed) and `1fr` (open)
+- Inner div has `overflow: hidden` and `min-height: 0`
+- Transition is handled via CSS `transition: grid-template-rows 0.4s ease` on a wrapper, toggled by state
+- Remove `AnimatePresence` entirely -- use a single always-mounted div that transitions smoothly
 
-### Summary
-Two files changed. The section will smoothly expand/collapse with a spring animation, and rows will cascade in with a staggered fade -- matching the premium feel of the rest of the pricing page.
+**Button upgrade**: Replace the `<Button variant="ghost">` with a `LiquidGlassCard` styled as a clickable element (using `role="button"`, `tabIndex`, `cursor-pointer`). This makes the toggle feel part of the design system rather than a plain text link.
+
+### 2. `src/components/pricing/FeatureComparisonTable.tsx` -- No changes needed
+
+The staggered row animations are fine once the container actually animates open smoothly.
+
+## Technical Detail
+
+The grid-template-rows approach:
+```tsx
+<div
+  className="grid transition-[grid-template-rows] duration-400 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
+  style={{ gridTemplateRows: isComparisonOpen ? '1fr' : '0fr' }}
+>
+  <div className="overflow-hidden min-h-0">
+    {/* table content */}
+  </div>
+</div>
+```
+
+This is the most reliable cross-browser method for smooth height animation to/from zero without JS measurement.
+

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useFastSpringCheckout } from '@/hooks/useFastSpringCheckout';
@@ -11,11 +12,6 @@ import { LiveSessionCard } from '@/components/pricing/LiveSessionCard';
 import { FeatureComparisonTable } from '@/components/pricing/FeatureComparisonTable';
 import { ProcessingModal } from '@/components/pricing/ProcessingModal';
 import { Button } from '@/components/ui/button';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
 import type { SubscriptionDuration, SubscriptionTier } from '@/lib/api';
 
 type PaidTier = Exclude<SubscriptionTier, 'free'>;
@@ -120,22 +116,36 @@ export default function Pricing() {
 
         {/* Feature Comparison */}
         <div className="max-w-4xl mx-auto mb-16">
-          <Collapsible open={isComparisonOpen} onOpenChange={setIsComparisonOpen}>
-            <CollapsibleTrigger asChild>
-              <Button 
-                variant="ghost" 
-                className="w-full flex items-center justify-center gap-2 text-muted-foreground"
+          <Button 
+            variant="ghost" 
+            className="w-full flex items-center justify-center gap-2 text-muted-foreground"
+            onClick={() => setIsComparisonOpen(prev => !prev)}
+          >
+            <span>Compare all features</span>
+            <motion.div
+              animate={{ rotate: isComparisonOpen ? 180 : 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+            >
+              <ChevronDown className="w-4 h-4" />
+            </motion.div>
+          </Button>
+          <AnimatePresence initial={false}>
+            {isComparisonOpen && (
+              <motion.div
+                key="comparison"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                style={{ overflow: 'hidden' }}
+                className="mt-4"
               >
-                <span>Compare all features</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${isComparisonOpen ? 'rotate-180' : ''}`} />
-              </Button>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="mt-4">
-              <div className="p-6 rounded-2xl glass-secondary">
-                <FeatureComparisonTable />
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
+                <div className="p-6 rounded-2xl glass-secondary">
+                  <FeatureComparisonTable />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Live Session Section */}

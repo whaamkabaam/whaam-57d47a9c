@@ -66,7 +66,7 @@ const tierConfig: Record<PaidTier, TierConfig> = {
       { prefix: '', bold: '+ .ccurve', suffix: ' upload/edit' },
       { prefix: '', bold: '+ multiple', suffix: ' curve families' },
     ],
-    notIncludedFeatures: ['Form settings', 'Beta testing'],
+    notIncludedFeatures: ['Beta testing'],
     bonusFeatures: [],
   },
   ultra: {

@@ -102,11 +102,15 @@ const Products = () => {
         </div>
 
         {/* Feature Comparison */}
-        <div className="max-w-4xl mx-auto mb-16">
+        <div className="max-w-4xl mx-auto mb-16 flex justify-center">
           <LiquidGlassCard
             role="button"
             tabIndex={0}
-            className="cursor-pointer select-none rounded-2xl p-4 md:p-5"
+            className={`cursor-pointer select-none transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
+              isComparisonOpen
+                ? 'w-full rounded-2xl p-4 md:p-6'
+                : 'w-fit rounded-full px-6 py-3'
+            }`}
             onClick={() => setIsComparisonOpen(prev => !prev)}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsComparisonOpen(prev => !prev); } }}
           >
@@ -119,20 +123,18 @@ const Products = () => {
                 <ChevronDown className="w-4 h-4" />
               </motion.div>
             </div>
-          </LiquidGlassCard>
 
-          <div
-            className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
-            style={{ gridTemplateRows: isComparisonOpen ? '1fr' : '0fr' }}
-          >
-            <div className="overflow-hidden min-h-0">
-              <div className="pt-4">
-                <div className="p-6 rounded-2xl glass-secondary">
+            <div
+              className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
+              style={{ gridTemplateRows: isComparisonOpen ? '1fr' : '0fr' }}
+            >
+              <div className="overflow-hidden min-h-0">
+                <div className="pt-4">
                   <FeatureComparisonTable />
                 </div>
               </div>
             </div>
-          </div>
+          </LiquidGlassCard>
         </div>
 
         {/* Live Session */}

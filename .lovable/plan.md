@@ -1,40 +1,33 @@
 
 
-# Fix Feature Comparison: Smooth Animation + Liquid Glass Toggle
+# Fix Homepage Feature Comparison + Remove Standalone Pricing Page
 
-## Problems
-1. **Instant open/close**: The `AnimatePresence` height animation from 0 to `auto` doesn't work reliably in Motion -- `height: 'auto'` often snaps instead of animating smoothly.
-2. **Toggle button is a plain ghost Button**: It doesn't match the liquid glass design language used everywhere else on the page.
+## What's changing
 
-## Changes
+### 1. `src/components/Products.tsx` -- Liquid glass toggle + smooth animation
+The homepage pricing section still uses the old Radix Collapsible with a plain ghost Button. Applying the same fixes already done on `Pricing.tsx`:
 
-### 1. `src/pages/Pricing.tsx` -- Fix animation + use LiquidGlassCard for toggle
+- **Replace Radix Collapsible** with a `LiquidGlassCard` toggle button (`role="button"`, `cursor-pointer`, keyboard accessible) and CSS `grid-template-rows` transition (`0fr` to `1fr`) for smooth height animation
+- **Animated chevron** using `motion.div` from `motion/react`
+- **Remove** unused `Collapsible`, `CollapsibleTrigger`, `CollapsibleContent`, and `Button` imports
 
-**Animation fix**: Wrap the collapsible content in a `motion.div` that uses `grid-template-rows` trick instead of `height: auto`. This is the reliable CSS-based approach for animating to unknown heights:
-- Container uses `display: grid` with `grid-template-rows: 0fr` (closed) and `1fr` (open)
-- Inner div has `overflow: hidden` and `min-height: 0`
-- Transition is handled via CSS `transition: grid-template-rows 0.4s ease` on a wrapper, toggled by state
-- Remove `AnimatePresence` entirely -- use a single always-mounted div that transitions smoothly
+### 2. Delete `src/pages/Pricing.tsx`
+The standalone pricing page is redundant -- the `/pricing` route already redirects to `/#products`, and all pricing UI lives in `Products.tsx` on the homepage. Removing the file entirely.
 
-**Button upgrade**: Replace the `<Button variant="ghost">` with a `LiquidGlassCard` styled as a clickable element (using `role="button"`, `tabIndex`, `cursor-pointer`). This makes the toggle feel part of the design system rather than a plain text link.
+### 3. `src/App.tsx` -- Clean up dead import
+Remove `import Pricing from "./pages/Privacy"` line (the old Pricing import and its comment). The redirect route (`/pricing -> /#products`) stays so any old links still work.
 
-### 2. `src/components/pricing/FeatureComparisonTable.tsx` -- No changes needed
+## Technical detail
 
-The staggered row animations are fine once the container actually animates open smoothly.
+The `grid-template-rows` trick in Products.tsx:
+```text
+Container: display: grid
+  Closed: grid-template-rows: 0fr  ->  content collapses to 0 height
+  Open:   grid-template-rows: 1fr  ->  content expands to natural height
+  Inner:  overflow: hidden; min-height: 0
 
-## Technical Detail
-
-The grid-template-rows approach:
-```tsx
-<div
-  className="grid transition-[grid-template-rows] duration-400 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
-  style={{ gridTemplateRows: isComparisonOpen ? '1fr' : '0fr' }}
->
-  <div className="overflow-hidden min-h-0">
-    {/* table content */}
-  </div>
-</div>
+Transition: transition-[grid-template-rows] duration-500
 ```
 
-This is the most reliable cross-browser method for smooth height animation to/from zero without JS measurement.
+This is the same pattern already working on the (now-deleted) Pricing page -- reliable cross-browser smooth height animation without JS measurement.
 

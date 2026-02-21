@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Shield, Zap, Trophy, ChevronDown } from "lucide-react";
+import { motion } from "motion/react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSubscription } from "@/contexts/SubscriptionContext";
 import { useFastSpringCheckout } from "@/hooks/useFastSpringCheckout";
@@ -10,12 +11,6 @@ import { DashboardExplainer } from "@/components/pricing/DashboardExplainer";
 import { LiveSessionCard } from "@/components/pricing/LiveSessionCard";
 import { FeatureComparisonTable } from "@/components/pricing/FeatureComparisonTable";
 import { ProcessingModal } from "@/components/pricing/ProcessingModal";
-import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import { LiquidGlassCard } from "@/components/LiquidGlassEffects";
 import type { SubscriptionDuration, SubscriptionTier } from "@/lib/api";
 
@@ -108,22 +103,36 @@ const Products = () => {
 
         {/* Feature Comparison */}
         <div className="max-w-4xl mx-auto mb-16">
-          <Collapsible open={isComparisonOpen} onOpenChange={setIsComparisonOpen}>
-            <CollapsibleTrigger asChild>
-              <Button 
-                variant="ghost" 
-                className="w-full flex items-center justify-center gap-2 text-muted-foreground"
+          <LiquidGlassCard
+            role="button"
+            tabIndex={0}
+            className="cursor-pointer select-none rounded-2xl p-4 md:p-5"
+            onClick={() => setIsComparisonOpen(prev => !prev)}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsComparisonOpen(prev => !prev); } }}
+          >
+            <div className="flex items-center justify-center gap-2 text-muted-foreground">
+              <span className="text-sm font-medium">Compare all features</span>
+              <motion.div
+                animate={{ rotate: isComparisonOpen ? 180 : 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
               >
-                <span>Compare all features</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${isComparisonOpen ? 'rotate-180' : ''}`} />
-              </Button>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="mt-4">
-              <LiquidGlassCard>
-                <FeatureComparisonTable />
-              </LiquidGlassCard>
-            </CollapsibleContent>
-          </Collapsible>
+                <ChevronDown className="w-4 h-4" />
+              </motion.div>
+            </div>
+          </LiquidGlassCard>
+
+          <div
+            className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
+            style={{ gridTemplateRows: isComparisonOpen ? '1fr' : '0fr' }}
+          >
+            <div className="overflow-hidden min-h-0">
+              <div className="pt-4">
+                <div className="p-6 rounded-2xl glass-secondary">
+                  <FeatureComparisonTable />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Live Session */}

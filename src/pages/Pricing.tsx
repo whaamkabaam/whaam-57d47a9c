@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ChevronDown } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSubscription } from '@/contexts/SubscriptionContext';
 import { useFastSpringCheckout } from '@/hooks/useFastSpringCheckout';
@@ -11,6 +11,7 @@ import { DashboardExplainer } from '@/components/pricing/DashboardExplainer';
 import { LiveSessionCard } from '@/components/pricing/LiveSessionCard';
 import { FeatureComparisonTable } from '@/components/pricing/FeatureComparisonTable';
 import { ProcessingModal } from '@/components/pricing/ProcessingModal';
+import { LiquidGlassCard } from '@/components/LiquidGlassEffects';
 import { Button } from '@/components/ui/button';
 import type { SubscriptionDuration, SubscriptionTier } from '@/lib/api';
 
@@ -116,36 +117,36 @@ export default function Pricing() {
 
         {/* Feature Comparison */}
         <div className="max-w-4xl mx-auto mb-16">
-          <Button 
-            variant="ghost" 
-            className="w-full flex items-center justify-center gap-2 text-muted-foreground"
+          <LiquidGlassCard
+            role="button"
+            tabIndex={0}
+            className="cursor-pointer select-none rounded-2xl p-4 md:p-5"
             onClick={() => setIsComparisonOpen(prev => !prev)}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsComparisonOpen(prev => !prev); } }}
           >
-            <span>Compare all features</span>
-            <motion.div
-              animate={{ rotate: isComparisonOpen ? 180 : 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-            >
-              <ChevronDown className="w-4 h-4" />
-            </motion.div>
-          </Button>
-          <AnimatePresence initial={false}>
-            {isComparisonOpen && (
+            <div className="flex items-center justify-center gap-2 text-muted-foreground">
+              <span className="text-sm font-medium">Compare all features</span>
               <motion.div
-                key="comparison"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-                style={{ overflow: 'hidden' }}
-                className="mt-4"
+                animate={{ rotate: isComparisonOpen ? 180 : 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
               >
+                <ChevronDown className="w-4 h-4" />
+              </motion.div>
+            </div>
+          </LiquidGlassCard>
+
+          <div
+            className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
+            style={{ gridTemplateRows: isComparisonOpen ? '1fr' : '0fr' }}
+          >
+            <div className="overflow-hidden min-h-0">
+              <div className="pt-4">
                 <div className="p-6 rounded-2xl glass-secondary">
                   <FeatureComparisonTable />
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Live Session Section */}
